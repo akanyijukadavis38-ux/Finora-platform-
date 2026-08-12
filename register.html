@@ -1,0 +1,2803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="theme-color" content="#07050A">
+
+<title>FINORA | Create Account</title>
+
+<style>
+
+/* =====================================================
+   FINORA REGISTER PAGE
+   ===================================================== */
+
+:root{
+    --pink:#EA3CFF;
+    --pink-light:#FF72FF;
+    --pink-dark:#9E18BD;
+
+    --orange:#F5A623;
+    --gold:#FFD76A;
+    --gold-dark:#C97908;
+
+    --black:#050409;
+    --dark:#0A0710;
+    --card:#130B19;
+
+    --white:#FFFFFF;
+    --muted:#A9A0AE;
+
+    --danger:#FF5C7A;
+    --success:#49E6A1;
+
+    --border:rgba(255,255,255,.09);
+    --pink-border:rgba(234,60,255,.24);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    min-height:100%;
+}
+
+body{
+    min-height:100vh;
+    overflow-x:hidden;
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    color:var(--white);
+
+    background:
+        radial-gradient(
+            circle at 12% 10%,
+            rgba(234,60,255,.13),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 88% 85%,
+            rgba(245,166,35,.09),
+            transparent 28%
+        ),
+        linear-gradient(
+            135deg,
+            #050409,
+            #0A0610 52%,
+            #050409
+        );
+}
+
+/* =====================================================
+   BACKGROUND
+   ===================================================== */
+
+.background-orb{
+    position:fixed;
+    z-index:-1;
+
+    border-radius:50%;
+
+    pointer-events:none;
+
+    filter:blur(100px);
+}
+
+.orb-one{
+    width:320px;
+    height:320px;
+
+    top:-120px;
+    left:-130px;
+
+    background:var(--pink);
+    opacity:.09;
+}
+
+.orb-two{
+    width:300px;
+    height:300px;
+
+    right:-130px;
+    bottom:-100px;
+
+    background:var(--orange);
+    opacity:.07;
+}
+
+/* =====================================================
+   PAGE
+   ===================================================== */
+
+.page{
+    min-height:100vh;
+
+    display:flex;
+    flex-direction:column;
+}
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+
+.header{
+    width:100%;
+
+    padding:24px 20px;
+}
+
+.header-inner{
+    width:min(1100px,100%);
+    margin:auto;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+/* =====================================================
+   FINORA BRAND
+   ===================================================== */
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    text-decoration:none;
+}
+
+.finora-mark{
+    width:47px;
+    height:56px;
+
+    flex-shrink:0;
+
+    filter:
+        drop-shadow(
+            0 7px 17px
+            rgba(245,166,35,.20)
+        );
+}
+
+.brand-text{
+    display:flex;
+    flex-direction:column;
+}
+
+.brand-name{
+    font-size:27px;
+    line-height:1;
+
+    font-weight:750;
+
+    letter-spacing:2.5px;
+}
+
+.brand-name .fin{
+    color:var(--pink);
+}
+
+.brand-name .ora{
+    color:var(--orange);
+}
+
+.brand-tagline{
+    margin-top:5px;
+
+    color:var(--orange);
+
+    font-size:7px;
+    font-weight:800;
+
+    letter-spacing:2px;
+}
+
+/* =====================================================
+   LOGIN LINK
+   ===================================================== */
+
+.login-top{
+    color:#AAA1B0;
+
+    font-size:13px;
+
+    text-decoration:none;
+
+    transition:.25s ease;
+}
+
+.login-top strong{
+    color:var(--pink-light);
+}
+
+.login-top:hover{
+    color:white;
+}
+
+/* =====================================================
+   MAIN
+   ===================================================== */
+
+.main{
+    flex:1;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:35px 20px 70px;
+}
+
+/* =====================================================
+   REGISTER CONTAINER
+   ===================================================== */
+
+.register-wrapper{
+    width:min(1050px,100%);
+
+    display:grid;
+    grid-template-columns:.82fr 1.18fr;
+
+    gap:30px;
+
+    align-items:stretch;
+}
+
+/* =====================================================
+   LEFT INFORMATION PANEL
+   ===================================================== */
+
+.info-panel{
+    position:relative;
+
+    padding:45px 38px;
+
+    border-radius:27px;
+
+    overflow:hidden;
+
+    background:
+        radial-gradient(
+            circle at 15% 10%,
+            rgba(234,60,255,.16),
+            transparent 35%
+        ),
+        linear-gradient(
+            145deg,
+            rgba(28,13,39,.96),
+            rgba(9,7,14,.98)
+        );
+
+    border:1px solid var(--pink-border);
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.35);
+}
+
+.info-panel::after{
+    content:"";
+
+    position:absolute;
+
+    width:200px;
+    height:200px;
+
+    right:-100px;
+    bottom:-100px;
+
+    border-radius:50%;
+
+    background:var(--orange);
+
+    opacity:.06;
+
+    filter:blur(50px);
+}
+
+.info-kicker{
+    color:var(--orange);
+
+    font-size:10px;
+
+    font-weight:900;
+
+    letter-spacing:2px;
+}
+
+.info-panel h1{
+    margin-top:18px;
+
+    font-size:clamp(34px,4vw,52px);
+
+    line-height:1.03;
+
+    letter-spacing:-1.8px;
+}
+
+.info-panel h1 span{
+    color:var(--pink);
+}
+
+.info-panel p{
+    margin-top:20px;
+
+    color:var(--muted);
+
+    font-size:14px;
+
+    line-height:1.75;
+}
+
+/* =====================================================
+   BENEFITS
+   ===================================================== */
+
+.benefits{
+    margin-top:35px;
+
+    display:flex;
+    flex-direction:column;
+
+    gap:18px;
+}
+
+.benefit{
+    display:flex;
+
+    gap:14px;
+
+    align-items:flex-start;
+}
+
+.benefit-icon{
+    width:38px;
+    height:38px;
+
+    flex-shrink:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:11px;
+
+    background:rgba(234,60,255,.08);
+
+    border:1px solid rgba(234,60,255,.18);
+
+    color:var(--orange);
+
+    font-size:15px;
+}
+
+.benefit h3{
+    font-size:14px;
+}
+
+.benefit p{
+    margin-top:4px;
+
+    color:#807686;
+
+    font-size:12px;
+
+    line-height:1.5;
+}
+
+/* =====================================================
+   REFERRAL INFO
+   ===================================================== */
+
+.referral-info{
+    margin-top:35px;
+
+    padding:15px;
+
+    border-radius:14px;
+
+    background:rgba(245,166,35,.045);
+
+    border:1px solid rgba(245,166,35,.14);
+}
+
+.referral-info-title{
+    color:var(--orange);
+
+    font-size:10px;
+
+    font-weight:900;
+
+    letter-spacing:1.3px;
+}
+
+.referral-levels{
+    display:flex;
+
+    gap:8px;
+
+    margin-top:10px;
+}
+
+.level{
+    flex:1;
+
+    padding:9px 5px;
+
+    text-align:center;
+
+    border-radius:9px;
+
+    background:rgba(255,255,255,.035);
+}
+
+.level strong{
+    display:block;
+
+    color:white;
+
+    font-size:15px;
+}
+
+.level small{
+    color:#827987;
+
+    font-size:8px;
+}
+
+/* =====================================================
+   FORM CARD
+   ===================================================== */
+
+.form-card{
+    padding:40px;
+
+    border-radius:27px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(21,11,29,.98),
+            rgba(8,6,12,.99)
+        );
+
+    border:1px solid var(--border);
+
+    box-shadow:
+        0 30px 90px rgba(0,0,0,.48);
+}
+
+.form-header{
+    margin-bottom:30px;
+}
+
+.form-header h2{
+    font-size:30px;
+
+    line-height:1.1;
+}
+
+.form-header p{
+    margin-top:9px;
+
+    color:#8F8696;
+
+    font-size:13px;
+}
+
+/* =====================================================
+   FORM
+   ===================================================== */
+
+.form-group{
+    margin-bottom:19px;
+}
+
+.form-group label{
+    display:block;
+
+    margin-bottom:8px;
+
+    color:#D7D0DB;
+
+    font-size:11px;
+
+    font-weight:700;
+
+    letter-spacing:.2px;
+}
+
+.input-wrapper{
+    position:relative;
+}
+
+.form-input{
+    width:100%;
+
+    height:52px;
+
+    padding:0 15px;
+
+    border:1px solid rgba(255,255,255,.10);
+
+    border-radius:12px;
+
+    outline:none;
+
+    background:
+        rgba(255,255,255,.035);
+
+    color:white;
+
+    font-size:14px;
+
+    transition:.25s ease;
+}
+
+.form-input::placeholder{
+    color:#625A68;
+}
+
+.form-input:focus{
+    border-color:rgba(234,60,255,.65);
+
+    background:
+        rgba(234,60,255,.035);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(234,60,255,.07);
+}
+
+.form-input.valid{
+    border-color:rgba(73,230,161,.45);
+}
+
+.form-input.invalid{
+    border-color:rgba(255,92,122,.60);
+}
+
+/* =====================================================
+   PASSWORD TOGGLE
+   ===================================================== */
+
+.password-input{
+    padding-right:52px;
+}
+
+.toggle-password{
+    position:absolute;
+
+    top:50%;
+    right:12px;
+
+    transform:translateY(-50%);
+
+    width:34px;
+    height:34px;
+
+    border:0;
+
+    background:transparent;
+
+    color:#817887;
+
+    cursor:pointer;
+
+    border-radius:8px;
+
+    transition:.2s ease;
+}
+
+.toggle-password:hover{
+    color:var(--pink-light);
+
+    background:rgba(234,60,255,.06);
+}
+
+/* =====================================================
+   FIELD MESSAGE
+   ===================================================== */
+
+.field-message{
+    display:none;
+
+    margin-top:7px;
+
+    font-size:10px;
+
+    line-height:1.4;
+}
+
+.field-message.show{
+    display:block;
+}
+
+.field-message.error{
+    color:var(--danger);
+}
+
+.field-message.success{
+    color:var(--success);
+}
+
+/* =====================================================
+   PASSWORD STRENGTH
+   ===================================================== */
+
+.password-strength{
+    margin-top:9px;
+
+    display:none;
+}
+
+.password-strength.show{
+    display:block;
+}
+
+.strength-bars{
+    display:flex;
+
+    gap:5px;
+}
+
+.strength-bar{
+    flex:1;
+
+    height:4px;
+
+    border-radius:10px;
+
+    background:rgba(255,255,255,.08);
+
+    transition:.25s ease;
+}
+
+.strength-text{
+    margin-top:6px;
+
+    color:#756D7A;
+
+    font-size:9px;
+}
+
+/* =====================================================
+   REFERRAL FIELD
+   ===================================================== */
+
+.referral-wrapper{
+    position:relative;
+}
+
+.referral-status{
+    position:absolute;
+
+    top:50%;
+    right:14px;
+
+    transform:translateY(-50%);
+
+    display:none;
+
+    font-size:11px;
+
+    font-weight:700;
+}
+
+.referral-status.show{
+    display:block;
+}
+
+.referral-status.valid{
+    color:var(--success);
+}
+
+.referral-status.invalid{
+    color:var(--danger);
+}
+
+/* =====================================================
+   TERMS
+   ===================================================== */
+
+.terms{
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:10px;
+
+    margin-top:7px;
+
+    color:#817887;
+
+    font-size:10px;
+
+    line-height:1.5;
+}
+
+.terms input{
+    margin-top:2px;
+
+    accent-color:var(--pink);
+
+    width:14px;
+    height:14px;
+
+    flex-shrink:0;
+}
+
+.terms a{
+    color:var(--pink-light);
+
+    text-decoration:none;
+}
+
+/* =====================================================
+   CREATE BUTTON
+   ===================================================== */
+
+.create-button{
+    width:100%;
+
+    height:55px;
+
+    margin-top:22px;
+
+    border:0;
+
+    border-radius:13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--pink),
+            var(--pink-dark)
+        );
+
+    color:white;
+
+    font-size:12px;
+
+    font-weight:900;
+
+    letter-spacing:.8px;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 14px 35px
+        rgba(234,60,255,.19);
+
+    transition:.25s ease;
+}
+
+.create-button:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 18px 40px
+        rgba(234,60,255,.28);
+}
+
+.create-button:active{
+    transform:translateY(0);
+}
+
+.create-button:disabled{
+    opacity:.55;
+
+    cursor:not-allowed;
+
+    transform:none;
+
+    box-shadow:none;
+}
+
+/* =====================================================
+   FORM STATUS
+   ===================================================== */
+
+.form-status{
+    display:none;
+
+    margin-top:15px;
+
+    padding:12px 14px;
+
+    border-radius:11px;
+
+    font-size:11px;
+
+    line-height:1.5;
+}
+
+.form-status.show{
+    display:block;
+}
+
+.form-status.error{
+    color:#FF9CAE;
+
+    background:rgba(255,92,122,.07);
+
+    border:1px solid rgba(255,92,122,.16);
+}
+
+.form-status.success{
+    color:#8AF0C2;
+
+    background:rgba(73,230,161,.07);
+
+    border:1px solid rgba(73,230,161,.16);
+}
+
+/* =====================================================
+   BOTTOM LOGIN
+   ===================================================== */
+
+.bottom-login{
+    margin-top:24px;
+
+    text-align:center;
+
+    color:#716877;
+
+    font-size:11px;
+}
+
+.bottom-login a{
+    color:var(--pink-light);
+
+    font-weight:700;
+}
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
+.footer{
+    padding:20px;
+
+    text-align:center;
+
+    color:#5F5765;
+
+    font-size:9px;
+}
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media(max-width:850px){
+
+    .register-wrapper{
+        grid-template-columns:1fr;
+
+        max-width:620px;
+    }
+
+    .info-panel{
+        padding:35px;
+    }
+
+    .benefits{
+        display:grid;
+
+        grid-template-columns:1fr 1fr;
+
+        gap:18px;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .header{
+        padding:18px 15px;
+    }
+
+    .header-inner{
+        align-items:center;
+    }
+
+    .finora-mark{
+        width:40px;
+        height:49px;
+    }
+
+    .brand-name{
+        font-size:22px;
+
+        letter-spacing:2px;
+    }
+
+    .brand-tagline{
+        font-size:6px;
+
+        letter-spacing:1.5px;
+    }
+
+    .login-top{
+        font-size:11px;
+    }
+
+    .main{
+        padding:15px 14px 45px;
+    }
+
+    .register-wrapper{
+        gap:15px;
+    }
+
+    .info-panel{
+        padding:28px 23px;
+
+        border-radius:21px;
+    }
+
+    .info-panel h1{
+        font-size:37px;
+    }
+
+    .benefits{
+        display:flex;
+    }
+
+    .referral-levels{
+        gap:5px;
+    }
+
+    .form-card{
+        padding:27px 20px;
+
+        border-radius:21px;
+    }
+
+    .form-header h2{
+        font-size:26px;
+    }
+
+}
+
+/* =====================================================
+   SMALL DEVICES
+   ===================================================== */
+
+@media(max-width:360px){
+
+    .login-top{
+        display:none;
+    }
+
+    .form-card{
+        padding:24px 16px;
+    }
+
+    .info-panel{
+        padding:24px 18px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="background-orb orb-one"></div>
+<div class="background-orb orb-two"></div>
+
+<div class="page">
+
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
+
+<header class="header">
+
+<div class="header-inner">
+
+<a href="index.html" class="brand">
+
+<svg
+    class="finora-mark"
+    viewBox="0 0 100 110"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-label="FINORA logo"
+>
+
+<defs>
+
+<linearGradient
+    id="finoraGold"
+    x1="12"
+    y1="5"
+    x2="88"
+    y2="105"
+    gradientUnits="userSpaceOnUse"
+>
+
+<stop offset="0" stop-color="#FFF0A8"/>
+<stop offset=".22" stop-color="#FFD35A"/>
+<stop offset=".55" stop-color="#F2B52F"/>
+<stop offset=".82" stop-color="#D88A12"/>
+<stop offset="1" stop-color="#A95E05"/>
+
+</linearGradient>
+
+<linearGradient
+    id="finoraShine"
+    x1="20"
+    y1="4"
+    x2="55"
+    y2="70"
+    gradientUnits="userSpaceOnUse"
+>
+
+<stop offset="0" stop-color="#FFF8D0"/>
+<stop offset=".45" stop-color="#FFE27A"/>
+<stop offset="1" stop-color="#E9A51E"/>
+
+</linearGradient>
+
+</defs>
+
+<path
+    fill="url(#finoraGold)"
+    d="
+        M20 8
+        C21 5 24 3 28 3
+        H82
+        C85 3 87 5 85 8
+        L78 19
+        C77 21 75 22 72 22
+        H46
+        C39 22 34 24 29 27
+        C25 30 22 33 20 37
+        L15 49
+        C14 52 16 54 19 52
+        L28 46
+        C33 42 39 40 45 40
+        H67
+        C70 40 72 42 70 45
+        L63 56
+        C62 58 60 59 57 59
+        H46
+        C40 59 36 62 33 67
+        C30 72 27 80 24 88
+        L20 101
+        H5
+        L18 56
+        C20 49 23 42 27 37
+        C32 30 39 27 47 26
+        H72
+        L77 18
+        H43
+        C34 18 27 21 21 27
+        L16 32
+        Z
+    "
+></path>
+
+<path
+    fill="url(#finoraShine)"
+    opacity=".72"
+    d="
+        M27 7
+        H79
+        L75 13
+        H45
+        C36 13 29 16 23 21
+        L20 23
+        L24 10
+        C24 8 25 7 27 7
+        Z
+    "
+></path>
+
+</svg>
+
+<div class="brand-text">
+
+<div class="brand-name">
+<span class="fin">FIN</span><span class="ora">ORA</span>
+</div>
+
+<div class="brand-tagline">
+INVEST • GROW • EARN
+</div>
+
+</div>
+
+</a>
+
+<div class="login-top">
+
+Already have an account?
+<a href="login.html">
+<strong>Login</strong>
+</a>
+
+</div>
+
+</div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN
+     ===================================================== -->
+
+<main class="main">
+
+<div class="register-wrapper">
+
+
+<!-- =====================================================
+     INFORMATION PANEL
+     ===================================================== -->
+
+<section class="info-panel">
+
+<div class="info-kicker">
+WELCOME TO FINORA
+</div>
+
+<h1>
+Start your
+<span>journey.</span>
+</h1>
+
+<p>
+Create your FINORA account and enter
+a modern investment experience designed
+around simplicity, clarity and growth.
+</p>
+
+
+<div class="benefits">
+
+
+<div class="benefit">
+
+<div class="benefit-icon">
+✓
+</div>
+
+<div>
+
+<h3>
+Simple Account Setup
+</h3>
+
+<p>
+Create your account in a few clear steps.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="benefit">
+
+<div class="benefit-icon">
+◈
+</div>
+
+<div>
+
+<h3>
+Personal Account
+</h3>
+
+<p>
+Your account keeps your FINORA activity
+organized in one place.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="benefit">
+
+<div class="benefit-icon">
+↗
+</div>
+
+<div>
+
+<h3>
+Referral Network
+</h3>
+
+<p>
+Build your referral network through
+the FINORA three-level structure.
+</p>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<div class="referral-info">
+
+<div class="referral-info-title">
+REFERRAL COMMISSION STRUCTURE
+</div>
+
+<div class="referral-levels">
+
+<div class="level">
+
+<strong>15%</strong>
+
+<small>
+LEVEL 1
+</small>
+
+</div>
+
+<div class="level">
+
+<strong>3%</strong>
+
+<small>
+LEVEL 2
+</small>
+
+</div>
+
+<div class="level">
+
+<strong>2%</strong>
+
+<small>
+LEVEL 3
+</small>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     FORM
+     ===================================================== -->
+
+<section class="form-card">
+
+<div class="form-header">
+
+<h2>
+Create Account
+</h2>
+
+<p>
+Enter your details below to get started with FINORA.
+</p>
+
+</div>
+
+
+<form id="registerForm" novalidate>
+
+
+<!-- NAME -->
+
+<div class="form-group">
+
+<label for="fullName">
+Full Name
+</label>
+
+<input
+    type="text"
+    id="fullName"
+    class="form-input"
+    placeholder="Enter your full name"
+    autocomplete="name"
+    required
+>
+
+<div
+    id="nameMessage"
+    class="field-message error"
+></div>
+
+</div>
+
+
+<!-- PHONE -->
+
+<div class="form-group">
+
+<label for="phone">
+Phone Number
+</label>
+
+<input
+    type="tel"
+    id="phone"
+    class="form-input"
+    placeholder="e.g. 0701234567"
+    autocomplete="tel"
+    inputmode="tel"
+    maxlength="10"
+    required
+>
+
+<div
+    id="phoneMessage"
+    class="field-message error"
+></div>
+
+</div>
+
+
+<!-- EMAIL -->
+
+<div class="form-group">
+
+<label for="email">
+Email Address
+</label>
+
+<input
+    type="email"
+    id="email"
+    class="form-input"
+    placeholder="Enter your email address"
+    autocomplete="email"
+    required
+>
+
+<div
+    id="emailMessage"
+    class="field-message error"
+></div>
+
+</div>
+
+
+<!-- PASSWORD -->
+
+<div class="form-group">
+
+<label for="password">
+Password
+</label>
+
+<div class="input-wrapper">
+
+<input
+    type="password"
+    id="password"
+    class="form-input password-input"
+    placeholder="Create a password"
+    autocomplete="new-password"
+    minlength="6"
+    required
+>
+
+<button
+    type="button"
+    class="toggle-password"
+    data-target="password"
+    aria-label="Show password"
+>
+👁
+</button>
+
+</div>
+
+<div
+    id="passwordMessage"
+    class="field-message error"
+></div>
+
+<div
+    id="passwordStrength"
+    class="password-strength"
+>
+
+<div class="strength-bars">
+
+<span class="strength-bar"></span>
+<span class="strength-bar"></span>
+<span class="strength-bar"></span>
+<span class="strength-bar"></span>
+
+</div>
+
+<div
+    id="strengthText"
+    class="strength-text"
+>
+Password strength
+</div>
+
+</div>
+
+</div>
+
+
+<!-- CONFIRM PASSWORD -->
+
+<div class="form-group">
+
+<label for="confirmPassword">
+Confirm Password
+</label>
+
+<div class="input-wrapper">
+
+<input
+    type="password"
+    id="confirmPassword"
+    class="form-input password-input"
+    placeholder="Confirm your password"
+    autocomplete="new-password"
+    minlength="6"
+    required
+>
+
+<button
+    type="button"
+    class="toggle-password"
+    data-target="confirmPassword"
+    aria-label="Show password"
+>
+👁
+</button>
+
+</div>
+
+<div
+    id="confirmMessage"
+    class="field-message error"
+></div>
+
+</div>
+
+
+<!-- REFERRAL -->
+
+<div class="form-group">
+
+<label for="referralCode">
+Referral Code
+<span style="color:#756D7A;font-weight:400;">
+(optional)
+</span>
+</label>
+
+<div class="referral-wrapper">
+
+<input
+    type="text"
+    id="referralCode"
+    class="form-input"
+    placeholder="Enter referral code"
+    autocomplete="off"
+>
+
+<span
+    id="referralStatus"
+    class="referral-status"
+></span>
+
+</div>
+
+<div
+    id="referralMessage"
+    class="field-message"
+></div>
+
+</div>
+
+
+<!-- TERMS -->
+
+<label class="terms">
+
+<input
+    type="checkbox"
+    id="terms"
+    required
+>
+
+<span>
+I agree to the FINORA
+<a href="#" onclick="return false;">
+Terms & Conditions
+</a>
+and
+<a href="#" onclick="return false;">
+Privacy Policy
+</a>.
+</span>
+
+</label>
+
+
+<!-- STATUS -->
+
+<div
+    id="formStatus"
+    class="form-status"
+></div>
+
+
+<!-- CREATE -->
+
+<button
+    type="submit"
+    class="create-button"
+    id="createButton"
+>
+CREATE FINORA ACCOUNT
+</button>
+
+
+</form>
+
+
+<div class="bottom-login">
+
+Already registered?
+
+<a href="login.html">
+Login to your account
+</a>
+
+</div>
+
+</section>
+
+</div>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer class="footer">
+
+© 2026 FINORA • Invest • Grow • Earn
+
+</footer>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   FINORA REGISTRATION SYSTEM
+   ===================================================== */
+
+
+/* -----------------------------------------------------
+   ELEMENTS
+   ----------------------------------------------------- */
+
+const form =
+document.getElementById("registerForm");
+
+const fullName =
+document.getElementById("fullName");
+
+const phone =
+document.getElementById("phone");
+
+const email =
+document.getElementById("email");
+
+const password =
+document.getElementById("password");
+
+const confirmPassword =
+document.getElementById("confirmPassword");
+
+const referralCode =
+document.getElementById("referralCode");
+
+const terms =
+document.getElementById("terms");
+
+const createButton =
+document.getElementById("createButton");
+
+const formStatus =
+document.getElementById("formStatus");
+
+
+/* -----------------------------------------------------
+   STORAGE KEYS
+   ----------------------------------------------------- */
+
+const USERS_KEY =
+"finoraUsers";
+
+const CURRENT_USER_KEY =
+"finoraCurrentUser";
+
+
+/* -----------------------------------------------------
+   GET USERS
+   ----------------------------------------------------- */
+
+function getUsers(){
+
+    try{
+
+        const users =
+            JSON.parse(
+                localStorage.getItem(USERS_KEY)
+            );
+
+        return Array.isArray(users)
+            ? users
+            : [];
+
+    }catch(error){
+
+        return [];
+
+    }
+
+}
+
+
+/* -----------------------------------------------------
+   SAVE USERS
+   ----------------------------------------------------- */
+
+function saveUsers(users){
+
+    localStorage.setItem(
+        USERS_KEY,
+        JSON.stringify(users)
+    );
+
+}
+
+
+/* -----------------------------------------------------
+   GENERATE ACCOUNT ID
+   ----------------------------------------------------- */
+
+function generateAccountId(){
+
+    const users = getUsers();
+
+    let accountId;
+
+    do{
+
+        accountId =
+            "FN" +
+            Math.floor(
+                10000000 +
+                Math.random() * 90000000
+            );
+
+    }while(
+        users.some(
+            user =>
+            user.accountId === accountId
+        )
+    );
+
+    return accountId;
+
+}
+
+
+/* -----------------------------------------------------
+   CLEAN PHONE
+   ----------------------------------------------------- */
+
+function cleanPhone(value){
+
+    return value
+        .replace(/\s+/g,"")
+        .replace(/-/g,"");
+
+}
+
+
+/* -----------------------------------------------------
+   VALIDATE UGANDA PHONE
+   ----------------------------------------------------- */
+
+function isValidUgandaPhone(value){
+
+    const number =
+        cleanPhone(value);
+
+    return /^07\d{8}$/.test(number);
+
+}
+
+
+/* -----------------------------------------------------
+   EMAIL
+   ----------------------------------------------------- */
+
+function isValidEmail(value){
+
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        .test(value);
+
+}
+
+
+/* -----------------------------------------------------
+   PASSWORD
+   ----------------------------------------------------- */
+
+function getPasswordStrength(value){
+
+    if(value.length < 6){
+        return 0;
+    }
+
+    let score = 1;
+
+    if(/[A-Z]/.test(value)){
+        score++;
+    }
+
+    if(/[0-9]/.test(value)){
+        score++;
+    }
+
+    if(/[^A-Za-z0-9]/.test(value)){
+        score++;
+    }
+
+    return score;
+
+}
+
+
+/* -----------------------------------------------------
+   PASSWORD STRENGTH UI
+   ----------------------------------------------------- */
+
+const strengthBox =
+document.getElementById(
+    "passwordStrength"
+);
+
+const strengthBars =
+document.querySelectorAll(
+    ".strength-bar"
+);
+
+const strengthText =
+document.getElementById(
+    "strengthText"
+);
+
+function updatePasswordStrength(){
+
+    const value =
+        password.value;
+
+    if(!value){
+
+        strengthBox.classList.remove(
+            "show"
+        );
+
+        strengthBars.forEach(
+            bar =>
+            bar.style.background =
+                "rgba(255,255,255,.08)"
+        );
+
+        return;
+
+    }
+
+    strengthBox.classList.add("show");
+
+    const score =
+        getPasswordStrength(value);
+
+    const labels = [
+        "Password must contain at least 6 characters.",
+        "Weak password",
+        "Fair password",
+        "Good password",
+        "Strong password"
+    ];
+
+    strengthText.textContent =
+        labels[score];
+
+    strengthBars.forEach(
+        (bar,index)=>{
+
+            if(index < score){
+
+                if(score === 1){
+
+                    bar.style.background =
+                        "#FF5C7A";
+
+                }else if(score === 2){
+
+                    bar.style.background =
+                        "#F5A623";
+
+                }else{
+
+                    bar.style.background =
+                        "#49E6A1";
+
+                }
+
+            }else{
+
+                bar.style.background =
+                    "rgba(255,255,255,.08)";
+
+            }
+
+        }
+    );
+
+}
+
+
+/* -----------------------------------------------------
+   PASSWORD VISIBILITY
+   ----------------------------------------------------- */
+
+document
+.querySelectorAll(".toggle-password")
+.forEach(button=>{
+
+    button.addEventListener(
+        "click",
+        ()=>{
+
+            const target =
+                document.getElementById(
+                    button.dataset.target
+                );
+
+            if(
+                target.type ===
+                "password"
+            ){
+
+                target.type =
+                    "text";
+
+                button.textContent =
+                    "🙈";
+
+                button.setAttribute(
+                    "aria-label",
+                    "Hide password"
+                );
+
+            }else{
+
+                target.type =
+                    "password";
+
+                button.textContent =
+                    "👁";
+
+                button.setAttribute(
+                    "aria-label",
+                    "Show password"
+                );
+
+            }
+
+        }
+    );
+
+});
+
+
+/* -----------------------------------------------------
+   REFERRAL FROM URL
+   ----------------------------------------------------- */
+
+function loadReferralFromURL(){
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const ref =
+        params.get("ref");
+
+    if(ref){
+
+        referralCode.value =
+            ref.trim();
+
+        referralCode.dispatchEvent(
+            new Event("input")
+        );
+
+    }
+
+}
+
+loadReferralFromURL();
+
+
+/* -----------------------------------------------------
+   CHECK REFERRAL CODE
+   ----------------------------------------------------- */
+
+const referralStatus =
+document.getElementById(
+    "referralStatus"
+);
+
+const referralMessage =
+document.getElementById(
+    "referralMessage"
+);
+
+function checkReferralCode(){
+
+    const code =
+        referralCode.value
+        .trim();
+
+    if(!code){
+
+        referralStatus.className =
+            "referral-status";
+
+        referralStatus.textContent =
+            "";
+
+        referralMessage.className =
+            "field-message";
+
+        referralMessage.textContent =
+            "";
+
+        return true;
+
+    }
+
+    const users =
+        getUsers();
+
+    const exists =
+        users.some(
+            user =>
+            String(
+                user.accountId || ""
+            ).toUpperCase() ===
+            code.toUpperCase()
+            ||
+            String(
+                user.referralCode || ""
+            ).toUpperCase() ===
+            code.toUpperCase()
+        );
+
+    if(exists){
+
+        referralStatus.className =
+            "referral-status show valid";
+
+        referralStatus.textContent =
+            "✓";
+
+        referralMessage.className =
+            "field-message success show";
+
+        referralMessage.textContent =
+            "Referral code accepted.";
+
+        return true;
+
+    }
+
+    /*
+       Referral code is optional.
+       If a code is entered but doesn't
+       currently exist, registration is
+       blocked to protect the referral
+       structure from invalid uplines.
+    */
+
+    referralStatus.className =
+        "referral-status show invalid";
+
+    referralStatus.textContent =
+        "×";
+
+    referralMessage.className =
+        "field-message error show";
+
+    referralMessage.textContent =
+        "This referral code was not found.";
+
+    return false;
+
+}
+
+
+/* -----------------------------------------------------
+   INPUT VALIDATION HELPERS
+   ----------------------------------------------------- */
+
+function setMessage(
+    element,
+    message,
+    type="error"
+){
+
+    element.className =
+        "field-message " +
+        type +
+        " show";
+
+    element.textContent =
+        message;
+
+}
+
+
+function clearMessage(element){
+
+    element.className =
+        "field-message";
+
+    element.textContent =
+        "";
+
+}
+
+
+/* -----------------------------------------------------
+   LIVE PASSWORD
+   ----------------------------------------------------- */
+
+password.addEventListener(
+    "input",
+    ()=>{
+
+        updatePasswordStrength();
+
+        if(
+            password.value &&
+            password.value.length < 6
+        ){
+
+            setMessage(
+                document.getElementById(
+                    "passwordMessage"
+                ),
+                "Password must be at least 6 characters."
+            );
+
+            password.classList.add(
+                "invalid"
+            );
+
+        }else{
+
+            clearMessage(
+                document.getElementById(
+                    "passwordMessage"
+                )
+            );
+
+            password.classList.remove(
+                "invalid"
+            );
+
+            if(password.value){
+
+                password.classList.add(
+                    "valid"
+                );
+
+            }
+
+        }
+
+        if(confirmPassword.value){
+
+            validateConfirmPassword();
+
+        }
+
+    }
+);
+
+
+/* -----------------------------------------------------
+   CONFIRM PASSWORD
+   ----------------------------------------------------- */
+
+function validateConfirmPassword(){
+
+    const message =
+        document.getElementById(
+            "confirmMessage"
+        );
+
+    if(!confirmPassword.value){
+
+        clearMessage(message);
+
+        confirmPassword.classList.remove(
+            "valid",
+            "invalid"
+        );
+
+        return false;
+
+    }
+
+    if(
+        confirmPassword.value !==
+        password.value
+    ){
+
+        setMessage(
+            message,
+            "Passwords do not match."
+        );
+
+        confirmPassword.classList.add(
+            "invalid"
+        );
+
+        confirmPassword.classList.remove(
+            "valid"
+        );
+
+        return false;
+
+    }
+
+    if(
+        confirmPassword.value.length < 6
+    ){
+
+        setMessage(
+            message,
+            "Password must be at least 6 characters."
+        );
+
+        confirmPassword.classList.add(
+            "invalid"
+        );
+
+        return false;
+
+    }
+
+    clearMessage(message);
+
+    confirmPassword.classList.remove(
+        "invalid"
+    );
+
+    confirmPassword.classList.add(
+        "valid"
+    );
+
+    return true;
+
+}
+
+confirmPassword.addEventListener(
+    "input",
+    validateConfirmPassword
+);
+
+
+/* -----------------------------------------------------
+   PHONE VALIDATION
+   ----------------------------------------------------- */
+
+phone.addEventListener(
+    "input",
+    ()=>{
+
+        const value =
+            cleanPhone(
+                phone.value
+            );
+
+        phone.value =
+            value.slice(0,10);
+
+        const message =
+            document.getElementById(
+                "phoneMessage"
+            );
+
+        if(!value){
+
+            clearMessage(message);
+
+            phone.classList.remove(
+                "valid",
+                "invalid"
+            );
+
+            return;
+
+        }
+
+        if(!isValidUgandaPhone(value)){
+
+            setMessage(
+                message,
+                "Enter a valid Ugandan phone number starting with 07."
+            );
+
+            phone.classList.add(
+                "invalid"
+            );
+
+            phone.classList.remove(
+                "valid"
+            );
+
+        }else{
+
+            clearMessage(message);
+
+            phone.classList.remove(
+                "invalid"
+            );
+
+            phone.classList.add(
+                "valid"
+            );
+
+        }
+
+    }
+);
+
+
+/* -----------------------------------------------------
+   EMAIL VALIDATION
+   ----------------------------------------------------- */
+
+email.addEventListener(
+    "input",
+    ()=>{
+
+        const message =
+            document.getElementById(
+                "emailMessage"
+            );
+
+        if(!email.value){
+
+            clearMessage(message);
+
+            email.classList.remove(
+                "valid",
+                "invalid"
+            );
+
+            return;
+
+        }
+
+        if(!isValidEmail(email.value)){
+
+            setMessage(
+                message,
+                "Enter a valid email address."
+            );
+
+            email.classList.add(
+                "invalid"
+            );
+
+            email.classList.remove(
+                "valid"
+            );
+
+        }else{
+
+            clearMessage(message);
+
+            email.classList.remove(
+                "invalid"
+            );
+
+            email.classList.add(
+                "valid"
+            );
+
+        }
+
+    }
+);
+
+
+/* -----------------------------------------------------
+   REFERRAL INPUT
+   ----------------------------------------------------- */
+
+referralCode.addEventListener(
+    "input",
+    checkReferralCode
+);
+
+
+/* -----------------------------------------------------
+   NAME VALIDATION
+   ----------------------------------------------------- */
+
+fullName.addEventListener(
+    "input",
+    ()=>{
+
+        const message =
+            document.getElementById(
+                "nameMessage"
+            );
+
+        if(
+            fullName.value.trim().length < 2
+        ){
+
+            setMessage(
+                message,
+                "Enter your full name."
+            );
+
+            fullName.classList.add(
+                "invalid"
+            );
+
+            fullName.classList.remove(
+                "valid"
+            );
+
+        }else{
+
+            clearMessage(message);
+
+            fullName.classList.remove(
+                "invalid"
+            );
+
+            fullName.classList.add(
+                "valid"
+            );
+
+        }
+
+    }
+);
+
+
+/* -----------------------------------------------------
+   FORM STATUS
+   ----------------------------------------------------- */
+
+function showFormStatus(
+    message,
+    type
+){
+
+    formStatus.className =
+        "form-status " +
+        type +
+        " show";
+
+    formStatus.textContent =
+        message;
+
+}
+
+
+/* -----------------------------------------------------
+   SUBMIT
+   ----------------------------------------------------- */
+
+form.addEventListener(
+    "submit",
+    function(event){
+
+        event.preventDefault();
+
+
+        /* NAME */
+
+        const nameValue =
+            fullName.value.trim();
+
+        if(nameValue.length < 2){
+
+            showFormStatus(
+                "Please enter your full name.",
+                "error"
+            );
+
+            fullName.focus();
+
+            return;
+
+        }
+
+
+        /* PHONE */
+
+        const phoneValue =
+            cleanPhone(
+                phone.value
+            );
+
+        if(
+            !isValidUgandaPhone(
+                phoneValue
+            )
+        ){
+
+            showFormStatus(
+                "Please enter a valid Ugandan phone number.",
+                "error"
+            );
+
+            phone.focus();
+
+            return;
+
+        }
+
+
+        /* EMAIL */
+
+        const emailValue =
+            email.value
+            .trim()
+            .toLowerCase();
+
+        if(
+            !isValidEmail(
+                emailValue
+            )
+        ){
+
+            showFormStatus(
+                "Please enter a valid email address.",
+                "error"
+            );
+
+            email.focus();
+
+            return;
+
+        }
+
+
+        /* PASSWORD */
+
+        const passwordValue =
+            password.value;
+
+        if(
+            passwordValue.length < 6
+        ){
+
+            showFormStatus(
+                "Your password must contain at least 6 characters.",
+                "error"
+            );
+
+            password.focus();
+
+            return;
+
+        }
+
+
+        /* CONFIRM PASSWORD */
+
+        if(
+            passwordValue !==
+            confirmPassword.value
+        ){
+
+            showFormStatus(
+                "Password and Confirm Password must match.",
+                "error"
+            );
+
+            confirmPassword.focus();
+
+            return;
+
+        }
+
+
+        /* REFERRAL */
+
+        const referralValue =
+            referralCode.value.trim();
+
+        if(
+            referralValue &&
+            !checkReferralCode()
+        ){
+
+            showFormStatus(
+                "The referral code entered could not be verified.",
+                "error"
+            );
+
+            referralCode.focus();
+
+            return;
+
+        }
+
+
+        /* TERMS */
+
+        if(!terms.checked){
+
+            showFormStatus(
+                "Please agree to the Terms & Conditions and Privacy Policy.",
+                "error"
+            );
+
+            terms.focus();
+
+            return;
+
+        }
+
+
+        /* USERS */
+
+        const users =
+            getUsers();
+
+
+        /* DUPLICATE PHONE */
+
+        const phoneExists =
+            users.some(
+                user =>
+                cleanPhone(
+                    String(
+                        user.phone || ""
+                    )
+                ) === phoneValue
+            );
+
+        if(phoneExists){
+
+            showFormStatus(
+                "An account with this phone number already exists.",
+                "error"
+            );
+
+            phone.focus();
+
+            return;
+
+        }
+
+
+        /* DUPLICATE EMAIL */
+
+        const emailExists =
+            users.some(
+                user =>
+                String(
+                    user.email || ""
+                ).toLowerCase() ===
+                emailValue
+            );
+
+        if(emailExists){
+
+            showFormStatus(
+                "An account with this email address already exists.",
+                "error"
+            );
+
+            email.focus();
+
+            return;
+
+        }
+
+
+        /* ACCOUNT ID */
+
+        const accountId =
+            generateAccountId();
+
+
+        /* USER REFERRAL CODE */
+
+        const userReferralCode =
+            accountId;
+
+
+        /* CREATE USER */
+
+        const newUser = {
+
+            accountId:
+                accountId,
+
+            fullName:
+                nameValue,
+
+            name:
+                nameValue,
+
+            phone:
+                phoneValue,
+
+            email:
+                emailValue,
+
+            password:
+                passwordValue,
+
+            referralCode:
+                userReferralCode,
+
+            referredBy:
+                referralValue || null,
+
+            referralLevel:
+                referralValue ? 1 : 0,
+
+            referralCommission:{
+
+                level1:15,
+
+                level2:3,
+
+                level3:2
+
+            },
+
+            walletBalance:
+                0,
+
+            cumulativeIncome:
+                0,
+
+            totalDeposit:
+                0,
+
+            totalWithdrawal:
+                0,
+
+            registrationBonus:
+                0,
+
+            loginBonus:
+                0,
+
+            dailyLoginBonus:
+                0,
+
+            registrationDate:
+                new Date().toISOString(),
+
+            status:
+                "active"
+
+        };
+
+
+        /* SAVE */
+
+        users.push(newUser);
+
+        saveUsers(users);
+
+
+        /* CURRENT USER */
+
+        localStorage.setItem(
+            CURRENT_USER_KEY,
+            JSON.stringify({
+                accountId:
+                    newUser.accountId,
+
+                fullName:
+                    newUser.fullName,
+
+                phone:
+                    newUser.phone,
+
+                email:
+                    newUser.email
+            })
+        );
+
+
+        /* SUCCESS */
+
+        createButton.disabled =
+            true;
+
+        createButton.textContent =
+            "ACCOUNT CREATED ✓";
+
+        showFormStatus(
+            "Your FINORA account has been created successfully. Redirecting to login...",
+            "success"
+        );
+
+
+        /* REDIRECT */
+
+        setTimeout(
+            function(){
+
+                window.location.href =
+                    "login.html";
+
+            },
+            1400
+        );
+
+    }
+);
+
+</script>
+
+</body>
+</html>
