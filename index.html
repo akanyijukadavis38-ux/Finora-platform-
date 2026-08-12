@@ -12,7 +12,7 @@
 
     <meta
         name="theme-color"
-        content="#07070d"
+        content="#05050a"
     >
 
     <meta
@@ -27,21 +27,21 @@
 
         /* =====================================================
            FINORA
-           INDEX / WELCOME PAGE
+           WELCOME / INDEX PAGE
            ===================================================== */
 
 
         :root {
 
-            /* MAIN BRAND COLORS */
+            /* BRAND */
 
             --pink: #e83cff;
             --pink-light: #ff72ff;
             --pink-dark: #9c18b8;
 
-            --orange: #ff9d21;
-            --orange-light: #ffc15c;
-            --orange-dark: #c96808;
+            --orange: #f5a623;
+            --orange-light: #ffd66b;
+            --orange-dark: #c87908;
 
 
             /* BACKGROUND */
@@ -66,7 +66,7 @@
                 rgba(232, 60, 255, 0.25);
 
             --orange-glow:
-                rgba(255, 157, 33, 0.20);
+                rgba(245, 166, 35, 0.20);
 
 
             --border:
@@ -118,13 +118,13 @@
 
                 radial-gradient(
                     circle at 10% 10%,
-                    rgba(232,60,255,0.12),
+                    rgba(232, 60, 255, 0.12),
                     transparent 30%
                 ),
 
                 radial-gradient(
                     circle at 90% 20%,
-                    rgba(255,157,33,0.08),
+                    rgba(245, 166, 35, 0.08),
                     transparent 28%
                 ),
 
@@ -252,7 +252,7 @@
             z-index: 1000;
 
             background:
-                rgba(5,5,10,0.88);
+                rgba(5, 5, 10, 0.90);
 
             backdrop-filter:
                 blur(18px);
@@ -262,14 +262,14 @@
 
             border-bottom:
                 1px solid
-                rgba(255,255,255,0.07);
+                rgba(255, 255, 255, 0.07);
 
         }
 
 
         .navbar {
 
-            min-height: 105px;
+            min-height: 112px;
 
             display: flex;
 
@@ -293,50 +293,67 @@
 
             align-items: center;
 
-            gap: 15px;
+            gap: 13px;
 
         }
 
 
         /*
-            CODED FINORA F MARK
+            FINORA F MARK
 
-            No external logo image required.
+            The F is drawn directly with SVG.
+            No external image is required.
         */
 
         .finora-mark {
 
-            width: 62px;
+            width: 54px;
 
-            height: 70px;
+            height: 62px;
 
             flex-shrink: 0;
 
             filter:
                 drop-shadow(
                     0 8px 18px
-                    rgba(255,157,33,0.18)
+                    rgba(245, 166, 35, 0.18)
                 );
+
+        }
+
+
+        .brand-text {
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
 
         }
 
 
         .brand-name {
 
-            font-size: 36px;
+            font-size: 34px;
 
             line-height: 1;
 
-            font-weight: 800;
+            font-weight: 700;
 
-            letter-spacing: 7px;
+            letter-spacing: 4px;
 
             white-space: nowrap;
 
         }
 
 
-        /* EXACT 3 + 3 COLOR BALANCE */
+        /*
+            EXACT 3 + 3 BALANCE
+
+            FIN = PINK
+            ORA = ORANGE
+        */
 
         .brand-name .fin {
 
@@ -344,7 +361,7 @@
 
             text-shadow:
                 0 0 20px
-                rgba(232,60,255,0.18);
+                rgba(232, 60, 255, 0.18);
 
         }
 
@@ -355,29 +372,29 @@
 
             text-shadow:
                 0 0 20px
-                rgba(255,157,33,0.15);
+                rgba(245, 166, 35, 0.15);
 
         }
 
 
         .brand-tagline {
 
-            margin-top: 7px;
+            margin-top: 6px;
 
-            font-size: 10px;
+            font-size: 9px;
 
             font-weight: 600;
 
-            letter-spacing: 4px;
+            letter-spacing: 3px;
 
-            color: #c9c1cd;
+            color: var(--orange);
 
         }
 
 
 
         /* =====================================================
-           NAVIGATION
+           DESKTOP NAVIGATION
            ===================================================== */
 
         .desktop-nav {
@@ -427,7 +444,7 @@
 
             border:
                 1px solid
-                rgba(255,255,255,0.13);
+                rgba(255, 255, 255, 0.13);
 
             border-radius: 11px;
 
@@ -466,11 +483,11 @@
 
             border:
                 1px solid
-                rgba(255,255,255,0.10);
+                rgba(255, 255, 255, 0.10);
 
             box-shadow:
                 0 10px 28px
-                rgba(232,60,255,0.20);
+                rgba(232, 60, 255, 0.20);
 
             transition: 0.25s;
 
@@ -484,7 +501,7 @@
 
             box-shadow:
                 0 14px 35px
-                rgba(232,60,255,0.35);
+                rgba(232, 60, 255, 0.35);
 
         }
 
@@ -499,12 +516,12 @@
 
             border:
                 1px solid
-                rgba(255,255,255,0.12);
+                rgba(255, 255, 255, 0.12);
 
             border-radius: 11px;
 
             background:
-                rgba(255,255,255,0.04);
+                rgba(255, 255, 255, 0.04);
 
             color: white;
 
@@ -569,12 +586,12 @@
 
             border:
                 1px solid
-                rgba(232,60,255,0.30);
+                rgba(232, 60, 255, 0.30);
 
             border-radius: 100px;
 
             background:
-                rgba(232,60,255,0.06);
+                rgba(232, 60, 255, 0.06);
 
             color:
                 var(--pink-light);
@@ -708,7 +725,7 @@
 
             box-shadow:
                 0 12px 30px
-                rgba(255,157,33,0.18);
+                rgba(245, 166, 35, 0.18);
 
             transition: 0.25s;
 
@@ -722,7 +739,7 @@
 
             box-shadow:
                 0 16px 38px
-                rgba(255,157,33,0.28);
+                rgba(245, 166, 35, 0.28);
 
         }
 
@@ -744,10 +761,10 @@
 
             border:
                 1px solid
-                rgba(232,60,255,0.30);
+                rgba(232, 60, 255, 0.30);
 
             background:
-                rgba(232,60,255,0.04);
+                rgba(232, 60, 255, 0.04);
 
             color: white;
 
@@ -759,7 +776,7 @@
         .secondary-btn:hover {
 
             background:
-                rgba(232,60,255,0.10);
+                rgba(232, 60, 255, 0.10);
 
             border-color:
                 var(--pink);
@@ -822,11 +839,11 @@
 
             border:
                 1px solid
-                rgba(232,60,255,0.22);
+                rgba(232, 60, 255, 0.22);
 
             box-shadow:
                 0 0 90px
-                rgba(232,60,255,0.12);
+                rgba(232, 60, 255, 0.12);
 
             animation:
                 float 6s ease-in-out infinite;
@@ -846,7 +863,7 @@
 
             border:
                 1px solid
-                rgba(255,157,33,0.20);
+                rgba(245, 166, 35, 0.20);
 
         }
 
@@ -868,21 +885,21 @@
 
                 linear-gradient(
                     145deg,
-                    rgba(32,17,45,0.96),
-                    rgba(9,7,14,0.98)
+                    rgba(32, 17, 45, 0.96),
+                    rgba(9, 7, 14, 0.98)
                 );
 
             border:
                 1px solid
-                rgba(232,60,255,0.25);
+                rgba(232, 60, 255, 0.25);
 
             box-shadow:
 
                 0 35px 80px
-                rgba(0,0,0,0.50),
+                rgba(0, 0, 0, 0.50),
 
                 inset 0 1px 0
-                rgba(255,255,255,0.05);
+                rgba(255, 255, 255, 0.05);
 
             overflow: hidden;
 
@@ -953,11 +970,11 @@
             justify-content: center;
 
             background:
-                rgba(255,157,33,0.08);
+                rgba(245, 166, 35, 0.08);
 
             border:
                 1px solid
-                rgba(255,157,33,0.22);
+                rgba(245, 166, 35, 0.22);
 
             color:
                 var(--orange);
@@ -974,6 +991,8 @@
             font-size: 29px;
 
             font-weight: 700;
+
+            line-height: 1.2;
 
         }
 
@@ -1026,7 +1045,7 @@
             filter:
                 drop-shadow(
                     0 0 6px
-                    rgba(255,157,33,0.40)
+                    rgba(245, 166, 35, 0.40)
                 );
 
         }
@@ -1101,14 +1120,14 @@
 
             border-top:
                 1px solid
-                rgba(255,255,255,0.06);
+                rgba(255, 255, 255, 0.06);
 
             border-bottom:
                 1px solid
-                rgba(255,255,255,0.06);
+                rgba(255, 255, 255, 0.06);
 
             background:
-                rgba(255,255,255,0.018);
+                rgba(255, 255, 255, 0.018);
 
             padding: 25px 0;
 
@@ -1262,8 +1281,8 @@
 
                 linear-gradient(
                     145deg,
-                    rgba(25,13,35,0.90),
-                    rgba(10,8,15,0.95)
+                    rgba(25, 13, 35, 0.90),
+                    rgba(10, 8, 15, 0.95)
                 );
 
             border:
@@ -1281,7 +1300,7 @@
                 translateY(-7px);
 
             border-color:
-                rgba(232,60,255,0.55);
+                rgba(232, 60, 255, 0.55);
 
         }
 
@@ -1301,11 +1320,11 @@
             border-radius: 16px;
 
             background:
-                rgba(232,60,255,0.08);
+                rgba(232, 60, 255, 0.08);
 
             border:
                 1px solid
-                rgba(232,60,255,0.20);
+                rgba(232, 60, 255, 0.20);
 
             color:
                 var(--orange);
@@ -1363,11 +1382,11 @@
                 var(--radius);
 
             background:
-                rgba(18,10,25,0.75);
+                rgba(18, 10, 25, 0.75);
 
             border:
                 1px solid
-                rgba(255,255,255,0.07);
+                rgba(255, 255, 255, 0.07);
 
         }
 
@@ -1449,7 +1468,7 @@
 
                 radial-gradient(
                     circle at 80% 50%,
-                    rgba(232,60,255,0.20),
+                    rgba(232, 60, 255, 0.20),
                     transparent 38%
                 ),
 
@@ -1461,7 +1480,7 @@
 
             border:
                 1px solid
-                rgba(255,157,33,0.25);
+                rgba(245, 166, 35, 0.25);
 
         }
 
@@ -1476,7 +1495,7 @@
             border-radius: 9px;
 
             background:
-                rgba(255,157,33,0.08);
+                rgba(245, 166, 35, 0.08);
 
             color:
                 var(--orange);
@@ -1574,7 +1593,7 @@
 
             box-shadow:
                 0 12px 25px
-                rgba(232,60,255,0.16);
+                rgba(232, 60, 255, 0.16);
 
         }
 
@@ -1654,15 +1673,15 @@
 
                 radial-gradient(
                     circle at center,
-                    rgba(232,60,255,0.16),
+                    rgba(232, 60, 255, 0.16),
                     transparent 60%
                 ),
 
-                rgba(18,9,25,0.85);
+                rgba(18, 9, 25, 0.85);
 
             border:
                 1px solid
-                rgba(232,60,255,0.22);
+                rgba(232, 60, 255, 0.22);
 
         }
 
@@ -1724,7 +1743,7 @@
 
             border-top:
                 1px solid
-                rgba(255,255,255,0.06);
+                rgba(255, 255, 255, 0.06);
 
             padding:
                 35px 0;
@@ -1822,7 +1841,7 @@
 
             border-bottom:
                 1px solid
-                rgba(255,255,255,0.06);
+                rgba(255, 255, 255, 0.06);
 
             color:
                 #c6becd;
@@ -1978,25 +1997,32 @@
 
             .navbar {
 
-                min-height: 90px;
+                min-height: 92px;
 
             }
 
 
             .finora-mark {
 
-                width: 47px;
+                width: 43px;
 
-                height: 55px;
+                height: 51px;
+
+            }
+
+
+            .brand {
+
+                gap: 10px;
 
             }
 
 
             .brand-name {
 
-                font-size: 25px;
+                font-size: 24px;
 
-                letter-spacing: 4px;
+                letter-spacing: 2.5px;
 
             }
 
@@ -2005,7 +2031,7 @@
 
                 font-size: 7px;
 
-                letter-spacing: 2px;
+                letter-spacing: 1.8px;
 
             }
 
@@ -2175,11 +2201,13 @@
                 >
 
 
-                    <!-- CODED FINORA F -->
+                    <!-- =====================================
+                         FINORA F LOGO
+                         ===================================== -->
 
                     <svg
                         class="finora-mark"
-                        viewBox="0 0 100 100"
+                        viewBox="0 0 100 110"
                         xmlns="http://www.w3.org/2000/svg"
                         aria-label="FINORA logo"
                     >
@@ -2187,7 +2215,7 @@
                         <defs>
 
                             <linearGradient
-                                id="fGradient"
+                                id="finoraGold"
                                 x1="0"
                                 y1="0"
                                 x2="1"
@@ -2196,17 +2224,17 @@
 
                                 <stop
                                     offset="0%"
-                                    stop-color="#ffc45c"
+                                    stop-color="#FFD66B"
                                 />
 
                                 <stop
                                     offset="45%"
-                                    stop-color="#ff9d21"
+                                    stop-color="#F5B632"
                                 />
 
                                 <stop
                                     offset="100%"
-                                    stop-color="#c96808"
+                                    stop-color="#C87908"
                                 />
 
                             </linearGradient>
@@ -2214,43 +2242,72 @@
                         </defs>
 
 
-                        <!--
-                            Stylized F mark.
-                            This is vector code, not an image.
-                        -->
+                        <!-- TOP RIBBON -->
 
                         <path
                             d="
-                            M18 8
-                            H91
-                            L78 25
-                            H48
-                            L42 34
-                            H73
-                            L61 51
-                            H36
-                            L20 92
-                            H4
-                            L18 8
-                            Z
+                                M18 8
+                                C25 6 34 5 43 5
+                                H82
+                                C87 5 89 8 86 12
+                                L79 23
+                                H43
+                                C35 23 28 25 21 29
+                                Z
                             "
-                            fill="url(#fGradient)"
+                            fill="url(#finoraGold)"
+                        />
+
+
+                        <!-- MIDDLE RIBBON -->
+
+                        <path
+                            d="
+                                M20 32
+                                C27 29 35 27 43 27
+                                H72
+                                C76 27 78 30 75 34
+                                L68 44
+                                H44
+                                C36 44 29 46 22 50
+                                Z
+                            "
+                            fill="url(#finoraGold)"
+                        />
+
+
+                        <!-- LOWER MAIN F STEM -->
+
+                        <path
+                            d="
+                                M21 46
+                                C28 43 36 41 44 41
+                                H66
+                                L56 56
+                                H42
+                                C37 56 33 58 30 61
+                                L17 99
+                                H3
+                                L18 55
+                                C19 52 20 49 21 46
+                                Z
+                            "
+                            fill="url(#finoraGold)"
                         />
 
                     </svg>
 
 
-                    <div>
+
+                    <!-- =====================================
+                         FINORA WORDMARK
+                         ===================================== -->
+
+                    <div class="brand-text">
 
                         <div class="brand-name">
 
-                            <span class="fin">
-                                FIN
-                            </span>
-
-                            <span class="ora">
-                                ORA
-                            </span>
+                            <span class="fin">FIN</span><span class="ora">ORA</span>
 
                         </div>
 
@@ -2267,7 +2324,9 @@
 
 
 
-                <!-- DESKTOP NAV -->
+                <!-- =====================================
+                     DESKTOP NAVIGATION
+                     ===================================== -->
 
                 <div class="desktop-nav">
 
@@ -2291,7 +2350,9 @@
 
 
 
-                <!-- ACTIONS -->
+                <!-- =====================================
+                     NAVIGATION ACTIONS
+                     ===================================== -->
 
                 <div class="nav-actions">
 
@@ -2325,7 +2386,9 @@
 
 
 
-            <!-- MOBILE MENU -->
+            <!-- =====================================
+                 MOBILE MENU
+                 ===================================== -->
 
             <div
                 class="mobile-menu"
@@ -2371,9 +2434,9 @@
     <main>
 
 
-        <!-- =================================================
-             HERO
-             ================================================= -->
+        <!-- ================================================
+             HERO / WELCOME
+             ================================================ -->
 
         <section
             class="hero"
@@ -2384,6 +2447,8 @@
 
                 <div class="hero-grid">
 
+
+                    <!-- HERO TEXT -->
 
                     <div class="hero-content">
 
@@ -2424,10 +2489,10 @@
 
                         <p class="hero-description">
 
-                            Welcome to FINORA — a modern investment
-                            platform built to give you a clear,
-                            simple and engaging way to begin your
-                            investment journey.
+                            Welcome to FINORA — a modern
+                            investment platform designed to
+                            give you a clear, simple and engaging
+                            way to begin your investment journey.
 
                         </p>
 
@@ -2472,9 +2537,9 @@
 
 
 
-                    <!-- =================================================
-                         VISUAL
-                         ================================================= -->
+                    <!-- =====================================
+                         HERO VISUAL
+                         ===================================== -->
 
                     <div class="hero-visual">
 
@@ -2532,12 +2597,12 @@
                                         <path
                                             class="chart-line"
                                             d="
-                                            M0 125
-                                            C40 118 55 105 90 112
-                                            C125 120 135 85 165 92
-                                            C195 100 205 67 235 72
-                                            C265 80 280 42 310 52
-                                            C345 63 355 25 400 10
+                                                M0 125
+                                                C40 118 55 105 90 112
+                                                C125 120 135 85 165 92
+                                                C195 100 205 67 235 72
+                                                C265 80 280 42 310 52
+                                                C345 63 355 25 400 10
                                             "
                                         />
 
@@ -2601,31 +2666,46 @@
                 <div class="brand-strip-content">
 
                     <span>
+
                         Built for
+
                         <strong class="strip-highlight">
                             simplicity
                         </strong>
+
                     </span>
 
+
                     <span>
+
                         Designed for
+
                         <strong class="strip-orange">
                             growth
                         </strong>
+
                     </span>
 
+
                     <span>
+
                         Made for your
+
                         <strong class="strip-highlight">
                             journey
                         </strong>
+
                     </span>
 
+
                     <span>
+
                         One platform.
+
                         <strong class="strip-orange">
                             One experience.
                         </strong>
+
                     </span>
 
                 </div>
@@ -2648,13 +2728,16 @@
                 <div class="section-heading">
 
                     <div class="section-kicker">
+
                         WHY FINORA
+
                     </div>
 
 
                     <h2>
 
                         Everything begins with a
+
                         <span>
                             better experience.
                         </span>
@@ -2759,13 +2842,16 @@
                 <div class="section-heading">
 
                     <div class="section-kicker">
+
                         HOW IT WORKS
+
                     </div>
 
 
                     <h2>
 
                         Start your journey in
+
                         <span>
                             three simple steps.
                         </span>
@@ -2856,7 +2942,7 @@
 
 
         <!-- =================================================
-             PLAN SECTION
+             PLANS
              ================================================= -->
 
         <section id="plans">
@@ -2870,13 +2956,16 @@
                     <div>
 
                         <div class="plan-badge">
+
                             FINORA PLANS
+
                         </div>
 
 
                         <h2>
 
                             Give your money a
+
                             <span>
                                 direction.
                             </span>
@@ -2927,7 +3016,9 @@
 
 
                         <div class="growth-symbol">
+
                             ↗
+
                         </div>
 
                     </div>
@@ -2941,7 +3032,7 @@
 
 
         <!-- =================================================
-             FINAL CTA
+             FINAL CALL TO ACTION
              ================================================= -->
 
         <section class="cta">
@@ -2962,9 +3053,11 @@
                     <h2>
 
                         Your journey toward
+
                         <span>
                             growth
                         </span>
+
                         starts here.
 
                     </h2>
@@ -3030,6 +3123,7 @@
                 <div class="footer-copy">
 
                     © 2026
+
                     <strong>
                         FINORA
                     </strong>
