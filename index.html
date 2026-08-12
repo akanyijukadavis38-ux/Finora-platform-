@@ -3,2164 +3,2032 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="theme-color"
-        content="#05050a"
-    >
+<meta name="theme-color" content="#05050A">
 
-    <meta
-        name="description"
-        content="FINORA — Invest • Grow • Earn"
-    >
+<meta name="description" content="FINORA — Invest • Grow • Earn">
 
-    <title>FINORA | Invest • Grow • Earn</title>
+<title>FINORA | Invest • Grow • Earn</title>
 
 
-    <style>
+<style>
 
-        /* =====================================================
-           FINORA
-           WELCOME / INDEX PAGE
-           ===================================================== */
+/* =========================================================
+   FINORA — INDEX / WELCOME PAGE
+   ========================================================= */
 
+:root{
 
-        :root {
+    --pink:#E83CFF;
+    --pink-light:#FF72FF;
+    --pink-dark:#A91BC5;
 
-            /* BRAND */
+    --orange:#F5A623;
+    --orange-light:#FFD66B;
+    --orange-dark:#C87908;
 
-            --pink: #e83cff;
-            --pink-light: #ff72ff;
-            --pink-dark: #9c18b8;
+    --black:#05050A;
+    --dark:#09060F;
+    --card:#120B19;
 
-            --orange: #f5a623;
-            --orange-light: #ffd66b;
-            --orange-dark: #c87908;
+    --white:#FFFFFF;
+    --muted:#AAA0B1;
 
+    --border:rgba(232,60,255,.20);
 
-            /* BACKGROUND */
+    --max-width:1200px;
 
-            --black: #05050a;
-            --dark: #08070e;
-            --dark-purple: #100817;
+}
 
-            --card: #120c1b;
 
+*{
 
-            /* TEXT */
+    margin:0;
 
-            --white: #ffffff;
-            --text: #f5eff8;
-            --muted: #aaa1af;
+    padding:0;
 
+    box-sizing:border-box;
 
-            /* EFFECTS */
+}
 
-            --pink-glow:
-                rgba(232, 60, 255, 0.25);
 
-            --orange-glow:
-                rgba(245, 166, 35, 0.20);
+html{
 
+    scroll-behavior:smooth;
 
-            --border:
-                rgba(232, 60, 255, 0.20);
+}
 
 
-            --radius: 22px;
+body{
 
-            --max-width: 1200px;
+    min-height:100vh;
 
-        }
+    overflow-x:hidden;
 
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
 
+    color:var(--white);
 
-        /* =====================================================
-           RESET
-           ===================================================== */
+    background:
 
-        * {
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(232,60,255,.13),
+            transparent 30%
+        ),
 
-            margin: 0;
+        radial-gradient(
+            circle at 90% 25%,
+            rgba(245,166,35,.08),
+            transparent 30%
+        ),
 
-            padding: 0;
+        linear-gradient(
+            135deg,
+            #05050A,
+            #0A0610,
+            #05050A
+        );
 
-            box-sizing: border-box;
+}
 
-        }
 
+a{
 
-        html {
+    text-decoration:none;
 
-            scroll-behavior: smooth;
+    color:inherit;
 
-        }
+}
 
 
-        body {
+button{
 
-            font-family:
-                Inter,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                Roboto,
-                Arial,
-                sans-serif;
+    font:inherit;
 
-            background:
+}
 
-                radial-gradient(
-                    circle at 10% 10%,
-                    rgba(232, 60, 255, 0.12),
-                    transparent 30%
-                ),
 
-                radial-gradient(
-                    circle at 90% 20%,
-                    rgba(245, 166, 35, 0.08),
-                    transparent 28%
-                ),
+.container{
 
-                linear-gradient(
-                    135deg,
-                    #05050a,
-                    #090610,
-                    #05050a
-                );
+    width:min(
+        calc(100% - 40px),
+        var(--max-width)
+    );
 
-            color: var(--white);
+    margin:auto;
 
-            min-height: 100vh;
+}
 
-            overflow-x: hidden;
 
-        }
+/* =========================================================
+   BACKGROUND
+   ========================================================= */
 
+.background{
 
-        a {
+    position:fixed;
 
-            text-decoration: none;
+    inset:0;
 
-            color: inherit;
+    z-index:-1;
 
-        }
+    pointer-events:none;
 
+    overflow:hidden;
 
-        button {
+}
 
-            font: inherit;
 
-        }
+.background-light{
 
+    position:absolute;
 
-        .container {
+    border-radius:50%;
 
-            width:
-                min(
-                    calc(100% - 40px),
-                    var(--max-width)
-                );
+    filter:blur(100px);
 
-            margin: auto;
+}
 
-        }
 
+.background-pink{
 
+    width:350px;
 
-        /* =====================================================
-           BACKGROUND LIGHT
-           ===================================================== */
+    height:350px;
 
-        .background {
+    left:-170px;
 
-            position: fixed;
+    top:100px;
 
-            inset: 0;
+    background:var(--pink);
 
-            pointer-events: none;
+    opacity:.10;
 
-            overflow: hidden;
+}
 
-            z-index: -1;
 
-        }
+.background-orange{
 
+    width:300px;
 
-        .light {
+    height:300px;
 
-            position: absolute;
+    right:-140px;
 
-            border-radius: 50%;
+    top:450px;
 
-            filter: blur(100px);
+    background:var(--orange);
 
-        }
+    opacity:.08;
 
+}
 
-        .light-pink {
 
-            width: 330px;
+/* =========================================================
+   HEADER
+   ========================================================= */
 
-            height: 330px;
+header{
 
-            background: var(--pink);
+    position:sticky;
 
-            opacity: 0.12;
+    top:0;
 
-            left: -150px;
+    z-index:1000;
 
-            top: 80px;
+    background:rgba(5,5,10,.92);
 
-        }
+    backdrop-filter:blur(18px);
 
+    -webkit-backdrop-filter:blur(18px);
 
-        .light-orange {
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.07);
 
-            width: 280px;
+}
 
-            height: 280px;
 
-            background: var(--orange);
+.navbar{
 
-            opacity: 0.08;
+    min-height:112px;
 
-            right: -130px;
+    display:flex;
 
-            top: 420px;
+    align-items:center;
 
-        }
+    justify-content:space-between;
 
+    gap:30px;
 
+}
 
-        /* =====================================================
-           HEADER
-           ===================================================== */
 
-        header {
+/* =========================================================
+   FINORA BRAND
+   ========================================================= */
 
-            position: sticky;
+.brand{
 
-            top: 0;
+    display:flex;
 
-            z-index: 1000;
+    align-items:center;
 
-            background:
-                rgba(5, 5, 10, 0.90);
+    gap:13px;
 
-            backdrop-filter:
-                blur(18px);
+}
 
-            -webkit-backdrop-filter:
-                blur(18px);
 
-            border-bottom:
-                1px solid
-                rgba(255, 255, 255, 0.07);
+/*
+   PREMIUM FINORA F EMBLEM
 
-        }
+   This is drawn directly in SVG so no image file
+   is required for the logo.
+*/
 
+.finora-mark{
 
-        .navbar {
+    width:56px;
 
-            min-height: 112px;
+    height:66px;
 
-            display: flex;
+    flex-shrink:0;
 
-            align-items: center;
+    overflow:visible;
 
-            justify-content: space-between;
+    filter:
+        drop-shadow(
+            0 8px 18px
+            rgba(245,166,35,.20)
+        );
 
-            gap: 30px;
+}
 
-        }
 
+/* Main premium ribbon */
 
+.finora-ribbon{
 
-        /* =====================================================
-           FINORA BRAND
-           ===================================================== */
+    fill:url(#finoraGold);
 
-        .brand {
+}
 
-            display: flex;
 
-            align-items: center;
+/* Small highlight */
 
-            gap: 13px;
+.finora-highlight{
 
-        }
+    fill:url(#finoraHighlight);
 
+    opacity:.90;
 
-        /*
-            FINORA F MARK
+}
 
-            The F is drawn directly with SVG.
-            No external image is required.
-        */
 
-        .finora-mark {
+/* Wordmark */
 
-            width: 54px;
+.brand-text{
 
-            height: 62px;
+    display:flex;
 
-            flex-shrink: 0;
+    flex-direction:column;
 
-            filter:
-                drop-shadow(
-                    0 8px 18px
-                    rgba(245, 166, 35, 0.18)
-                );
+    justify-content:center;
 
-        }
+}
 
 
-        .brand-text {
+.brand-name{
 
-            display: flex;
+    font-size:34px;
 
-            flex-direction: column;
+    line-height:1;
 
-            justify-content: center;
+    font-weight:700;
 
-        }
+    letter-spacing:3px;
 
+    white-space:nowrap;
 
-        .brand-name {
+}
 
-            font-size: 34px;
 
-            line-height: 1;
+.brand-name .fin{
 
-            font-weight: 700;
+    color:var(--pink);
 
-            letter-spacing: 4px;
+    text-shadow:
+        0 0 20px
+        rgba(232,60,255,.15);
 
-            white-space: nowrap;
+}
 
-        }
 
+.brand-name .ora{
 
-        /*
-            EXACT 3 + 3 BALANCE
+    color:var(--orange);
 
-            FIN = PINK
-            ORA = ORANGE
-        */
+    text-shadow:
+        0 0 20px
+        rgba(245,166,35,.13);
 
-        .brand-name .fin {
+}
 
-            color: var(--pink);
 
-            text-shadow:
-                0 0 20px
-                rgba(232, 60, 255, 0.18);
+.brand-tagline{
 
-        }
+    margin-top:6px;
 
+    font-size:9px;
 
-        .brand-name .ora {
+    font-weight:600;
 
-            color: var(--orange);
+    letter-spacing:2.8px;
 
-            text-shadow:
-                0 0 20px
-                rgba(245, 166, 35, 0.15);
+    color:var(--orange);
 
-        }
+}
 
 
-        .brand-tagline {
+/* =========================================================
+   DESKTOP NAVIGATION
+   ========================================================= */
 
-            margin-top: 6px;
+.desktop-nav{
 
-            font-size: 9px;
+    display:flex;
 
-            font-weight: 600;
+    align-items:center;
 
-            letter-spacing: 3px;
+    gap:30px;
 
-            color: var(--orange);
+}
 
-        }
 
+.desktop-nav a{
 
+    color:#BDB3C3;
 
-        /* =====================================================
-           DESKTOP NAVIGATION
-           ===================================================== */
+    font-size:14px;
 
-        .desktop-nav {
+    transition:.25s ease;
 
-            display: flex;
+}
 
-            align-items: center;
 
-            gap: 32px;
+.desktop-nav a:hover{
 
-        }
+    color:var(--pink-light);
 
+}
 
-        .desktop-nav a {
 
-            color: #bdb4c4;
+.nav-actions{
 
-            font-size: 14px;
+    display:flex;
 
-            transition: 0.25s ease;
+    align-items:center;
 
-        }
+    gap:11px;
 
+}
 
-        .desktop-nav a:hover {
 
-            color: var(--pink-light);
+.login-btn{
 
-        }
+    padding:12px 19px;
 
+    border:
+        1px solid
+        rgba(255,255,255,.13);
 
-        .nav-actions {
+    border-radius:11px;
 
-            display: flex;
+    color:white;
 
-            align-items: center;
+    transition:.25s ease;
 
-            gap: 12px;
+}
 
-        }
 
+.login-btn:hover{
 
-        .login-btn {
+    color:var(--pink-light);
 
-            padding:
-                12px 20px;
+    border-color:var(--pink);
 
-            border:
-                1px solid
-                rgba(255, 255, 255, 0.13);
+}
 
-            border-radius: 11px;
 
-            color: white;
+.register-btn{
 
-            transition: 0.25s;
+    padding:13px 20px;
 
-        }
+    border-radius:11px;
 
+    background:
+        linear-gradient(
+            135deg,
+            var(--pink),
+            var(--pink-dark)
+        );
 
-        .login-btn:hover {
+    box-shadow:
+        0 10px 28px
+        rgba(232,60,255,.20);
 
-            border-color:
-                var(--pink);
+    transition:.25s ease;
 
-            color:
-                var(--pink-light);
+}
 
-        }
 
+.register-btn:hover{
 
-        .register-btn {
+    transform:translateY(-2px);
 
-            padding:
-                13px 21px;
+    box-shadow:
+        0 14px 35px
+        rgba(232,60,255,.32);
 
-            border-radius: 11px;
+}
 
-            background:
 
-                linear-gradient(
-                    135deg,
-                    var(--pink),
-                    var(--pink-dark)
-                );
+.menu-btn{
 
-            border:
-                1px solid
-                rgba(255, 255, 255, 0.10);
+    display:none;
 
-            box-shadow:
-                0 10px 28px
-                rgba(232, 60, 255, 0.20);
+    width:44px;
 
-            transition: 0.25s;
+    height:44px;
 
-        }
+    border:
+        1px solid
+        rgba(255,255,255,.12);
 
+    border-radius:11px;
 
-        .register-btn:hover {
+    background:
+        rgba(255,255,255,.04);
 
-            transform:
-                translateY(-2px);
+    color:white;
 
-            box-shadow:
-                0 14px 35px
-                rgba(232, 60, 255, 0.35);
+    cursor:pointer;
 
-        }
+}
 
 
-        .menu-btn {
+/* =========================================================
+   HERO
+   ========================================================= */
 
-            display: none;
+.hero{
 
-            width: 44px;
+    min-height:680px;
 
-            height: 44px;
+    display:flex;
 
-            border:
-                1px solid
-                rgba(255, 255, 255, 0.12);
+    align-items:center;
 
-            border-radius: 11px;
+    padding:100px 0 85px;
 
-            background:
-                rgba(255, 255, 255, 0.04);
+}
 
-            color: white;
 
-            cursor: pointer;
+.hero-grid{
 
-        }
+    display:grid;
 
+    grid-template-columns:
+        1.05fr
+        .95fr;
 
+    gap:70px;
 
-        /* =====================================================
-           HERO
-           ===================================================== */
+    align-items:center;
 
-        .hero {
+}
 
-            padding:
-                105px 0
-                85px;
 
-            min-height: 680px;
+.hero-content{
 
-            display: flex;
+    animation:
+        fadeUp .8s ease both;
 
-            align-items: center;
+}
 
-        }
 
+.eyebrow{
 
-        .hero-grid {
+    display:inline-flex;
 
-            display: grid;
+    align-items:center;
 
-            grid-template-columns:
-                1.05fr
-                0.95fr;
+    gap:9px;
 
-            gap: 70px;
+    padding:9px 15px;
 
-            align-items: center;
+    margin-bottom:25px;
 
-        }
+    border:
+        1px solid
+        rgba(232,60,255,.30);
 
+    border-radius:100px;
 
-        .hero-content {
+    background:
+        rgba(232,60,255,.06);
 
-            animation:
-                fadeUp 0.8s ease both;
+    color:var(--pink-light);
 
-        }
+    font-size:11px;
 
+    font-weight:700;
 
-        .eyebrow {
+    letter-spacing:1.5px;
 
-            display: inline-flex;
+}
 
-            align-items: center;
 
-            gap: 9px;
+.eyebrow-dot{
 
-            padding:
-                9px 15px;
+    width:7px;
 
-            border:
-                1px solid
-                rgba(232, 60, 255, 0.30);
+    height:7px;
 
-            border-radius: 100px;
+    border-radius:50%;
 
-            background:
-                rgba(232, 60, 255, 0.06);
+    background:var(--orange);
 
-            color:
-                var(--pink-light);
+    box-shadow:
+        0 0 12px
+        var(--orange);
 
-            font-size: 11px;
+}
 
-            font-weight: 700;
 
-            letter-spacing: 1.5px;
+.hero h1{
 
-            margin-bottom: 25px;
+    font-size:
+        clamp(
+            48px,
+            6vw,
+            78px
+        );
 
-        }
+    line-height:.98;
 
+    letter-spacing:-3px;
 
-        .eyebrow-dot {
+}
 
-            width: 7px;
 
-            height: 7px;
+.hero h1 .white{
 
-            border-radius: 50%;
+    color:white;
 
-            background:
-                var(--orange);
+}
 
-            box-shadow:
-                0 0 12px
-                var(--orange);
 
-        }
+.hero h1 .pink{
 
+    color:var(--pink);
 
-        .hero h1 {
+}
 
-            font-size:
-                clamp(
-                    48px,
-                    6vw,
-                    78px
-                );
 
-            line-height: 0.98;
+.hero h1 .orange{
 
-            letter-spacing: -3px;
+    color:var(--orange);
 
-        }
+}
 
 
-        .hero h1 .white {
+.hero-description{
 
-            color: white;
+    max-width:580px;
 
-        }
+    margin-top:28px;
 
+    color:var(--muted);
 
-        .hero h1 .pink {
+    font-size:17px;
 
-            color:
-                var(--pink);
+    line-height:1.75;
 
-        }
+}
 
 
-        .hero h1 .orange {
+.hero-buttons{
 
-            color:
-                var(--orange);
+    display:flex;
 
-        }
+    flex-wrap:wrap;
 
+    gap:14px;
 
-        .hero-description {
+    margin-top:34px;
 
-            max-width: 580px;
+}
 
-            margin-top: 28px;
 
-            color:
-                var(--muted);
+.primary-btn{
 
-            font-size: 17px;
+    display:inline-flex;
 
-            line-height: 1.75;
+    align-items:center;
 
-        }
+    justify-content:center;
 
+    gap:10px;
 
-        .hero-buttons {
+    min-width:170px;
 
-            display: flex;
+    padding:16px 24px;
 
-            flex-wrap: wrap;
+    border-radius:13px;
 
-            gap: 14px;
+    background:
+        linear-gradient(
+            135deg,
+            var(--orange-light),
+            var(--orange-dark)
+        );
 
-            margin-top: 34px;
+    color:#1A0C00;
 
-        }
+    font-weight:800;
 
+    box-shadow:
+        0 12px 30px
+        rgba(245,166,35,.18);
 
-        .primary-btn {
+    transition:.25s ease;
 
-            display: inline-flex;
+}
 
-            align-items: center;
 
-            justify-content: center;
+.primary-btn:hover{
 
-            gap: 10px;
+    transform:translateY(-3px);
 
-            min-width: 170px;
+    box-shadow:
+        0 16px 38px
+        rgba(245,166,35,.28);
 
-            padding:
-                16px 24px;
+}
 
-            border-radius: 13px;
 
-            background:
+.secondary-btn{
 
-                linear-gradient(
-                    135deg,
-                    var(--orange-light),
-                    var(--orange-dark)
-                );
+    display:inline-flex;
 
-            color:
-                #1a0c00;
+    align-items:center;
 
-            font-weight: 800;
+    justify-content:center;
 
-            box-shadow:
-                0 12px 30px
-                rgba(245, 166, 35, 0.18);
+    min-width:155px;
 
-            transition: 0.25s;
+    padding:16px 24px;
 
-        }
+    border-radius:13px;
 
+    border:
+        1px solid
+        rgba(232,60,255,.30);
 
-        .primary-btn:hover {
+    background:
+        rgba(232,60,255,.04);
 
-            transform:
-                translateY(-3px);
+    color:white;
 
-            box-shadow:
-                0 16px 38px
-                rgba(245, 166, 35, 0.28);
+    transition:.25s ease;
 
-        }
+}
 
 
-        .secondary-btn {
+.secondary-btn:hover{
 
-            display: inline-flex;
+    background:
+        rgba(232,60,255,.10);
 
-            align-items: center;
+    border-color:var(--pink);
 
-            justify-content: center;
+}
 
-            min-width: 155px;
 
-            padding:
-                16px 24px;
+.hero-note{
 
-            border-radius: 13px;
+    margin-top:25px;
 
-            border:
-                1px solid
-                rgba(232, 60, 255, 0.30);
+    color:#817787;
 
-            background:
-                rgba(232, 60, 255, 0.04);
+    font-size:12px;
 
-            color: white;
+}
 
-            transition: 0.25s;
 
-        }
+.hero-note span{
 
+    color:var(--orange);
 
-        .secondary-btn:hover {
+}
 
-            background:
-                rgba(232, 60, 255, 0.10);
 
-            border-color:
-                var(--pink);
+/* =========================================================
+   HERO VISUAL
+   ========================================================= */
 
-        }
+.hero-visual{
 
+    position:relative;
 
-        .hero-note {
+    min-height:450px;
 
-            margin-top: 25px;
+    display:flex;
 
-            color:
-                #807786;
+    align-items:center;
 
-            font-size: 12px;
+    justify-content:center;
 
-        }
+}
 
 
-        .hero-note span {
+.hero-orbit{
 
-            color:
-                var(--orange);
+    position:absolute;
 
-        }
+    width:370px;
 
+    height:370px;
 
+    border-radius:50%;
 
-        /* =====================================================
-           HERO VISUAL
-           ===================================================== */
+    border:
+        1px solid
+        rgba(232,60,255,.22);
 
-        .hero-visual {
+    box-shadow:
+        0 0 90px
+        rgba(232,60,255,.11);
 
-            min-height: 450px;
+    animation:
+        float 6s ease-in-out infinite;
 
-            position: relative;
+}
 
-            display: flex;
 
-            align-items: center;
+.hero-orbit::before{
 
-            justify-content: center;
+    content:"";
 
-            animation:
-                fadeUp 0.9s 0.15s ease both;
+    position:absolute;
 
-        }
+    inset:42px;
 
+    border-radius:50%;
 
-        .hero-orbit {
+    border:
+        1px solid
+        rgba(245,166,35,.20);
 
-            position: absolute;
+}
 
-            width: 370px;
 
-            height: 370px;
+.investment-card{
 
-            border-radius: 50%;
+    position:relative;
 
-            border:
-                1px solid
-                rgba(232, 60, 255, 0.22);
+    width:min(100%,430px);
 
-            box-shadow:
-                0 0 90px
-                rgba(232, 60, 255, 0.12);
+    min-height:355px;
 
-            animation:
-                float 6s ease-in-out infinite;
+    padding:30px;
 
-        }
+    border-radius:28px;
 
+    background:
+        linear-gradient(
+            145deg,
+            rgba(32,17,45,.96),
+            rgba(9,7,14,.98)
+        );
 
-        .hero-orbit::before {
+    border:
+        1px solid
+        rgba(232,60,255,.25);
 
-            content: "";
+    box-shadow:
+        0 35px 80px
+        rgba(0,0,0,.50),
 
-            position: absolute;
+        inset 0 1px 0
+        rgba(255,255,255,.05);
 
-            inset: 42px;
+    overflow:hidden;
 
-            border-radius: 50%;
+}
 
-            border:
-                1px solid
-                rgba(245, 166, 35, 0.20);
 
-        }
+.investment-card::after{
 
+    content:"";
 
-        .investment-card {
+    position:absolute;
 
-            position: relative;
+    width:180px;
 
-            width:
-                min(100%, 430px);
+    height:180px;
 
-            min-height: 355px;
+    right:-70px;
 
-            padding: 30px;
+    top:-70px;
 
-            border-radius: 28px;
+    border-radius:50%;
 
-            background:
+    background:var(--pink);
 
-                linear-gradient(
-                    145deg,
-                    rgba(32, 17, 45, 0.96),
-                    rgba(9, 7, 14, 0.98)
-                );
+    opacity:.10;
 
-            border:
-                1px solid
-                rgba(232, 60, 255, 0.25);
+    filter:blur(65px);
 
-            box-shadow:
+}
 
-                0 35px 80px
-                rgba(0, 0, 0, 0.50),
 
-                inset 0 1px 0
-                rgba(255, 255, 255, 0.05);
+.card-top{
 
-            overflow: hidden;
+    display:flex;
 
-        }
+    align-items:center;
 
+    justify-content:space-between;
 
-        .investment-card::after {
+}
 
-            content: "";
 
-            position: absolute;
+.card-label{
 
-            width: 180px;
+    color:#9E95A5;
 
-            height: 180px;
+    font-size:10px;
 
-            border-radius: 50%;
+    letter-spacing:1.5px;
 
-            background:
-                var(--pink);
+}
 
-            opacity: 0.10;
 
-            filter: blur(65px);
+.card-icon{
 
-            right: -70px;
+    width:44px;
 
-            top: -70px;
+    height:44px;
 
-        }
+    display:flex;
 
+    align-items:center;
 
-        .card-top {
+    justify-content:center;
 
-            display: flex;
+    border-radius:13px;
 
-            align-items: center;
+    background:
+        rgba(245,166,35,.08);
 
-            justify-content: space-between;
+    border:
+        1px solid
+        rgba(245,166,35,.22);
 
-        }
+    color:var(--orange);
 
+    font-size:20px;
 
-        .card-label {
+}
 
-            color:
-                #9e95a5;
 
-            font-size: 10px;
+.card-title{
 
-            letter-spacing: 1.5px;
+    margin-top:22px;
 
-        }
+    font-size:29px;
 
+    font-weight:700;
 
-        .card-icon {
+    line-height:1.2;
 
-            width: 44px;
+}
 
-            height: 44px;
 
-            border-radius: 13px;
+.card-title .pink{
 
-            display: flex;
+    color:var(--pink);
 
-            align-items: center;
+}
 
-            justify-content: center;
 
-            background:
-                rgba(245, 166, 35, 0.08);
+.card-title .orange{
 
-            border:
-                1px solid
-                rgba(245, 166, 35, 0.22);
+    color:var(--orange);
 
-            color:
-                var(--orange);
+}
 
-            font-size: 20px;
 
-        }
+.growth-chart{
 
+    height:135px;
 
-        .card-title {
+    margin-top:15px;
 
-            margin-top: 22px;
+}
 
-            font-size: 29px;
 
-            font-weight: 700;
+.growth-chart svg{
 
-            line-height: 1.2;
+    width:100%;
 
-        }
+    height:100%;
 
+}
 
-        .card-title .pink {
 
-            color:
-                var(--pink);
+.chart-line{
 
-        }
+    fill:none;
 
+    stroke:var(--orange);
 
-        .card-title .orange {
+    stroke-width:4;
 
-            color:
-                var(--orange);
+    stroke-linecap:round;
 
-        }
+    filter:
+        drop-shadow(
+            0 0 6px
+            rgba(245,166,35,.40)
+        );
 
+}
 
-        .growth-chart {
 
-            height: 135px;
+.card-bottom{
 
-            margin-top: 15px;
+    display:flex;
 
-        }
+    align-items:flex-end;
 
+    justify-content:space-between;
 
-        .growth-chart svg {
+}
 
-            width: 100%;
 
-            height: 100%;
+.card-bottom strong{
 
-        }
+    display:block;
 
+    font-size:24px;
 
-        .chart-line {
+}
 
-            fill: none;
 
-            stroke:
-                var(--orange);
+.card-bottom small{
 
-            stroke-width: 4;
+    color:#847B8B;
 
-            stroke-linecap: round;
+    font-size:10px;
 
-            filter:
-                drop-shadow(
-                    0 0 6px
-                    rgba(245, 166, 35, 0.40)
-                );
+}
 
-        }
 
+.coins{
 
-        .card-bottom {
+    display:flex;
 
-            display: flex;
+    flex-direction:column-reverse;
 
-            align-items: flex-end;
+    gap:3px;
 
-            justify-content: space-between;
+}
 
-        }
 
+.coin{
 
-        .card-bottom strong {
+    width:58px;
 
-            display: block;
+    height:10px;
 
-            font-size: 24px;
+    border-radius:50%;
 
-        }
+    background:
+        linear-gradient(
+            to bottom,
+            #FFD56D,
+            #D47B08
+        );
 
+}
 
-        .card-bottom small {
 
-            color:
-                #847b8b;
+/* =========================================================
+   BRAND STRIP
+   ========================================================= */
 
-            font-size: 10px;
+.brand-strip{
 
-        }
+    padding:25px 0;
 
+    border-top:
+        1px solid
+        rgba(255,255,255,.06);
 
-        .coins {
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.06);
 
-            display: flex;
+    background:
+        rgba(255,255,255,.018);
 
-            flex-direction: column-reverse;
+}
 
-            gap: 3px;
 
-        }
+.brand-strip-content{
 
+    display:flex;
 
-        .coin {
+    align-items:center;
 
-            width: 58px;
+    justify-content:center;
 
-            height: 10px;
+    flex-wrap:wrap;
 
-            border-radius: 50%;
+    gap:35px;
 
-            background:
+    color:#9B929F;
 
-                linear-gradient(
-                    to bottom,
-                    #ffd56d,
-                    #d47b08
-                );
+    font-size:12px;
 
-        }
+}
 
 
+.strip-highlight{
 
-        /* =====================================================
-           BRAND STRIP
-           ===================================================== */
+    color:var(--pink-light);
 
-        .brand-strip {
+    font-weight:700;
 
-            border-top:
-                1px solid
-                rgba(255, 255, 255, 0.06);
+}
 
-            border-bottom:
-                1px solid
-                rgba(255, 255, 255, 0.06);
 
-            background:
-                rgba(255, 255, 255, 0.018);
+.strip-orange{
 
-            padding: 25px 0;
+    color:var(--orange);
 
-        }
+    font-weight:700;
 
+}
 
-        .brand-strip-content {
 
-            display: flex;
+/* =========================================================
+   SECTIONS
+   ========================================================= */
 
-            align-items: center;
+section{
 
-            justify-content: center;
+    padding:100px 0;
 
-            flex-wrap: wrap;
+}
 
-            gap: 35px;
 
-            color:
-                #9b929f;
+.section-heading{
 
-            font-size: 12px;
+    max-width:720px;
 
-        }
+    margin:
+        0 auto 50px;
 
+    text-align:center;
 
-        .strip-highlight {
+}
 
-            color:
-                var(--pink-light);
 
-            font-weight: 700;
+.section-kicker{
 
-        }
+    margin-bottom:14px;
 
+    color:var(--orange);
 
-        .strip-orange {
+    font-size:11px;
 
-            color:
-                var(--orange);
+    font-weight:800;
 
-            font-weight: 700;
+    letter-spacing:2px;
 
-        }
+}
 
 
+.section-heading h2{
 
-        /* =====================================================
-           GENERAL SECTIONS
-           ===================================================== */
+    font-size:
+        clamp(
+            31px,
+            4vw,
+            50px
+        );
 
-        section {
+    line-height:1.08;
 
-            padding:
-                100px 0;
+    letter-spacing:-1.5px;
 
-        }
+}
 
 
-        .section-heading {
+.section-heading h2 span{
 
-            max-width: 720px;
+    color:var(--pink);
 
-            margin:
-                0 auto 50px;
+}
 
-            text-align: center;
 
-        }
+.section-heading p{
 
+    margin-top:16px;
 
-        .section-kicker {
+    color:var(--muted);
 
-            color:
-                var(--orange);
+    line-height:1.7;
 
-            font-size: 11px;
+}
 
-            font-weight: 800;
 
-            letter-spacing: 2px;
+/* =========================================================
+   FEATURES
+   ========================================================= */
 
-            margin-bottom: 14px;
+.features{
 
-        }
+    display:grid;
 
+    grid-template-columns:
+        repeat(3,1fr);
 
-        .section-heading h2 {
+    gap:20px;
 
-            font-size:
-                clamp(
-                    31px,
-                    4vw,
-                    50px
-                );
+}
 
-            line-height: 1.08;
 
-            letter-spacing: -1.5px;
+.feature-card{
 
-        }
+    min-height:240px;
 
+    padding:30px;
 
-        .section-heading h2 span {
+    border-radius:22px;
 
-            color:
-                var(--pink);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(25,13,35,.90),
+            rgba(10,8,15,.95)
+        );
 
-        }
+    border:
+        1px solid
+        var(--border);
 
+    transition:.3s ease;
 
-        .section-heading p {
+}
 
-            margin-top: 16px;
 
-            color:
-                var(--muted);
+.feature-card:hover{
 
-            line-height: 1.7;
+    transform:translateY(-7px);
 
-        }
+    border-color:
+        rgba(232,60,255,.55);
 
+}
 
 
-        /* =====================================================
-           FEATURES
-           ===================================================== */
+.feature-icon{
 
-        .features {
+    width:55px;
 
-            display: grid;
+    height:55px;
 
-            grid-template-columns:
-                repeat(3, 1fr);
+    display:flex;
 
-            gap: 20px;
+    align-items:center;
 
-        }
+    justify-content:center;
 
+    margin-bottom:22px;
 
-        .feature-card {
+    border-radius:16px;
 
-            padding: 30px;
+    background:
+        rgba(232,60,255,.08);
 
-            min-height: 240px;
+    border:
+        1px solid
+        rgba(232,60,255,.20);
 
-            border-radius:
-                var(--radius);
+    color:var(--orange);
 
-            background:
+    font-size:23px;
 
-                linear-gradient(
-                    145deg,
-                    rgba(25, 13, 35, 0.90),
-                    rgba(10, 8, 15, 0.95)
-                );
+}
 
-            border:
-                1px solid
-                var(--border);
 
-            transition: 0.3s;
+.feature-card h3{
 
-        }
+    margin-bottom:11px;
 
+    font-size:20px;
 
-        .feature-card:hover {
+}
 
-            transform:
-                translateY(-7px);
 
-            border-color:
-                rgba(232, 60, 255, 0.55);
+.feature-card p{
 
-        }
+    color:var(--muted);
 
+    font-size:14px;
 
-        .feature-icon {
+    line-height:1.65;
 
-            width: 55px;
+}
 
-            height: 55px;
 
-            display: flex;
+/* =========================================================
+   STEPS
+   ========================================================= */
 
-            align-items: center;
+.steps{
 
-            justify-content: center;
+    display:grid;
 
-            border-radius: 16px;
+    grid-template-columns:
+        repeat(3,1fr);
 
-            background:
-                rgba(232, 60, 255, 0.08);
+    gap:20px;
 
-            border:
-                1px solid
-                rgba(232, 60, 255, 0.20);
+}
 
-            color:
-                var(--orange);
 
-            font-size: 23px;
+.step{
 
-            margin-bottom: 22px;
+    padding:30px;
 
-        }
+    border-radius:22px;
 
+    background:
+        rgba(18,10,25,.75);
 
-        .feature-card h3 {
+    border:
+        1px solid
+        rgba(255,255,255,.07);
 
-            margin-bottom: 11px;
+}
 
-            font-size: 20px;
 
-        }
+.step-number{
 
+    width:44px;
 
-        .feature-card p {
+    height:44px;
 
-            color:
-                var(--muted);
+    display:flex;
 
-            font-size: 14px;
+    align-items:center;
 
-            line-height: 1.65;
+    justify-content:center;
 
-        }
+    margin-bottom:20px;
 
+    border-radius:50%;
 
+    background:
+        linear-gradient(
+            135deg,
+            var(--pink),
+            var(--pink-dark)
+        );
 
-        /* =====================================================
-           HOW IT WORKS
-           ===================================================== */
+    color:white;
 
-        .steps {
+    font-weight:800;
 
-            display: grid;
+}
 
-            grid-template-columns:
-                repeat(3, 1fr);
 
-            gap: 20px;
+.step h3{
 
-        }
+    margin-bottom:10px;
 
+}
 
-        .step {
 
-            padding: 30px;
+.step p{
 
-            border-radius:
-                var(--radius);
+    color:var(--muted);
 
-            background:
-                rgba(18, 10, 25, 0.75);
+    font-size:14px;
 
-            border:
-                1px solid
-                rgba(255, 255, 255, 0.07);
+    line-height:1.65;
 
-        }
+}
 
 
-        .step-number {
+/* =========================================================
+   PLANS
+   ========================================================= */
 
-            width: 44px;
+.plan-card{
 
-            height: 44px;
+    display:grid;
 
-            display: flex;
+    grid-template-columns:
+        1fr .8fr;
 
-            align-items: center;
+    gap:30px;
 
-            justify-content: center;
+    align-items:center;
 
-            border-radius: 50%;
+    padding:50px;
 
-            background:
+    border-radius:30px;
 
-                linear-gradient(
-                    135deg,
-                    var(--pink),
-                    var(--pink-dark)
-                );
+    overflow:hidden;
 
-            color: white;
+    background:
+        radial-gradient(
+            circle at 80% 50%,
+            rgba(232,60,255,.20),
+            transparent 38%
+        ),
 
-            font-weight: 800;
+        linear-gradient(
+            120deg,
+            #190C27,
+            #08060D
+        );
 
-            margin-bottom: 20px;
+    border:
+        1px solid
+        rgba(245,166,35,.25);
 
-        }
+}
 
 
-        .step h3 {
+.plan-badge{
 
-            margin-bottom: 10px;
+    display:inline-block;
 
-        }
+    margin-bottom:20px;
 
+    padding:8px 13px;
 
-        .step p {
+    border-radius:9px;
 
-            color:
-                var(--muted);
+    background:
+        rgba(245,166,35,.08);
 
-            font-size: 14px;
+    color:var(--orange);
 
-            line-height: 1.65;
+    font-size:10px;
 
-        }
+    font-weight:800;
 
+    letter-spacing:1.5px;
 
+}
 
-        /* =====================================================
-           FEATURED PLAN
-           ===================================================== */
 
-        .plan-card {
+.plan-card h2{
 
-            display: grid;
+    font-size:
+        clamp(
+            32px,
+            4vw,
+            51px
+        );
 
-            grid-template-columns:
-                1fr
-                0.8fr;
+    line-height:1.05;
 
-            align-items: center;
+}
 
-            gap: 30px;
 
-            padding: 50px;
+.plan-card h2 span{
 
-            border-radius: 30px;
+    color:var(--pink);
 
-            overflow: hidden;
+}
 
-            background:
 
-                radial-gradient(
-                    circle at 80% 50%,
-                    rgba(232, 60, 255, 0.20),
-                    transparent 38%
-                ),
+.plan-card p{
 
-                linear-gradient(
-                    120deg,
-                    #190c27,
-                    #08060d
-                );
+    max-width:520px;
 
-            border:
-                1px solid
-                rgba(245, 166, 35, 0.25);
+    margin:18px 0 28px;
 
-        }
+    color:var(--muted);
 
+    line-height:1.7;
 
-        .plan-badge {
+}
 
-            display: inline-block;
 
-            padding:
-                8px 13px;
+.plan-visual{
 
-            border-radius: 9px;
+    min-height:250px;
 
-            background:
-                rgba(245, 166, 35, 0.08);
+    position:relative;
 
-            color:
-                var(--orange);
+    display:flex;
 
-            font-size: 10px;
+    align-items:center;
 
-            font-weight: 800;
+    justify-content:center;
 
-            letter-spacing: 1.5px;
+}
 
-            margin-bottom: 20px;
 
-        }
+.bars{
 
+    height:180px;
 
-        .plan-card h2 {
+    display:flex;
 
-            font-size:
-                clamp(
-                    32px,
-                    4vw,
-                    51px
-                );
+    align-items:flex-end;
 
-            line-height: 1.05;
+    gap:12px;
 
-        }
+}
 
 
-        .plan-card h2 span {
+.bar{
 
-            color:
-                var(--pink);
+    width:45px;
 
-        }
+    border-radius:
+        7px 7px 3px 3px;
 
+    background:
+        linear-gradient(
+            to top,
+            var(--pink-dark),
+            var(--pink)
+        );
 
-        .plan-card p {
+    box-shadow:
+        0 12px 25px
+        rgba(232,60,255,.16);
 
-            max-width: 520px;
+}
 
-            margin:
-                18px 0 28px;
 
-            color:
-                var(--muted);
+.bar:nth-child(1){
 
-            line-height: 1.7;
+    height:65px;
 
-        }
+}
 
 
-        .plan-visual {
+.bar:nth-child(2){
 
-            min-height: 250px;
+    height:100px;
 
-            display: flex;
+}
 
-            align-items: center;
 
-            justify-content: center;
+.bar:nth-child(3){
 
-            position: relative;
+    height:135px;
 
-        }
+}
 
 
-        .bars {
+.bar:nth-child(4){
 
-            display: flex;
+    height:175px;
 
-            align-items: flex-end;
+}
 
-            gap: 12px;
 
-            height: 180px;
+.growth-symbol{
 
-        }
+    position:absolute;
 
+    right:5px;
 
-        .bar {
+    bottom:0;
 
-            width: 45px;
+    color:var(--orange);
 
-            border-radius:
-                7px 7px 3px 3px;
+    font-size:70px;
 
-            background:
+    font-weight:900;
 
-                linear-gradient(
-                    to top,
-                    var(--pink-dark),
-                    var(--pink)
-                );
+}
 
-            box-shadow:
-                0 12px 25px
-                rgba(232, 60, 255, 0.16);
 
-        }
+/* =========================================================
+   CTA
+   ========================================================= */
 
+.cta{
 
-        .bar:nth-child(1) {
+    padding:
+        70px 0
+        105px;
 
-            height: 65px;
+}
 
-        }
 
+.cta-card{
 
-        .bar:nth-child(2) {
+    padding:70px 25px;
 
-            height: 100px;
+    text-align:center;
 
-        }
+    border-radius:30px;
 
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(232,60,255,.16),
+            transparent 60%
+        ),
 
-        .bar:nth-child(3) {
+        rgba(18,9,25,.85);
 
-            height: 135px;
+    border:
+        1px solid
+        rgba(232,60,255,.22);
 
-        }
+}
 
 
-        .bar:nth-child(4) {
+.cta-card h2{
 
-            height: 175px;
+    font-size:
+        clamp(
+            31px,
+            4vw,
+            48px
+        );
 
-        }
+}
 
 
-        .growth-symbol {
+.cta-card h2 span{
 
-            position: absolute;
+    color:var(--orange);
 
-            right: 5px;
+}
 
-            bottom: 0;
 
-            font-size: 70px;
+.cta-card p{
 
-            font-weight: 900;
+    max-width:580px;
 
-            color:
-                var(--orange);
+    margin:
+        16px auto 28px;
 
-            opacity: 0.90;
+    color:var(--muted);
 
-        }
+    line-height:1.7;
 
+}
 
 
-        /* =====================================================
-           FINAL CTA
-           ===================================================== */
+.cta-buttons{
 
-        .cta {
+    display:flex;
 
-            padding:
-                70px 0
-                105px;
+    justify-content:center;
 
-        }
+    gap:14px;
 
+    flex-wrap:wrap;
 
-        .cta-card {
+}
 
-            text-align: center;
 
-            padding:
-                70px 25px;
+/* =========================================================
+   FOOTER
+   ========================================================= */
 
-            border-radius: 30px;
+footer{
 
-            background:
+    padding:35px 0;
 
-                radial-gradient(
-                    circle at center,
-                    rgba(232, 60, 255, 0.16),
-                    transparent 60%
-                ),
+    border-top:
+        1px solid
+        rgba(255,255,255,.06);
 
-                rgba(18, 9, 25, 0.85);
+}
 
-            border:
-                1px solid
-                rgba(232, 60, 255, 0.22);
 
-        }
+.footer-inner{
 
+    display:flex;
 
-        .cta-card h2 {
+    align-items:center;
 
-            font-size:
-                clamp(
-                    31px,
-                    4vw,
-                    48px
-                );
+    justify-content:space-between;
 
-        }
+    gap:20px;
 
+}
 
-        .cta-card h2 span {
 
-            color:
-                var(--orange);
+.footer-copy{
 
-        }
+    color:#817987;
 
+    font-size:12px;
 
-        .cta-card p {
+}
 
-            max-width: 580px;
 
-            margin:
-                16px auto 28px;
+.footer-copy strong{
 
-            color:
-                var(--muted);
+    color:var(--pink);
 
-            line-height: 1.7;
+}
 
-        }
 
+.footer-links{
 
-        .cta-buttons {
+    display:flex;
 
-            display: flex;
+    gap:25px;
 
-            justify-content: center;
+}
 
-            gap: 14px;
 
-            flex-wrap: wrap;
+.footer-links a{
 
-        }
+    color:#817987;
 
+    font-size:12px;
 
+}
 
-        /* =====================================================
-           FOOTER
-           ===================================================== */
 
-        footer {
+.footer-links a:hover{
 
-            border-top:
-                1px solid
-                rgba(255, 255, 255, 0.06);
+    color:var(--orange);
 
-            padding:
-                35px 0;
+}
 
-        }
 
+/* =========================================================
+   MOBILE MENU
+   ========================================================= */
 
-        .footer-inner {
+.mobile-menu{
 
-            display: flex;
+    display:none;
 
-            align-items: center;
+    padding:
+        10px 0
+        25px;
 
-            justify-content: space-between;
+}
 
-            gap: 20px;
 
-        }
+.mobile-menu.active{
 
+    display:block;
 
-        .footer-copy {
+}
 
-            color:
-                #817987;
 
-            font-size: 12px;
+.mobile-menu a{
 
-        }
+    display:block;
 
+    padding:14px 0;
 
-        .footer-copy strong {
+    color:#C6BECD;
 
-            color:
-                var(--pink);
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.06);
 
-        }
+}
 
 
-        .footer-links {
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
 
-            display: flex;
+@keyframes fadeUp{
 
-            gap: 25px;
+    from{
 
-        }
+        opacity:0;
 
+        transform:
+            translateY(22px);
 
-        .footer-links a {
+    }
 
-            color:
-                #817987;
+    to{
 
-            font-size: 12px;
+        opacity:1;
 
-        }
+        transform:
+            translateY(0);
 
+    }
 
-        .footer-links a:hover {
+}
 
-            color:
-                var(--orange);
 
-        }
+@keyframes float{
 
+    0%,
+    100%{
 
+        transform:
+            translateY(0);
 
-        /* =====================================================
-           MOBILE MENU
-           ===================================================== */
+    }
 
-        .mobile-menu {
+    50%{
 
-            display: none;
+        transform:
+            translateY(-12px);
 
-            padding:
-                10px 0
-                25px;
+    }
 
-        }
+}
 
 
-        .mobile-menu.active {
+/* =========================================================
+   TABLET
+   ========================================================= */
 
-            display: block;
+@media(max-width:950px){
 
-        }
+    .desktop-nav{
 
+        display:none;
 
-        .mobile-menu a {
+    }
 
-            display: block;
 
-            padding:
-                14px 0;
+    .menu-btn{
 
-            border-bottom:
-                1px solid
-                rgba(255, 255, 255, 0.06);
+        display:block;
 
-            color:
-                #c6becd;
+    }
 
-        }
 
+    .hero-grid{
 
+        grid-template-columns:1fr;
 
-        /* =====================================================
-           ANIMATIONS
-           ===================================================== */
+        text-align:center;
 
-        @keyframes fadeUp {
+    }
 
-            from {
 
-                opacity: 0;
+    .hero-description{
 
-                transform:
-                    translateY(22px);
+        margin-left:auto;
 
-            }
+        margin-right:auto;
 
-            to {
+    }
 
-                opacity: 1;
 
-                transform:
-                    translateY(0);
+    .hero-buttons{
 
-            }
+        justify-content:center;
 
-        }
+    }
 
 
-        @keyframes float {
+    .features,
+    .steps{
 
-            0%,
-            100% {
+        grid-template-columns:1fr;
 
-                transform:
-                    translateY(0);
+    }
 
-            }
 
-            50% {
+    .plan-card{
 
-                transform:
-                    translateY(-12px);
+        grid-template-columns:1fr;
 
-            }
+        text-align:center;
 
-        }
+    }
 
 
+    .plan-card p{
 
-        /* =====================================================
-           TABLET
-           ===================================================== */
+        margin-left:auto;
 
-        @media (max-width: 950px) {
+        margin-right:auto;
 
-            .desktop-nav {
+    }
 
-                display: none;
+}
 
-            }
 
+/* =========================================================
+   MOBILE
+   ========================================================= */
 
-            .menu-btn {
+@media(max-width:600px){
 
-                display: block;
+    .container{
 
-            }
+        width:
+            calc(100% - 28px);
 
+    }
 
-            .hero-grid {
 
-                grid-template-columns: 1fr;
+    .navbar{
 
-                text-align: center;
+        min-height:92px;
 
-            }
+    }
 
 
-            .hero-description {
+    .finora-mark{
 
-                margin-left: auto;
+        width:45px;
 
-                margin-right: auto;
+        height:54px;
 
-            }
+    }
 
 
-            .hero-buttons {
+    .brand{
 
-                justify-content: center;
+        gap:9px;
 
-            }
+    }
 
 
-            .hero-visual {
+    .brand-name{
 
-                min-height: 400px;
+        font-size:24px;
 
-            }
+        letter-spacing:2px;
 
+    }
 
-            .features,
-            .steps {
 
-                grid-template-columns:
-                    1fr;
+    .brand-tagline{
 
-            }
+        font-size:7px;
 
+        letter-spacing:1.5px;
 
-            .plan-card {
+    }
 
-                grid-template-columns:
-                    1fr;
 
-                text-align: center;
+    .login-btn{
 
-            }
+        display:none;
 
+    }
 
-            .plan-card p {
 
-                margin-left: auto;
+    .register-btn{
 
-                margin-right: auto;
+        padding:
+            10px 13px;
 
-            }
+        font-size:11px;
 
-        }
+    }
 
 
+    .hero{
 
-        /* =====================================================
-           MOBILE
-           ===================================================== */
+        padding:
+            70px 0
+            50px;
 
-        @media (max-width: 600px) {
+    }
 
-            .container {
 
-                width:
-                    calc(100% - 28px);
+    .hero h1{
 
-            }
+        font-size:48px;
 
+        letter-spacing:-2px;
 
-            .navbar {
+    }
 
-                min-height: 92px;
 
-            }
+    .hero-description{
 
+        font-size:15px;
 
-            .finora-mark {
+    }
 
-                width: 43px;
 
-                height: 51px;
+    .hero-buttons{
 
-            }
+        flex-direction:column;
 
+    }
 
-            .brand {
 
-                gap: 10px;
+    .primary-btn,
+    .secondary-btn{
 
-            }
+        width:100%;
 
+    }
 
-            .brand-name {
 
-                font-size: 24px;
+    .hero-orbit{
 
-                letter-spacing: 2.5px;
+        width:285px;
 
-            }
+        height:285px;
 
+    }
 
-            .brand-tagline {
 
-                font-size: 7px;
+    .investment-card{
 
-                letter-spacing: 1.8px;
+        min-height:315px;
 
-            }
+        padding:23px;
 
+    }
 
-            .login-btn {
 
-                display: none;
+    section{
 
-            }
+        padding:75px 0;
 
+    }
 
-            .register-btn {
 
-                padding:
-                    10px 13px;
+    .plan-card{
 
-                font-size: 11px;
+        padding:
+            30px 22px;
 
-            }
+    }
 
 
-            .hero {
+    .bar{
 
-                padding:
-                    70px 0
-                    50px;
+        width:31px;
 
-            }
+    }
 
 
-            .hero h1 {
+    .growth-symbol{
 
-                font-size: 48px;
+        font-size:52px;
 
-                letter-spacing: -2px;
+    }
 
-            }
 
+    .footer-inner{
 
-            .hero-description {
+        flex-direction:column;
 
-                font-size: 15px;
+        text-align:center;
 
-            }
+    }
 
 
-            .hero-buttons {
+    .footer-links{
 
-                flex-direction: column;
+        flex-wrap:wrap;
 
-            }
+        justify-content:center;
 
+    }
 
-            .primary-btn,
-            .secondary-btn {
+}
 
-                width: 100%;
-
-            }
-
-
-            .hero-orbit {
-
-                width: 285px;
-
-                height: 285px;
-
-            }
-
-
-            .investment-card {
-
-                min-height: 315px;
-
-                padding: 23px;
-
-            }
-
-
-            section {
-
-                padding:
-                    75px 0;
-
-            }
-
-
-            .plan-card {
-
-                padding:
-                    30px 22px;
-
-            }
-
-
-            .bar {
-
-                width: 31px;
-
-            }
-
-
-            .growth-symbol {
-
-                font-size: 52px;
-
-            }
-
-
-            .footer-inner {
-
-                flex-direction: column;
-
-                text-align: center;
-
-            }
-
-
-            .footer-links {
-
-                flex-wrap: wrap;
-
-                justify-content: center;
-
-            }
-
-        }
-
-    </style>
+</style>
 
 </head>
 
@@ -2168,1039 +2036,1130 @@
 <body>
 
 
-    <!-- =====================================================
-         BACKGROUND
-         ===================================================== -->
+<div class="background">
 
-    <div class="background">
+    <div class="background-light background-pink"></div>
 
-        <div class="light light-pink"></div>
+    <div class="background-light background-orange"></div>
 
-        <div class="light light-orange"></div>
+</div>
 
-    </div>
 
 
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
 
-    <!-- =====================================================
-         HEADER
-         ===================================================== -->
+<header>
 
-    <header>
+<div class="container">
 
-        <div class="container">
+<nav class="navbar">
 
-            <nav class="navbar">
 
+<a href="index.html" class="brand">
 
-                <!-- FINORA BRAND -->
 
-                <a
-                    href="index.html"
-                    class="brand"
-                >
+<!-- =====================================================
+     PREMIUM F MARK
+     ===================================================== -->
 
+<svg
+    class="finora-mark"
+    viewBox="0 0 100 110"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-label="FINORA logo"
+>
 
-                    <!-- =====================================
-                         FINORA F LOGO
-                         ===================================== -->
+<defs>
 
-                    <svg
-                        class="finora-mark"
-                        viewBox="0 0 100 110"
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-label="FINORA logo"
-                    >
+<linearGradient
+    id="finoraGold"
+    x1="12"
+    y1="4"
+    x2="84"
+    y2="102"
+    gradientUnits="userSpaceOnUse"
+>
 
-                        <defs>
+    <stop
+        offset="0"
+        stop-color="#FFE9A3"
+    >
 
-                            <linearGradient
-                                id="finoraGold"
-                                x1="0"
-                                y1="0"
-                                x2="1"
-                                y2="1"
-                            >
+    </stop>
 
-                                <stop
-                                    offset="0%"
-                                    stop-color="#FFD66B"
-                                />
+    <stop
+        offset=".28"
+        stop-color="#FFD05A"
+    >
 
-                                <stop
-                                    offset="45%"
-                                    stop-color="#F5B632"
-                                />
+    </stop>
 
-                                <stop
-                                    offset="100%"
-                                    stop-color="#C87908"
-                                />
+    <stop
+        offset=".62"
+        stop-color="#EFAE2E"
+    >
 
-                            </linearGradient>
+    </stop>
 
-                        </defs>
+    <stop
+        offset="1"
+        stop-color="#B96806"
+    >
 
+    </stop>
 
-                        <!-- TOP RIBBON -->
+</linearGradient>
 
-                        <path
-                            d="
-                                M18 8
-                                C25 6 34 5 43 5
-                                H82
-                                C87 5 89 8 86 12
-                                L79 23
-                                H43
-                                C35 23 28 25 21 29
-                                Z
-                            "
-                            fill="url(#finoraGold)"
-                        />
 
+<linearGradient
+    id="finoraHighlight"
+    x1="20"
+    y1="4"
+    x2="70"
+    y2="60"
+    gradientUnits="userSpaceOnUse"
+>
 
-                        <!-- MIDDLE RIBBON -->
+    <stop
+        offset="0"
+        stop-color="#FFF4BE"
+    >
 
-                        <path
-                            d="
-                                M20 32
-                                C27 29 35 27 43 27
-                                H72
-                                C76 27 78 30 75 34
-                                L68 44
-                                H44
-                                C36 44 29 46 22 50
-                                Z
-                            "
-                            fill="url(#finoraGold)"
-                        />
+    </stop>
 
+    <stop
+        offset=".5"
+        stop-color="#FFD96E"
+    >
 
-                        <!-- LOWER MAIN F STEM -->
+    </stop>
 
-                        <path
-                            d="
-                                M21 46
-                                C28 43 36 41 44 41
-                                H66
-                                L56 56
-                                H42
-                                C37 56 33 58 30 61
-                                L17 99
-                                H3
-                                L18 55
-                                C19 52 20 49 21 46
-                                Z
-                            "
-                            fill="url(#finoraGold)"
-                        />
+    <stop
+        offset="1"
+        stop-color="#D88912"
+    >
 
-                    </svg>
+    </stop>
 
+</linearGradient>
 
+</defs>
 
-                    <!-- =====================================
-                         FINORA WORDMARK
-                         ===================================== -->
 
-                    <div class="brand-text">
+<!-- Main flowing F -->
 
-                        <div class="brand-name">
+<path
+    class="finora-ribbon"
+    d="
+        M18 8
 
-                            <span class="fin">FIN</span><span class="ora">ORA</span>
+        C19 5
+        22 3
+        26 3
 
-                        </div>
+        H82
 
+        C86 3
+        88 6
+        86 9
 
-                        <div class="brand-tagline">
+        L79 20
 
-                            INVEST • GROW • EARN
+        C78 22
+        76 23
+        73 23
 
-                        </div>
+        H45
 
-                    </div>
+        C38 23
+        32 25
+        27 29
 
-                </a>
+        L20 34
 
+        L24 22
 
+        L18 8
 
-                <!-- =====================================
-                     DESKTOP NAVIGATION
-                     ===================================== -->
+        Z
 
-                <div class="desktop-nav">
 
-                    <a href="#home">
-                        Home
-                    </a>
+        M20 32
 
-                    <a href="#why-finora">
-                        Why FINORA
-                    </a>
+        C27 28
+        35 26
+        43 26
 
-                    <a href="#how-it-works">
-                        How It Works
-                    </a>
+        H71
 
-                    <a href="#plans">
-                        Plans
-                    </a>
+        C75 26
+        77 29
+        75 32
 
-                </div>
+        L68 43
 
+        C67 45
+        65 46
+        62 46
 
+        H45
 
-                <!-- =====================================
-                     NAVIGATION ACTIONS
-                     ===================================== -->
+        C39 46
+        34 48
+        29 51
 
-                <div class="nav-actions">
+        L22 56
 
-                    <a
-                        href="login.html"
-                        class="login-btn"
-                    >
-                        Login
-                    </a>
+        Z
 
 
-                    <a
-                        href="register.html"
-                        class="register-btn"
-                    >
-                        Create Account
-                    </a>
+        M22 48
 
+        C28 44
+        35 42
+        43 42
 
-                    <button
-                        class="menu-btn"
-                        id="menuBtn"
-                        aria-label="Open navigation"
-                    >
-                        ☰
-                    </button>
+        H60
 
-                </div>
+        L51 56
 
-            </nav>
+        H43
 
+        C38 56
+        34 59
+        31 64
 
+        L18 101
 
-            <!-- =====================================
-                 MOBILE MENU
-                 ===================================== -->
+        H4
 
-            <div
-                class="mobile-menu"
-                id="mobileMenu"
-            >
+        L18 58
 
-                <a href="#home">
-                    Home
-                </a>
+        C19 54
+        20 51
+        22 48
 
-                <a href="#why-finora">
-                    Why FINORA
-                </a>
+        Z
+    "
+>
 
-                <a href="#how-it-works">
-                    How It Works
-                </a>
 
-                <a href="#plans">
-                    Plans
-                </a>
+</path>
 
-                <a href="login.html">
-                    Login
-                </a>
 
-                <a href="register.html">
-                    Create Account
-                </a>
+<!-- Premium highlight -->
 
-            </div>
+<path
+    class="finora-highlight"
+    d="
+        M26 7
+        H80
+        L76 13
+        H44
+        C37 13
+        30 15
+        24 19
+        L21 20
+        L24 10
+        C24 8
+        25 7
+        26 7
+        Z
+    "
+>
 
-        </div>
 
-    </header>
+</path>
 
 
+</svg>
 
-    <!-- =====================================================
-         MAIN
-         ===================================================== -->
 
-    <main>
+<!-- =====================================================
+     WORDMARK
+     ===================================================== -->
 
+<div class="brand-text">
 
-        <!-- ================================================
-             HERO / WELCOME
-             ================================================ -->
+<div class="brand-name">
 
-        <section
-            class="hero"
-            id="home"
-        >
+<span class="fin">FIN</span><span class="ora">ORA</span>
 
-            <div class="container">
+</div>
 
-                <div class="hero-grid">
 
+<div class="brand-tagline">
 
-                    <!-- HERO TEXT -->
+INVEST • GROW • EARN
 
-                    <div class="hero-content">
+</div>
 
+</div>
 
-                        <div class="eyebrow">
 
-                            <span class="eyebrow-dot"></span>
+</a>
 
-                            SMART INVESTING STARTS HERE
 
-                        </div>
 
+<div class="desktop-nav">
 
-                        <h1>
+<a href="#home">
+Home
+</a>
 
-                            <span class="white">
-                                INVEST
-                            </span>
+<a href="#why-finora">
+Why FINORA
+</a>
 
-                            <br>
+<a href="#how-it-works">
+How It Works
+</a>
 
-                            <span class="pink">
-                                GROW.
-                            </span>
+<a href="#plans">
+Plans
+</a>
 
-                            <br>
+</div>
 
-                            <span class="white">
-                                EARN
-                            </span>
 
-                            <span class="orange">
-                                SMART.
-                            </span>
 
-                        </h1>
+<div class="nav-actions">
 
+<a
+    href="login.html"
+    class="login-btn"
+>
+Login
+</a>
 
-                        <p class="hero-description">
 
-                            Welcome to FINORA — a modern
-                            investment platform designed to
-                            give you a clear, simple and engaging
-                            way to begin your investment journey.
+<a
+    href="register.html"
+    class="register-btn"
+>
+Create Account
+</a>
 
-                        </p>
 
+<button
+    class="menu-btn"
+    id="menuBtn"
+>
+☰
+</button>
 
-                        <div class="hero-buttons">
+</div>
 
-                            <a
-                                href="register.html"
-                                class="primary-btn"
-                            >
 
-                                START YOUR JOURNEY
+</nav>
 
-                                <span>
-                                    →
-                                </span>
 
-                            </a>
 
+<div
+    class="mobile-menu"
+    id="mobileMenu"
+>
 
-                            <a
-                                href="#how-it-works"
-                                class="secondary-btn"
-                            >
+<a href="#home">
+Home
+</a>
 
-                                EXPLORE FINORA
+<a href="#why-finora">
+Why FINORA
+</a>
 
-                            </a>
+<a href="#how-it-works">
+How It Works
+</a>
 
-                        </div>
+<a href="#plans">
+Plans
+</a>
 
+<a href="login.html">
+Login
+</a>
 
-                        <div class="hero-note">
+<a href="register.html">
+Create Account
+</a>
 
-                            <span>✦</span>
+</div>
 
-                            Invest • Grow • Earn
+</div>
 
-                        </div>
+</header>
 
-                    </div>
 
 
+<!-- =========================================================
+     MAIN
+     ========================================================= -->
 
-                    <!-- =====================================
-                         HERO VISUAL
-                         ===================================== -->
+<main>
 
-                    <div class="hero-visual">
 
+<!-- =====================================================
+     HERO
+     ===================================================== -->
 
-                        <div class="hero-orbit"></div>
+<section
+    class="hero"
+    id="home"
+>
 
+<div class="container">
 
-                        <div class="investment-card">
+<div class="hero-grid">
 
 
-                            <div>
+<div class="hero-content">
 
-                                <div class="card-top">
 
-                                    <div class="card-label">
+<div class="eyebrow">
 
-                                        FINORA INVESTMENT
+<span class="eyebrow-dot"></span>
 
-                                    </div>
+SMART INVESTING STARTS HERE
 
+</div>
 
-                                    <div class="card-icon">
 
-                                        ↗
+<h1>
 
-                                    </div>
+<span class="white">
+INVEST
+</span>
 
-                                </div>
+<br>
 
+<span class="pink">
+GROW.
+</span>
 
-                                <div class="card-title">
+<br>
 
-                                    Build your
+<span class="white">
+EARN
+</span>
 
-                                    <span class="pink">
-                                        future
-                                    </span>
+<span class="orange">
+SMART.
+</span>
 
-                                    with
+</h1>
 
-                                    <span class="orange">
-                                        purpose.
-                                    </span>
 
-                                </div>
+<p class="hero-description">
 
+Welcome to FINORA — a modern investment
+platform designed to give you a clear,
+simple and engaging way to begin your
+investment journey.
 
-                                <div class="growth-chart">
+</p>
 
-                                    <svg
-                                        viewBox="0 0 400 140"
-                                        preserveAspectRatio="none"
-                                    >
 
-                                        <path
-                                            class="chart-line"
-                                            d="
-                                                M0 125
-                                                C40 118 55 105 90 112
-                                                C125 120 135 85 165 92
-                                                C195 100 205 67 235 72
-                                                C265 80 280 42 310 52
-                                                C345 63 355 25 400 10
-                                            "
-                                        />
+<div class="hero-buttons">
 
-                                    </svg>
+<a
+    href="register.html"
+    class="primary-btn"
+>
 
-                                </div>
+START YOUR JOURNEY
 
-                            </div>
+<span>→</span>
 
+</a>
 
-                            <div class="card-bottom">
 
+<a
+    href="#how-it-works"
+    class="secondary-btn"
+>
 
-                                <div>
+EXPLORE FINORA
 
-                                    <strong>
-                                        FINORA
-                                    </strong>
+</a>
 
-                                    <small>
-                                        INVEST • GROW • EARN
-                                    </small>
+</div>
 
-                                </div>
 
+<div class="hero-note">
 
-                                <div class="coins">
+<span>✦</span>
 
-                                    <div class="coin"></div>
+Invest • Grow • Earn
 
-                                    <div class="coin"></div>
+</div>
 
-                                    <div class="coin"></div>
 
-                                    <div class="coin"></div>
+</div>
 
-                                </div>
 
-                            </div>
 
-                        </div>
+<div class="hero-visual">
 
-                    </div>
 
-                </div>
+<div class="hero-orbit"></div>
 
-            </div>
 
-        </section>
+<div class="investment-card">
 
 
+<div class="card-top">
 
-        <!-- =================================================
-             BRAND STRIP
-             ================================================= -->
+<div class="card-label">
 
-        <div class="brand-strip">
+FINORA INVESTMENT
 
-            <div class="container">
+</div>
 
-                <div class="brand-strip-content">
 
-                    <span>
+<div class="card-icon">
 
-                        Built for
+↗
 
-                        <strong class="strip-highlight">
-                            simplicity
-                        </strong>
+</div>
 
-                    </span>
+</div>
 
 
-                    <span>
+<div class="card-title">
 
-                        Designed for
+Build your
 
-                        <strong class="strip-orange">
-                            growth
-                        </strong>
+<span class="pink">
+future
+</span>
 
-                    </span>
+with
 
+<span class="orange">
+purpose.
+</span>
 
-                    <span>
+</div>
 
-                        Made for your
 
-                        <strong class="strip-highlight">
-                            journey
-                        </strong>
+<div class="growth-chart">
 
-                    </span>
+<svg
+    viewBox="0 0 400 140"
+    preserveAspectRatio="none"
+>
 
+<path
+    class="chart-line"
+    d="
+        M0 125
+        C40 118 55 105 90 112
+        C125 120 135 85 165 92
+        C195 100 205 67 235 72
+        C265 80 280 42 310 52
+        C345 63 355 25 400 10
+    "
+>
 
-                    <span>
+</path>
 
-                        One platform.
+</svg>
 
-                        <strong class="strip-orange">
-                            One experience.
-                        </strong>
+</div>
 
-                    </span>
 
-                </div>
+<div class="card-bottom">
 
-            </div>
+<div>
 
-        </div>
+<strong>
+FINORA
+</strong>
 
+<small>
+INVEST • GROW • EARN
+</small>
 
+</div>
 
-        <!-- =================================================
-             WHY FINORA
-             ================================================= -->
 
-        <section id="why-finora">
+<div class="coins">
 
-            <div class="container">
+<div class="coin"></div>
 
+<div class="coin"></div>
 
-                <div class="section-heading">
+<div class="coin"></div>
 
-                    <div class="section-kicker">
+<div class="coin"></div>
 
-                        WHY FINORA
+</div>
 
-                    </div>
+</div>
 
 
-                    <h2>
+</div>
 
-                        Everything begins with a
+</div>
 
-                        <span>
-                            better experience.
-                        </span>
+</div>
 
-                    </h2>
+</div>
 
+</section>
 
-                    <p>
 
-                        FINORA is designed around clarity,
-                        simplicity and an engaging investment
-                        experience.
 
-                    </p>
+<!-- =====================================================
+     BRAND STRIP
+     ===================================================== -->
 
-                </div>
+<div class="brand-strip">
 
+<div class="container">
 
+<div class="brand-strip-content">
 
-                <div class="features">
+<span>
 
+Built for
 
-                    <div class="feature-card">
+<strong class="strip-highlight">
+simplicity
+</strong>
 
-                        <div class="feature-icon">
-                            ◈
-                        </div>
+</span>
 
-                        <h3>
-                            Simple
-                        </h3>
 
-                        <p>
+<span>
 
-                            A clean experience that makes it
-                            easy to understand and navigate
-                            your investment journey.
+Designed for
 
-                        </p>
+<strong class="strip-orange">
+growth
+</strong>
 
-                    </div>
+</span>
 
 
-                    <div class="feature-card">
+<span>
 
-                        <div class="feature-icon">
-                            ↗
-                        </div>
+Made for your
 
-                        <h3>
-                            Growth Focused
-                        </h3>
+<strong class="strip-highlight">
+journey
+</strong>
 
-                        <p>
+</span>
 
-                            Explore structured investment
-                            opportunities while keeping your
-                            goals at the center.
 
-                        </p>
+<span>
 
-                    </div>
+One platform.
 
+<strong class="strip-orange">
+One experience.
+</strong>
 
-                    <div class="feature-card">
+</span>
 
-                        <div class="feature-icon">
-                            ◉
-                        </div>
+</div>
 
-                        <h3>
-                            Connected
-                        </h3>
+</div>
 
-                        <p>
+</div>
 
-                            Stay connected to your account
-                            and investment activity wherever
-                            you are.
 
-                        </p>
 
-                    </div>
+<!-- =====================================================
+     WHY FINORA
+     ===================================================== -->
 
-                </div>
+<section id="why-finora">
 
-            </div>
+<div class="container">
 
-        </section>
 
+<div class="section-heading">
 
+<div class="section-kicker">
 
-        <!-- =================================================
-             HOW IT WORKS
-             ================================================= -->
+WHY FINORA
 
-        <section id="how-it-works">
+</div>
 
-            <div class="container">
 
+<h2>
 
-                <div class="section-heading">
+Everything begins with a
 
-                    <div class="section-kicker">
+<span>
+better experience.
+</span>
 
-                        HOW IT WORKS
+</h2>
 
-                    </div>
 
+<p>
 
-                    <h2>
+FINORA is designed around clarity,
+simplicity and an engaging investment
+experience.
 
-                        Start your journey in
+</p>
 
-                        <span>
-                            three simple steps.
-                        </span>
+</div>
 
-                    </h2>
 
 
-                    <p>
+<div class="features">
 
-                        Getting started with FINORA is designed
-                        to be straightforward.
 
-                    </p>
+<div class="feature-card">
 
-                </div>
+<div class="feature-icon">
+◈
+</div>
 
+<h3>
+Simple
+</h3>
 
+<p>
 
-                <div class="steps">
+A clean experience that makes it easy
+to understand and navigate your
+investment journey.
 
+</p>
 
-                    <div class="step">
+</div>
 
-                        <div class="step-number">
-                            01
-                        </div>
 
-                        <h3>
-                            Create an Account
-                        </h3>
+<div class="feature-card">
 
-                        <p>
+<div class="feature-icon">
+↗
+</div>
 
-                            Register your FINORA account and
-                            provide the required information.
+<h3>
+Growth Focused
+</h3>
 
-                        </p>
+<p>
 
-                    </div>
+Explore structured investment
+opportunities while keeping your
+goals at the center.
 
+</p>
 
-                    <div class="step">
+</div>
 
-                        <div class="step-number">
-                            02
-                        </div>
 
-                        <h3>
-                            Choose Your Plan
-                        </h3>
+<div class="feature-card">
 
-                        <p>
+<div class="feature-icon">
+◉
+</div>
 
-                            Explore available plans and select
-                            the investment option that suits
-                            your goals.
+<h3>
+Connected
+</h3>
 
-                        </p>
+<p>
 
-                    </div>
+Stay connected to your account and
+investment activity wherever you are.
 
+</p>
 
-                    <div class="step">
+</div>
 
-                        <div class="step-number">
-                            03
-                        </div>
 
-                        <h3>
-                            Track Your Journey
-                        </h3>
+</div>
 
-                        <p>
+</div>
 
-                            Manage your account and follow your
-                            investment activity through FINORA.
+</section>
 
-                        </p>
 
-                    </div>
 
-                </div>
+<!-- =====================================================
+     HOW IT WORKS
+     ===================================================== -->
 
-            </div>
+<section id="how-it-works">
 
-        </section>
+<div class="container">
 
 
+<div class="section-heading">
 
-        <!-- =================================================
-             PLANS
-             ================================================= -->
+<div class="section-kicker">
 
-        <section id="plans">
+HOW IT WORKS
 
-            <div class="container">
+</div>
 
 
-                <div class="plan-card">
+<h2>
 
+Start your journey in
 
-                    <div>
+<span>
+three simple steps.
+</span>
 
-                        <div class="plan-badge">
+</h2>
 
-                            FINORA PLANS
 
-                        </div>
+<p>
 
+Getting started with FINORA is designed
+to be straightforward.
 
-                        <h2>
+</p>
 
-                            Give your money a
+</div>
 
-                            <span>
-                                direction.
-                            </span>
 
-                        </h2>
 
+<div class="steps">
 
-                        <p>
 
-                            Explore FINORA's investment plans
-                            and discover opportunities designed
-                            around a clear and structured
-                            investment experience.
+<div class="step">
 
-                        </p>
+<div class="step-number">
+01
+</div>
 
+<h3>
+Create an Account
+</h3>
 
-                        <a
-                            href="register.html"
-                            class="primary-btn"
-                        >
+<p>
 
-                            EXPLORE PLANS
+Register your FINORA account and
+provide the required information.
 
-                            <span>
-                                →
-                            </span>
+</p>
 
-                        </a>
+</div>
 
-                    </div>
 
+<div class="step">
 
+<div class="step-number">
+02
+</div>
 
-                    <div class="plan-visual">
+<h3>
+Choose Your Plan
+</h3>
 
-                        <div class="bars">
+<p>
 
-                            <div class="bar"></div>
+Explore available plans and select
+the investment option that suits
+your goals.
 
-                            <div class="bar"></div>
+</p>
 
-                            <div class="bar"></div>
+</div>
 
-                            <div class="bar"></div>
 
-                        </div>
+<div class="step">
 
+<div class="step-number">
+03
+</div>
 
-                        <div class="growth-symbol">
+<h3>
+Track Your Journey
+</h3>
 
-                            ↗
+<p>
 
-                        </div>
+Manage your account and follow your
+investment activity through FINORA.
 
-                    </div>
+</p>
 
-                </div>
+</div>
 
-            </div>
 
-        </section>
+</div>
 
+</div>
 
+</section>
 
-        <!-- =================================================
-             FINAL CALL TO ACTION
-             ================================================= -->
 
-        <section class="cta">
 
-            <div class="container">
+<!-- =====================================================
+     PLANS
+     ===================================================== -->
 
+<section id="plans">
 
-                <div class="cta-card">
+<div class="container">
 
 
-                    <div class="section-kicker">
+<div class="plan-card">
 
-                        WELCOME TO FINORA
 
-                    </div>
+<div>
 
+<div class="plan-badge">
 
-                    <h2>
+FINORA PLANS
 
-                        Your journey toward
+</div>
 
-                        <span>
-                            growth
-                        </span>
 
-                        starts here.
+<h2>
 
-                    </h2>
+Give your money a
 
+<span>
+direction.
+</span>
 
-                    <p>
+</h2>
 
-                        Create your FINORA account and discover
-                        a modern investment experience designed
-                        with simplicity and clarity in mind.
 
-                    </p>
+<p>
 
+Explore FINORA's investment plans
+and discover opportunities designed
+around a clear and structured
+investment experience.
 
-                    <div class="cta-buttons">
+</p>
 
-                        <a
-                            href="register.html"
-                            class="primary-btn"
-                        >
 
-                            CREATE ACCOUNT
+<a
+    href="register.html"
+    class="primary-btn"
+>
 
-                            <span>
-                                →
-                            </span>
+EXPLORE PLANS
 
-                        </a>
+<span>
+→
+</span>
 
+</a>
 
-                        <a
-                            href="login.html"
-                            class="secondary-btn"
-                        >
+</div>
 
-                            LOGIN
 
-                        </a>
+<div class="plan-visual">
 
-                    </div>
+<div class="bars">
 
-                </div>
+<div class="bar"></div>
 
-            </div>
+<div class="bar"></div>
 
-        </section>
+<div class="bar"></div>
 
-    </main>
+<div class="bar"></div>
 
+</div>
 
 
-    <!-- =====================================================
-         FOOTER
-         ===================================================== -->
+<div class="growth-symbol">
 
-    <footer>
+↗
 
-        <div class="container">
+</div>
 
-            <div class="footer-inner">
+</div>
 
 
-                <div class="footer-copy">
+</div>
 
-                    © 2026
+</div>
 
-                    <strong>
-                        FINORA
-                    </strong>
+</section>
 
-                    • Invest • Grow • Earn
 
-                </div>
 
+<!-- =====================================================
+     FINAL CTA
+     ===================================================== -->
 
-                <div class="footer-links">
+<section class="cta">
 
-                    <a href="#">
-                        Privacy
-                    </a>
+<div class="container">
 
-                    <a href="#">
-                        Terms
-                    </a>
 
-                    <a href="#">
-                        Support
-                    </a>
+<div class="cta-card">
 
-                </div>
+<div class="section-kicker">
 
-            </div>
+WELCOME TO FINORA
 
-        </div>
+</div>
 
-    </footer>
 
+<h2>
 
+Your journey toward
 
-    <!-- =====================================================
-         JAVASCRIPT
-         ===================================================== -->
+<span>
+growth
+</span>
 
-    <script>
+starts here.
 
-        const menuBtn =
-            document.getElementById("menuBtn");
+</h2>
 
 
-        const mobileMenu =
-            document.getElementById("mobileMenu");
+<p>
 
+Create your FINORA account and discover
+a modern investment experience designed
+with simplicity and clarity in mind.
 
-        menuBtn.addEventListener(
+</p>
+
+
+<div class="cta-buttons">
+
+<a
+    href="register.html"
+    class="primary-btn"
+>
+
+CREATE ACCOUNT
+
+<span>
+→
+</span>
+
+</a>
+
+
+<a
+    href="login.html"
+    class="secondary-btn"
+>
+
+LOGIN
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
+<footer>
+
+<div class="container">
+
+<div class="footer-inner">
+
+
+<div class="footer-copy">
+
+© 2026
+
+<strong>
+FINORA
+</strong>
+
+• Invest • Grow • Earn
+
+</div>
+
+
+<div class="footer-links">
+
+<a href="#">
+Privacy
+</a>
+
+<a href="#">
+Terms
+</a>
+
+<a href="#">
+Support
+</a>
+
+</div>
+
+
+</div>
+
+</div>
+
+</footer>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
+<script>
+
+const menuBtn =
+    document.getElementById("menuBtn");
+
+const mobileMenu =
+    document.getElementById("mobileMenu");
+
+
+menuBtn.addEventListener(
+    "click",
+    function(){
+
+        mobileMenu.classList.toggle(
+            "active"
+        );
+
+    }
+);
+
+
+document
+    .querySelectorAll(".mobile-menu a")
+    .forEach(function(link){
+
+        link.addEventListener(
             "click",
-            () => {
+            function(){
 
-                mobileMenu.classList.toggle(
+                mobileMenu.classList.remove(
                     "active"
                 );
 
             }
         );
 
+    });
 
-        document
-            .querySelectorAll(".mobile-menu a")
-            .forEach(link => {
-
-                link.addEventListener(
-                    "click",
-                    () => {
-
-                        mobileMenu.classList.remove(
-                            "active"
-                        );
-
-                    }
-                );
-
-            });
-
-    </script>
+</script>
 
 
 </body>
