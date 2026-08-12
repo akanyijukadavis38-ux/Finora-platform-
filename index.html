@@ -2,53 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="theme-color" content="#090512">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#080611">
+
     <meta name="description"
-          content="FINORA — Invest. Grow. Earn.">
+          content="FINORA — Invest smart. Grow your wealth. Earn with confidence.">
 
-    <title>FINORA — Invest. Grow. Earn.</title>
+    <title>FINORA | Invest • Grow • Earn</title>
 
     <style>
 
         /* =========================================================
-           FINORA — CORE DESIGN SYSTEM
-        ========================================================= */
+           FINORA — INDEX / WELCOME PAGE
+           ========================================================= */
 
         :root {
-            --bg: #08040e;
-            --bg-deep: #050308;
-            --surface: #11091a;
-            --surface-2: #170c23;
-            --surface-3: #1d0e2b;
+            --bg: #07050f;
+            --bg-soft: #0d0919;
+            --card: rgba(25, 14, 43, 0.78);
+            --card-light: rgba(37, 20, 62, 0.72);
 
-            --purple: #54227a;
-            --purple-light: #7d3eaa;
+            --purple: #8f20d4;
+            --purple-light: #b746f2;
+            --purple-dark: #54118a;
 
-            --gold: #d8b44b;
-            --gold-light: #f1d77a;
-            --gold-dark: #9b701d;
+            --gold: #f5b72c;
+            --gold-light: #ffd66a;
+            --gold-dark: #b87808;
 
             --white: #ffffff;
-            --text: #eee9f2;
-            --muted: #aaa1b3;
-            --muted-dark: #756c7d;
+            --text: #f5f1fa;
+            --muted: #aaa3b8;
 
-            --border: rgba(255,255,255,0.075);
-            --gold-border: rgba(216,180,75,0.22);
+            --border: rgba(190, 113, 255, 0.25);
+            --gold-border: rgba(245, 183, 44, 0.45);
 
-            --radius-sm: 10px;
-            --radius-md: 18px;
-            --radius-lg: 28px;
-
-            --max: 1180px;
+            --radius: 24px;
+            --max-width: 1180px;
         }
-
-
-        /* =========================================================
-           RESET
-        ========================================================= */
 
         * {
             margin: 0;
@@ -61,32 +55,33 @@
         }
 
         body {
-            min-height: 100vh;
-
-            background:
-                radial-gradient(
-                    circle at 80% 10%,
-                    rgba(92, 35, 130, 0.22),
-                    transparent 28%
-                ),
-                radial-gradient(
-                    circle at 10% 45%,
-                    rgba(74, 27, 105, 0.14),
-                    transparent 30%
-                ),
-                var(--bg);
-
-            color: var(--text);
-
             font-family:
                 Inter,
                 -apple-system,
                 BlinkMacSystemFont,
                 "Segoe UI",
-                Roboto,
-                Arial,
                 sans-serif;
 
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(116, 20, 175, 0.18),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 85% 25%,
+                    rgba(245, 183, 44, 0.08),
+                    transparent 25%
+                ),
+                linear-gradient(
+                    135deg,
+                    #05040b 0%,
+                    #090613 45%,
+                    #05040b 100%
+                );
+
+            color: var(--text);
+            min-height: 100vh;
             overflow-x: hidden;
         }
 
@@ -95,515 +90,430 @@
             text-decoration: none;
         }
 
-        button,
-        input {
+        button {
             font: inherit;
+        }
+
+        .container {
+            width: min(
+                calc(100% - 40px),
+                var(--max-width)
+            );
+
+            margin: auto;
         }
 
 
         /* =========================================================
-           GLOBAL
-        ========================================================= */
+           BACKGROUND EFFECTS
+           ========================================================= */
 
-        .container {
-            width: min(
-                var(--max),
-                calc(100% - 40px)
-            );
-
-            margin-inline: auto;
+        .background-glow {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
         }
 
-        .gold {
-            color: var(--gold-light);
+        .glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.22;
+        }
+
+        .glow-one {
+            width: 300px;
+            height: 300px;
+            background: #7b18b7;
+            top: 5%;
+            left: -120px;
+        }
+
+        .glow-two {
+            width: 280px;
+            height: 280px;
+            background: #f0a914;
+            top: 35%;
+            right: -150px;
+            opacity: 0.10;
+        }
+
+        .glow-three {
+            width: 260px;
+            height: 260px;
+            background: #851bc2;
+            bottom: 5%;
+            left: 30%;
+            opacity: 0.12;
         }
 
 
         /* =========================================================
            HEADER
-        ========================================================= */
+           ========================================================= */
 
-        .site-header {
-            position: fixed;
-
+        header {
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
-
-            height: 78px;
-
             z-index: 1000;
 
             background:
-                rgba(8, 4, 14, 0.78);
+                rgba(6, 4, 13, 0.82);
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
 
             border-bottom:
-                1px solid var(--border);
-
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+                1px solid rgba(255,255,255,0.06);
         }
 
-        .header-inner {
-            height: 100%;
+        .navbar {
+            height: 82px;
 
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 30px;
         }
-
-
-        /* =========================================================
-           FINORA BRAND
-        ========================================================= */
 
         .brand {
             display: flex;
             align-items: center;
-
             gap: 12px;
-
-            min-width: 175px;
+            flex-shrink: 0;
         }
 
         /*
-           Custom geometric FINORA F mark.
-           No square.
-           No surrounding box.
-        */
+         * REAL FINORA F LOGO
+         *
+         * Put the supplied FINORA F logo at:
+         *
+         * assets/finora-f.png
+         *
+         * The rest of the wordmark is coded here so the
+         * branding remains sharp on every screen.
+         */
 
-        .brand-mark {
-            width: 38px;
-            height: 46px;
+        .brand-logo {
+            width: 48px;
+            height: 54px;
 
-            flex: 0 0 auto;
-        }
-
-        .brand-mark svg {
-            width: 100%;
-            height: 100%;
-
-            overflow: visible;
-        }
-
-        .brand-mark .gold-main {
-            fill: url(#goldGradient);
-        }
-
-        .brand-mark .gold-highlight {
-            fill: #f5df8a;
-            opacity: 0.88;
+            object-fit: contain;
+            display: block;
         }
 
         .brand-name {
-            font-size: 21px;
-
-            font-weight: 850;
-
-            letter-spacing: 3px;
-
+            font-size: 27px;
+            font-weight: 700;
+            letter-spacing: 7px;
             line-height: 1;
         }
 
-        .brand-name span {
-            color: var(--gold-light);
-        }
-
-        .brand-motto {
+        .brand-tagline {
             margin-top: 5px;
 
-            color: #8c8195;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 3px;
 
-            font-size: 7px;
-
-            font-weight: 700;
-
-            letter-spacing: 2.1px;
+            color: var(--gold);
         }
-
-
-        /* =========================================================
-           NAVIGATION
-        ========================================================= */
 
         .desktop-nav {
             display: flex;
             align-items: center;
-
-            gap: 34px;
+            gap: 32px;
         }
 
         .desktop-nav a {
-            position: relative;
-
-            color: #b8afc0;
-
-            font-size: 12px;
-
-            font-weight: 650;
-
-            transition: color .25s ease;
-        }
-
-        .desktop-nav a::after {
-            content: "";
-
-            position: absolute;
-
-            left: 50%;
-            bottom: -9px;
-
-            width: 0;
-            height: 1px;
-
-            background: var(--gold);
-
-            transform: translateX(-50%);
-
-            transition: width .25s ease;
+            color: #c4bdcf;
+            font-size: 14px;
+            transition: 0.25s ease;
         }
 
         .desktop-nav a:hover {
             color: var(--gold-light);
         }
 
-        .desktop-nav a:hover::after {
-            width: 18px;
-        }
-
-
-        /* =========================================================
-           HEADER ACTIONS
-        ========================================================= */
-
-        .header-actions {
-            min-width: 175px;
-
+        .nav-actions {
             display: flex;
             align-items: center;
-            justify-content: flex-end;
-
-            gap: 9px;
+            gap: 12px;
         }
 
-        .login-link {
-            padding: 10px 15px;
+        .login-btn {
+            padding: 11px 20px;
 
-            border: 1px solid var(--gold-border);
+            border:
+                1px solid rgba(245,183,44,0.65);
 
-            border-radius: var(--radius-sm);
+            border-radius: 12px;
 
             color: var(--gold-light);
 
-            font-size: 11px;
-
-            font-weight: 750;
-
-            transition: .25s ease;
+            transition: 0.25s ease;
         }
 
-        .login-link:hover {
-            background: rgba(216,180,75,.07);
+        .login-btn:hover {
+            background: rgba(245,183,44,0.08);
         }
 
-        .signup-link {
-            padding: 11px 16px;
+        .register-btn {
+            padding: 12px 21px;
 
-            border-radius: var(--radius-sm);
+            border-radius: 12px;
 
             background:
                 linear-gradient(
                     135deg,
-                    var(--gold-light),
-                    var(--gold)
+                    #a32be0,
+                    #68109c
                 );
 
-            color: #150c1b;
-
-            font-size: 11px;
-
-            font-weight: 850;
+            border:
+                1px solid rgba(208,95,255,0.45);
 
             box-shadow:
-                0 8px 28px rgba(216,180,75,.13);
+                0 8px 25px rgba(131,25,190,0.25);
 
-            transition: .25s ease;
+            transition: 0.25s ease;
         }
 
-        .signup-link:hover {
+        .register-btn:hover {
             transform: translateY(-2px);
+            box-shadow:
+                0 12px 32px rgba(131,25,190,0.38);
+        }
+
+        .menu-btn {
+            display: none;
+
+            width: 44px;
+            height: 44px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 13px;
+
+            background:
+                rgba(37, 20, 60, 0.65);
+
+            color: white;
+
+            cursor: pointer;
         }
 
 
         /* =========================================================
            HERO
-        ========================================================= */
+           ========================================================= */
 
         .hero {
-            min-height: 100vh;
-
             position: relative;
+
+            padding:
+                100px 0
+                80px;
+
+            min-height: 690px;
 
             display: flex;
             align-items: center;
-
-            padding:
-                145px 0
-                95px;
-
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: "";
-
-            position: absolute;
-
-            width: 650px;
-            height: 650px;
-
-            top: -310px;
-            right: -240px;
-
-            border-radius: 50%;
-
-            border:
-                1px solid rgba(216,180,75,.055);
-
-            box-shadow:
-                0 0 120px rgba(92,35,130,.08);
-        }
-
-        .hero::after {
-            content: "";
-
-            position: absolute;
-
-            width: 430px;
-            height: 430px;
-
-            bottom: -250px;
-            left: -180px;
-
-            border-radius: 50%;
-
-            background:
-                radial-gradient(
-                    circle,
-                    rgba(89,34,127,.18),
-                    transparent 70%
-                );
         }
 
         .hero-grid {
-            position: relative;
-
-            z-index: 2;
-
             display: grid;
 
             grid-template-columns:
-                minmax(0, 1.08fr)
-                minmax(370px, .92fr);
+                1.08fr
+                0.92fr;
 
             align-items: center;
 
-            gap: 75px;
+            gap: 60px;
         }
 
-
-        /* =========================================================
-           HERO COPY
-        ========================================================= */
-
-        .hero-copy {
-            max-width: 680px;
-        }
-
-        .hero-label {
+        .eyebrow {
             display: inline-flex;
             align-items: center;
-
             gap: 9px;
 
-            padding: 9px 14px;
-
-            border-radius: 50px;
-
-            background:
-                rgba(216,180,75,.045);
+            padding: 8px 14px;
 
             border:
-                1px solid rgba(216,180,75,.17);
+                1px solid
+                rgba(245,183,44,0.30);
+
+            border-radius: 999px;
+
+            background:
+                rgba(245,183,44,0.06);
 
             color: var(--gold-light);
 
-            font-size: 9px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1.3px;
 
-            font-weight: 800;
-
-            letter-spacing: 1.6px;
-
-            text-transform: uppercase;
+            margin-bottom: 24px;
         }
 
-        .hero-label-dot {
-            width: 6px;
-            height: 6px;
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
 
             border-radius: 50%;
 
-            background: var(--gold-light);
+            background: var(--gold);
 
             box-shadow:
-                0 0 12px var(--gold);
+                0 0 12px
+                rgba(245,183,44,0.9);
         }
 
-        .hero-title {
-            margin-top: 25px;
-
+        .hero h1 {
             font-size:
-                clamp(48px, 6.5vw, 76px);
+                clamp(46px, 6vw, 78px);
 
-            line-height: .99;
+            line-height: 0.98;
 
-            letter-spacing: -3.5px;
+            letter-spacing: -3px;
 
-            font-weight: 850;
+            max-width: 700px;
         }
 
-        .hero-title strong {
-            display: block;
+        .hero h1 .white {
+            color: white;
+        }
 
-            color: var(--gold-light);
-
-            font-weight: inherit;
+        .hero h1 .gold {
+            color: var(--gold);
         }
 
         .hero-description {
-            max-width: 610px;
+            max-width: 570px;
 
-            margin-top: 25px;
+            margin-top: 26px;
 
-            color: var(--muted);
+            color: #b8b0c4;
 
-            font-size: 15px;
-
-            line-height: 1.85;
+            font-size: 17px;
+            line-height: 1.75;
         }
 
-        .hero-actions {
-            margin-top: 34px;
-
+        .hero-buttons {
             display: flex;
-            align-items: center;
+            flex-wrap: wrap;
 
-            gap: 12px;
+            gap: 14px;
+
+            margin-top: 34px;
         }
 
-        .button-primary {
-            min-height: 52px;
-
-            padding: 0 25px;
-
+        .primary-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            gap: 12px;
 
-            border-radius: 11px;
+            min-width: 165px;
+
+            padding: 15px 22px;
+
+            border-radius: 13px;
 
             background:
                 linear-gradient(
                     135deg,
-                    var(--gold-light),
-                    var(--gold)
+                    #ffc744,
+                    #c27b0b
                 );
 
-            color: #160c1b;
+            color: #160d02;
 
-            font-size: 12px;
-
-            font-weight: 850;
+            font-weight: 800;
 
             box-shadow:
-                0 15px 35px rgba(216,180,75,.13);
+                0 10px 30px
+                rgba(245,183,44,0.20);
 
-            transition: .25s ease;
+            transition: 0.25s ease;
         }
 
-        .button-primary:hover {
-            transform: translateY(-2px);
+        .primary-btn:hover {
+            transform: translateY(-3px);
 
             box-shadow:
-                0 19px 40px rgba(216,180,75,.18);
+                0 15px 35px
+                rgba(245,183,44,0.30);
         }
 
-        .button-secondary {
-            min-height: 52px;
-
-            padding: 0 23px;
-
+        .secondary-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
 
-            border-radius: 11px;
+            min-width: 145px;
+
+            padding: 15px 22px;
+
+            border-radius: 13px;
 
             border:
-                1px solid rgba(255,255,255,.10);
+                1px solid
+                rgba(255,255,255,0.16);
 
             background:
-                rgba(255,255,255,.025);
+                rgba(255,255,255,0.035);
 
-            color: var(--soft);
+            color: white;
 
-            font-size: 12px;
-
-            font-weight: 700;
-
-            transition: .25s ease;
+            transition: 0.25s ease;
         }
 
-        .button-secondary:hover {
+        .secondary-btn:hover {
             border-color:
-                rgba(216,180,75,.22);
+                rgba(183,70,242,0.55);
 
-            transform: translateY(-2px);
+            background:
+                rgba(143,32,212,0.10);
+        }
+
+        .hero-note {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            margin-top: 25px;
+
+            color: #898292;
+
+            font-size: 12px;
+        }
+
+        .hero-note span {
+            color: var(--gold);
         }
 
 
         /* =========================================================
-           HERO BRAND ART
-        ========================================================= */
+           HERO VISUAL
+           ========================================================= */
 
-        .hero-art {
+        .hero-visual {
             position: relative;
 
-            min-height: 500px;
+            min-height: 440px;
 
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .art-glow {
-            position: absolute;
-
-            width: 420px;
-            height: 420px;
-
-            border-radius: 50%;
-
-            background:
-                radial-gradient(
-                    circle,
-                    rgba(112,49,153,.28),
-                    rgba(55,20,78,.10) 48%,
-                    transparent 70%
-                );
-        }
-
-        .art-ring {
+        .visual-ring {
             position: absolute;
 
             width: 370px;
@@ -612,762 +522,947 @@
             border-radius: 50%;
 
             border:
-                1px solid rgba(216,180,75,.09);
+                1px solid
+                rgba(177,68,239,0.25);
 
-            transform: rotate(12deg);
+            box-shadow:
+                0 0 90px
+                rgba(124,27,178,0.18);
+
+            animation:
+                floatRing 7s ease-in-out infinite;
         }
 
-        .art-ring::before {
+        .visual-ring::before {
             content: "";
 
             position: absolute;
-
-            inset: 24px;
+            inset: 35px;
 
             border-radius: 50%;
 
             border:
-                1px dashed rgba(216,180,75,.07);
+                1px solid
+                rgba(245,183,44,0.16);
         }
 
-        .brand-panel {
-            width: min(430px, 100%);
-
+        .vault-card {
             position: relative;
 
-            padding: 48px 42px;
-
-            z-index: 3;
+            width: min(100%, 420px);
+            min-height: 360px;
 
             border-radius: 30px;
 
             background:
                 linear-gradient(
                     145deg,
-                    rgba(43,18,61,.94),
-                    rgba(12,7,18,.97)
+                    rgba(40,20,65,0.95),
+                    rgba(11,8,22,0.96)
                 );
 
             border:
-                1px solid rgba(216,180,75,.15);
+                1px solid
+                rgba(210,113,255,0.30);
 
             box-shadow:
-                0 45px 100px rgba(0,0,0,.55);
-        }
+                0 30px 80px
+                rgba(0,0,0,0.45),
 
-        .panel-logo {
-            width: 76px;
-            height: 88px;
+                inset 0 1px 0
+                rgba(255,255,255,0.06);
 
-            margin-bottom: 29px;
-        }
+            overflow: hidden;
 
-        .panel-logo svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        .panel-name {
-            font-size: 37px;
-
-            font-weight: 850;
-
-            letter-spacing: 4px;
-        }
-
-        .panel-name span {
-            color: var(--gold-light);
-        }
-
-        .panel-motto {
-            margin-top: 10px;
-
-            color: var(--gold);
-
-            font-size: 9px;
-
-            font-weight: 800;
-
-            letter-spacing: 3px;
-        }
-
-        .panel-line {
-            height: 1px;
-
-            margin: 28px 0;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    rgba(216,180,75,.30),
-                    transparent
-                );
-        }
-
-        .panel-description {
-            color: #a69cab;
-
-            font-size: 13px;
-
-            line-height: 1.85;
-        }
-
-        .panel-footer {
-            margin-top: 30px;
+            padding: 30px;
 
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: space-between;
         }
 
-        .panel-status {
-            display: flex;
-            align-items: center;
+        .vault-card::before {
+            content: "";
 
-            gap: 8px;
+            position: absolute;
 
-            color: #8f8796;
-
-            font-size: 9px;
-
-            font-weight: 700;
-
-            letter-spacing: 1px;
-
-            text-transform: uppercase;
-        }
-
-        .panel-status-dot {
-            width: 6px;
-            height: 6px;
+            width: 220px;
+            height: 220px;
 
             border-radius: 50%;
 
-            background: #cdb15a;
+            background:
+                rgba(140,31,202,0.22);
 
-            box-shadow:
-                0 0 10px rgba(216,180,75,.55);
+            filter: blur(70px);
+
+            right: -70px;
+            top: -70px;
         }
 
-        .panel-year {
-            color: #62596a;
+        .visual-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-            font-size: 9px;
+        .mini-label {
+            color: #aaa1b7;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
 
+        .security-badge {
+            width: 44px;
+            height: 44px;
+
+            border-radius: 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                rgba(245,183,44,0.10);
+
+            border:
+                1px solid
+                rgba(245,183,44,0.25);
+
+            color: var(--gold);
+            font-size: 20px;
+        }
+
+        .visual-title {
+            margin-top: 15px;
+
+            font-size: 30px;
             font-weight: 700;
+        }
+
+        .visual-title span {
+            color: var(--gold);
+        }
+
+        .growth-graph {
+            position: relative;
+
+            height: 125px;
+
+            margin-top: 15px;
+        }
+
+        .growth-graph svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .graph-line {
+            fill: none;
+
+            stroke:
+                url(#goldGradient);
+
+            stroke-width: 4;
+
+            stroke-linecap: round;
+        }
+
+        .visual-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+        }
+
+        .visual-stat strong {
+            display: block;
+
+            font-size: 25px;
+        }
+
+        .visual-stat small {
+            color: #8e8797;
+            font-size: 11px;
+        }
+
+        .coin-stack {
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 3px;
+        }
+
+        .coin {
+            width: 62px;
+            height: 11px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    #ffe08a,
+                    #d28b12
+                );
+
+            border:
+                1px solid
+                rgba(255,235,160,0.5);
+
+            box-shadow:
+                0 2px 4px
+                rgba(0,0,0,0.3);
         }
 
 
         /* =========================================================
            TRUST STRIP
-        ========================================================= */
+           ========================================================= */
 
         .trust-strip {
             border-top:
-                1px solid var(--border);
+                1px solid
+                rgba(255,255,255,0.06);
 
             border-bottom:
-                1px solid var(--border);
+                1px solid
+                rgba(255,255,255,0.06);
 
             background:
-                rgba(255,255,255,.012);
+                rgba(255,255,255,0.018);
+
+            padding: 24px 0;
         }
 
-        .trust-inner {
-            min-height: 82px;
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
+        .trust-content {
+            display: flex;
+            justify-content: center;
             align-items: center;
+
+            flex-wrap: wrap;
+
+            gap: 35px;
         }
 
         .trust-item {
-            min-height: 42px;
-
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 9px;
 
-            gap: 12px;
+            color: #aaa3b2;
 
-            border-right:
-                1px solid var(--border);
+            font-size: 13px;
         }
 
-        .trust-item:last-child {
-            border-right: 0;
+        .trust-item strong {
+            color: #f4eef9;
         }
 
-        .trust-number {
-            color: var(--gold-light);
-
-            font-size: 18px;
-
+        .trust-check {
+            color: var(--gold);
             font-weight: 800;
-        }
-
-        .trust-label {
-            color: #8f8797;
-
-            font-size: 9px;
-
-            font-weight: 700;
-
-            letter-spacing: 1px;
-
-            text-transform: uppercase;
         }
 
 
         /* =========================================================
-           ABOUT
-        ========================================================= */
+           SECTION COMMON
+           ========================================================= */
 
-        .about {
-            padding: 115px 0;
-
-            background:
-                linear-gradient(
-                    180deg,
-                    #0c0613,
-                    #10091a
-                );
+        section {
+            padding: 95px 0;
         }
 
-        .about-grid {
-            display: grid;
+        .section-heading {
+            max-width: 700px;
 
-            grid-template-columns:
-                .9fr 1.1fr;
+            margin: 0 auto 50px;
 
-            gap: 80px;
-
-            align-items: center;
+            text-align: center;
         }
 
         .section-kicker {
             color: var(--gold);
 
-            font-size: 9px;
-
-            font-weight: 850;
+            font-size: 12px;
+            font-weight: 700;
 
             letter-spacing: 2px;
-
             text-transform: uppercase;
+
+            margin-bottom: 13px;
         }
 
-        .section-title {
-            margin-top: 14px;
-
+        .section-heading h2 {
             font-size:
-                clamp(34px, 5vw, 52px);
+                clamp(30px, 4vw, 48px);
 
-            line-height: 1.04;
+            line-height: 1.1;
 
-            letter-spacing: -2px;
-
-            font-weight: 820;
+            letter-spacing: -1.5px;
         }
 
-        .section-text {
-            margin-top: 20px;
+        .section-heading p {
+            margin-top: 15px;
 
             color: var(--muted);
 
-            font-size: 14px;
-
-            line-height: 1.9;
-        }
-
-        .about-highlight {
-            padding: 32px;
-
-            border-radius: 22px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    var(--surface-3),
-                    var(--surface)
-                );
-
-            border:
-                1px solid var(--border);
-        }
-
-        .highlight-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .highlight-title {
-            color: var(--soft);
-
-            font-size: 15px;
-
-            font-weight: 750;
-        }
-
-        .highlight-mark {
-            color: var(--gold);
-
-            font-size: 18px;
-        }
-
-        .highlight-line {
-            height: 1px;
-
-            margin: 25px 0;
-
-            background: var(--border);
-        }
-
-        .highlight-list {
-            display: grid;
-
-            gap: 19px;
-        }
-
-        .highlight-item {
-            display: flex;
-
-            gap: 13px;
-        }
-
-        .highlight-icon {
-            width: 27px;
-            height: 27px;
-
-            flex: 0 0 auto;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 8px;
-
-            background:
-                rgba(216,180,75,.07);
-
-            color: var(--gold-light);
-
-            font-size: 10px;
-
-            font-weight: 850;
-        }
-
-        .highlight-item strong {
-            display: block;
-
-            color: var(--soft);
-
-            font-size: 12px;
-        }
-
-        .highlight-item p {
-            margin-top: 4px;
-
-            color: #817889;
-
-            font-size: 10px;
-
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
 
         /* =========================================================
-           FEATURES
-        ========================================================= */
+           WHY FINORA
+           ========================================================= */
 
         .features {
-            padding: 115px 0;
-        }
-
-        .features-heading {
-            max-width: 680px;
-
-            margin-bottom: 48px;
-        }
-
-        .features-heading .section-title {
-            max-width: 600px;
-        }
-
-        .feature-grid {
             display: grid;
 
             grid-template-columns:
                 repeat(3, 1fr);
 
-            gap: 18px;
+            gap: 20px;
         }
 
         .feature-card {
             position: relative;
 
-            min-height: 245px;
+            padding: 30px;
 
-            padding: 31px;
+            min-height: 235px;
 
-            overflow: hidden;
-
-            border-radius: 20px;
+            border-radius: var(--radius);
 
             background:
                 linear-gradient(
                     145deg,
-                    rgba(31,14,45,.94),
-                    rgba(12,7,18,.98)
+                    rgba(35,18,55,0.82),
+                    rgba(12,8,22,0.88)
                 );
 
             border:
-                1px solid var(--border);
+                1px solid
+                var(--border);
 
             transition:
-                transform .3s ease,
-                border-color .3s ease;
-        }
-
-        .feature-card::before {
-            content: "";
-
-            position: absolute;
-
-            width: 130px;
-            height: 130px;
-
-            top: -70px;
-            right: -70px;
-
-            border-radius: 50%;
-
-            background:
-                rgba(216,180,75,.055);
+                transform 0.3s ease,
+                border-color 0.3s ease;
         }
 
         .feature-card:hover {
             transform: translateY(-6px);
 
             border-color:
-                rgba(216,180,75,.20);
+                rgba(184,70,242,0.55);
         }
 
-        .feature-number {
+        .feature-icon {
+            width: 55px;
+            height: 55px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(156,42,220,0.35),
+                    rgba(76,14,111,0.30)
+                );
+
+            border:
+                1px solid
+                rgba(189,76,244,0.25);
+
             color: var(--gold);
 
-            font-size: 9px;
+            font-size: 24px;
 
-            font-weight: 850;
-
-            letter-spacing: 1.5px;
+            margin-bottom: 22px;
         }
 
         .feature-card h3 {
-            margin-top: 42px;
-
-            font-size: 18px;
+            font-size: 20px;
+            margin-bottom: 11px;
         }
 
         .feature-card p {
-            margin-top: 12px;
-
-            color: #8f8796;
-
-            font-size: 12px;
-
-            line-height: 1.8;
+            color: var(--muted);
+            line-height: 1.65;
+            font-size: 14px;
         }
 
 
         /* =========================================================
-           CTA
-        ========================================================= */
+           HOW IT WORKS
+           ========================================================= */
 
-        .cta-section {
-            padding-bottom: 115px;
+        .steps {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 22px;
+
+            position: relative;
         }
 
-        .cta {
-            position: relative;
+        .step {
+            padding: 30px;
 
-            overflow: hidden;
-
-            padding: 55px;
-
-            border-radius: 27px;
+            border-radius: var(--radius);
 
             background:
-                radial-gradient(
-                    circle at 90% 15%,
-                    rgba(216,180,75,.12),
-                    transparent 28%
-                ),
-                linear-gradient(
-                    135deg,
-                    #2a113c,
-                    #0e0715
-                );
+                rgba(21,12,34,0.72);
 
             border:
-                1px solid rgba(216,180,75,.14);
+                1px solid
+                rgba(255,255,255,0.08);
+        }
 
-            display: flex;
+        .step-number {
+            display: inline-flex;
+
+            width: 42px;
+            height: 42px;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #9b2cda,
+                    #56107e
+                );
+
+            color: white;
+
+            font-weight: 800;
+
+            margin-bottom: 20px;
+        }
+
+        .step h3 {
+            margin-bottom: 10px;
+        }
+
+        .step p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.65;
+        }
+
+
+        /* =========================================================
+           PLAN PREVIEW
+           ========================================================= */
+
+        .plan-section {
+            position: relative;
+        }
+
+        .plan-card {
+            position: relative;
+
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                0.8fr;
+
+            gap: 30px;
 
             align-items: center;
 
-            justify-content: space-between;
+            padding: 45px;
 
-            gap: 35px;
+            border-radius: 30px;
+
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 80% 40%,
+                    rgba(137,34,201,0.38),
+                    transparent 35%
+                ),
+
+                linear-gradient(
+                    120deg,
+                    #1b0c31,
+                    #090612
+                );
+
+            border:
+                1px solid
+                var(--gold-border);
+
+            box-shadow:
+                0 25px 70px
+                rgba(0,0,0,0.35);
         }
 
-        .cta h2 {
-            margin-top: 12px;
+        .plan-badge {
+            display: inline-block;
 
+            padding: 8px 13px;
+
+            border-radius: 9px;
+
+            background:
+                rgba(160,53,218,0.25);
+
+            color: var(--gold-light);
+
+            font-size: 11px;
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 20px;
+        }
+
+        .plan-card h2 {
             font-size:
-                clamp(30px, 4.5vw, 46px);
+                clamp(32px, 4vw, 51px);
 
-            letter-spacing: -1.7px;
+            line-height: 1.02;
         }
 
-        .cta p {
-            margin-top: 10px;
+        .plan-card h2 span {
+            color: var(--gold);
+        }
+
+        .plan-card p {
+            color: #aaa1b4;
+
+            margin:
+                18px 0
+                26px;
+
+            max-width: 500px;
+
+            line-height: 1.7;
+        }
+
+        .plan-visual {
+            min-height: 260px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            position: relative;
+        }
+
+        .bars {
+            display: flex;
+            align-items: end;
+
+            gap: 13px;
+
+            height: 190px;
+        }
+
+        .bar {
+            width: 45px;
+
+            border-radius:
+                7px 7px 3px 3px;
+
+            background:
+                linear-gradient(
+                    to top,
+                    #58117f,
+                    #b43cf0
+                );
+
+            box-shadow:
+                0 10px 25px
+                rgba(155,48,219,0.20);
+        }
+
+        .bar:nth-child(1) {
+            height: 70px;
+        }
+
+        .bar:nth-child(2) {
+            height: 105px;
+        }
+
+        .bar:nth-child(3) {
+            height: 140px;
+        }
+
+        .bar:nth-child(4) {
+            height: 175px;
+        }
+
+        .percent {
+            position: absolute;
+
+            font-size: 76px;
+            font-weight: 900;
+
+            color: var(--gold);
+
+            right: 5px;
+            bottom: 5px;
+
+            opacity: 0.92;
+        }
+
+
+        /* =========================================================
+           FINAL CTA
+           ========================================================= */
+
+        .cta {
+            padding-top: 80px;
+            padding-bottom: 100px;
+        }
+
+        .cta-card {
+            text-align: center;
+
+            padding: 65px 30px;
+
+            border-radius: 30px;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(125,27,182,0.24),
+                    transparent 60%
+                ),
+
+                rgba(19,10,31,0.85);
+
+            border:
+                1px solid
+                rgba(184,70,242,0.28);
+        }
+
+        .cta-card h2 {
+            font-size:
+                clamp(30px, 4vw, 46px);
+
+            margin-bottom: 15px;
+        }
+
+        .cta-card p {
+            max-width: 570px;
+
+            margin:
+                0 auto
+                28px;
 
             color: var(--muted);
 
-            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
         }
 
 
         /* =========================================================
            FOOTER
-        ========================================================= */
+           ========================================================= */
 
-        .site-footer {
-            padding: 40px 0;
-
-            background: var(--bg-deep);
-
+        footer {
             border-top:
-                1px solid var(--border);
+                1px solid
+                rgba(255,255,255,0.06);
+
+            padding: 35px 0;
         }
 
         .footer-inner {
             display: flex;
-
+            justify-content: space-between;
             align-items: center;
 
-            justify-content: space-between;
+            gap: 20px;
         }
 
         .footer-brand {
+            color: #aaa3b2;
+            font-size: 12px;
+        }
+
+        .footer-brand strong {
+            color: white;
+        }
+
+        .footer-links {
             display: flex;
-
-            align-items: center;
-
-            gap: 9px;
-
-            color: var(--gold-light);
-
-            font-size: 13px;
-
-            font-weight: 800;
-
-            letter-spacing: 2px;
+            gap: 24px;
         }
 
-        .footer-brand svg {
-            width: 23px;
-            height: 28px;
+        .footer-links a {
+            color: #8f8799;
+            font-size: 12px;
         }
 
-        .footer-copy {
-            color: #625a68;
-
-            font-size: 9px;
+        .footer-links a:hover {
+            color: var(--gold);
         }
 
 
         /* =========================================================
-           MOBILE
-        ========================================================= */
+           MOBILE MENU
+           ========================================================= */
 
-        @media (max-width: 950px) {
+        .mobile-menu {
+            display: none;
+
+            padding: 15px 20px 25px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.05);
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .mobile-menu a {
+            display: block;
+
+            padding: 14px 0;
+
+            color: #c8c0d0;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.05);
+        }
+
+
+        /* =========================================================
+           ANIMATIONS
+           ========================================================= */
+
+        @keyframes floatRing {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform:
+                    translateY(-12px)
+                    rotate(2deg);
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-content {
+            animation:
+                fadeUp 0.8s ease both;
+        }
+
+        .hero-visual {
+            animation:
+                fadeUp 0.9s 0.15s ease both;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+        @media (max-width: 900px) {
 
             .desktop-nav {
                 display: none;
             }
 
-            .hero-grid {
-                grid-template-columns: 1fr;
-
-                gap: 55px;
-            }
-
-            .hero-copy {
-                max-width: 760px;
-            }
-
-            .hero-art {
-                min-height: 430px;
-            }
-
-            .about-grid {
-                grid-template-columns: 1fr;
-
-                gap: 45px;
-            }
-
-            .feature-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-
-        @media (max-width: 600px) {
-
-            .container {
-                width: min(
-                    var(--max),
-                    calc(100% - 26px)
-                );
-            }
-
-            .site-header {
-                height: 68px;
-            }
-
-            .brand {
-                min-width: 0;
-            }
-
-            .brand-mark {
-                width: 30px;
-                height: 38px;
-            }
-
-            .brand-name {
-                font-size: 18px;
-
-                letter-spacing: 2.3px;
-            }
-
-            .brand-motto {
-                font-size: 5.5px;
-
-                letter-spacing: 1.5px;
-            }
-
-            .header-actions {
-                min-width: 0;
-            }
-
-            .login-link {
-                display: none;
-            }
-
-            .signup-link {
-                padding: 9px 12px;
-
-                font-size: 9px;
+            .menu-btn {
+                display: block;
             }
 
             .hero {
                 padding:
-                    120px 0
-                    70px;
+                    75px 0
+                    60px;
             }
 
-            .hero-title {
-                font-size: 46px;
-
-                letter-spacing: -2.5px;
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
             }
 
             .hero-description {
-                font-size: 13px;
+                margin-left: auto;
+                margin-right: auto;
             }
 
-            .hero-actions {
+            .hero-buttons,
+            .hero-note {
+                justify-content: center;
+            }
+
+            .hero-visual {
+                min-height: 400px;
+            }
+
+            .features,
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .plan-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .plan-card p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .plan-visual {
+                min-height: 230px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .container {
+                width:
+                    min(
+                        calc(100% - 28px),
+                        var(--max-width)
+                    );
+            }
+
+            .navbar {
+                height: 72px;
+            }
+
+            .brand-logo {
+                width: 38px;
+                height: 44px;
+            }
+
+            .brand-name {
+                font-size: 21px;
+                letter-spacing: 5px;
+            }
+
+            .brand-tagline {
+                font-size: 7px;
+                letter-spacing: 2px;
+            }
+
+            .login-btn {
+                display: none;
+            }
+
+            .register-btn {
+                padding:
+                    10px 14px;
+
+                font-size: 12px;
+            }
+
+            .hero {
+                padding:
+                    65px 0
+                    45px;
+
+                min-height: auto;
+            }
+
+            .hero h1 {
+                font-size: 48px;
+                letter-spacing: -2px;
+            }
+
+            .hero-description {
+                font-size: 15px;
+            }
+
+            .hero-buttons {
                 flex-direction: column;
             }
 
-            .button-primary,
-            .button-secondary {
+            .primary-btn,
+            .secondary-btn {
                 width: 100%;
             }
 
-            .hero-art {
-                min-height: 390px;
+            .hero-visual {
+                min-height: 350px;
             }
 
-            .art-ring {
-                width: 315px;
-                height: 315px;
+            .visual-ring {
+                width: 285px;
+                height: 285px;
             }
 
-            .brand-panel {
-                padding: 36px 27px;
-
-                border-radius: 23px;
+            .vault-card {
+                min-height: 315px;
+                padding: 23px;
             }
 
-            .panel-name {
-                font-size: 30px;
+            .visual-title {
+                font-size: 24px;
             }
 
-            .trust-inner {
-                grid-template-columns: 1fr;
-
-                padding: 10px 0;
+            section {
+                padding: 70px 0;
             }
 
-            .trust-item {
-                border-right: 0;
-
-                border-bottom:
-                    1px solid var(--border);
-
-                padding: 13px 0;
+            .feature-card,
+            .step {
+                padding: 25px;
             }
 
-            .trust-item:last-child {
-                border-bottom: 0;
+            .plan-card {
+                padding: 30px 22px;
             }
 
-            .about,
-            .features {
-                padding: 80px 0;
+            .percent {
+                font-size: 54px;
             }
 
-            .section-title {
-                font-size: 36px;
-            }
-
-            .cta-section {
-                padding-bottom: 80px;
-            }
-
-            .cta {
-                padding: 34px 25px;
-
-                flex-direction: column;
-
-                align-items: flex-start;
-
-                border-radius: 22px;
+            .bar {
+                width: 31px;
             }
 
             .footer-inner {
                 flex-direction: column;
+                text-align: center;
+            }
 
-                align-items: flex-start;
-
-                gap: 16px;
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
             }
         }
 
@@ -1377,738 +1472,820 @@
 
 <body>
 
+    <!-- =========================================================
+         BACKGROUND
+         ========================================================= -->
 
-<!-- =========================================================
-     HEADER
-========================================================= -->
-
-<header class="site-header">
-
-    <div class="container header-inner">
-
-
-        <a href="index.html" class="brand">
-
-            <!-- FINORA GEOMETRIC F -->
-            <svg
-                class="brand-mark"
-                viewBox="0 0 100 120"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-label="FINORA">
-
-                <defs>
-
-                    <linearGradient
-                        id="goldGradient"
-                        x1="0%"
-                        y1="0%"
-                        x2="100%"
-                        y2="100%">
-
-                        <stop
-                            offset="0%"
-                            stop-color="#f6df86"/>
-
-                        <stop
-                            offset="50%"
-                            stop-color="#d8b44b"/>
-
-                        <stop
-                            offset="100%"
-                            stop-color="#9b701d"/>
-
-                    </linearGradient>
-
-                </defs>
-
-                <!-- Main geometric F -->
-                <path
-                    class="gold-main"
-                    d="
-                        M16 7
-                        C16 4 18 2 21 2
-                        H84
-                        C87 2 89 4 89 7
-                        V23
-                        H39
-                        V39
-                        H76
-                        V55
-                        H39
-                        V113
-                        H16
-                        Z
-                    "
-                />
-
-                <!-- Small internal highlight -->
-                <path
-                    class="gold-highlight"
-                    d="
-                        M22 9
-                        H80
-                        V13
-                        H22
-                        Z
-                    "
-                />
-
-            </svg>
-
-
-            <div>
-
-                <div class="brand-name">
-                    FIN<span>ORA</span>
-                </div>
-
-                <div class="brand-motto">
-                    INVEST • GROW • EARN
-                </div>
-
-            </div>
-
-        </a>
-
-
-        <nav class="desktop-nav">
-
-            <a href="#home">
-                Home
-            </a>
-
-            <a href="#about">
-                About
-            </a>
-
-            <a href="#features">
-                Why Finora
-            </a>
-
-        </nav>
-
-
-        <div class="header-actions">
-
-            <a
-                href="login.html"
-                class="login-link">
-
-                Login
-
-            </a>
-
-
-            <a
-                href="register.html"
-                class="signup-link">
-
-                Get Started
-
-            </a>
-
-        </div>
-
+    <div class="background-glow">
+        <div class="glow glow-one"></div>
+        <div class="glow glow-two"></div>
+        <div class="glow glow-three"></div>
     </div>
 
-</header>
+
+    <!-- =========================================================
+         HEADER
+         ========================================================= -->
+
+    <header>
+
+        <div class="container">
+
+            <nav class="navbar">
+
+                <a href="index.html" class="brand">
+
+                    <!-- REAL FINORA F LOGO -->
+                    <img
+                        src="assets/finora-f.png"
+                        alt="FINORA"
+                        class="brand-logo"
+                    >
+
+                    <div>
+                        <div class="brand-name">
+                            FINORA
+                        </div>
+
+                        <div class="brand-tagline">
+                            INVEST • GROW • EARN
+                        </div>
+                    </div>
+
+                </a>
 
 
+                <div class="desktop-nav">
 
-<!-- =========================================================
-     MAIN
-========================================================= -->
+                    <a href="#home">
+                        Home
+                    </a>
 
-<main>
+                    <a href="#about">
+                        Why FINORA
+                    </a>
 
+                    <a href="#how-it-works">
+                        How It Works
+                    </a>
 
-    <!-- =====================================================
-         HERO
-    ====================================================== -->
-
-    <section class="hero" id="home">
-
-        <div class="container hero-grid">
-
-
-            <div class="hero-copy">
-
-                <div class="hero-label">
-
-                    <span class="hero-label-dot"></span>
-
-                    Premium Financial Experience
+                    <a href="#plans">
+                        Plans
+                    </a>
 
                 </div>
 
 
-                <h1 class="hero-title">
+                <div class="nav-actions">
 
-                    A smarter way to
-                    <strong>grow your future.</strong>
-
-                </h1>
-
-
-                <p class="hero-description">
-
-                    FINORA brings a modern financial experience
-                    into one beautifully connected platform —
-                    designed around simplicity, clarity and growth.
-
-                </p>
-
-
-                <div class="hero-actions">
+                    <a
+                        href="login.html"
+                        class="login-btn"
+                    >
+                        Login
+                    </a>
 
                     <a
                         href="register.html"
-                        class="button-primary">
-
-                        Create Your Account
-
+                        class="register-btn"
+                    >
+                        Create Account
                     </a>
 
-
-                    <a
-                        href="#about"
-                        class="button-secondary">
-
-                        Explore FINORA
-
-                    </a>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- BRAND PRESENTATION -->
-
-            <div class="hero-art">
-
-                <div class="art-glow"></div>
-
-                <div class="art-ring"></div>
-
-
-                <div class="brand-panel">
-
-
-                    <div class="panel-logo">
-
-                        <svg
-                            viewBox="0 0 100 120"
-                            xmlns="http://www.w3.org/2000/svg">
-
-                            <defs>
-
-                                <linearGradient
-                                    id="panelGold"
-                                    x1="0%"
-                                    y1="0%"
-                                    x2="100%"
-                                    y2="100%">
-
-                                    <stop
-                                        offset="0%"
-                                        stop-color="#f6df86"/>
-
-                                    <stop
-                                        offset="50%"
-                                        stop-color="#d8b44b"/>
-
-                                    <stop
-                                        offset="100%"
-                                        stop-color="#9b701d"/>
-
-                                </linearGradient>
-
-                            </defs>
-
-
-                            <path
-                                fill="url(#panelGold)"
-                                d="
-                                    M16 7
-                                    C16 4 18 2 21 2
-                                    H84
-                                    C87 2 89 4 89 7
-                                    V23
-                                    H39
-                                    V39
-                                    H76
-                                    V55
-                                    H39
-                                    V113
-                                    H16
-                                    Z
-                                "
-                            />
-
-                        </svg>
-
-                    </div>
-
-
-                    <div class="panel-name">
-                        FIN<span>ORA</span>
-                    </div>
-
-
-                    <div class="panel-motto">
-                        INVEST • GROW • EARN
-                    </div>
-
-
-                    <div class="panel-line"></div>
-
-
-                    <p class="panel-description">
-
-                        Your financial journey, brought together
-                        through a refined digital experience built
-                        for modern users.
-
-                    </p>
-
-
-                    <div class="panel-footer">
-
-                        <div class="panel-status">
-
-                            <span class="panel-status-dot"></span>
-
-                            FINORA
-
-                        </div>
-
-
-                        <div class="panel-year">
-                            2026
-                        </div>
-
-                    </div>
+                    <button
+                        class="menu-btn"
+                        id="menuBtn"
+                        aria-label="Open menu"
+                    >
+                        ☰
+                    </button>
 
                 </div>
 
-            </div>
+            </nav>
 
-        </div>
 
-    </section>
+            <div
+                class="mobile-menu"
+                id="mobileMenu"
+            >
 
+                <a href="#home">
+                    Home
+                </a>
 
-
-    <!-- =====================================================
-         TRUST / VALUE STRIP
-    ====================================================== -->
-
-    <section class="trust-strip">
-
-        <div class="container trust-inner">
-
-
-            <div class="trust-item">
-
-                <div class="trust-number">
-                    01
-                </div>
-
-                <div class="trust-label">
-                    Simple Experience
-                </div>
-
-            </div>
-
-
-            <div class="trust-item">
-
-                <div class="trust-number">
-                    02
-                </div>
-
-                <div class="trust-label">
-                    Built For Growth
-                </div>
-
-            </div>
-
-
-            <div class="trust-item">
-
-                <div class="trust-number">
-                    03
-                </div>
-
-                <div class="trust-label">
-                    One Connected Platform
-                </div>
-
-            </div>
-
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         ABOUT
-    ====================================================== -->
-
-    <section class="about" id="about">
-
-        <div class="container about-grid">
-
-
-            <div>
-
-                <div class="section-kicker">
-                    The FINORA Experience
-                </div>
-
-
-                <h2 class="section-title">
-
-                    Everything you need.
-                    <span class="gold">
-                        Beautifully connected.
-                    </span>
-
-                </h2>
-
-
-                <p class="section-text">
-
-                    FINORA is designed to make your financial
-                    experience feel clear and effortless.
-                    From your personal account to the tools
-                    available inside the platform, everything
-                    belongs to one consistent experience.
-
-                </p>
-
-            </div>
-
-
-
-            <div class="about-highlight">
-
-
-                <div class="highlight-top">
-
-                    <div class="highlight-title">
-                        The FINORA Difference
-                    </div>
-
-                    <div class="highlight-mark">
-                        ✦
-                    </div>
-
-                </div>
-
-
-                <div class="highlight-line"></div>
-
-
-                <div class="highlight-list">
-
-
-                    <div class="highlight-item">
-
-                        <div class="highlight-icon">
-                            01
-                        </div>
-
-                        <div>
-
-                            <strong>
-                                Clear by design
-                            </strong>
-
-                            <p>
-                                Important information stays
-                                simple and easy to understand.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="highlight-item">
-
-                        <div class="highlight-icon">
-                            02
-                        </div>
-
-                        <div>
-
-                            <strong>
-                                Premium by nature
-                            </strong>
-
-                            <p>
-                                A carefully crafted interface
-                                gives every interaction a
-                                refined feel.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="highlight-item">
-
-                        <div class="highlight-icon">
-                            03
-                        </div>
-
-                        <div>
-
-                            <strong>
-                                Designed for the journey
-                            </strong>
-
-                            <p>
-                                Your experience remains consistent
-                                as you move through FINORA.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         FEATURES
-    ====================================================== -->
-
-    <section class="features" id="features">
-
-        <div class="container">
-
-
-            <div class="features-heading">
-
-                <div class="section-kicker">
+                <a href="#about">
                     Why FINORA
-                </div>
+                </a>
 
+                <a href="#how-it-works">
+                    How It Works
+                </a>
 
-                <h2 class="section-title">
-                    Built around your
-                    <span class="gold">
-                        financial journey.
-                    </span>
-                </h2>
+                <a href="#plans">
+                    Plans
+                </a>
 
+                <a href="login.html">
+                    Login
+                </a>
 
-                <p class="section-text">
-
-                    A focused experience that brings the
-                    essential parts of your financial journey
-                    together without unnecessary complexity.
-
-                </p>
-
-            </div>
-
-
-
-            <div class="feature-grid">
-
-
-                <article class="feature-card">
-
-                    <div class="feature-number">
-                        FINORA / 01
-                    </div>
-
-
-                    <h3>
-                        Personal Experience
-                    </h3>
-
-
-                    <p>
-
-                        A dedicated space designed around
-                        your account, activity and financial
-                        goals.
-
-                    </p>
-
-                </article>
-
-
-                <article class="feature-card">
-
-                    <div class="feature-number">
-                        FINORA / 02
-                    </div>
-
-
-                    <h3>
-                        Financial Growth
-                    </h3>
-
-
-                    <p>
-
-                        Discover tools and opportunities
-                        designed to support your financial
-                        growth.
-
-                    </p>
-
-                </article>
-
-
-                <article class="feature-card">
-
-                    <div class="feature-number">
-                        FINORA / 03
-                    </div>
-
-
-                    <h3>
-                        Connected Simplicity
-                    </h3>
-
-
-                    <p>
-
-                        One consistent experience across
-                        the platform, from your first visit
-                        onward.
-
-                    </p>
-
-                </article>
-
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         CALL TO ACTION
-    ====================================================== -->
-
-    <section class="cta-section">
-
-        <div class="container">
-
-            <div class="cta">
-
-
-                <div>
-
-                    <div class="section-kicker">
-                        Your Journey Starts Here
-                    </div>
-
-
-                    <h2>
-                        Welcome to FINORA.
-                    </h2>
-
-
-                    <p>
-                        Invest. Grow. Earn.
-                    </p>
-
-                </div>
-
-
-                <a
-                    href="register.html"
-                    class="button-primary">
-
-                    Create Your Account
-
+                <a href="register.html">
+                    Create Account
                 </a>
 
             </div>
 
         </div>
 
-    </section>
-
-</main>
+    </header>
 
 
 
-<!-- =========================================================
-     FOOTER
-========================================================= -->
+    <!-- =========================================================
+         HERO / WELCOME
+         ========================================================= -->
 
-<footer class="site-footer">
+    <main>
 
-    <div class="container footer-inner">
+        <section
+            class="hero"
+            id="home"
+        >
+
+            <div class="container">
+
+                <div class="hero-grid">
 
 
-        <div class="footer-brand">
+                    <div class="hero-content">
 
-            <svg
-                viewBox="0 0 100 120"
-                xmlns="http://www.w3.org/2000/svg">
+                        <div class="eyebrow">
 
-                <path
-                    fill="#d8b44b"
-                    d="
-                        M16 7
-                        C16 4 18 2 21 2
-                        H84
-                        C87 2 89 4 89 7
-                        V23
-                        H39
-                        V39
-                        H76
-                        V55
-                        H39
-                        V113
-                        H16
-                        Z
-                    "
-                />
+                            <span class="eyebrow-dot"></span>
 
-            </svg>
+                            SMARTER INVESTING STARTS HERE
 
-            FINORA
+                        </div>
+
+
+                        <h1>
+
+                            <span class="white">
+                                INVEST
+                            </span>
+
+                            <span class="gold">
+                                SMART.
+                            </span>
+
+                            <br>
+
+                            <span class="white">
+                                GROW
+                            </span>
+
+                            <span class="gold">
+                                BOLD.
+                            </span>
+
+                        </h1>
+
+
+                        <p class="hero-description">
+
+                            Welcome to FINORA — a modern investment
+                            platform designed to give you a simple,
+                            transparent and engaging way to manage
+                            your investment journey.
+
+                        </p>
+
+
+                        <div class="hero-buttons">
+
+                            <a
+                                href="register.html"
+                                class="primary-btn"
+                            >
+                                START INVESTING
+                                <span>→</span>
+                            </a>
+
+                            <a
+                                href="#how-it-works"
+                                class="secondary-btn"
+                            >
+                                EXPLORE FINORA
+                            </a>
+
+                        </div>
+
+
+                        <div class="hero-note">
+
+                            <span>✦</span>
+
+                            Simple experience • Powerful tools •
+                            Built for growth
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         HERO VISUAL
+                         ================================================= -->
+
+                    <div class="hero-visual">
+
+                        <div class="visual-ring"></div>
+
+
+                        <div class="vault-card">
+
+                            <div>
+
+                                <div class="visual-top">
+
+                                    <div class="mini-label">
+                                        FINORA SMART INVESTING
+                                    </div>
+
+                                    <div class="security-badge">
+                                        ✓
+                                    </div>
+
+                                </div>
+
+
+                                <div class="visual-title">
+                                    Your money.
+                                    <span>
+                                        Your growth.
+                                    </span>
+                                </div>
+
+
+                                <div class="growth-graph">
+
+                                    <svg
+                                        viewBox="0 0 400 140"
+                                        preserveAspectRatio="none"
+                                    >
+
+                                        <defs>
+
+                                            <linearGradient
+                                                id="goldGradient"
+                                                x1="0"
+                                                y1="0"
+                                                x2="1"
+                                                y2="0"
+                                            >
+
+                                                <stop
+                                                    offset="0%"
+                                                    stop-color="#b9780b"
+                                                />
+
+                                                <stop
+                                                    offset="50%"
+                                                    stop-color="#ffd866"
+                                                />
+
+                                                <stop
+                                                    offset="100%"
+                                                    stop-color="#f5b72c"
+                                                />
+
+                                            </linearGradient>
+
+                                        </defs>
+
+
+                                        <path
+                                            class="graph-line"
+                                            d="
+                                                M 0 118
+                                                C 45 110,
+                                                  55 105,
+                                                  85 112
+
+                                                C 115 120,
+                                                  130 80,
+                                                  160 88
+
+                                                C 190 95,
+                                                  205 58,
+                                                  230 66
+
+                                                C 260 76,
+                                                  270 38,
+                                                  300 48
+
+                                                C 330 58,
+                                                  350 20,
+                                                  400 8
+                                            "
+                                        />
+
+                                    </svg>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="visual-bottom">
+
+                                <div class="visual-stat">
+
+                                    <strong>
+                                        FINORA
+                                    </strong>
+
+                                    <small>
+                                        INVEST • GROW • EARN
+                                    </small>
+
+                                </div>
+
+
+                                <div class="coin-stack">
+
+                                    <div class="coin"></div>
+                                    <div class="coin"></div>
+                                    <div class="coin"></div>
+                                    <div class="coin"></div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================================
+             TRUST STRIP
+             ========================================================= -->
+
+        <div class="trust-strip">
+
+            <div class="container">
+
+                <div class="trust-content">
+
+                    <div class="trust-item">
+                        <span class="trust-check">✓</span>
+                        <strong>Simple</strong>
+                        investment experience
+                    </div>
+
+                    <div class="trust-item">
+                        <span class="trust-check">✓</span>
+                        <strong>Clear</strong>
+                        account information
+                    </div>
+
+                    <div class="trust-item">
+                        <span class="trust-check">✓</span>
+                        <strong>Mobile</strong>
+                        friendly platform
+                    </div>
+
+                    <div class="trust-item">
+                        <span class="trust-check">✓</span>
+                        <strong>24/7</strong>
+                        platform access
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
 
-        <div class="footer-copy">
 
-            © 2026 FINORA. All rights reserved.
+        <!-- =========================================================
+             WHY FINORA
+             ========================================================= -->
+
+        <section id="about">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <div class="section-kicker">
+                        WHY FINORA
+                    </div>
+
+                    <h2>
+                        Built to make investing
+                        <span style="color:#f5b72c;">
+                            feel simpler.
+                        </span>
+                    </h2>
+
+                    <p>
+                        FINORA brings the essential tools of your
+                        investment journey into one clean,
+                        modern experience.
+                    </p>
+
+                </div>
+
+
+                <div class="features">
+
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon">
+                            ◈
+                        </div>
+
+                        <h3>
+                            Simple Experience
+                        </h3>
+
+                        <p>
+                            Navigate your account, explore available
+                            plans and manage your investment journey
+                            without unnecessary complexity.
+                        </p>
+
+                    </div>
+
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon">
+                            ↗
+                        </div>
+
+                        <h3>
+                            Growth Focused
+                        </h3>
+
+                        <p>
+                            Discover investment opportunities designed
+                            around clear plans, understandable terms
+                            and an easy-to-follow experience.
+                        </p>
+
+                    </div>
+
+
+                    <div class="feature-card">
+
+                        <div class="feature-icon">
+                            ◉
+                        </div>
+
+                        <h3>
+                            Always Connected
+                        </h3>
+
+                        <p>
+                            Access your FINORA account from your phone
+                            or computer and stay connected to your
+                            investment activity.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================================
+             HOW IT WORKS
+             ========================================================= -->
+
+        <section id="how-it-works">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <div class="section-kicker">
+                        HOW IT WORKS
+                    </div>
+
+                    <h2>
+                        Your journey starts
+                        <span style="color:#f5b72c;">
+                            in three steps.
+                        </span>
+                    </h2>
+
+                    <p>
+                        Getting started with FINORA is designed to
+                        be straightforward from registration to
+                        managing your investments.
+                    </p>
+
+                </div>
+
+
+                <div class="steps">
+
+
+                    <div class="step">
+
+                        <span class="step-number">
+                            01
+                        </span>
+
+                        <h3>
+                            Create Your Account
+                        </h3>
+
+                        <p>
+                            Register for your FINORA account and
+                            complete the required account information.
+                        </p>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <span class="step-number">
+                            02
+                        </span>
+
+                        <h3>
+                            Choose a Plan
+                        </h3>
+
+                        <p>
+                            Explore the available investment plans
+                            and select one that matches your
+                            investment goals.
+                        </p>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <span class="step-number">
+                            03
+                        </span>
+
+                        <h3>
+                            Track Your Journey
+                        </h3>
+
+                        <p>
+                            Use your FINORA account to monitor your
+                            investments, earnings and account activity.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================================
+             PLAN PREVIEW
+             ========================================================= -->
+
+        <section
+            class="plan-section"
+            id="plans"
+        >
+
+            <div class="container">
+
+                <div class="plan-card">
+
+
+                    <div>
+
+                        <div class="plan-badge">
+                            PREMIUM PLAN
+                        </div>
+
+                        <h2>
+                            Make every
+                            <span>
+                                step
+                            </span>
+                            count.
+                        </h2>
+
+                        <p>
+                            Explore FINORA investment plans and discover
+                            a structured way to put your money to work.
+                            Plan details, durations and applicable
+                            terms are presented clearly before you
+                            invest.
+                        </p>
+
+                        <a
+                            href="register.html"
+                            class="primary-btn"
+                        >
+                            VIEW PLANS
+                            <span>→</span>
+                        </a>
+
+                    </div>
+
+
+                    <div class="plan-visual">
+
+                        <div class="bars">
+
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+
+                        </div>
+
+                        <div class="percent">
+                            %
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================================
+             FINAL CTA
+             ========================================================= -->
+
+        <section class="cta">
+
+            <div class="container">
+
+                <div class="cta-card">
+
+                    <div class="section-kicker">
+                        START YOUR JOURNEY
+                    </div>
+
+                    <h2>
+                        Ready to discover
+                        <span style="color:#f5b72c;">
+                            FINORA?
+                        </span>
+                    </h2>
+
+                    <p>
+                        Create your account and enter a modern
+                        investment experience built around simplicity,
+                        clarity and growth.
+                    </p>
+
+
+                    <div class="cta-buttons">
+
+                        <a
+                            href="register.html"
+                            class="primary-btn"
+                        >
+                            CREATE ACCOUNT
+                            <span>→</span>
+                        </a>
+
+                        <a
+                            href="login.html"
+                            class="secondary-btn"
+                        >
+                            LOGIN
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =========================================================
+         FOOTER
+         ========================================================= -->
+
+    <footer>
+
+        <div class="container">
+
+            <div class="footer-inner">
+
+                <div class="footer-brand">
+
+                    © 2026
+                    <strong>FINORA</strong>.
+                    All rights reserved.
+
+                </div>
+
+
+                <div class="footer-links">
+
+                    <a href="#">
+                        Privacy
+                    </a>
+
+                    <a href="#">
+                        Terms
+                    </a>
+
+                    <a href="#">
+                        Support
+                    </a>
+
+                </div>
+
+            </div>
 
         </div>
 
-    </div>
+    </footer>
 
-</footer>
 
+
+    <!-- =========================================================
+         JAVASCRIPT
+         ========================================================= -->
+
+    <script>
+
+        const menuBtn =
+            document.getElementById("menuBtn");
+
+        const mobileMenu =
+            document.getElementById("mobileMenu");
+
+
+        menuBtn.addEventListener(
+            "click",
+            function () {
+
+                mobileMenu.classList.toggle(
+                    "active"
+                );
+
+            }
+        );
+
+
+        document
+            .querySelectorAll(".mobile-menu a")
+            .forEach(function (link) {
+
+                link.addEventListener(
+                    "click",
+                    function () {
+
+                        mobileMenu.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
+            });
+
+    </script>
 
 </body>
 </html>
