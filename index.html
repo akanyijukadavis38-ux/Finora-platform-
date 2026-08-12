@@ -5,23 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta name="description"
-          content="Finora — a modern digital financial platform designed for a premium user experience.">
+          content="Finora — a premium digital financial platform.">
 
     <title>Finora | Your Financial Future</title>
 
     <style>
         :root {
-            --bg: #08060f;
-            --bg-soft: #0d0918;
-            --card: #120d1e;
-            --card-light: #1a1128;
-            --purple: #6f35a4;
-            --purple-light: #9d5ed1;
-            --gold: #e8c45d;
-            --gold-light: #f4d77d;
-            --text: #ffffff;
-            --muted: #a7a1b2;
-            --border: rgba(232, 196, 93, 0.16);
+            --black: #08060d;
+            --black-soft: #0e0a16;
+            --purple: #6f2f9f;
+            --purple-light: #a85ed0;
+            --gold: #e5bd52;
+            --gold-light: #f5d879;
+            --white: #ffffff;
+            --text: #eeeaf2;
+            --muted: #a29baa;
+            --border: rgba(255,255,255,0.08);
         }
 
         * {
@@ -36,8 +35,8 @@
 
         body {
             font-family: Arial, Helvetica, sans-serif;
-            background: var(--bg);
-            color: var(--text);
+            background: var(--black);
+            color: var(--white);
             overflow-x: hidden;
         }
 
@@ -46,23 +45,21 @@
             color: inherit;
         }
 
-        button {
-            font-family: inherit;
-        }
-
         /* =========================
            HEADER
         ========================= */
 
-        .header {
+        header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 74px;
+            height: 76px;
             z-index: 1000;
-            background: rgba(8, 6, 15, 0.88);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+            background: rgba(8, 6, 13, 0.88);
+            border-bottom: 1px solid var(--border);
+
             backdrop-filter: blur(18px);
         }
 
@@ -74,60 +71,80 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 20px;
         }
 
-        .brand {
+        /* =========================
+           FINORA LOGO
+        ========================= */
+
+        .logo {
             display: flex;
             align-items: center;
             gap: 11px;
-            font-size: 23px;
-            font-weight: 800;
-            letter-spacing: 0.4px;
         }
 
-        .brand-symbol {
-            width: 39px;
-            height: 39px;
-            border-radius: 12px;
+        .logo-mark {
+            width: 42px;
+            height: 42px;
+            position: relative;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
+            border-radius: 12px;
+
             background:
                 linear-gradient(
                     145deg,
-                    var(--gold-light),
-                    #b57b1e
+                    #f4d778,
+                    #b98224
                 );
 
-            color: #120b18;
-            font-size: 20px;
-            font-weight: 900;
-
             box-shadow:
-                0 8px 25px rgba(213, 168, 54, 0.18);
+                0 8px 25px rgba(225, 183, 75, 0.20);
         }
 
-        .brand-name {
-            color: #ffffff;
+        /*
+           Stylized Finora F
+           Created completely with SVG,
+           so it stays sharp at every size.
+        */
+
+        .logo-mark svg {
+            width: 29px;
+            height: 29px;
         }
 
-        .brand-name span {
+        .logo-mark path {
+            fill: #17101c;
+        }
+
+        .logo-text {
+            font-size: 23px;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+        }
+
+        .logo-text span {
             color: var(--gold);
         }
+
+        /* =========================
+           NAVIGATION
+        ========================= */
 
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 29px;
+            gap: 30px;
         }
 
         .nav-links a {
-            color: #bdb7c7;
+            color: #b8b1c0;
             font-size: 13px;
             font-weight: 600;
+
             transition: 0.25s ease;
         }
 
@@ -135,15 +152,16 @@
             color: var(--gold);
         }
 
-        .nav-actions {
+        .nav-buttons {
             display: flex;
             align-items: center;
-            gap: 9px;
+            gap: 10px;
         }
 
-        .login-btn {
-            padding: 10px 16px;
-            border: 1px solid rgba(232, 196, 93, 0.25);
+        .login {
+            padding: 10px 17px;
+
+            border: 1px solid rgba(229,189,82,0.24);
             border-radius: 9px;
 
             color: var(--gold);
@@ -151,23 +169,22 @@
             font-weight: 700;
         }
 
-        .register-btn {
-            padding: 11px 17px;
+        .register {
+            padding: 11px 18px;
+
             border-radius: 9px;
 
             background:
                 linear-gradient(
                     135deg,
                     var(--gold-light),
-                    #b77918
+                    #b77d20
                 );
 
-            color: #120b17;
+            color: #140c18;
+
             font-size: 12px;
             font-weight: 800;
-
-            box-shadow:
-                0 8px 22px rgba(192, 139, 35, 0.16);
         }
 
         /* =========================
@@ -176,40 +193,39 @@
 
         .hero {
             min-height: 100vh;
-            padding: 140px 16px 75px;
+            padding: 150px 16px 90px;
 
             position: relative;
             overflow: hidden;
 
             background:
                 radial-gradient(
-                    circle at 78% 20%,
-                    rgba(105, 47, 157, 0.28),
-                    transparent 33%
+                    circle at 78% 25%,
+                    rgba(105, 42, 154, 0.28),
+                    transparent 32%
                 ),
                 radial-gradient(
-                    circle at 12% 78%,
-                    rgba(85, 34, 128, 0.18),
+                    circle at 10% 85%,
+                    rgba(84, 31, 124, 0.18),
                     transparent 30%
                 ),
-                var(--bg);
+                var(--black);
         }
 
         .hero::before {
             content: "";
+
             position: absolute;
 
-            width: 520px;
-            height: 520px;
+            width: 500px;
+            height: 500px;
 
-            top: -220px;
-            right: -160px;
+            top: -250px;
+            right: -170px;
 
             border-radius: 50%;
 
-            border: 1px solid rgba(232, 196, 93, 0.08);
-            box-shadow:
-                0 0 100px rgba(119, 58, 166, 0.08);
+            border: 1px solid rgba(229,189,82,0.08);
         }
 
         .hero-container {
@@ -217,33 +233,32 @@
             margin: auto;
 
             display: grid;
-            grid-template-columns: 1.03fr 0.97fr;
+            grid-template-columns: 1.08fr 0.92fr;
 
             align-items: center;
-
-            gap: 55px;
+            gap: 65px;
 
             position: relative;
             z-index: 2;
         }
 
         .hero-content {
-            max-width: 680px;
+            max-width: 690px;
         }
 
-        .eyebrow {
+        .badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
 
-            padding: 8px 13px;
+            padding: 8px 14px;
 
-            border-radius: 999px;
+            border-radius: 50px;
 
-            background: rgba(232, 196, 93, 0.055);
-            border: 1px solid rgba(232, 196, 93, 0.2);
+            background: rgba(229,189,82,0.055);
+            border: 1px solid rgba(229,189,82,0.20);
 
-            color: #e5c568;
+            color: var(--gold-light);
 
             font-size: 10px;
             font-weight: 800;
@@ -252,7 +267,7 @@
             letter-spacing: 1.3px;
         }
 
-        .eyebrow-dot {
+        .badge-dot {
             width: 6px;
             height: 6px;
 
@@ -261,15 +276,15 @@
             background: var(--gold);
 
             box-shadow:
-                0 0 12px rgba(232, 196, 93, 0.9);
+                0 0 12px var(--gold);
         }
 
         .hero h1 {
-            margin-top: 23px;
+            margin-top: 24px;
 
-            font-size: clamp(44px, 6vw, 76px);
+            font-size: clamp(46px, 6vw, 76px);
 
-            line-height: 1.01;
+            line-height: 1.02;
 
             letter-spacing: -3px;
 
@@ -277,35 +292,34 @@
         }
 
         .hero h1 span {
+            display: block;
             color: var(--gold);
         }
 
         .hero-description {
-            max-width: 600px;
+            max-width: 620px;
 
             margin-top: 24px;
 
             color: var(--muted);
 
             font-size: 16px;
-
             line-height: 1.8;
         }
 
-        .hero-actions {
+        .hero-buttons {
             display: flex;
             flex-wrap: wrap;
-
             gap: 12px;
 
-            margin-top: 31px;
+            margin-top: 32px;
         }
 
-        .main-btn,
-        .outline-btn {
-            min-height: 51px;
+        .primary-btn,
+        .secondary-btn {
+            min-height: 52px;
 
-            padding: 0 23px;
+            padding: 0 24px;
 
             display: inline-flex;
             align-items: center;
@@ -316,287 +330,233 @@
             font-size: 13px;
             font-weight: 800;
 
-            transition:
-                transform 0.2s ease,
-                box-shadow 0.2s ease;
+            transition: 0.25s ease;
         }
 
-        .main-btn {
+        .primary-btn {
             background:
                 linear-gradient(
                     135deg,
-                    #f1d16f,
-                    #b77b1a
+                    var(--gold-light),
+                    #b77c20
                 );
 
-            color: #120b17;
+            color: #140c18;
 
             box-shadow:
-                0 13px 32px rgba(198, 143, 31, 0.2);
+                0 13px 30px rgba(190,140,35,0.18);
         }
 
-        .outline-btn {
-            border: 1px solid rgba(232, 196, 93, 0.25);
-            background: rgba(255, 255, 255, 0.025);
-            color: #eeeaf1;
+        .secondary-btn {
+            background: rgba(255,255,255,0.025);
+
+            border: 1px solid rgba(229,189,82,0.23);
+
+            color: var(--text);
         }
 
-        .main-btn:hover,
-        .outline-btn:hover {
+        .primary-btn:hover,
+        .secondary-btn:hover {
             transform: translateY(-2px);
         }
 
         /* =========================
-           HERO CARD
+           HERO VISUAL
         ========================= */
 
-        .hero-card {
-            min-height: 500px;
+        .hero-visual {
+            min-height: 470px;
 
             position: relative;
-            overflow: hidden;
 
-            border-radius: 27px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-            border: 1px solid rgba(232, 196, 93, 0.2);
+        .glow {
+            position: absolute;
+
+            width: 390px;
+            height: 390px;
+
+            border-radius: 50%;
 
             background:
-                linear-gradient(
-                    145deg,
-                    rgba(69, 29, 102, 0.98),
-                    rgba(17, 10, 28, 0.98)
+                radial-gradient(
+                    circle,
+                    rgba(119,51,169,0.30),
+                    transparent 68%
                 );
-
-            box-shadow:
-                0 35px 90px rgba(0, 0, 0, 0.48);
         }
 
-        .hero-card::before {
-            content: "";
-
-            position: absolute;
-
-            width: 340px;
-            height: 340px;
-
-            top: -120px;
-            right: -110px;
-
-            border-radius: 50%;
-
-            background:
-                rgba(232, 196, 93, 0.09);
-
-            filter: blur(2px);
-        }
-
-        .hero-card::after {
-            content: "";
-
-            position: absolute;
-
-            width: 260px;
-            height: 260px;
-
-            left: -120px;
-            bottom: -130px;
-
-            border-radius: 50%;
-
-            background:
-                rgba(119, 57, 166, 0.28);
-        }
-
-        .hero-card-content {
-            min-height: 500px;
-
-            padding: 32px;
+        .visual-card {
+            width: min(410px, 100%);
+            min-height: 420px;
 
             position: relative;
             z-index: 2;
 
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            padding: 34px;
+
+            border-radius: 28px;
+
+            border: 1px solid rgba(229,189,82,0.19);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(49,21,69,0.96),
+                    rgba(14,9,21,0.98)
+                );
+
+            box-shadow:
+                0 35px 80px rgba(0,0,0,0.48);
         }
 
-        .card-top {
+        .visual-logo {
+            width: 72px;
+            height: 72px;
+
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    var(--gold-light),
+                    #b77e21
+                );
+
+            box-shadow:
+                0 15px 35px rgba(225,183,75,0.17);
         }
 
-        .card-brand {
-            font-size: 15px;
-            font-weight: 900;
-            letter-spacing: 1.5px;
+        .visual-logo svg {
+            width: 48px;
+            height: 48px;
+        }
+
+        .visual-logo path {
+            fill: #17101c;
+        }
+
+        .visual-card h2 {
+            margin-top: 35px;
+
+            font-size: 34px;
+            line-height: 1.1;
+
+            letter-spacing: -1px;
+        }
+
+        .visual-card h2 span {
             color: var(--gold);
         }
 
-        .card-tag {
-            padding: 7px 10px;
+        .visual-card p {
+            margin-top: 16px;
 
-            border-radius: 7px;
+            color: #a49baa;
 
-            background: rgba(255, 255, 255, 0.055);
-            border: 1px solid rgba(255, 255, 255, 0.09);
+            font-size: 13px;
+            line-height: 1.8;
+        }
 
-            color: #c9c1d1;
+        .visual-line {
+            width: 100%;
+            height: 1px;
 
-            font-size: 9px;
+            margin: 27px 0;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(229,189,82,0.35),
+                    transparent
+                );
+        }
+
+        .visual-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .visual-pill {
+            padding: 9px 11px;
+
+            border-radius: 8px;
+
+            background: rgba(255,255,255,0.045);
+
+            border: 1px solid rgba(255,255,255,0.06);
+
+            color: #bbb4c2;
+
+            font-size: 10px;
             font-weight: 700;
         }
 
-        .card-main {
-            margin-top: 45px;
+        /* =========================
+           INTRO
+        ========================= */
+
+        .intro {
+            padding: 90px 16px;
+
+            background: var(--black-soft);
+
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
         }
 
-        .card-label {
-            color: #bcb2c8;
+        .intro-container {
+            width: min(1050px, 100%);
+            margin: auto;
+
+            text-align: center;
+        }
+
+        .section-label {
+            color: var(--gold);
 
             font-size: 10px;
             font-weight: 800;
 
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1.6px;
         }
 
-        .card-title {
-            margin-top: 12px;
+        .intro h2 {
+            margin-top: 13px;
 
-            font-size: clamp(34px, 4vw, 51px);
+            font-size: clamp(30px, 4vw, 46px);
 
-            line-height: 1.04;
+            line-height: 1.1;
 
-            font-weight: 850;
+            letter-spacing: -1.5px;
         }
 
-        .card-title span {
-            color: var(--gold);
-        }
+        .intro p {
+            max-width: 720px;
 
-        .card-copy {
-            max-width: 420px;
+            margin: 17px auto 0;
 
-            margin-top: 17px;
-
-            color: #bdb5c7;
-
-            font-size: 13px;
-
-            line-height: 1.75;
-        }
-
-        .card-line {
-            width: 100%;
-            height: 1px;
-
-            margin: 28px 0;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    rgba(232, 196, 93, 0.35),
-                    transparent
-                );
-        }
-
-        .card-points {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-
-            gap: 11px;
-        }
-
-        .point {
-            padding: 15px;
-
-            border-radius: 12px;
-
-            background: rgba(0, 0, 0, 0.18);
-
-            border: 1px solid rgba(255, 255, 255, 0.07);
-        }
-
-        .point small {
-            display: block;
-
-            color: #90899c;
-
-            font-size: 9px;
-            font-weight: 700;
-
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-        }
-
-        .point strong {
-            display: block;
-
-            margin-top: 5px;
-
-            color: #f0d06d;
-
-            font-size: 15px;
-        }
-
-        /* =========================
-           TRUST STRIP
-        ========================= */
-
-        .trust {
-            background: #0c0915;
-
-            border-top: 1px solid rgba(255, 255, 255, 0.055);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.055);
-        }
-
-        .trust-container {
-            width: min(1180px, calc(100% - 32px));
-
-            min-height: 100px;
-
-            margin: auto;
-
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-
-            align-items: center;
-        }
-
-        .trust-item {
-            text-align: center;
-
-            padding: 15px;
-
-            border-right: 1px solid rgba(255, 255, 255, 0.055);
-        }
-
-        .trust-item:last-child {
-            border-right: none;
-        }
-
-        .trust-item strong {
-            display: block;
+            color: var(--muted);
 
             font-size: 14px;
-        }
-
-        .trust-item span {
-            display: block;
-
-            margin-top: 4px;
-
-            color: #888292;
-
-            font-size: 10px;
+            line-height: 1.85;
         }
 
         /* =========================
-           SECTION
+           FEATURES
         ========================= */
 
-        .section {
+        .features {
             padding: 100px 16px;
         }
 
@@ -606,18 +566,8 @@
         }
 
         .section-heading {
-            max-width: 690px;
-            margin-bottom: 44px;
-        }
-
-        .section-kicker {
-            color: var(--gold);
-
-            font-size: 10px;
-            font-weight: 800;
-
-            text-transform: uppercase;
-            letter-spacing: 1.6px;
+            max-width: 700px;
+            margin-bottom: 42px;
         }
 
         .section-heading h2 {
@@ -631,53 +581,44 @@
         }
 
         .section-heading p {
-            margin-top: 15px;
+            margin-top: 14px;
 
-            color: #9891a1;
+            color: var(--muted);
 
             font-size: 14px;
-
             line-height: 1.8;
         }
 
-        /* =========================
-           FEATURES
-        ========================= */
-
         .feature-grid {
             display: grid;
-
             grid-template-columns: repeat(3, 1fr);
-
             gap: 17px;
         }
 
-        .feature-card {
-            min-height: 250px;
+        .feature {
+            min-height: 235px;
 
-            padding: 29px;
+            padding: 28px;
 
             border-radius: 18px;
-
-            border: 1px solid rgba(255, 255, 255, 0.07);
 
             background:
                 linear-gradient(
                     145deg,
-                    rgba(38, 19, 53, 0.8),
-                    rgba(14, 10, 20, 0.95)
+                    #1d1028,
+                    #0e0915
                 );
 
-            transition:
-                transform 0.25s ease,
-                border-color 0.25s ease;
+            border: 1px solid var(--border);
+
+            transition: 0.25s ease;
         }
 
-        .feature-card:hover {
-            transform: translateY(-4px);
+        .feature:hover {
+            transform: translateY(-5px);
 
             border-color:
-                rgba(232, 196, 93, 0.18);
+                rgba(229,189,82,0.20);
         }
 
         .feature-number {
@@ -685,235 +626,21 @@
 
             font-size: 11px;
             font-weight: 800;
-
-            letter-spacing: 1px;
         }
 
-        .feature-card h3 {
-            margin-top: 36px;
+        .feature h3 {
+            margin-top: 35px;
 
             font-size: 19px;
         }
 
-        .feature-card p {
+        .feature p {
             margin-top: 11px;
 
-            color: #928b9c;
+            color: #938c9c;
 
             font-size: 13px;
-
             line-height: 1.75;
-        }
-
-        /* =========================
-           PLATFORM PREVIEW
-        ========================= */
-
-        .preview-section {
-            padding: 20px 16px 100px;
-        }
-
-        .preview {
-            width: min(1180px, 100%);
-            margin: auto;
-
-            display: grid;
-            grid-template-columns: 0.9fr 1.1fr;
-
-            gap: 18px;
-        }
-
-        .preview-copy {
-            padding: 42px;
-
-            border-radius: 21px;
-
-            border: 1px solid rgba(232, 196, 93, 0.13);
-
-            background:
-                linear-gradient(
-                    145deg,
-                    #21102e,
-                    #0f0a17
-                );
-        }
-
-        .preview-copy h2 {
-            margin-top: 12px;
-
-            font-size: clamp(29px, 4vw, 43px);
-
-            line-height: 1.1;
-        }
-
-        .preview-copy p {
-            margin-top: 15px;
-
-            color: #9891a1;
-
-            font-size: 13px;
-
-            line-height: 1.8;
-        }
-
-        .preview-list {
-            margin-top: 25px;
-
-            display: grid;
-            gap: 10px;
-        }
-
-        .preview-list div {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-
-            color: #c5bfcc;
-
-            font-size: 12px;
-        }
-
-        .check {
-            width: 20px;
-            height: 20px;
-
-            flex: 0 0 20px;
-
-            display: grid;
-            place-items: center;
-
-            border-radius: 6px;
-
-            background: rgba(232, 196, 93, 0.11);
-
-            color: var(--gold);
-
-            font-size: 11px;
-            font-weight: 900;
-        }
-
-        .dashboard-preview {
-            min-height: 390px;
-
-            padding: 24px;
-
-            border-radius: 21px;
-
-            border: 1px solid rgba(232, 196, 93, 0.15);
-
-            background:
-                linear-gradient(
-                    145deg,
-                    #181020,
-                    #0d0914
-                );
-
-            box-shadow:
-                0 25px 60px rgba(0, 0, 0, 0.25);
-        }
-
-        .dashboard-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .dashboard-title {
-            font-size: 14px;
-            font-weight: 800;
-        }
-
-        .dashboard-menu {
-            width: 29px;
-            height: 29px;
-
-            border-radius: 8px;
-
-            background: rgba(255, 255, 255, 0.055);
-
-            display: grid;
-            place-items: center;
-
-            color: #aaa3b1;
-        }
-
-        .balance-card {
-            margin-top: 20px;
-
-            padding: 24px;
-
-            border-radius: 17px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #3a1854,
-                    #1c0f29
-                );
-
-            border: 1px solid rgba(232, 196, 93, 0.15);
-        }
-
-        .balance-card small {
-            color: #afa4bb;
-
-            font-size: 10px;
-        }
-
-        .balance {
-            margin-top: 8px;
-
-            color: var(--gold-light);
-
-            font-size: 31px;
-            font-weight: 850;
-        }
-
-        .balance-note {
-            margin-top: 4px;
-
-            color: #8f8799;
-
-            font-size: 10px;
-        }
-
-        .dashboard-actions {
-            margin-top: 16px;
-
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-
-            gap: 10px;
-        }
-
-        .dash-action {
-            padding: 16px 8px;
-
-            border-radius: 12px;
-
-            text-align: center;
-
-            background: rgba(255, 255, 255, 0.035);
-
-            border: 1px solid rgba(255, 255, 255, 0.055);
-        }
-
-        .dash-action strong {
-            display: block;
-
-            color: #eeeaf1;
-
-            font-size: 11px;
-        }
-
-        .dash-action span {
-            display: block;
-
-            margin-top: 4px;
-
-            color: #81798d;
-
-            font-size: 9px;
         }
 
         /* =========================
@@ -926,52 +653,47 @@
 
         .cta {
             width: min(1180px, 100%);
-
-            min-height: 300px;
+            min-height: 270px;
 
             margin: auto;
+            padding: 42px;
 
-            padding: 45px;
-
-            border-radius: 24px;
+            border-radius: 23px;
 
             display: flex;
             align-items: center;
             justify-content: space-between;
-
             gap: 30px;
-
-            border: 1px solid rgba(232, 196, 93, 0.17);
 
             background:
                 radial-gradient(
-                    circle at 85% 20%,
-                    rgba(232, 196, 93, 0.12),
-                    transparent 30%
+                    circle at 90% 20%,
+                    rgba(229,189,82,0.13),
+                    transparent 28%
                 ),
                 linear-gradient(
                     135deg,
-                    #2a123e,
-                    #100a18
+                    #29133b,
+                    #0f0916
                 );
+
+            border: 1px solid rgba(229,189,82,0.16);
         }
 
         .cta h2 {
-            max-width: 690px;
-
             margin-top: 11px;
 
-            font-size: clamp(29px, 4vw, 45px);
+            max-width: 650px;
+
+            font-size: clamp(29px, 4vw, 44px);
 
             line-height: 1.08;
         }
 
         .cta p {
-            max-width: 620px;
-
             margin-top: 12px;
 
-            color: #a39baa;
+            color: #a098a8;
 
             font-size: 13px;
         }
@@ -980,38 +702,37 @@
            FOOTER
         ========================= */
 
-        .footer {
+        footer {
             padding: 38px 16px;
 
-            border-top: 1px solid rgba(255, 255, 255, 0.055);
+            background: #06040a;
 
-            background: #07050c;
+            border-top: 1px solid var(--border);
         }
 
         .footer-container {
             width: min(1180px, 100%);
-
             margin: auto;
 
             display: flex;
             align-items: center;
             justify-content: space-between;
-
             gap: 20px;
         }
 
-        .footer-logo {
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
             color: var(--gold);
 
             font-size: 15px;
-            font-weight: 850;
-
-            letter-spacing: 0.7px;
+            font-weight: 800;
         }
 
-        .footer-text {
-            color: #706a78;
-
+        .footer-copy {
+            color: #6e6875;
             font-size: 10px;
         }
 
@@ -1019,7 +740,7 @@
            MOBILE
         ========================= */
 
-        @media (max-width: 950px) {
+        @media (max-width: 900px) {
 
             .nav-links {
                 display: none;
@@ -1033,11 +754,11 @@
                 max-width: 760px;
             }
 
-            .feature-grid {
-                grid-template-columns: 1fr;
+            .hero-visual {
+                min-height: 430px;
             }
 
-            .preview {
+            .feature-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -1047,38 +768,43 @@
             }
         }
 
-        @media (max-width: 620px) {
+        @media (max-width: 600px) {
 
-            .header {
-                height: 66px;
+            header {
+                height: 68px;
             }
 
             .nav {
                 width: calc(100% - 24px);
             }
 
-            .brand {
-                font-size: 20px;
-            }
-
-            .brand-symbol {
-                width: 35px;
-                height: 35px;
+            .logo-mark {
+                width: 37px;
+                height: 37px;
                 border-radius: 10px;
             }
 
-            .login-btn {
+            .logo-mark svg {
+                width: 25px;
+                height: 25px;
+            }
+
+            .logo-text {
+                font-size: 20px;
+            }
+
+            .login {
                 display: none;
             }
 
-            .register-btn {
+            .register {
                 padding: 9px 12px;
                 font-size: 10px;
             }
 
             .hero {
-                padding-top: 108px;
-                padding-bottom: 60px;
+                padding-top: 112px;
+                padding-bottom: 65px;
             }
 
             .hero h1 {
@@ -1090,58 +816,34 @@
                 font-size: 14px;
             }
 
-            .hero-actions {
+            .hero-buttons {
                 flex-direction: column;
             }
 
-            .main-btn,
-            .outline-btn {
+            .primary-btn,
+            .secondary-btn {
                 width: 100%;
             }
 
-            .hero-card {
-                min-height: 420px;
-                border-radius: 20px;
+            .visual-card {
+                min-height: 390px;
+                padding: 27px;
+                border-radius: 21px;
             }
 
-            .hero-card-content {
-                min-height: 420px;
-                padding: 23px;
+            .visual-logo {
+                width: 62px;
+                height: 62px;
+                border-radius: 17px;
             }
 
-            .card-title {
-                font-size: 35px;
+            .visual-card h2 {
+                font-size: 30px;
             }
 
-            .trust-container {
-                grid-template-columns: 1fr;
-                padding: 14px 0;
-            }
-
-            .trust-item {
-                border-right: none;
-                padding: 9px;
-            }
-
-            .section {
+            .intro,
+            .features {
                 padding: 72px 16px;
-            }
-
-            .preview-section {
-                padding-bottom: 72px;
-            }
-
-            .preview-copy {
-                padding: 29px 23px;
-            }
-
-            .dashboard-preview {
-                min-height: 350px;
-                padding: 17px;
-            }
-
-            .balance {
-                font-size: 27px;
             }
 
             .cta-section {
@@ -1150,7 +852,6 @@
 
             .cta {
                 padding: 30px 23px;
-                border-radius: 20px;
             }
 
             .footer-container {
@@ -1167,33 +868,67 @@
          HEADER
     ========================== -->
 
-    <header class="header">
+    <header>
 
         <nav class="nav">
 
-            <a href="index.html" class="brand">
-                <div class="brand-symbol">F</div>
+            <a href="index.html" class="logo">
 
-                <div class="brand-name">
+                <div class="logo-mark">
+
+                    <!-- CODED FINORA F LOGO -->
+                    <svg viewBox="0 0 100 100"
+                         xmlns="http://www.w3.org/2000/svg">
+
+                        <path d="
+                            M25 18
+                            C25 14 28 11 32 11
+                            H77
+                            C81 11 84 14 84 18
+                            V29
+                            H43
+                            V39
+                            H72
+                            C76 39 79 42 79 46
+                            V56
+                            H43
+                            V82
+                            C43 86 40 89 36 89
+                            H25
+                            V18
+                            Z
+                        "/>
+
+                    </svg>
+
+                </div>
+
+                <div class="logo-text">
                     Fin<span>ora</span>
                 </div>
+
             </a>
 
+
             <div class="nav-links">
+
                 <a href="#home">Home</a>
-                <a href="#features">Features</a>
-                <a href="#platform">Platform</a>
                 <a href="#about">About</a>
+                <a href="#features">Features</a>
+
             </div>
 
-            <div class="nav-actions">
-                <a href="login.html" class="login-btn">
+
+            <div class="nav-buttons">
+
+                <a href="login.html" class="login">
                     Login
                 </a>
 
-                <a href="register.html" class="register-btn">
+                <a href="register.html" class="register">
                     Create Account
                 </a>
+
             </div>
 
         </nav>
@@ -1202,7 +937,7 @@
 
 
     <!-- =========================
-         HERO
+         STARTING PAGE
     ========================== -->
 
     <main>
@@ -1213,31 +948,34 @@
 
                 <div class="hero-content">
 
-                    <div class="eyebrow">
-                        <span class="eyebrow-dot"></span>
+                    <div class="badge">
+                        <span class="badge-dot"></span>
                         Premium Digital Financial Platform
                     </div>
+
 
                     <h1>
                         Your Financial
                         <span>Future Starts Here.</span>
                     </h1>
 
+
                     <p class="hero-description">
-                        Welcome to Finora — a modern digital platform built
-                        around a clear, organized and premium financial
-                        experience. Manage your account, follow your activity
-                        and stay connected to your financial journey from one
-                        place.
+                        Welcome to Finora — a modern digital financial
+                        platform designed to give you a clear, simple and
+                        premium experience for managing your financial journey.
                     </p>
 
-                    <div class="hero-actions">
 
-                        <a href="register.html" class="main-btn">
+                    <div class="hero-buttons">
+
+                        <a href="register.html"
+                           class="primary-btn">
                             Get Started
                         </a>
 
-                        <a href="#platform" class="outline-btn">
+                        <a href="#about"
+                           class="secondary-btn">
                             Explore Finora
                         </a>
 
@@ -1246,294 +984,75 @@
                 </div>
 
 
-                <!-- PREMIUM VISUAL -->
+                <div class="hero-visual">
 
-                <div class="hero-card">
+                    <div class="glow"></div>
 
-                    <div class="hero-card-content">
+                    <div class="visual-card">
 
-                        <div class="card-top">
+                        <div class="visual-logo">
 
-                            <div class="card-brand">
-                                FINORA
-                            </div>
+                            <svg viewBox="0 0 100 100"
+                                 xmlns="http://www.w3.org/2000/svg">
 
-                            <div class="card-tag">
-                                PREMIUM EXPERIENCE
-                            </div>
+                                <path d="
+                                    M25 18
+                                    C25 14 28 11 32 11
+                                    H77
+                                    C81 11 84 14 84 18
+                                    V29
+                                    H43
+                                    V39
+                                    H72
+                                    C76 39 79 42 79 46
+                                    V56
+                                    H43
+                                    V82
+                                    C43 86 40 89 36 89
+                                    H25
+                                    V18
+                                    Z
+                                "/>
 
-                        </div>
-
-
-                        <div class="card-main">
-
-                            <div class="card-label">
-                                One Platform
-                            </div>
-
-                            <div class="card-title">
-                                Manage Your
-                                <span>Financial Journey.</span>
-                            </div>
-
-                            <p class="card-copy">
-                                A clean digital environment where your
-                                account information, financial activity and
-                                platform services can come together in one
-                                organized experience.
-                            </p>
-
-                            <div class="card-line"></div>
-
-                            <div class="card-points">
-
-                                <div class="point">
-                                    <small>Experience</small>
-                                    <strong>Premium</strong>
-                                </div>
-
-                                <div class="point">
-                                    <small>Platform</small>
-                                    <strong>Digital</strong>
-                                </div>
-
-                            </div>
+                            </svg>
 
                         </div>
 
-                    </div>
 
-                </div>
+                        <h2>
+                            Welcome to
+                            <span>Finora.</span>
+                        </h2>
 
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             TRUST STRIP
-        ========================== -->
-
-        <section class="trust">
-
-            <div class="trust-container">
-
-                <div class="trust-item">
-                    <strong>Simple Experience</strong>
-                    <span>Designed around the user</span>
-                </div>
-
-                <div class="trust-item">
-                    <strong>Organized Platform</strong>
-                    <span>Your important information in one place</span>
-                </div>
-
-                <div class="trust-item">
-                    <strong>Clear Records</strong>
-                    <span>Follow your account activity</span>
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             FEATURES
-        ========================== -->
-
-        <section class="section" id="features">
-
-            <div class="section-container">
-
-                <div class="section-heading">
-
-                    <div class="section-kicker">
-                        Why Finora
-                    </div>
-
-                    <h2>
-                        Built around a better digital financial experience.
-                    </h2>
-
-                    <p>
-                        Finora is being designed with simplicity, clarity and
-                        a professional interface at the center of the platform.
-                    </p>
-
-                </div>
-
-
-                <div class="feature-grid">
-
-                    <article class="feature-card">
-
-                        <div class="feature-number">
-                            01
-                        </div>
-
-                        <h3>
-                            Account Management
-                        </h3>
 
                         <p>
-                            Access your account information through a clean
-                            interface designed to make important details easy
-                            to understand.
+                            A premium digital environment designed to bring
+                            your financial experience together through one
+                            clear and connected platform.
                         </p>
 
-                    </article>
+
+                        <div class="visual-line"></div>
 
 
-                    <article class="feature-card">
+                        <div class="visual-pills">
 
-                        <div class="feature-number">
-                            02
-                        </div>
+                            <div class="visual-pill">
+                                Simple
+                            </div>
 
-                        <h3>
-                            Financial Activity
-                        </h3>
+                            <div class="visual-pill">
+                                Modern
+                            </div>
 
-                        <p>
-                            Keep your financial activities organized so that
-                            deposits, withdrawals and other records can be
-                            viewed clearly.
-                        </p>
+                            <div class="visual-pill">
+                                Connected
+                            </div>
 
-                    </article>
+                            <div class="visual-pill">
+                                Digital
+                            </div>
 
-
-                    <article class="feature-card">
-
-                        <div class="feature-number">
-                            03
-                        </div>
-
-                        <h3>
-                            Digital Platform
-                        </h3>
-
-                        <p>
-                            Use a modern mobile-friendly environment designed
-                            for convenient access from wherever you are.
-                        </p>
-
-                    </article>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             PLATFORM PREVIEW
-        ========================== -->
-
-        <section class="preview-section" id="platform">
-
-            <div class="preview">
-
-                <div class="preview-copy">
-
-                    <div class="section-kicker">
-                        The Finora Platform
-                    </div>
-
-                    <h2>
-                        Everything organized in one place.
-                    </h2>
-
-                    <p>
-                        The platform will bring the major parts of your
-                        financial experience together through a single,
-                        consistent interface.
-                    </p>
-
-
-                    <div class="preview-list">
-
-                        <div>
-                            <span class="check">✓</span>
-                            Personal account dashboard
-                        </div>
-
-                        <div>
-                            <span class="check">✓</span>
-                            Wallet and account activity
-                        </div>
-
-                        <div>
-                            <span class="check">✓</span>
-                            Investment management
-                        </div>
-
-                        <div>
-                            <span class="check">✓</span>
-                            Transaction records
-                        </div>
-
-                        <div>
-                            <span class="check">✓</span>
-                            Referral and team features
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- DASHBOARD PREVIEW -->
-
-                <div class="dashboard-preview">
-
-                    <div class="dashboard-top">
-
-                        <div class="dashboard-title">
-                            Finora Dashboard
-                        </div>
-
-                        <div class="dashboard-menu">
-                            •••
-                        </div>
-
-                    </div>
-
-
-                    <div class="balance-card">
-
-                        <small>
-                            AVAILABLE BALANCE
-                        </small>
-
-                        <div class="balance">
-                            UGX 0
-                        </div>
-
-                        <div class="balance-note">
-                            Your account balance
-                        </div>
-
-                    </div>
-
-
-                    <div class="dashboard-actions">
-
-                        <div class="dash-action">
-                            <strong>Deposit</strong>
-                            <span>Add funds</span>
-                        </div>
-
-                        <div class="dash-action">
-                            <strong>Withdraw</strong>
-                            <span>Request funds</span>
-                        </div>
-
-                        <div class="dash-action">
-                            <strong>Records</strong>
-                            <span>View activity</span>
                         </div>
 
                     </div>
@@ -1549,26 +1068,112 @@
              ABOUT
         ========================== -->
 
-        <section class="section" id="about">
+        <section class="intro" id="about">
+
+            <div class="intro-container">
+
+                <div class="section-label">
+                    About Finora
+                </div>
+
+                <h2>
+                    A better way to experience digital finance.
+                </h2>
+
+                <p>
+                    Finora is being developed as one connected financial
+                    platform. From account creation to your personal
+                    dashboard and financial activity, every part will follow
+                    one consistent premium design.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             FEATURES
+        ========================== -->
+
+        <section class="features" id="features">
 
             <div class="section-container">
 
                 <div class="section-heading">
 
-                    <div class="section-kicker">
-                        About Finora
+                    <div class="section-label">
+                        Why Finora
                     </div>
 
                     <h2>
-                        A platform designed with clarity at its foundation.
+                        Designed for a clear financial experience.
                     </h2>
 
                     <p>
-                        From the first page to the user dashboard, Finora is
-                        being built as one connected system. Every interface
-                        will follow the same visual language and work with the
-                        backend we have already established.
+                        Every part of the platform is being designed to be
+                        simple to understand while maintaining a premium,
+                        professional appearance.
                     </p>
+
+                </div>
+
+
+                <div class="feature-grid">
+
+                    <article class="feature">
+
+                        <div class="feature-number">
+                            01
+                        </div>
+
+                        <h3>
+                            Simple Experience
+                        </h3>
+
+                        <p>
+                            A clean interface that makes important financial
+                            information easy to find and understand.
+                        </p>
+
+                    </article>
+
+
+                    <article class="feature">
+
+                        <div class="feature-number">
+                            02
+                        </div>
+
+                        <h3>
+                            Connected Platform
+                        </h3>
+
+                        <p>
+                            The frontend will connect directly with the
+                            backend foundation we have already established.
+                        </p>
+
+                    </article>
+
+
+                    <article class="feature">
+
+                        <div class="feature-number">
+                            03
+                        </div>
+
+                        <h3>
+                            Mobile First
+                        </h3>
+
+                        <p>
+                            Finora is designed to look polished and work
+                            naturally on mobile phones as well as larger
+                            screens.
+                        </p>
+
+                    </article>
 
                 </div>
 
@@ -1578,7 +1183,7 @@
 
 
         <!-- =========================
-             CTA
+             FINAL CTA
         ========================== -->
 
         <section class="cta-section">
@@ -1587,22 +1192,23 @@
 
                 <div>
 
-                    <div class="section-kicker">
-                        Join Finora
+                    <div class="section-label">
+                        Start With Finora
                     </div>
 
                     <h2>
-                        Start building your financial journey with Finora.
+                        Your journey begins with one account.
                     </h2>
 
                     <p>
-                        Create your account and enter the Finora digital
-                        platform.
+                        Create your Finora account and enter the platform.
                     </p>
 
                 </div>
 
-                <a href="register.html" class="main-btn">
+
+                <a href="register.html"
+                   class="primary-btn">
                     Create Account
                 </a>
 
@@ -1617,15 +1223,46 @@
          FOOTER
     ========================== -->
 
-    <footer class="footer">
+    <footer>
 
         <div class="footer-container">
 
-            <div class="footer-logo">
+            <div class="footer-brand">
+
+                <div class="logo-mark">
+
+                    <svg viewBox="0 0 100 100"
+                         xmlns="http://www.w3.org/2000/svg">
+
+                        <path d="
+                            M25 18
+                            C25 14 28 11 32 11
+                            H77
+                            C81 11 84 14 84 18
+                            V29
+                            H43
+                            V39
+                            H72
+                            C76 39 79 42 79 46
+                            V56
+                            H43
+                            V82
+                            C43 86 40 89 36 89
+                            H25
+                            V18
+                            Z
+                        "/>
+
+                    </svg>
+
+                </div>
+
                 FINORA
+
             </div>
 
-            <div class="footer-text">
+
+            <div class="footer-copy">
                 © 2026 Finora. All rights reserved.
             </div>
 
