@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+const pool = require("./config/database");
 
 const app = express();
 
@@ -17,12 +18,26 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get("/api/health", (req, res) => {
-  res.json({
-    success: true,
-    service: "Finora API",
-    status: "healthy"
-  });
+app.get("/api/health", async (req, res) => {
+  try {
+    await pool.query("SELECT 1");
+
+    res.json({
+      success: true,
+      service: "Finora API",
+      database: "connected",
+      status: "healthy"
+    });
+  } catch (error) {
+    console.error("Database health check failed:", error.message);
+
+    res.status(500).json({
+      success: false,
+      service: "Finora API",
+      database: "disconnected",
+      status: "unhealthy"
+    });
+  }
 });
 
 const PORT = process.env.PORT || 10000;
