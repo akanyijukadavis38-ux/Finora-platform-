@@ -393,16 +393,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
 
+/* =================================
+   SUCCESS
+================================= */
 
-            /* =================================
-               REDIRECT
-            ================================= */
+formStatus.textContent =
+    data.message ||
+    "Account created successfully.";
 
-            setTimeout(() => {
+formStatus.className = "form-status success";
 
-    window.location.href = "index.html";
 
-}, 4000);
+/* =================================
+   SAVE BASIC SESSION INFORMATION
+================================= */
+
+if (data.user) {
+
+    localStorage.setItem(
+        "finoraCurrentUser",
+        JSON.stringify(data.user)
+    );
+
+}
+            
 
 
         } catch (error) {
