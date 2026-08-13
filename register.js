@@ -53,8 +53,12 @@ document.addEventListener("DOMContentLoaded", function () {
     password.addEventListener("input", function () {
 
         const value = password.value;
-        const bars = document.querySelectorAll(".strength-bar");
-        const strengthText = document.getElementById("strengthText");
+
+        const bars =
+            document.querySelectorAll(".strength-bar");
+
+        const strengthText =
+            document.getElementById("strengthText");
 
         let score = 0;
 
@@ -74,15 +78,30 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         if (!value) {
-            strengthText.textContent = "Password strength";
+
+            strengthText.textContent =
+                "Password strength";
+
         } else if (score === 1) {
-            strengthText.textContent = "Weak";
+
+            strengthText.textContent =
+                "Weak";
+
         } else if (score === 2) {
-            strengthText.textContent = "Fair";
+
+            strengthText.textContent =
+                "Fair";
+
         } else if (score === 3) {
-            strengthText.textContent = "Good";
+
+            strengthText.textContent =
+                "Good";
+
         } else {
-            strengthText.textContent = "Strong";
+
+            strengthText.textContent =
+                "Strong";
+
         }
 
     });
@@ -94,24 +113,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
     confirmPassword.addEventListener("input", function () {
 
-        const message = document.getElementById("confirmMessage");
+        const message =
+            document.getElementById("confirmMessage");
 
         if (!confirmPassword.value) {
 
             message.textContent = "";
+            message.className = "field-message";
+
             return;
 
         }
 
         if (password.value !== confirmPassword.value) {
 
-            message.textContent = "Passwords do not match.";
-            message.className = "field-message error";
+            message.textContent =
+                "Passwords do not match.";
+
+            message.className =
+                "field-message error";
 
         } else {
 
-            message.textContent = "Passwords match.";
-            message.className = "field-message success";
+            message.textContent =
+                "Passwords match.";
+
+            message.className =
+                "field-message success";
 
         }
 
@@ -124,32 +152,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
     form.addEventListener("submit", async function (event) {
 
-        /*
-         * VERY IMPORTANT:
-         * Stop the browser from submitting/reloading
-         * the HTML page.
-         */
-
         event.preventDefault();
         event.stopPropagation();
-alert("SUBMIT HANDLER IS WORKING");
-        console.log("FINORA REGISTER FORM SUBMITTED");
 
 
         /* -----------------------------------------
            READ FORM
         ----------------------------------------- */
 
-        const nameValue = fullName.value.trim();
-        const phoneValue = phone.value.trim();
-        const emailValue = email.value.trim().toLowerCase();
-        const passwordValue = password.value;
-        const confirmValue = confirmPassword.value;
-        const referralValue = referralCode.value.trim();
+        const nameValue =
+            fullName.value.trim();
+
+        const phoneValue =
+            phone.value.trim();
+
+        const emailValue =
+            email.value.trim().toLowerCase();
+
+        const passwordValue =
+            password.value;
+
+        const confirmValue =
+            confirmPassword.value;
+
+        const referralValue =
+            referralCode.value.trim();
 
 
         /* -----------------------------------------
-           CLEAR STATUS
+           CLEAR OLD MESSAGE
         ----------------------------------------- */
 
         formStatus.textContent = "";
@@ -157,7 +188,7 @@ alert("SUBMIT HANDLER IS WORKING");
 
 
         /* -----------------------------------------
-           VALIDATION
+           VALIDATE NAME
         ----------------------------------------- */
 
         if (nameValue.length < 2) {
@@ -173,6 +204,10 @@ alert("SUBMIT HANDLER IS WORKING");
         }
 
 
+        /* -----------------------------------------
+           VALIDATE PHONE
+        ----------------------------------------- */
+
         if (!/^07[0-9]{8}$/.test(phoneValue)) {
 
             formStatus.textContent =
@@ -185,6 +220,10 @@ alert("SUBMIT HANDLER IS WORKING");
 
         }
 
+
+        /* -----------------------------------------
+           VALIDATE EMAIL
+        ----------------------------------------- */
 
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
 
@@ -199,6 +238,10 @@ alert("SUBMIT HANDLER IS WORKING");
         }
 
 
+        /* -----------------------------------------
+           VALIDATE PASSWORD
+        ----------------------------------------- */
+
         if (passwordValue.length < 6) {
 
             formStatus.textContent =
@@ -212,6 +255,10 @@ alert("SUBMIT HANDLER IS WORKING");
         }
 
 
+        /* -----------------------------------------
+           CONFIRM PASSWORD
+        ----------------------------------------- */
+
         if (passwordValue !== confirmValue) {
 
             formStatus.textContent =
@@ -224,27 +271,27 @@ alert("SUBMIT HANDLER IS WORKING");
 
         }
 
-if (!terms.checked) {
-
-    alert("TERMS CHECKBOX FAILED");
-
-    formStatus.textContent =
-        "Please agree to the Terms & Conditions and Privacy Policy.";
-
-    formStatus.className =
-        "form-status error";
-
-    return;
-
-}
-
-alert("ALL VALIDATION PASSED");
-        
-
 
         /* -----------------------------------------
-           SHOW LOADING
+           TERMS
         ----------------------------------------- */
+
+        if (!terms.checked) {
+
+            formStatus.textContent =
+                "Please agree to the Terms & Conditions and Privacy Policy.";
+
+            formStatus.className =
+                "form-status error";
+
+            return;
+
+        }
+
+
+        /* =========================================
+           START REGISTRATION
+        ========================================= */
 
         createButton.disabled = true;
 
@@ -260,75 +307,68 @@ alert("ALL VALIDATION PASSED");
 
         try {
 
-            console.log(
-                "Sending registration request to:",
-                API_URL + "/api/register"
+            /* -------------------------------------
+               SEND TO FINORA BACKEND
+            ------------------------------------- */
+
+            const response = await fetch(
+                API_URL + "/api/register",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        fullName: nameValue,
+
+                        phone: phoneValue,
+
+                        email: emailValue,
+
+                        password: passwordValue,
+
+                        referralCode:
+                            referralValue || null
+
+                    })
+                }
             );
 
 
-            /* -----------------------------------------
-               SEND REQUEST
-            ----------------------------------------- */
-alert("SENDING TO FINORA SERVER");
-       
-alert("REQUEST SENT — WAITING FOR SERVER");
+            /* -------------------------------------
+               READ RESPONSE SAFELY
+            ------------------------------------- */
 
-const response = await fetch(
-    API_URL + "/api/register",
-    {
-        method: "POST",
-
-        headers: {
-            "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify({
-
-            fullName: nameValue,
-            phone: phoneValue,
-            email: emailValue,
-            password: passwordValue,
-            referralCode: referralValue || null
-
-        })
-    }
-);
-
-alert("SERVER RESPONDED");
-
-console.log(
-    "FINORA RESPONSE STATUS:",
-    response.status
-);
+            const responseText =
+                await response.text();
 
             console.log(
-                "FINORA RESPONSE STATUS:",
-                response.status
+                "FINORA REGISTER RESPONSE:",
+                response.status,
+                responseText
             );
 
 
-            /* -----------------------------------------
-               GET RESPONSE
-            ----------------------------------------- */
+            let data = null;
 
-            const data = await response.json();
+            try {
 
+                data =
+                    JSON.parse(responseText);
 
-            console.log(
-                "FINORA RESPONSE DATA:",
-                data
-            );
+            } catch (parseError) {
 
-
-            /* -----------------------------------------
-               SERVER ERROR
-            ----------------------------------------- */
-
-            if (!response.ok || !data.success) {
+                console.error(
+                    "FINORA RESPONSE JSON ERROR:",
+                    parseError
+                );
 
                 formStatus.textContent =
-                    data.message ||
-                    "Registration failed.";
+                    "The FINORA server returned an invalid response.";
 
                 formStatus.className =
                     "form-status error";
@@ -343,20 +383,32 @@ console.log(
             }
 
 
-            /* -----------------------------------------
-               SUCCESS
-            ----------------------------------------- */
+            /* =====================================
+               REGISTRATION FAILED
+            ===================================== */
 
-            formStatus.textContent =
-                "ACCOUNT CREATED SUCCESSFULLY!";
+            if (!response.ok || data.success !== true) {
 
-            formStatus.className =
-                "form-status success";
+                formStatus.textContent =
+                    data.message ||
+                    "Unable to create your FINORA account.";
+
+                formStatus.className =
+                    "form-status error";
+
+                createButton.disabled = false;
+
+                createButton.textContent =
+                    "CREATE FINORA ACCOUNT";
+
+                return;
+
+            }
 
 
-            /* -----------------------------------------
-               SAVE USER
-            ----------------------------------------- */
+            /* =====================================
+               ACCOUNT CREATED
+            ===================================== */
 
             if (data.user) {
 
@@ -368,9 +420,17 @@ console.log(
             }
 
 
-            /* -----------------------------------------
-               KEEP USER ON REGISTER PAGE
-            ----------------------------------------- */
+            /* -------------------------------------
+               SHOW SUCCESS
+            ------------------------------------- */
+
+            formStatus.textContent =
+                data.message ||
+                "Account created successfully!";
+
+            formStatus.className =
+                "form-status success";
+
 
             createButton.disabled = true;
 
@@ -378,9 +438,19 @@ console.log(
                 "ACCOUNT CREATED ✓";
 
 
+            /* -------------------------------------
+               CLEAR PASSWORDS ONLY
+            ------------------------------------- */
+
+            password.value = "";
+            confirmPassword.value = "";
+
+
             console.log(
-                "FINORA ACCOUNT CREATED SUCCESSFULLY"
+                "FINORA ACCOUNT CREATED SUCCESSFULLY:",
+                data.user
             );
+
 
         } catch (error) {
 
@@ -389,13 +459,11 @@ console.log(
                 error
             );
 
-
             formStatus.textContent =
-                "Registration failed: " + error.message;
+                "Unable to connect to the FINORA server. Please try again.";
 
             formStatus.className =
                 "form-status error";
-
 
             createButton.disabled = false;
 
