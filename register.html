@@ -11,10 +11,6 @@
 
 <style>
 
-/* =====================================================
-   FINORA REGISTER PAGE
-   ===================================================== */
-
 :root{
     --pink:#EA3CFF;
     --pink-light:#FF72FF;
@@ -22,7 +18,6 @@
 
     --orange:#F5A623;
     --gold:#FFD76A;
-    --gold-dark:#C97908;
 
     --black:#050409;
     --dark:#0A0710;
@@ -82,28 +77,19 @@ body{
         );
 }
 
-/* =====================================================
-   BACKGROUND
-   ===================================================== */
-
 .background-orb{
     position:fixed;
     z-index:-1;
-
     border-radius:50%;
-
     pointer-events:none;
-
     filter:blur(100px);
 }
 
 .orb-one{
     width:320px;
     height:320px;
-
     top:-120px;
     left:-130px;
-
     background:var(--pink);
     opacity:.09;
 }
@@ -111,32 +97,24 @@ body{
 .orb-two{
     width:300px;
     height:300px;
-
     right:-130px;
     bottom:-100px;
-
     background:var(--orange);
     opacity:.07;
 }
 
-/* =====================================================
-   PAGE
-   ===================================================== */
+/* PAGE */
 
 .page{
     min-height:100vh;
-
     display:flex;
     flex-direction:column;
 }
 
-/* =====================================================
-   HEADER
-   ===================================================== */
+/* HEADER */
 
 .header{
     width:100%;
-
     padding:24px 20px;
 }
 
@@ -149,9 +127,7 @@ body{
     justify-content:space-between;
 }
 
-/* =====================================================
-   FINORA BRAND
-   ===================================================== */
+/* BRAND */
 
 .brand{
     display:flex;
@@ -164,7 +140,6 @@ body{
 .finora-mark{
     width:47px;
     height:56px;
-
     flex-shrink:0;
 
     filter:
@@ -182,9 +157,7 @@ body{
 .brand-name{
     font-size:27px;
     line-height:1;
-
     font-weight:750;
-
     letter-spacing:2.5px;
 }
 
@@ -198,27 +171,18 @@ body{
 
 .brand-tagline{
     margin-top:5px;
-
     color:var(--orange);
-
     font-size:7px;
     font-weight:800;
-
     letter-spacing:2px;
 }
 
-/* =====================================================
-   LOGIN LINK
-   ===================================================== */
+/* LOGIN */
 
 .login-top{
     color:#AAA1B0;
-
     font-size:13px;
-
     text-decoration:none;
-
-    transition:.25s ease;
 }
 
 .login-top strong{
@@ -229,9 +193,7 @@ body{
     color:white;
 }
 
-/* =====================================================
-   MAIN
-   ===================================================== */
+/* MAIN */
 
 .main{
     flex:1;
@@ -242,10 +204,6 @@ body{
 
     padding:35px 20px 70px;
 }
-
-/* =====================================================
-   REGISTER CONTAINER
-   ===================================================== */
 
 .register-wrapper{
     width:min(1050px,100%);
@@ -258,9 +216,7 @@ body{
     align-items:stretch;
 }
 
-/* =====================================================
-   LEFT INFORMATION PANEL
-   ===================================================== */
+/* INFORMATION PANEL */
 
 .info-panel{
     position:relative;
@@ -313,9 +269,7 @@ body{
     color:var(--orange);
 
     font-size:10px;
-
     font-weight:900;
-
     letter-spacing:2px;
 }
 
@@ -325,7 +279,6 @@ body{
     font-size:clamp(34px,4vw,52px);
 
     line-height:1.03;
-
     letter-spacing:-1.8px;
 }
 
@@ -333,19 +286,16 @@ body{
     color:var(--pink);
 }
 
-.info-panel p{
+.info-panel > p{
     margin-top:20px;
 
     color:var(--muted);
 
     font-size:14px;
-
     line-height:1.75;
 }
 
-/* =====================================================
-   BENEFITS
-   ===================================================== */
+/* BENEFITS */
 
 .benefits{
     margin-top:35px;
@@ -358,9 +308,7 @@ body{
 
 .benefit{
     display:flex;
-
     gap:14px;
-
     align-items:flex-start;
 }
 
@@ -395,13 +343,10 @@ body{
     color:#807686;
 
     font-size:12px;
-
     line-height:1.5;
 }
 
-/* =====================================================
-   REFERRAL INFO
-   ===================================================== */
+/* REFERRAL INFO */
 
 .referral-info{
     margin-top:35px;
@@ -419,17 +364,13 @@ body{
     color:var(--orange);
 
     font-size:10px;
-
     font-weight:900;
-
     letter-spacing:1.3px;
 }
 
 .referral-levels{
     display:flex;
-
     gap:8px;
-
     margin-top:10px;
 }
 
@@ -447,21 +388,16 @@ body{
 
 .level strong{
     display:block;
-
     color:white;
-
     font-size:15px;
 }
 
 .level small{
     color:#827987;
-
     font-size:8px;
 }
 
-/* =====================================================
-   FORM CARD
-   ===================================================== */
+/* FORM CARD */
 
 .form-card{
     padding:40px;
@@ -487,21 +423,16 @@ body{
 
 .form-header h2{
     font-size:30px;
-
     line-height:1.1;
 }
 
 .form-header p{
     margin-top:9px;
-
     color:#8F8696;
-
     font-size:13px;
 }
 
-/* =====================================================
-   FORM
-   ===================================================== */
+/* FORM */
 
 .form-group{
     margin-bottom:19px;
@@ -515,10 +446,7 @@ body{
     color:#D7D0DB;
 
     font-size:11px;
-
     font-weight:700;
-
-    letter-spacing:.2px;
 }
 
 .input-wrapper{
@@ -527,7 +455,6 @@ body{
 
 .form-input{
     width:100%;
-
     height:52px;
 
     padding:0 15px;
@@ -538,8 +465,7 @@ body{
 
     outline:none;
 
-    background:
-        rgba(255,255,255,.035);
+    background:rgba(255,255,255,.035);
 
     color:white;
 
@@ -555,8 +481,7 @@ body{
 .form-input:focus{
     border-color:rgba(234,60,255,.65);
 
-    background:
-        rgba(234,60,255,.035);
+    background:rgba(234,60,255,.035);
 
     box-shadow:
         0 0 0 3px
@@ -570,10 +495,6 @@ body{
 .form-input.invalid{
     border-color:rgba(255,92,122,.60);
 }
-
-/* =====================================================
-   PASSWORD TOGGLE
-   ===================================================== */
 
 .password-input{
     padding-right:52px;
@@ -599,8 +520,6 @@ body{
     cursor:pointer;
 
     border-radius:8px;
-
-    transition:.2s ease;
 }
 
 .toggle-password:hover{
@@ -609,9 +528,7 @@ body{
     background:rgba(234,60,255,.06);
 }
 
-/* =====================================================
-   FIELD MESSAGE
-   ===================================================== */
+/* MESSAGES */
 
 .field-message{
     display:none;
@@ -635,13 +552,10 @@ body{
     color:var(--success);
 }
 
-/* =====================================================
-   PASSWORD STRENGTH
-   ===================================================== */
+/* PASSWORD STRENGTH */
 
 .password-strength{
     margin-top:9px;
-
     display:none;
 }
 
@@ -651,7 +565,6 @@ body{
 
 .strength-bars{
     display:flex;
-
     gap:5px;
 }
 
@@ -675,9 +588,7 @@ body{
     font-size:9px;
 }
 
-/* =====================================================
-   REFERRAL FIELD
-   ===================================================== */
+/* REFERRAL */
 
 .referral-wrapper{
     position:relative;
@@ -694,7 +605,6 @@ body{
     display:none;
 
     font-size:11px;
-
     font-weight:700;
 }
 
@@ -710,9 +620,7 @@ body{
     color:var(--danger);
 }
 
-/* =====================================================
-   TERMS
-   ===================================================== */
+/* TERMS */
 
 .terms{
     display:flex;
@@ -743,23 +651,18 @@ body{
 
 .terms a{
     color:var(--pink-light);
-
     text-decoration:none;
 }
 
-/* =====================================================
-   CREATE BUTTON
-   ===================================================== */
+/* BUTTON */
 
 .create-button{
     width:100%;
-
     height:55px;
 
     margin-top:22px;
 
     border:0;
-
     border-radius:13px;
 
     background:
@@ -772,7 +675,6 @@ body{
     color:white;
 
     font-size:12px;
-
     font-weight:900;
 
     letter-spacing:.8px;
@@ -794,23 +696,14 @@ body{
         rgba(234,60,255,.28);
 }
 
-.create-button:active{
-    transform:translateY(0);
-}
-
 .create-button:disabled{
     opacity:.55;
-
     cursor:not-allowed;
-
     transform:none;
-
     box-shadow:none;
 }
 
-/* =====================================================
-   FORM STATUS
-   ===================================================== */
+/* STATUS */
 
 .form-status{
     display:none;
@@ -846,9 +739,7 @@ body{
     border:1px solid rgba(73,230,161,.16);
 }
 
-/* =====================================================
-   BOTTOM LOGIN
-   ===================================================== */
+/* BOTTOM LOGIN */
 
 .bottom-login{
     margin-top:24px;
@@ -862,13 +753,10 @@ body{
 
 .bottom-login a{
     color:var(--pink-light);
-
     font-weight:700;
 }
 
-/* =====================================================
-   FOOTER
-   ===================================================== */
+/* FOOTER */
 
 .footer{
     padding:20px;
@@ -880,15 +768,12 @@ body{
     font-size:9px;
 }
 
-/* =====================================================
-   RESPONSIVE
-   ===================================================== */
+/* RESPONSIVE */
 
 @media(max-width:850px){
 
     .register-wrapper{
         grid-template-columns:1fr;
-
         max-width:620px;
     }
 
@@ -898,22 +783,15 @@ body{
 
     .benefits{
         display:grid;
-
         grid-template-columns:1fr 1fr;
-
         gap:18px;
     }
-
 }
 
 @media(max-width:600px){
 
     .header{
         padding:18px 15px;
-    }
-
-    .header-inner{
-        align-items:center;
     }
 
     .finora-mark{
@@ -923,13 +801,11 @@ body{
 
     .brand-name{
         font-size:22px;
-
         letter-spacing:2px;
     }
 
     .brand-tagline{
         font-size:6px;
-
         letter-spacing:1.5px;
     }
 
@@ -947,7 +823,6 @@ body{
 
     .info-panel{
         padding:28px 23px;
-
         border-radius:21px;
     }
 
@@ -965,19 +840,13 @@ body{
 
     .form-card{
         padding:27px 20px;
-
         border-radius:21px;
     }
 
     .form-header h2{
         font-size:26px;
     }
-
 }
-
-/* =====================================================
-   SMALL DEVICES
-   ===================================================== */
 
 @media(max-width:360px){
 
@@ -992,7 +861,6 @@ body{
     .info-panel{
         padding:24px 18px;
     }
-
 }
 
 </style>
@@ -1005,10 +873,6 @@ body{
 <div class="background-orb orb-two"></div>
 
 <div class="page">
-
-<!-- =====================================================
-     HEADER
-     ===================================================== -->
 
 <header class="header">
 
@@ -1129,12 +993,10 @@ INVEST • GROW • EARN
 </a>
 
 <div class="login-top">
-
 Already have an account?
 <a href="login.html">
 <strong>Login</strong>
 </a>
-
 </div>
 
 </div>
@@ -1142,18 +1004,10 @@ Already have an account?
 </header>
 
 
-<!-- =====================================================
-     MAIN
-     ===================================================== -->
-
 <main class="main">
 
 <div class="register-wrapper">
 
-
-<!-- =====================================================
-     INFORMATION PANEL
-     ===================================================== -->
 
 <section class="info-panel">
 
@@ -1174,7 +1028,6 @@ around simplicity, clarity and growth.
 
 
 <div class="benefits">
-
 
 <div class="benefit">
 
@@ -1210,8 +1063,7 @@ Personal Account
 </h3>
 
 <p>
-Your account keeps your FINORA activity
-organized in one place.
+Your FINORA activity stays organized in one place.
 </p>
 
 </div>
@@ -1232,14 +1084,13 @@ Referral Network
 </h3>
 
 <p>
-Build your referral network through
-the FINORA three-level structure.
+Build your referral network through the
+FINORA three-level structure.
 </p>
 
 </div>
 
 </div>
-
 
 </div>
 
@@ -1253,33 +1104,18 @@ REFERRAL COMMISSION STRUCTURE
 <div class="referral-levels">
 
 <div class="level">
-
 <strong>15%</strong>
-
-<small>
-LEVEL 1
-</small>
-
+<small>LEVEL 1</small>
 </div>
 
 <div class="level">
-
 <strong>3%</strong>
-
-<small>
-LEVEL 2
-</small>
-
+<small>LEVEL 2</small>
 </div>
 
 <div class="level">
-
 <strong>2%</strong>
-
-<small>
-LEVEL 3
-</small>
-
+<small>LEVEL 3</small>
 </div>
 
 </div>
@@ -1288,10 +1124,6 @@ LEVEL 3
 
 </section>
 
-
-<!-- =====================================================
-     FORM
-     ===================================================== -->
 
 <section class="form-card">
 
@@ -1311,8 +1143,6 @@ Enter your details below to get started with FINORA.
 <form id="registerForm" novalidate>
 
 
-<!-- NAME -->
-
 <div class="form-group">
 
 <label for="fullName">
@@ -1328,15 +1158,10 @@ Full Name
     required
 >
 
-<div
-    id="nameMessage"
-    class="field-message error"
-></div>
+<div id="nameMessage" class="field-message"></div>
 
 </div>
 
-
-<!-- PHONE -->
 
 <div class="form-group">
 
@@ -1355,15 +1180,10 @@ Phone Number
     required
 >
 
-<div
-    id="phoneMessage"
-    class="field-message error"
-></div>
+<div id="phoneMessage" class="field-message"></div>
 
 </div>
 
-
-<!-- EMAIL -->
 
 <div class="form-group">
 
@@ -1380,15 +1200,10 @@ Email Address
     required
 >
 
-<div
-    id="emailMessage"
-    class="field-message error"
-></div>
+<div id="emailMessage" class="field-message"></div>
 
 </div>
 
-
-<!-- PASSWORD -->
 
 <div class="form-group">
 
@@ -1419,15 +1234,9 @@ Password
 
 </div>
 
-<div
-    id="passwordMessage"
-    class="field-message error"
-></div>
+<div id="passwordMessage" class="field-message"></div>
 
-<div
-    id="passwordStrength"
-    class="password-strength"
->
+<div id="passwordStrength" class="password-strength">
 
 <div class="strength-bars">
 
@@ -1438,10 +1247,7 @@ Password
 
 </div>
 
-<div
-    id="strengthText"
-    class="strength-text"
->
+<div id="strengthText" class="strength-text">
 Password strength
 </div>
 
@@ -1449,8 +1255,6 @@ Password strength
 
 </div>
 
-
-<!-- CONFIRM PASSWORD -->
 
 <div class="form-group">
 
@@ -1466,7 +1270,6 @@ Confirm Password
     class="form-input password-input"
     placeholder="Confirm your password"
     autocomplete="new-password"
-    minlength="6"
     required
 >
 
@@ -1481,15 +1284,10 @@ Confirm Password
 
 </div>
 
-<div
-    id="confirmMessage"
-    class="field-message error"
-></div>
+<div id="confirmMessage" class="field-message"></div>
 
 </div>
 
-
-<!-- REFERRAL -->
 
 <div class="form-group">
 
@@ -1525,8 +1323,6 @@ Referral Code
 </div>
 
 
-<!-- TERMS -->
-
 <label class="terms">
 
 <input
@@ -1549,15 +1345,8 @@ Privacy Policy
 </label>
 
 
-<!-- STATUS -->
+<div id="formStatus" class="form-status"></div>
 
-<div
-    id="formStatus"
-    class="form-status"
-></div>
-
-
-<!-- CREATE -->
 
 <button
     type="submit"
@@ -1566,7 +1355,6 @@ Privacy Policy
 >
 CREATE FINORA ACCOUNT
 </button>
-
 
 </form>
 
@@ -1588,10 +1376,6 @@ Login to your account
 </main>
 
 
-<!-- =====================================================
-     FOOTER
-     ===================================================== -->
-
 <footer class="footer">
 
 © 2026 FINORA • Invest • Grow • Earn
@@ -1604,68 +1388,70 @@ Login to your account
 <script>
 
 /* =====================================================
-   FINORA REGISTRATION SYSTEM
+   FINORA REGISTER SYSTEM
    ===================================================== */
 
-
-/* -----------------------------------------------------
-   ELEMENTS
-   ----------------------------------------------------- */
+const USERS_KEY = "finoraUsers";
 
 const form =
-document.getElementById("registerForm");
+    document.getElementById("registerForm");
 
 const fullName =
-document.getElementById("fullName");
+    document.getElementById("fullName");
 
 const phone =
-document.getElementById("phone");
+    document.getElementById("phone");
 
 const email =
-document.getElementById("email");
+    document.getElementById("email");
 
 const password =
-document.getElementById("password");
+    document.getElementById("password");
 
 const confirmPassword =
-document.getElementById("confirmPassword");
+    document.getElementById("confirmPassword");
 
 const referralCode =
-document.getElementById("referralCode");
+    document.getElementById("referralCode");
 
 const terms =
-document.getElementById("terms");
+    document.getElementById("terms");
 
 const createButton =
-document.getElementById("createButton");
+    document.getElementById("createButton");
 
 const formStatus =
-document.getElementById("formStatus");
+    document.getElementById("formStatus");
+
+const referralStatus =
+    document.getElementById("referralStatus");
+
+const referralMessage =
+    document.getElementById("referralMessage");
+
+const strengthBox =
+    document.getElementById("passwordStrength");
+
+const strengthBars =
+    document.querySelectorAll(".strength-bar");
+
+const strengthText =
+    document.getElementById("strengthText");
 
 
-/* -----------------------------------------------------
-   STORAGE KEYS
-   ----------------------------------------------------- */
-
-const USERS_KEY =
-"finoraUsers";
-
-const CURRENT_USER_KEY =
-"finoraCurrentUser";
-
-
-/* -----------------------------------------------------
-   GET USERS
-   ----------------------------------------------------- */
+/* =====================================================
+   STORAGE
+   ===================================================== */
 
 function getUsers(){
 
     try{
 
+        const saved =
+            localStorage.getItem(USERS_KEY);
+
         const users =
-            JSON.parse(
-                localStorage.getItem(USERS_KEY)
-            );
+            saved ? JSON.parse(saved) : [];
 
         return Array.isArray(users)
             ? users
@@ -1679,11 +1465,6 @@ function getUsers(){
 
 }
 
-
-/* -----------------------------------------------------
-   SAVE USERS
-   ----------------------------------------------------- */
-
 function saveUsers(users){
 
     localStorage.setItem(
@@ -1694,19 +1475,19 @@ function saveUsers(users){
 }
 
 
-/* -----------------------------------------------------
-   GENERATE ACCOUNT ID
-   ----------------------------------------------------- */
+/* =====================================================
+   ACCOUNT ID
+   ===================================================== */
 
 function generateAccountId(){
 
     const users = getUsers();
 
-    let accountId;
+    let id;
 
     do{
 
-        accountId =
+        id =
             "FN" +
             Math.floor(
                 10000000 +
@@ -1716,45 +1497,41 @@ function generateAccountId(){
     }while(
         users.some(
             user =>
-            user.accountId === accountId
+                String(user.accountId)
+                .toUpperCase() ===
+                id.toUpperCase()
         )
     );
 
-    return accountId;
+    return id;
 
 }
 
 
-/* -----------------------------------------------------
-   CLEAN PHONE
-   ----------------------------------------------------- */
+/* =====================================================
+   PHONE
+   ===================================================== */
 
 function cleanPhone(value){
 
-    return value
+    return String(value || "")
         .replace(/\s+/g,"")
         .replace(/-/g,"");
 
 }
 
-
-/* -----------------------------------------------------
-   VALIDATE UGANDA PHONE
-   ----------------------------------------------------- */
-
 function isValidUgandaPhone(value){
 
-    const number =
-        cleanPhone(value);
-
-    return /^07\d{8}$/.test(number);
+    return /^07\d{8}$/.test(
+        cleanPhone(value)
+    );
 
 }
 
 
-/* -----------------------------------------------------
+/* =====================================================
    EMAIL
-   ----------------------------------------------------- */
+   ===================================================== */
 
 function isValidEmail(value){
 
@@ -1764,9 +1541,52 @@ function isValidEmail(value){
 }
 
 
-/* -----------------------------------------------------
-   PASSWORD
-   ----------------------------------------------------- */
+/* =====================================================
+   MESSAGES
+   ===================================================== */
+
+function setMessage(
+    element,
+    message,
+    type="error"
+){
+
+    element.className =
+        "field-message " +
+        type +
+        " show";
+
+    element.textContent =
+        message;
+
+}
+
+function clearMessage(element){
+
+    element.className =
+        "field-message";
+
+    element.textContent =
+        "";
+
+}
+
+function showStatus(message,type){
+
+    formStatus.className =
+        "form-status " +
+        type +
+        " show";
+
+    formStatus.textContent =
+        message;
+
+}
+
+
+/* =====================================================
+   PASSWORD STRENGTH
+   ===================================================== */
 
 function getPasswordStrength(value){
 
@@ -1792,26 +1612,6 @@ function getPasswordStrength(value){
 
 }
 
-
-/* -----------------------------------------------------
-   PASSWORD STRENGTH UI
-   ----------------------------------------------------- */
-
-const strengthBox =
-document.getElementById(
-    "passwordStrength"
-);
-
-const strengthBars =
-document.querySelectorAll(
-    ".strength-bar"
-);
-
-const strengthText =
-document.getElementById(
-    "strengthText"
-);
-
 function updatePasswordStrength(){
 
     const value =
@@ -1819,15 +1619,7 @@ function updatePasswordStrength(){
 
     if(!value){
 
-        strengthBox.classList.remove(
-            "show"
-        );
-
-        strengthBars.forEach(
-            bar =>
-            bar.style.background =
-                "rgba(255,255,255,.08)"
-        );
+        strengthBox.classList.remove("show");
 
         return;
 
@@ -1884,9 +1676,9 @@ function updatePasswordStrength(){
 }
 
 
-/* -----------------------------------------------------
+/* =====================================================
    PASSWORD VISIBILITY
-   ----------------------------------------------------- */
+   ===================================================== */
 
 document
 .querySelectorAll(".toggle-password")
@@ -1901,16 +1693,11 @@ document
                     button.dataset.target
                 );
 
-            if(
-                target.type ===
-                "password"
-            ){
+            if(target.type === "password"){
 
-                target.type =
-                    "text";
+                target.type = "text";
 
-                button.textContent =
-                    "🙈";
+                button.textContent = "🙈";
 
                 button.setAttribute(
                     "aria-label",
@@ -1919,11 +1706,9 @@ document
 
             }else{
 
-                target.type =
-                    "password";
+                target.type = "password";
 
-                button.textContent =
-                    "👁";
+                button.textContent = "👁";
 
                 button.setAttribute(
                     "aria-label",
@@ -1938,9 +1723,9 @@ document
 });
 
 
-/* -----------------------------------------------------
-   REFERRAL FROM URL
-   ----------------------------------------------------- */
+/* =====================================================
+   REFERRAL FROM INDEX / URL
+   ===================================================== */
 
 function loadReferralFromURL(){
 
@@ -1957,9 +1742,7 @@ function loadReferralFromURL(){
         referralCode.value =
             ref.trim();
 
-        referralCode.dispatchEvent(
-            new Event("input")
-        );
+        checkReferralCode();
 
     }
 
@@ -1968,25 +1751,50 @@ function loadReferralFromURL(){
 loadReferralFromURL();
 
 
-/* -----------------------------------------------------
-   CHECK REFERRAL CODE
-   ----------------------------------------------------- */
+/* =====================================================
+   REFERRAL CHECK
+   ===================================================== */
 
-const referralStatus =
-document.getElementById(
-    "referralStatus"
-);
+function findReferrer(code){
 
-const referralMessage =
-document.getElementById(
-    "referralMessage"
-);
+    const users = getUsers();
+
+    if(!code){
+        return null;
+    }
+
+    const normalized =
+        String(code)
+        .trim()
+        .toUpperCase();
+
+    return users.find(
+        user => {
+
+            const accountId =
+                String(
+                    user.accountId || ""
+                ).toUpperCase();
+
+            const userReferral =
+                String(
+                    user.referralCode || ""
+                ).toUpperCase();
+
+            return (
+                accountId === normalized ||
+                userReferral === normalized
+            );
+
+        }
+    ) || null;
+
+}
 
 function checkReferralCode(){
 
     const code =
-        referralCode.value
-        .trim();
+        referralCode.value.trim();
 
     if(!code){
 
@@ -1996,34 +1804,18 @@ function checkReferralCode(){
         referralStatus.textContent =
             "";
 
-        referralMessage.className =
-            "field-message";
-
-        referralMessage.textContent =
-            "";
+        clearMessage(
+            referralMessage
+        );
 
         return true;
 
     }
 
-    const users =
-        getUsers();
+    const referrer =
+        findReferrer(code);
 
-    const exists =
-        users.some(
-            user =>
-            String(
-                user.accountId || ""
-            ).toUpperCase() ===
-            code.toUpperCase()
-            ||
-            String(
-                user.referralCode || ""
-            ).toUpperCase() ===
-            code.toUpperCase()
-        );
-
-    if(exists){
+    if(referrer){
 
         referralStatus.className =
             "referral-status show valid";
@@ -2031,23 +1823,15 @@ function checkReferralCode(){
         referralStatus.textContent =
             "✓";
 
-        referralMessage.className =
-            "field-message success show";
-
-        referralMessage.textContent =
-            "Referral code accepted.";
+        setMessage(
+            referralMessage,
+            "Referral code accepted.",
+            "success"
+        );
 
         return true;
 
     }
-
-    /*
-       Referral code is optional.
-       If a code is entered but doesn't
-       currently exist, registration is
-       blocked to protect the referral
-       structure from invalid uplines.
-    */
 
     referralStatus.className =
         "referral-status show invalid";
@@ -2055,100 +1839,49 @@ function checkReferralCode(){
     referralStatus.textContent =
         "×";
 
-    referralMessage.className =
-        "field-message error show";
-
-    referralMessage.textContent =
-        "This referral code was not found.";
+    setMessage(
+        referralMessage,
+        "This referral code was not found.",
+        "error"
+    );
 
     return false;
 
 }
 
 
-/* -----------------------------------------------------
-   INPUT VALIDATION HELPERS
-   ----------------------------------------------------- */
+/* =====================================================
+   LIVE VALIDATION
+   ===================================================== */
 
-function setMessage(
-    element,
-    message,
-    type="error"
-){
-
-    element.className =
-        "field-message " +
-        type +
-        " show";
-
-    element.textContent =
-        message;
-
-}
-
-
-function clearMessage(element){
-
-    element.className =
-        "field-message";
-
-    element.textContent =
-        "";
-
-}
-
-
-/* -----------------------------------------------------
-   LIVE PASSWORD
-   ----------------------------------------------------- */
-
-password.addEventListener(
+fullName.addEventListener(
     "input",
     ()=>{
 
-        updatePasswordStrength();
+        const message =
+            document.getElementById(
+                "nameMessage"
+            );
 
-        if(
-            password.value &&
-            password.value.length < 6
-        ){
+        const value =
+            fullName.value.trim();
+
+        if(value.length < 2){
 
             setMessage(
-                document.getElementById(
-                    "passwordMessage"
-                ),
-                "Password must be at least 6 characters."
+                message,
+                "Enter your full name."
             );
 
-            password.classList.add(
-                "invalid"
-            );
+            fullName.classList.add("invalid");
+            fullName.classList.remove("valid");
 
         }else{
 
-            clearMessage(
-                document.getElementById(
-                    "passwordMessage"
-                )
-            );
+            clearMessage(message);
 
-            password.classList.remove(
-                "invalid"
-            );
-
-            if(password.value){
-
-                password.classList.add(
-                    "valid"
-                );
-
-            }
-
-        }
-
-        if(confirmPassword.value){
-
-            validateConfirmPassword();
+            fullName.classList.remove("invalid");
+            fullName.classList.add("valid");
 
         }
 
@@ -2156,9 +1889,152 @@ password.addEventListener(
 );
 
 
-/* -----------------------------------------------------
-   CONFIRM PASSWORD
-   ----------------------------------------------------- */
+phone.addEventListener(
+    "input",
+    ()=>{
+
+        const value =
+            cleanPhone(phone.value)
+            .slice(0,10);
+
+        phone.value = value;
+
+        const message =
+            document.getElementById(
+                "phoneMessage"
+            );
+
+        if(!value){
+
+            clearMessage(message);
+
+            phone.classList.remove(
+                "valid",
+                "invalid"
+            );
+
+            return;
+
+        }
+
+        if(!isValidUgandaPhone(value)){
+
+            setMessage(
+                message,
+                "Enter a valid Ugandan phone number starting with 07."
+            );
+
+            phone.classList.add("invalid");
+            phone.classList.remove("valid");
+
+        }else{
+
+            clearMessage(message);
+
+            phone.classList.remove("invalid");
+            phone.classList.add("valid");
+
+        }
+
+    }
+);
+
+
+email.addEventListener(
+    "input",
+    ()=>{
+
+        const message =
+            document.getElementById(
+                "emailMessage"
+            );
+
+        const value =
+            email.value.trim();
+
+        if(!value){
+
+            clearMessage(message);
+
+            email.classList.remove(
+                "valid",
+                "invalid"
+            );
+
+            return;
+
+        }
+
+        if(!isValidEmail(value)){
+
+            setMessage(
+                message,
+                "Enter a valid email address."
+            );
+
+            email.classList.add("invalid");
+            email.classList.remove("valid");
+
+        }else{
+
+            clearMessage(message);
+
+            email.classList.remove("invalid");
+            email.classList.add("valid");
+
+        }
+
+    }
+);
+
+
+password.addEventListener(
+    "input",
+    ()=>{
+
+        updatePasswordStrength();
+
+        const message =
+            document.getElementById(
+                "passwordMessage"
+            );
+
+        if(
+            password.value &&
+            password.value.length < 6
+        ){
+
+            setMessage(
+                message,
+                "Password must be at least 6 characters."
+            );
+
+            password.classList.add("invalid");
+            password.classList.remove("valid");
+
+        }else if(password.value){
+
+            clearMessage(message);
+
+            password.classList.remove("invalid");
+            password.classList.add("valid");
+
+        }else{
+
+            clearMessage(message);
+
+            password.classList.remove(
+                "valid",
+                "invalid"
+            );
+
+        }
+
+        validateConfirmPassword();
+
+    }
+);
+
 
 function validateConfirmPassword(){
 
@@ -2190,13 +2066,8 @@ function validateConfirmPassword(){
             "Passwords do not match."
         );
 
-        confirmPassword.classList.add(
-            "invalid"
-        );
-
-        confirmPassword.classList.remove(
-            "valid"
-        );
+        confirmPassword.classList.add("invalid");
+        confirmPassword.classList.remove("valid");
 
         return false;
 
@@ -2211,9 +2082,8 @@ function validateConfirmPassword(){
             "Password must be at least 6 characters."
         );
 
-        confirmPassword.classList.add(
-            "invalid"
-        );
+        confirmPassword.classList.add("invalid");
+        confirmPassword.classList.remove("valid");
 
         return false;
 
@@ -2221,13 +2091,8 @@ function validateConfirmPassword(){
 
     clearMessage(message);
 
-    confirmPassword.classList.remove(
-        "invalid"
-    );
-
-    confirmPassword.classList.add(
-        "valid"
-    );
+    confirmPassword.classList.remove("invalid");
+    confirmPassword.classList.add("valid");
 
     return true;
 
@@ -2239,213 +2104,15 @@ confirmPassword.addEventListener(
 );
 
 
-/* -----------------------------------------------------
-   PHONE VALIDATION
-   ----------------------------------------------------- */
-
-phone.addEventListener(
-    "input",
-    ()=>{
-
-        const value =
-            cleanPhone(
-                phone.value
-            );
-
-        phone.value =
-            value.slice(0,10);
-
-        const message =
-            document.getElementById(
-                "phoneMessage"
-            );
-
-        if(!value){
-
-            clearMessage(message);
-
-            phone.classList.remove(
-                "valid",
-                "invalid"
-            );
-
-            return;
-
-        }
-
-        if(!isValidUgandaPhone(value)){
-
-            setMessage(
-                message,
-                "Enter a valid Ugandan phone number starting with 07."
-            );
-
-            phone.classList.add(
-                "invalid"
-            );
-
-            phone.classList.remove(
-                "valid"
-            );
-
-        }else{
-
-            clearMessage(message);
-
-            phone.classList.remove(
-                "invalid"
-            );
-
-            phone.classList.add(
-                "valid"
-            );
-
-        }
-
-    }
-);
-
-
-/* -----------------------------------------------------
-   EMAIL VALIDATION
-   ----------------------------------------------------- */
-
-email.addEventListener(
-    "input",
-    ()=>{
-
-        const message =
-            document.getElementById(
-                "emailMessage"
-            );
-
-        if(!email.value){
-
-            clearMessage(message);
-
-            email.classList.remove(
-                "valid",
-                "invalid"
-            );
-
-            return;
-
-        }
-
-        if(!isValidEmail(email.value)){
-
-            setMessage(
-                message,
-                "Enter a valid email address."
-            );
-
-            email.classList.add(
-                "invalid"
-            );
-
-            email.classList.remove(
-                "valid"
-            );
-
-        }else{
-
-            clearMessage(message);
-
-            email.classList.remove(
-                "invalid"
-            );
-
-            email.classList.add(
-                "valid"
-            );
-
-        }
-
-    }
-);
-
-
-/* -----------------------------------------------------
-   REFERRAL INPUT
-   ----------------------------------------------------- */
-
 referralCode.addEventListener(
     "input",
     checkReferralCode
 );
 
 
-/* -----------------------------------------------------
-   NAME VALIDATION
-   ----------------------------------------------------- */
-
-fullName.addEventListener(
-    "input",
-    ()=>{
-
-        const message =
-            document.getElementById(
-                "nameMessage"
-            );
-
-        if(
-            fullName.value.trim().length < 2
-        ){
-
-            setMessage(
-                message,
-                "Enter your full name."
-            );
-
-            fullName.classList.add(
-                "invalid"
-            );
-
-            fullName.classList.remove(
-                "valid"
-            );
-
-        }else{
-
-            clearMessage(message);
-
-            fullName.classList.remove(
-                "invalid"
-            );
-
-            fullName.classList.add(
-                "valid"
-            );
-
-        }
-
-    }
-);
-
-
-/* -----------------------------------------------------
-   FORM STATUS
-   ----------------------------------------------------- */
-
-function showFormStatus(
-    message,
-    type
-){
-
-    formStatus.className =
-        "form-status " +
-        type +
-        " show";
-
-    formStatus.textContent =
-        message;
-
-}
-
-
-/* -----------------------------------------------------
-   SUBMIT
-   ----------------------------------------------------- */
+/* =====================================================
+   REGISTRATION
+   ===================================================== */
 
 form.addEventListener(
     "submit",
@@ -2453,6 +2120,8 @@ form.addEventListener(
 
         event.preventDefault();
 
+        formStatus.className =
+            "form-status";
 
         /* NAME */
 
@@ -2461,7 +2130,7 @@ form.addEventListener(
 
         if(nameValue.length < 2){
 
-            showFormStatus(
+            showStatus(
                 "Please enter your full name.",
                 "error"
             );
@@ -2476,17 +2145,11 @@ form.addEventListener(
         /* PHONE */
 
         const phoneValue =
-            cleanPhone(
-                phone.value
-            );
+            cleanPhone(phone.value);
 
-        if(
-            !isValidUgandaPhone(
-                phoneValue
-            )
-        ){
+        if(!isValidUgandaPhone(phoneValue)){
 
-            showFormStatus(
+            showStatus(
                 "Please enter a valid Ugandan phone number.",
                 "error"
             );
@@ -2505,13 +2168,9 @@ form.addEventListener(
             .trim()
             .toLowerCase();
 
-        if(
-            !isValidEmail(
-                emailValue
-            )
-        ){
+        if(!isValidEmail(emailValue)){
 
-            showFormStatus(
+            showStatus(
                 "Please enter a valid email address.",
                 "error"
             );
@@ -2528,11 +2187,9 @@ form.addEventListener(
         const passwordValue =
             password.value;
 
-        if(
-            passwordValue.length < 6
-        ){
+        if(passwordValue.length < 6){
 
-            showFormStatus(
+            showStatus(
                 "Your password must contain at least 6 characters.",
                 "error"
             );
@@ -2544,14 +2201,14 @@ form.addEventListener(
         }
 
 
-        /* CONFIRM PASSWORD */
+        /* CONFIRM */
 
         if(
             passwordValue !==
             confirmPassword.value
         ){
 
-            showFormStatus(
+            showStatus(
                 "Password and Confirm Password must match.",
                 "error"
             );
@@ -2568,19 +2225,27 @@ form.addEventListener(
         const referralValue =
             referralCode.value.trim();
 
-        if(
-            referralValue &&
-            !checkReferralCode()
-        ){
+        let referrer = null;
 
-            showFormStatus(
-                "The referral code entered could not be verified.",
-                "error"
-            );
+        if(referralValue){
 
-            referralCode.focus();
+            referrer =
+                findReferrer(
+                    referralValue
+                );
 
-            return;
+            if(!referrer){
+
+                showStatus(
+                    "The referral code entered could not be verified.",
+                    "error"
+                );
+
+                referralCode.focus();
+
+                return;
+
+            }
 
         }
 
@@ -2589,7 +2254,7 @@ form.addEventListener(
 
         if(!terms.checked){
 
-            showFormStatus(
+            showStatus(
                 "Please agree to the Terms & Conditions and Privacy Policy.",
                 "error"
             );
@@ -2601,27 +2266,25 @@ form.addEventListener(
         }
 
 
-        /* USERS */
+        /* EXISTING USERS */
 
         const users =
             getUsers();
 
 
-        /* DUPLICATE PHONE */
+        /* PHONE DUPLICATE */
 
         const phoneExists =
             users.some(
                 user =>
-                cleanPhone(
-                    String(
+                    cleanPhone(
                         user.phone || ""
-                    )
-                ) === phoneValue
+                    ) === phoneValue
             );
 
         if(phoneExists){
 
-            showFormStatus(
+            showStatus(
                 "An account with this phone number already exists.",
                 "error"
             );
@@ -2633,20 +2296,20 @@ form.addEventListener(
         }
 
 
-        /* DUPLICATE EMAIL */
+        /* EMAIL DUPLICATE */
 
         const emailExists =
             users.some(
                 user =>
-                String(
-                    user.email || ""
-                ).toLowerCase() ===
-                emailValue
+                    String(
+                        user.email || ""
+                    ).toLowerCase() ===
+                    emailValue
             );
 
         if(emailExists){
 
-            showFormStatus(
+            showStatus(
                 "An account with this email address already exists.",
                 "error"
             );
@@ -2658,19 +2321,13 @@ form.addEventListener(
         }
 
 
-        /* ACCOUNT ID */
+        /* ACCOUNT */
 
         const accountId =
             generateAccountId();
 
 
-        /* USER REFERRAL CODE */
-
-        const userReferralCode =
-            accountId;
-
-
-        /* CREATE USER */
+        /* USER */
 
         const newUser = {
 
@@ -2693,50 +2350,52 @@ form.addEventListener(
                 passwordValue,
 
             referralCode:
-                userReferralCode,
+                accountId,
 
             referredBy:
-                referralValue || null,
+                referrer
+                    ? referrer.accountId
+                    : null,
 
             referralLevel:
-                referralValue ? 1 : 0,
+                referrer ? 1 : 0,
 
             referralCommission:{
-
                 level1:15,
-
                 level2:3,
-
                 level3:2
-
             },
 
-            walletBalance:
-                0,
+            walletBalance:0,
 
-            cumulativeIncome:
-                0,
+            cumulativeIncome:0,
 
-            totalDeposit:
-                0,
+            totalDeposit:0,
 
-            totalWithdrawal:
-                0,
+            totalWithdrawal:0,
 
-            registrationBonus:
-                0,
+            registrationBonus:0,
 
-            loginBonus:
-                0,
+            loginBonus:0,
 
-            dailyLoginBonus:
-                0,
+            dailyLoginBonus:0,
+
+            purchasedProducts:[],
+
+            incomeRecords:[],
+
+            withdrawalRecords:[],
+
+            depositRecords:[],
+
+            referralRecords:[],
+
+            bonusRecords:[],
+
+            status:"active",
 
             registrationDate:
-                new Date().toISOString(),
-
-            status:
-                "active"
+                new Date().toISOString()
 
         };
 
@@ -2748,48 +2407,28 @@ form.addEventListener(
         saveUsers(users);
 
 
-        /* CURRENT USER */
-
-        localStorage.setItem(
-            CURRENT_USER_KEY,
-            JSON.stringify({
-                accountId:
-                    newUser.accountId,
-
-                fullName:
-                    newUser.fullName,
-
-                phone:
-                    newUser.phone,
-
-                email:
-                    newUser.email
-            })
-        );
+        /* DO NOT LOG USER IN HERE.
+           LOGIN PAGE WILL HANDLE LOGIN. */
 
 
-        /* SUCCESS */
-
-        createButton.disabled =
-            true;
+        createButton.disabled = true;
 
         createButton.textContent =
             "ACCOUNT CREATED ✓";
 
-        showFormStatus(
+
+        showStatus(
             "Your FINORA account has been created successfully. Redirecting to login...",
             "success"
         );
 
 
-        /* REDIRECT */
+        /* REDIRECT TO LOGIN */
 
         setTimeout(
-            function(){
-
+            ()=>{
                 window.location.href =
                     "login.html";
-
             },
             1400
         );
