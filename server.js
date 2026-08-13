@@ -19,17 +19,17 @@ app.use(express.json());
 
 
 /* =========================================
-   FRONTEND FILES
+   FRONTEND
 ========================================= */
 
 app.use(express.static(__dirname));
 
 
 /* =========================================
-   HOME / INDEX
+   HOME
 ========================================= */
 
-app.get("/", (req, res) => {
+app.get("/", function (req, res) {
 
     res.sendFile(
         path.join(__dirname, "index.html")
@@ -39,10 +39,10 @@ app.get("/", (req, res) => {
 
 
 /* =========================================
-   BACKEND STATUS
+   API STATUS
 ========================================= */
 
-app.get("/api/status", (req, res) => {
+app.get("/api/status", function (req, res) {
 
     res.json({
 
@@ -50,8 +50,7 @@ app.get("/api/status", (req, res) => {
 
         platform: "FINORA",
 
-        message:
-            "FINORA backend is running",
+        message: "FINORA backend is running",
 
         status: "online"
 
@@ -61,17 +60,16 @@ app.get("/api/status", (req, res) => {
 
 
 /* =========================================
-   REGISTRATION CONNECTION TEST
+   REGISTER TEST
 ========================================= */
 
-app.get("/api/register-test", (req, res) => {
+app.get("/api/register-test", function (req, res) {
 
     res.json({
 
         success: true,
 
-        service:
-            "FINORA Registration API",
+        service: "FINORA Registration API",
 
         message:
             "Registration server connection is working",
@@ -87,7 +85,7 @@ app.get("/api/register-test", (req, res) => {
    DATABASE HEALTH
 ========================================= */
 
-app.get("/api/health", async (req, res) => {
+app.get("/api/health", async function (req, res) {
 
     try {
 
@@ -97,21 +95,20 @@ app.get("/api/health", async (req, res) => {
 
             success: true,
 
-            service:
-                "FINORA API",
+            service: "FINORA API",
 
-            database:
-                "connected",
+            database: "connected",
 
-            status:
-                "healthy"
+            status: "healthy"
 
         });
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(
-            "Database health check failed:",
+            "DATABASE HEALTH ERROR:",
             error.message
         );
 
@@ -119,17 +116,13 @@ app.get("/api/health", async (req, res) => {
 
             success: false,
 
-            service:
-                "FINORA API",
+            service: "FINORA API",
 
-            database:
-                "disconnected",
+            database: "disconnected",
 
-            status:
-                "unhealthy",
+            status: "unhealthy",
 
-            message:
-                error.message
+            message: error.message
 
         });
 
@@ -144,55 +137,63 @@ app.get("/api/health", async (req, res) => {
 
 async function createUsersTable() {
 
-    try {
+    await pool.query(`
 
-        await pool.query(`
-            CREATE TABLE IF NOT EXISTS users (
+        CREATE TABLE IF NOT EXISTS users (
 
-                id SERIAL PRIMARY KEY,
+            id SERIAL PRIMARY KEY,
 
-                full_name VARCHAR(100) NOT NULL,
+            full_name VARCHAR(100) NOT NULL,
 
-                phone VARCHAR(20) NOT NULL UNIQUE,
+            phone VARCHAR(20) NOT NULL UNIQUE,
 
-                email VARCHAR(150) NOT NULL UNIQUE,
+            email VARCHAR(150) NOT NULL UNIQUE,
 
-                password_hash TEXT NOT NULL,
+            password_hash TEXT NOT NULL,
 
-                referral_code VARCHAR(50) UNIQUE,
+            referral_code VARCHAR(50) UNIQUE,
 
-                referred_by VARCHAR(50),
+            referred_by VARCHAR(50),
 
-                wallet_balance NUMERIC(15,2)
-                    DEFAULT 0,
+            wallet_balance NUMERIC(15,2)
+                DEFAULT 0,
 
-                cumulative_income NUMERIC(15,2)
-                    DEFAULT 0,
+            cumulative_income NUMERIC(15,2)
+                DEFAULT 0,
 
-                account_status VARCHAR(20)
-                    DEFAULT 'active',
+            account_status VARCHAR(20)
+                DEFAULT 'active',
 
-                created_at TIMESTAMP
-                    DEFAULT CURRENT_TIMESTAMP,
+            created_at TIMESTAMP
+                DEFAULT CURRENT_TIMESTAMP,
 
-                updated_at TIMESTAMP
-                    DEFAULT CURRENT_TIMESTAMP
+            updated_at TIMESTAMP
+                DEFAULT CURRENT_TIMESTAMP
 
-            );
-        `);
-
-        console.log(
-            "FINORA users table is ready"
         );
 
-    } catch (error) {
+    `);
 
-        console.error(
-            "Failed to create users table:",
-            error.message
-        );
+    console.log(
+        "FINORA users table is ready"
+    );
 
-    }
+}
+
+
+/* =========================================
+   GENERATE REFERRAL CODE
+========================================= */
+
+function generateReferralCode() {
+
+    return (
+        "FIN" +
+        Math.random()
+            .toString(36)
+            .substring(2, 10)
+            .toUpperCase()
+    );
 
 }
 
@@ -201,354 +202,305 @@ async function createUsersTable() {
    REGISTER USER
 ========================================= */
 
-app.post("/api/register", async (req, res) => {
-
-    console.log(
-        "================================="
-    );
-
-    console.log(
-        "FINORA REGISTER REQUEST RECEIVED"
-    );
-
-    console.log(
-        "================================="
-    );
-
-
-    try {
-
-        /* ---------------------------------
-           READ REQUEST
-        --------------------------------- */
-
-        const {
-            fullName,
-            phone,
-            email,
-            password,
-            referralCode
-        } = req.body;
-
+app.post(
+    "/api/register",
+    async function (req, res) {
 
         console.log(
-            "Registration data received"
+            "FINORA: Registration request received."
         );
 
+        try {
 
-        /* ---------------------------------
-           REQUIRED FIELDS
-        --------------------------------- */
-
-        if (
-            !fullName ||
-            !phone ||
-            !email ||
-            !password
-        ) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "Full name, phone, email and password are required."
-
-            });
-
-        }
-
-
-        /* ---------------------------------
-           CLEAN DATA
-        --------------------------------- */
-
-        const cleanName =
-            String(fullName).trim();
-
-        const cleanPhone =
-            String(phone).trim();
-
-        const cleanEmail =
-            String(email)
-                .trim()
-                .toLowerCase();
-
-        const cleanReferral =
-            referralCode
-                ? String(referralCode).trim()
-                : null;
-
-
-        /* ---------------------------------
-           PASSWORD VALIDATION
-        --------------------------------- */
-
-        if (password.length < 6) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "Password must be at least 6 characters long."
-
-            });
-
-        }
-
-
-        /* ---------------------------------
-           EMAIL VALIDATION
-        --------------------------------- */
-
-        const emailPattern =
-            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (
-            !emailPattern.test(cleanEmail)
-        ) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "Please enter a valid email address."
-
-            });
-
-        }
-
-
-        /* ---------------------------------
-           UGANDA PHONE VALIDATION
-        --------------------------------- */
-
-        const phonePattern =
-            /^07[0-9]{8}$/;
-
-        if (
-            !phonePattern.test(cleanPhone)
-        ) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "Please enter a valid Uganda phone number."
-
-            });
-
-        }
-
-
-        /* =================================
-           DATABASE CONNECTION TEST
-        ================================= */
-
-        console.log(
-            "Testing database connection..."
-        );
-
-        await pool.query("SELECT 1");
-
-        console.log(
-            "Database connection successful"
-        );
-
-
-        /* =================================
-           CHECK EXISTING USER
-        ================================= */
-
-        console.log(
-            "Checking existing account..."
-        );
-
-        const existingUser =
-            await pool.query(
-                `
-                SELECT id
-                FROM users
-                WHERE phone = $1
-                   OR email = $2
-                LIMIT 1
-                `,
-                [
-                    cleanPhone,
-                    cleanEmail
-                ]
-            );
-
-
-        console.log(
-            "Existing account check completed"
-        );
-
-
-        if (
-            existingUser.rows.length > 0
-        ) {
-
-            return res.status(409).json({
-
-                success: false,
-
-                message:
-                    "An account with this phone number or email already exists."
-
-            });
-
-        }
-
-
-        /* =================================
-           HASH PASSWORD
-        ================================= */
-
-        console.log(
-            "Hashing password..."
-        );
-
-        const passwordHash =
-            await bcrypt.hash(
+            const {
+                fullName,
+                phone,
+                email,
                 password,
-                10
+                referralCode
+            } = req.body;
+
+
+            /* ==============================
+               REQUIRED FIELDS
+            ============================== */
+
+            if (
+                !fullName ||
+                !phone ||
+                !email ||
+                !password
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Full name, phone, email and password are required."
+
+                });
+
+            }
+
+
+            /* ==============================
+               CLEAN DATA
+            ============================== */
+
+            const cleanName =
+                String(fullName).trim();
+
+            const cleanPhone =
+                String(phone).trim();
+
+            const cleanEmail =
+                String(email)
+                    .trim()
+                    .toLowerCase();
+
+            const cleanReferral =
+                referralCode
+                    ? String(referralCode).trim()
+                    : null;
+
+
+            /* ==============================
+               VALIDATION
+            ============================== */
+
+            if (cleanName.length < 2) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Please enter your full name."
+
+                });
+
+            }
+
+
+            if (!/^07[0-9]{8}$/.test(cleanPhone)) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Please enter a valid Uganda phone number."
+
+                });
+
+            }
+
+
+            if (
+                !/^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                    .test(cleanEmail)
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Please enter a valid email address."
+
+                });
+
+            }
+
+
+            if (password.length < 6) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Password must be at least 6 characters long."
+
+                });
+
+            }
+
+
+            /* ==============================
+               CHECK EXISTING USER
+            ============================== */
+
+            const existing =
+                await pool.query(
+                    `
+                    SELECT id
+                    FROM users
+                    WHERE phone = $1
+                       OR email = $2
+                    LIMIT 1
+                    `,
+                    [
+                        cleanPhone,
+                        cleanEmail
+                    ]
+                );
+
+
+            if (existing.rows.length > 0) {
+
+                return res.status(409).json({
+
+                    success: false,
+
+                    message:
+                        "An account with this phone number or email already exists."
+
+                });
+
+            }
+
+
+            /* ==============================
+               HASH PASSWORD
+            ============================== */
+
+            const passwordHash =
+                await bcrypt.hash(
+                    password,
+                    10
+                );
+
+
+            /* ==============================
+               REFERRAL CODE
+            ============================== */
+
+            let newReferralCode;
+
+            let codeExists = true;
+
+            while (codeExists) {
+
+                newReferralCode =
+                    generateReferralCode();
+
+                const check =
+                    await pool.query(
+                        `
+                        SELECT id
+                        FROM users
+                        WHERE referral_code = $1
+                        LIMIT 1
+                        `,
+                        [newReferralCode]
+                    );
+
+                codeExists =
+                    check.rows.length > 0;
+
+            }
+
+
+            /* ==============================
+               INSERT USER
+            ============================== */
+
+            const result =
+                await pool.query(
+                    `
+                    INSERT INTO users
+                    (
+                        full_name,
+                        phone,
+                        email,
+                        password_hash,
+                        referral_code,
+                        referred_by
+                    )
+
+                    VALUES
+                    (
+                        $1,
+                        $2,
+                        $3,
+                        $4,
+                        $5,
+                        $6
+                    )
+
+                    RETURNING
+                        id,
+                        full_name,
+                        phone,
+                        email,
+                        referral_code,
+                        referred_by,
+                        wallet_balance,
+                        cumulative_income,
+                        account_status,
+                        created_at
+                    `,
+                    [
+                        cleanName,
+                        cleanPhone,
+                        cleanEmail,
+                        passwordHash,
+                        newReferralCode,
+                        cleanReferral
+                    ]
+                );
+
+
+            const user =
+                result.rows[0];
+
+
+            console.log(
+                "FINORA: User created:",
+                user.id
             );
 
-        console.log(
-            "Password hashing completed"
-        );
 
+            /* ==============================
+               SUCCESS
+            ============================== */
 
-        /* =================================
-           CREATE REFERRAL CODE
-        ================================= */
+            return res.status(201).json({
 
-        const referralCodeForUser =
-            "FIN" +
-            Math.random()
-                .toString(36)
-                .substring(2, 8)
-                .toUpperCase();
+                success: true,
 
+                message:
+                    "Account registered successfully.",
 
-        /* =================================
-           SAVE USER
-        ================================= */
+                user: user
 
-        console.log(
-            "Creating user in database..."
-        );
+            });
 
-        const result =
-            await pool.query(
-                `
-                INSERT INTO users
-                (
-                    full_name,
-                    phone,
-                    email,
-                    password_hash,
-                    referral_code,
-                    referred_by
-                )
+        }
 
-                VALUES
-                (
-                    $1,
-                    $2,
-                    $3,
-                    $4,
-                    $5,
-                    $6
-                )
+        catch (error) {
 
-                RETURNING
-                    id,
-                    full_name,
-                    phone,
-                    email,
-                    referral_code,
-                    account_status,
-                    created_at
-                `,
-                [
-                    cleanName,
-                    cleanPhone,
-                    cleanEmail,
-                    passwordHash,
-                    referralCodeForUser,
-                    cleanReferral
-                ]
+            console.error(
+                "FINORA REGISTRATION ERROR:",
+                error
             );
 
 
-        const user =
-            result.rows[0];
+            return res.status(500).json({
 
+                success: false,
 
-        console.log(
-            "USER CREATED SUCCESSFULLY:",
-            user
-        );
+                message:
+                    "Unable to create account. Please try again."
 
+            });
 
-        /* =================================
-           SUCCESS
-        ================================= */
-
-        return res.status(201).json({
-
-            success: true,
-
-            message:
-                "Account created successfully!",
-
-            user:
-                user
-
-        });
-
-
-    } catch (error) {
-
-        console.error(
-            "================================="
-        );
-
-        console.error(
-            "FINORA REGISTRATION ERROR:"
-        );
-
-        console.error(
-            error
-        );
-
-        console.error(
-            "================================="
-        );
-
-
-        /* =================================
-           DATABASE / SERVER ERROR
-        ================================= */
-
-        return res.status(500).json({
-
-            success: false,
-
-            message:
-                error.message ||
-                "Unable to create account. Please try again."
-
-        });
+        }
 
     }
-
-});
+);
 
 
 /* =========================================
@@ -567,21 +519,26 @@ async function startServer() {
 
         app.listen(
             PORT,
-            () => {
+            function () {
 
                 console.log(
-                    `FINORA backend running on port ${PORT}`
+                    "FINORA backend running on port " +
+                    PORT
                 );
 
             }
         );
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(
             "FINORA SERVER START ERROR:",
             error
         );
+
+        process.exit(1);
 
     }
 
