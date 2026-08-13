@@ -265,7 +265,7 @@ alert("SUBMIT HANDLER IS WORKING");
             /* -----------------------------------------
                SEND REQUEST
             ----------------------------------------- */
-
+alert("SENDING TO FINORA SERVER");
             const response = await fetch(
                 API_URL + "/api/register",
                 {
