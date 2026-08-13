@@ -1,110 +1,88 @@
-/* =====================================================
-   FINORA REGISTER SYSTEM
-   register.js
-   ===================================================== */
+/* =========================================================
+   FINORA REGISTER.JS
+   Registration logic for register.html
+   ========================================================= */
 
+"use strict";
 
-/* =====================================================
-   ELEMENTS
-   ===================================================== */
-
-const form = document.getElementById("registerForm");
-
-const fullName = document.getElementById("fullName");
-const phone = document.getElementById("phone");
-const email = document.getElementById("email");
-const password = document.getElementById("password");
-const confirmPassword = document.getElementById("confirmPassword");
-const referralCode = document.getElementById("referralCode");
-const terms = document.getElementById("terms");
-
-const createButton = document.getElementById("createButton");
-const formStatus = document.getElementById("formStatus");
-
-const nameMessage = document.getElementById("nameMessage");
-const phoneMessage = document.getElementById("phoneMessage");
-const emailMessage = document.getElementById("emailMessage");
-const passwordMessage = document.getElementById("passwordMessage");
-const confirmMessage = document.getElementById("confirmMessage");
-
-const referralStatus =
-    document.getElementById("referralStatus");
-
-const referralMessage =
-    document.getElementById("referralMessage");
-
-const strengthBox =
-    document.getElementById("passwordStrength");
-
-const strengthBars =
-    document.querySelectorAll(".strength-bar");
-
-const strengthText =
-    document.getElementById("strengthText");
-
-
-/* =====================================================
-   FINORA STORAGE
-   ===================================================== */
+/* =========================================================
+   STORAGE
+   ========================================================= */
 
 const USERS_KEY = "finoraUsers";
 const CURRENT_USER_KEY = "finoraCurrentUser";
 
 
-/* =====================================================
-   USERS
-   ===================================================== */
+/* =========================================================
+   ELEMENTS
+   ========================================================= */
 
-function getUsers(){
+const registerForm = document.getElementById("registerForm");
 
-    try{
+const fullNameInput = document.getElementById("fullName");
+const phoneInput = document.getElementById("phone");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const confirmPasswordInput =
+    document.getElementById("confirmPassword");
+const referralInput =
+    document.getElementById("referralCode");
+const termsInput = document.getElementById("terms");
 
-        const saved =
-            localStorage.getItem(USERS_KEY);
+const createButton =
+    document.getElementById("createButton");
 
-        if(!saved){
-            return [];
-        }
+const formStatus =
+    document.getElementById("formStatus");
+
+
+/* =========================================================
+   STORAGE HELPERS
+   ========================================================= */
+
+function getUsers() {
+
+    try {
 
         const users =
-            JSON.parse(saved);
+            JSON.parse(
+                localStorage.getItem(USERS_KEY)
+            );
 
         return Array.isArray(users)
             ? users
             : [];
 
-    }catch(error){
-
-        console.error(
-            "Unable to read FINORA users:",
-            error
-        );
+    } catch (error) {
 
         return [];
+
     }
+
 }
 
 
-function saveUsers(users){
+function saveUsers(users) {
 
     localStorage.setItem(
         USERS_KEY,
         JSON.stringify(users)
     );
+
 }
 
 
-/* =====================================================
+/* =========================================================
    ACCOUNT ID
-   ===================================================== */
+   ========================================================= */
 
-function generateAccountId(){
+function generateAccountId() {
 
     const users = getUsers();
 
     let accountId;
 
-    do{
+    do {
 
         accountId =
             "FN" +
@@ -113,949 +91,657 @@ function generateAccountId(){
                 Math.random() * 90000000
             );
 
-    }while(
+    } while (
         users.some(
             user =>
-                String(user.accountId)
-                .toUpperCase() ===
-                accountId
+                user.accountId === accountId
         )
     );
 
     return accountId;
+
 }
 
 
-/* =====================================================
+/* =========================================================
    PHONE
-   ===================================================== */
+   ========================================================= */
 
-function cleanPhone(value){
+function cleanPhone(value) {
 
     return String(value || "")
         .replace(/\s+/g, "")
         .replace(/-/g, "");
+
 }
 
 
-function isValidUgandaPhone(value){
+function validUgandaPhone(value) {
 
     return /^07\d{8}$/.test(
         cleanPhone(value)
     );
+
 }
 
 
-/* =====================================================
+/* =========================================================
    EMAIL
-   ===================================================== */
+   ========================================================= */
 
-function isValidEmail(value){
+function validEmail(value) {
 
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
         .test(String(value).trim());
+
 }
 
 
-/* =====================================================
+/* =========================================================
    PASSWORD
-   ===================================================== */
+   ========================================================= */
 
-function getPasswordStrength(value){
+function validPassword(value) {
 
-    if(value.length < 6){
-        return 0;
-    }
+    return String(value).length >= 6;
 
-    let score = 1;
-
-    if(/[A-Z]/.test(value)){
-        score++;
-    }
-
-    if(/[0-9]/.test(value)){
-        score++;
-    }
-
-    if(/[^A-Za-z0-9]/.test(value)){
-        score++;
-    }
-
-    return score;
 }
 
 
-/* =====================================================
-   MESSAGES
-   ===================================================== */
+/* =========================================================
+   REFERRAL
+   ========================================================= */
 
-function showFieldMessage(
-    element,
-    message,
-    type = "error"
-){
+function findReferrer(code) {
 
-    element.className =
-        "field-message " +
-        type +
-        " show";
+    const cleanCode =
+        String(code || "")
+            .trim()
+            .toUpperCase();
 
-    element.textContent =
-        message;
+    if (!cleanCode) {
+        return null;
+    }
+
+    const users = getUsers();
+
+    return (
+        users.find(
+            user =>
+                String(
+                    user.accountId || ""
+                ).toUpperCase() === cleanCode
+                ||
+                String(
+                    user.referralCode || ""
+                ).toUpperCase() === cleanCode
+        ) || null
+    );
+
 }
 
 
-function clearFieldMessage(element){
+/* =========================================================
+   FORM STATUS
+   ========================================================= */
 
-    element.className =
-        "field-message";
+function showStatus(message, type = "error") {
 
-    element.textContent =
-        "";
-}
+    if (!formStatus) return;
 
-
-function showFormStatus(
-    message,
-    type = "error"
-){
+    formStatus.textContent = message;
 
     formStatus.className =
         "form-status " +
         type +
         " show";
 
-    formStatus.textContent =
-        message;
 }
 
 
-function clearFormStatus(){
+function clearStatus() {
+
+    if (!formStatus) return;
+
+    formStatus.textContent = "";
 
     formStatus.className =
         "form-status";
 
-    formStatus.textContent =
-        "";
 }
 
 
-/* =====================================================
-   PASSWORD STRENGTH
-   ===================================================== */
-
-function updatePasswordStrength(){
-
-    const value =
-        password.value;
-
-    if(!value){
-
-        strengthBox.classList.remove("show");
-
-        strengthBars.forEach(
-            bar => {
-                bar.style.background =
-                    "rgba(255,255,255,.08)";
-            }
-        );
-
-        return;
-    }
-
-    strengthBox.classList.add("show");
-
-    const score =
-        getPasswordStrength(value);
-
-    const labels = [
-        "Password must contain at least 6 characters.",
-        "Weak password",
-        "Fair password",
-        "Good password",
-        "Strong password"
-    ];
-
-    strengthText.textContent =
-        labels[score];
-
-    strengthBars.forEach(
-        (bar, index) => {
-
-            if(index < score){
-
-                if(score === 1){
-
-                    bar.style.background =
-                        "#FF5C7A";
-
-                }else if(score === 2){
-
-                    bar.style.background =
-                        "#F5A623";
-
-                }else{
-
-                    bar.style.background =
-                        "#49E6A1";
-                }
-
-            }else{
-
-                bar.style.background =
-                    "rgba(255,255,255,.08)";
-            }
-        }
-    );
-}
-
-
-/* =====================================================
+/* =========================================================
    PASSWORD VISIBILITY
-   ===================================================== */
+   ========================================================= */
 
 document
-.querySelectorAll(".toggle-password")
-.forEach(button => {
+    .querySelectorAll(".toggle-password")
+    .forEach(button => {
 
-    button.addEventListener(
-        "click",
-        function(){
+        button.addEventListener(
+            "click",
+            function () {
 
-            const target =
-                document.getElementById(
-                    button.dataset.target
-                );
+                const targetId =
+                    this.dataset.target;
 
-            if(target.type === "password"){
+                const input =
+                    document.getElementById(
+                        targetId
+                    );
 
-                target.type = "text";
+                if (!input) return;
 
-                button.textContent = "🙈";
+                if (
+                    input.type === "password"
+                ) {
 
-                button.setAttribute(
-                    "aria-label",
-                    "Hide password"
-                );
+                    input.type = "text";
 
-            }else{
+                    this.textContent = "🙈";
 
-                target.type = "password";
+                } else {
 
-                button.textContent = "👁";
+                    input.type = "password";
 
-                button.setAttribute(
-                    "aria-label",
-                    "Show password"
-                );
+                    this.textContent = "👁";
+
+                }
+
             }
-        }
-    );
-
-});
-
-
-/* =====================================================
-   NAME VALIDATION
-   ===================================================== */
-
-function validateName(){
-
-    const value =
-        fullName.value.trim();
-
-    if(value.length < 2){
-
-        showFieldMessage(
-            nameMessage,
-            "Enter your full name."
         );
 
-        fullName.classList.add("invalid");
-        fullName.classList.remove("valid");
+    });
 
-        return false;
-    }
 
-    clearFieldMessage(nameMessage);
+/* =========================================================
+   REFERRAL FROM URL
+   ========================================================= */
 
-    fullName.classList.remove("invalid");
-    fullName.classList.add("valid");
-
-    return true;
-}
-
-
-/* =====================================================
-   PHONE VALIDATION
-   ===================================================== */
-
-function validatePhone(){
-
-    const value =
-        cleanPhone(phone.value);
-
-    phone.value =
-        value.slice(0, 10);
-
-    if(!value){
-
-        clearFieldMessage(phoneMessage);
-
-        phone.classList.remove(
-            "valid",
-            "invalid"
-        );
-
-        return false;
-    }
-
-    if(!isValidUgandaPhone(value)){
-
-        showFieldMessage(
-            phoneMessage,
-            "Enter a valid Ugandan phone number starting with 07."
-        );
-
-        phone.classList.add("invalid");
-        phone.classList.remove("valid");
-
-        return false;
-    }
-
-    clearFieldMessage(phoneMessage);
-
-    phone.classList.remove("invalid");
-    phone.classList.add("valid");
-
-    return true;
-}
-
-
-/* =====================================================
-   EMAIL VALIDATION
-   ===================================================== */
-
-function validateEmail(){
-
-    const value =
-        email.value.trim();
-
-    if(!value){
-
-        clearFieldMessage(emailMessage);
-
-        email.classList.remove(
-            "valid",
-            "invalid"
-        );
-
-        return false;
-    }
-
-    if(!isValidEmail(value)){
-
-        showFieldMessage(
-            emailMessage,
-            "Enter a valid email address."
-        );
-
-        email.classList.add("invalid");
-        email.classList.remove("valid");
-
-        return false;
-    }
-
-    clearFieldMessage(emailMessage);
-
-    email.classList.remove("invalid");
-    email.classList.add("valid");
-
-    return true;
-}
-
-
-/* =====================================================
-   PASSWORD VALIDATION
-   ===================================================== */
-
-function validatePassword(){
-
-    const value =
-        password.value;
-
-    updatePasswordStrength();
-
-    if(value.length < 6){
-
-        showFieldMessage(
-            passwordMessage,
-            "Password must be at least 6 characters."
-        );
-
-        password.classList.add("invalid");
-        password.classList.remove("valid");
-
-        return false;
-    }
-
-    clearFieldMessage(passwordMessage);
-
-    password.classList.remove("invalid");
-    password.classList.add("valid");
-
-    return true;
-}
-
-
-/* =====================================================
-   CONFIRM PASSWORD
-   ===================================================== */
-
-function validateConfirmPassword(){
-
-    const value =
-        confirmPassword.value;
-
-    if(!value){
-
-        clearFieldMessage(confirmMessage);
-
-        confirmPassword.classList.remove(
-            "valid",
-            "invalid"
-        );
-
-        return false;
-    }
-
-    if(value !== password.value){
-
-        showFieldMessage(
-            confirmMessage,
-            "Passwords do not match."
-        );
-
-        confirmPassword.classList.add("invalid");
-        confirmPassword.classList.remove("valid");
-
-        return false;
-    }
-
-    if(value.length < 6){
-
-        showFieldMessage(
-            confirmMessage,
-            "Password must be at least 6 characters."
-        );
-
-        confirmPassword.classList.add("invalid");
-        confirmPassword.classList.remove("valid");
-
-        return false;
-    }
-
-    clearFieldMessage(confirmMessage);
-
-    confirmPassword.classList.remove("invalid");
-    confirmPassword.classList.add("valid");
-
-    return true;
-}
-
-
-/* =====================================================
-   REFERRAL CODE
-   ===================================================== */
-
-function checkReferralCode(){
-
-    const code =
-        referralCode.value.trim();
-
-    if(!code){
-
-        referralStatus.className =
-            "referral-status";
-
-        referralStatus.textContent = "";
-
-        referralMessage.className =
-            "field-message";
-
-        referralMessage.textContent = "";
-
-        return true;
-    }
-
-    const users =
-        getUsers();
-
-    const exists =
-        users.some(user => {
-
-            const accountId =
-                String(
-                    user.accountId || ""
-                ).toUpperCase();
-
-            const userReferral =
-                String(
-                    user.referralCode || ""
-                ).toUpperCase();
-
-            const entered =
-                code.toUpperCase();
-
-            return (
-                accountId === entered ||
-                userReferral === entered
-            );
-        });
-
-    if(exists){
-
-        referralStatus.className =
-            "referral-status show valid";
-
-        referralStatus.textContent =
-            "✓";
-
-        showFieldMessage(
-            referralMessage,
-            "Referral code accepted.",
-            "success"
-        );
-
-        return true;
-    }
-
-    referralStatus.className =
-        "referral-status show invalid";
-
-    referralStatus.textContent =
-        "×";
-
-    showFieldMessage(
-        referralMessage,
-        "This referral code was not found."
-    );
-
-    return false;
-}
-
-
-/* =====================================================
-   LOAD REFERRAL FROM URL
-   ===================================================== */
-
-function loadReferralFromURL(){
+function loadReferralFromURL() {
 
     const params =
         new URLSearchParams(
             window.location.search
         );
 
-    const ref =
+    const referral =
         params.get("ref");
 
-    if(ref){
+    if (
+        referral &&
+        referralInput
+    ) {
 
-        referralCode.value =
-            ref.trim();
+        referralInput.value =
+            referral.trim();
 
-        checkReferralCode();
     }
+
 }
 
 loadReferralFromURL();
 
 
-/* =====================================================
-   LIVE VALIDATION
-   ===================================================== */
+/* =========================================================
+   REFERRAL VALIDATION
+   ========================================================= */
 
-fullName.addEventListener(
-    "input",
-    function(){
+function validateReferral() {
 
-        clearFormStatus();
-
-        validateName();
+    if (!referralInput) {
+        return true;
     }
-);
 
+    const code =
+        referralInput.value.trim();
 
-phone.addEventListener(
-    "input",
-    function(){
+    /*
+       Referral is optional.
+    */
 
-        clearFormStatus();
-
-        validatePhone();
+    if (!code) {
+        return true;
     }
-);
 
+    const referrer =
+        findReferrer(code);
 
-email.addEventListener(
-    "input",
-    function(){
+    if (!referrer) {
 
-        clearFormStatus();
+        showStatus(
+            "The referral code entered was not found.",
+            "error"
+        );
 
-        validateEmail();
+        return false;
+
     }
-);
+
+    return true;
+
+}
 
 
-password.addEventListener(
-    "input",
-    function(){
+/* =========================================================
+   LIVE PHONE VALIDATION
+   ========================================================= */
 
-        clearFormStatus();
+if (phoneInput) {
 
-        validatePassword();
+    phoneInput.addEventListener(
+        "input",
+        function () {
 
-        if(confirmPassword.value){
-            validateConfirmPassword();
+            this.value =
+                cleanPhone(
+                    this.value
+                ).slice(0, 10);
+
         }
-    }
-);
+    );
 
+}
 
-confirmPassword.addEventListener(
-    "input",
-    function(){
 
-        clearFormStatus();
+/* =========================================================
+   SUBMIT REGISTRATION
+   ========================================================= */
 
-        validateConfirmPassword();
-    }
-);
+if (registerForm) {
 
+    registerForm.addEventListener(
+        "submit",
+        function (event) {
 
-referralCode.addEventListener(
-    "input",
-    function(){
+            event.preventDefault();
 
-        clearFormStatus();
+            clearStatus();
 
-        checkReferralCode();
-    }
-);
 
+            /* -----------------------------------------
+               GET VALUES
+               ----------------------------------------- */
 
-/* =====================================================
-   SUBMIT
-   ===================================================== */
+            const fullName =
+                fullNameInput.value.trim();
 
-form.addEventListener(
-    "submit",
-    function(event){
+            const phone =
+                cleanPhone(
+                    phoneInput.value
+                );
 
-        event.preventDefault();
+            const email =
+                emailInput.value
+                    .trim()
+                    .toLowerCase();
 
-        clearFormStatus();
+            const password =
+                passwordInput.value;
 
+            const confirmPassword =
+                confirmPasswordInput.value;
 
-        /* ---------------------------------------------
-           VALIDATE FORM
-           --------------------------------------------- */
+            const referralCode =
+                referralInput
+                    ? referralInput.value.trim()
+                    : "";
 
-        if(!validateName()){
 
-            showFormStatus(
-                "Please enter your full name.",
-                "error"
-            );
+            /* -----------------------------------------
+               NAME
+               ----------------------------------------- */
 
-            fullName.focus();
+            if (fullName.length < 2) {
 
-            return;
-        }
+                showStatus(
+                    "Please enter your full name.",
+                    "error"
+                );
 
+                fullNameInput.focus();
 
-        if(!validatePhone()){
+                return;
 
-            showFormStatus(
-                "Please enter a valid Ugandan phone number.",
-                "error"
-            );
+            }
 
-            phone.focus();
 
-            return;
-        }
+            /* -----------------------------------------
+               PHONE
+               ----------------------------------------- */
 
+            if (!validUgandaPhone(phone)) {
 
-        if(!validateEmail()){
+                showStatus(
+                    "Enter a valid Ugandan phone number starting with 07.",
+                    "error"
+                );
 
-            showFormStatus(
-                "Please enter a valid email address.",
-                "error"
-            );
+                phoneInput.focus();
 
-            email.focus();
+                return;
 
-            return;
-        }
+            }
 
 
-        if(!validatePassword()){
+            /* -----------------------------------------
+               EMAIL
+               ----------------------------------------- */
 
-            showFormStatus(
-                "Your password must contain at least 6 characters.",
-                "error"
-            );
+            if (!validEmail(email)) {
 
-            password.focus();
+                showStatus(
+                    "Please enter a valid email address.",
+                    "error"
+                );
 
-            return;
-        }
+                emailInput.focus();
 
+                return;
 
-        if(!validateConfirmPassword()){
+            }
 
-            showFormStatus(
-                "Password and Confirm Password must match.",
-                "error"
-            );
 
-            confirmPassword.focus();
+            /* -----------------------------------------
+               PASSWORD
+               ----------------------------------------- */
 
-            return;
-        }
+            if (!validPassword(password)) {
 
+                showStatus(
+                    "Password must contain at least 6 characters.",
+                    "error"
+                );
 
-        const referralValue =
-            referralCode.value.trim();
+                passwordInput.focus();
 
-        if(
-            referralValue &&
-            !checkReferralCode()
-        ){
+                return;
 
-            showFormStatus(
-                "The referral code entered could not be verified.",
-                "error"
-            );
+            }
 
-            referralCode.focus();
 
-            return;
-        }
+            /* -----------------------------------------
+               CONFIRM PASSWORD
+               ----------------------------------------- */
 
+            if (
+                password !==
+                confirmPassword
+            ) {
 
-        if(!terms.checked){
+                showStatus(
+                    "Passwords do not match.",
+                    "error"
+                );
 
-            showFormStatus(
-                "Please agree to the Terms & Conditions and Privacy Policy.",
-                "error"
-            );
+                confirmPasswordInput.focus();
 
-            terms.focus();
+                return;
 
-            return;
-        }
+            }
 
 
-        /* ---------------------------------------------
-           GET USERS
-           --------------------------------------------- */
+            /* -----------------------------------------
+               REFERRAL
+               ----------------------------------------- */
 
-        const users =
-            getUsers();
+            if (!validateReferral()) {
 
+                referralInput.focus();
 
-        const phoneValue =
-            cleanPhone(phone.value);
+                return;
 
-        const emailValue =
-            email.value
-            .trim()
-            .toLowerCase();
+            }
 
 
-        /* ---------------------------------------------
-           DUPLICATE PHONE
-           --------------------------------------------- */
+            /* -----------------------------------------
+               TERMS
+               ----------------------------------------- */
 
-        const phoneExists =
-            users.some(
-                user =>
-                    cleanPhone(
-                        user.phone || ""
-                    ) === phoneValue
-            );
+            if (
+                termsInput &&
+                !termsInput.checked
+            ) {
 
-        if(phoneExists){
+                showStatus(
+                    "Please agree to the Terms & Conditions and Privacy Policy.",
+                    "error"
+                );
 
-            showFormStatus(
-                "An account with this phone number already exists.",
-                "error"
-            );
+                termsInput.focus();
 
-            phone.focus();
+                return;
 
-            return;
-        }
+            }
 
 
-        /* ---------------------------------------------
-           DUPLICATE EMAIL
-           --------------------------------------------- */
+            /* -----------------------------------------
+               GET EXISTING USERS
+               ----------------------------------------- */
 
-        const emailExists =
-            users.some(
-                user =>
-                    String(
-                        user.email || ""
-                    ).toLowerCase() ===
-                    emailValue
-            );
+            const users =
+                getUsers();
 
-        if(emailExists){
 
-            showFormStatus(
-                "An account with this email address already exists.",
-                "error"
-            );
+            /* -----------------------------------------
+               DUPLICATE PHONE
+               ----------------------------------------- */
 
-            email.focus();
+            const phoneExists =
+                users.some(
+                    user =>
+                        cleanPhone(
+                            user.phone
+                        ) === phone
+                );
 
-            return;
-        }
+            if (phoneExists) {
 
+                showStatus(
+                    "An account with this phone number already exists.",
+                    "error"
+                );
 
-        /* ---------------------------------------------
-           ACCOUNT
-           --------------------------------------------- */
+                phoneInput.focus();
 
-        const accountId =
-            generateAccountId();
+                return;
 
+            }
 
-        /* ---------------------------------------------
-           CREATE USER
-           --------------------------------------------- */
 
-        const newUser = {
+            /* -----------------------------------------
+               DUPLICATE EMAIL
+               ----------------------------------------- */
 
-            accountId: accountId,
+            const emailExists =
+                users.some(
+                    user =>
+                        String(
+                            user.email || ""
+                        ).toLowerCase() ===
+                        email
+                );
 
-            fullName:
-                fullName.value.trim(),
+            if (emailExists) {
 
-            name:
-                fullName.value.trim(),
+                showStatus(
+                    "An account with this email address already exists.",
+                    "error"
+                );
 
-            phone:
-                phoneValue,
+                emailInput.focus();
 
-            email:
-                emailValue,
+                return;
 
-            password:
-                password.value,
+            }
 
-            referralCode:
-                accountId,
 
-            referredBy:
-                referralValue || null,
+            /* -----------------------------------------
+               ACCOUNT ID
+               ----------------------------------------- */
 
-            referralLevel:
-                referralValue ? 1 : 0,
+            const accountId =
+                generateAccountId();
 
-            referralCommission: {
 
-                level1: 15,
-                level2: 3,
-                level3: 2
+            /* -----------------------------------------
+               USER REFERRAL CODE
+               ----------------------------------------- */
 
-            },
+            const userReferralCode =
+                accountId;
 
-            walletBalance: 0,
 
-            cumulativeIncome: 0,
+            /* -----------------------------------------
+               REFERRER
+               ----------------------------------------- */
 
-            totalDeposit: 0,
+            const referrer =
+                referralCode
+                    ? findReferrer(
+                        referralCode
+                    )
+                    : null;
 
-            totalWithdrawal: 0,
 
-            registrationBonus: 0,
+            /* -----------------------------------------
+               CREATE USER
+               ----------------------------------------- */
 
-            loginBonus: 0,
-
-            dailyLoginBonus: 0,
-
-            registrationDate:
-                new Date().toISOString(),
-
-            status: "active"
-        };
-
-
-        /* ---------------------------------------------
-           SAVE USER
-           --------------------------------------------- */
-
-        users.push(newUser);
-
-        saveUsers(users);
-
-
-        /* ---------------------------------------------
-           CURRENT USER
-           --------------------------------------------- */
-
-        localStorage.setItem(
-            CURRENT_USER_KEY,
-            JSON.stringify({
+            const newUser = {
 
                 accountId:
-                    newUser.accountId,
+                    accountId,
 
                 fullName:
-                    newUser.fullName,
+                    fullName,
+
+                name:
+                    fullName,
 
                 phone:
-                    newUser.phone,
+                    phone,
 
                 email:
-                    newUser.email
-            })
-        );
+                    email,
+
+                password:
+                    password,
+
+                referralCode:
+                    userReferralCode,
+
+                referredBy:
+                    referrer
+                        ? referrer.accountId
+                        : null,
+
+                referralLevel:
+                    referrer
+                        ? 1
+                        : 0,
+
+                walletBalance:
+                    0,
+
+                cumulativeIncome:
+                    0,
+
+                totalDeposit:
+                    0,
+
+                totalWithdrawal:
+                    0,
+
+                registrationBonus:
+                    0,
+
+                loginBonus:
+                    0,
+
+                dailyLoginBonus:
+                    0,
+
+                status:
+                    "active",
+
+                registrationDate:
+                    new Date().toISOString(),
+
+                purchasedProducts:
+                    [],
+
+                transactions:
+                    [],
+
+                referralEarnings:
+                    0
+
+            };
 
 
-        /* ---------------------------------------------
-           SUCCESS
-           --------------------------------------------- */
+            /* -----------------------------------------
+               SAVE USER
+               ----------------------------------------- */
 
-        createButton.disabled = true;
+            users.push(newUser);
 
-        createButton.textContent =
-            "ACCOUNT CREATED ✓";
-
-        showFormStatus(
-            "Your FINORA account has been created successfully. Redirecting to login...",
-            "success"
-        );
+            saveUsers(users);
 
 
-        /* ---------------------------------------------
-           LOGIN
-           --------------------------------------------- */
+            /* -----------------------------------------
+               CURRENT USER
+               ----------------------------------------- */
 
-        setTimeout(
-            function(){
+            localStorage.setItem(
+                CURRENT_USER_KEY,
+                JSON.stringify({
+                    accountId:
+                        newUser.accountId,
 
-                window.location.href =
-                    "login.html";
+                    fullName:
+                        newUser.fullName,
 
-            },
-            1400
-        );
+                    phone:
+                        newUser.phone,
 
-    }
-);
+                    email:
+                        newUser.email
+                })
+            );
+
+
+            /* -----------------------------------------
+               SUCCESS
+               ----------------------------------------- */
+
+            createButton.disabled = true;
+
+            createButton.textContent =
+                "ACCOUNT CREATED ✓";
+
+            showStatus(
+                "Account created successfully. Redirecting to login...",
+                "success"
+            );
+
+
+            /* -----------------------------------------
+               REDIRECT
+               ----------------------------------------- */
+
+            setTimeout(
+                function () {
+
+                    window.location.href =
+                        "login.html";
+
+                },
+                1200
+            );
+
+        }
+    );
+
+}
