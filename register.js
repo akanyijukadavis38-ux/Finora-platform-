@@ -1,3 +1,4 @@
+alert("FINORA REGISTER JS LOADED");
 document.addEventListener("DOMContentLoaded", function () {
 
     const form = document.getElementById("registerForm");
