@@ -7,39 +7,69 @@ const pool = require("./database");
 
 const app = express();
 
+
+/* =========================================
+   MIDDLEWARE
+========================================= */
+
 app.use(cors());
 app.use(express.json());
 
+
 /* =========================================
-   SERVE FINORA FRONTEND
+   FRONTEND FILES
 ========================================= */
 
-app.use(
-    express.static(
-        path.join(__dirname, "public")
-    )
-);
+app.use(express.static(__dirname));
 
 
 /* =========================================
-   HOME
+   HOME / INDEX
 ========================================= */
 
 app.get("/", (req, res) => {
 
     res.sendFile(
-        path.join(
-            __dirname,
-            "public",
-            "index.html"
-        )
+        path.join(__dirname, "index.html")
     );
 
 });
 
 
 /* =========================================
-   DATABASE HEALTH CHECK
+   BACKEND STATUS
+========================================= */
+
+app.get("/api/status", (req, res) => {
+
+    res.json({
+        success: true,
+        platform: "FINORA",
+        message: "FINORA backend is running",
+        status: "online"
+    });
+
+});
+
+
+/* =========================================
+   REGISTRATION CONNECTION TEST
+========================================= */
+
+app.get("/api/register-test", (req, res) => {
+
+    res.json({
+        success: true,
+        service: "FINORA Registration API",
+        message: "Registration server connection is working",
+        status: "online"
+    });
+
+});
+
+
+/* =========================================
+   DATABASE HEALTH
 ========================================= */
 
 app.get("/api/health", async (req, res) => {
@@ -50,7 +80,7 @@ app.get("/api/health", async (req, res) => {
 
         res.json({
             success: true,
-            service: "Finora API",
+            service: "FINORA API",
             database: "connected",
             status: "healthy"
         });
@@ -63,12 +93,10 @@ app.get("/api/health", async (req, res) => {
         );
 
         res.status(500).json({
-
             success: false,
-            service: "Finora API",
+            service: "FINORA API",
             database: "disconnected",
             status: "unhealthy"
-
         });
 
     }
@@ -77,40 +105,15 @@ app.get("/api/health", async (req, res) => {
 
 
 /* =========================================
-   REGISTRATION API TEST
-========================================= */
-
-app.get("/api/register-test", (req, res) => {
-
-    res.json({
-
-        success: true,
-
-        service:
-            "Finora Registration API",
-
-        message:
-            "Registration server connection is working",
-
-        status:
-            "online"
-
-    });
-
-});
-
-
-/* =========================================
    SERVER
 ========================================= */
 
-const PORT =
-    process.env.PORT || 10000;
+const PORT = process.env.PORT || 10000;
 
 app.listen(PORT, () => {
 
     console.log(
-        `Finora backend running on port ${PORT}`
+        `FINORA backend running on port ${PORT}`
     );
 
 });
