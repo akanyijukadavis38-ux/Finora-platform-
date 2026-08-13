@@ -14,6 +14,7 @@ const app = express();
 ========================================= */
 
 app.use(cors());
+
 app.use(express.json());
 
 
@@ -44,10 +45,16 @@ app.get("/", (req, res) => {
 app.get("/api/status", (req, res) => {
 
     res.json({
+
         success: true,
+
         platform: "FINORA",
-        message: "FINORA backend is running",
+
+        message:
+            "FINORA backend is running",
+
         status: "online"
+
     });
 
 });
@@ -60,10 +67,17 @@ app.get("/api/status", (req, res) => {
 app.get("/api/register-test", (req, res) => {
 
     res.json({
+
         success: true,
-        service: "FINORA Registration API",
-        message: "Registration server connection is working",
+
+        service:
+            "FINORA Registration API",
+
+        message:
+            "Registration server connection is working",
+
         status: "online"
+
     });
 
 });
@@ -80,10 +94,18 @@ app.get("/api/health", async (req, res) => {
         await pool.query("SELECT 1");
 
         res.json({
+
             success: true,
-            service: "FINORA API",
-            database: "connected",
-            status: "healthy"
+
+            service:
+                "FINORA API",
+
+            database:
+                "connected",
+
+            status:
+                "healthy"
+
         });
 
     } catch (error) {
@@ -94,10 +116,21 @@ app.get("/api/health", async (req, res) => {
         );
 
         res.status(500).json({
+
             success: false,
-            service: "FINORA API",
-            database: "disconnected",
-            status: "unhealthy"
+
+            service:
+                "FINORA API",
+
+            database:
+                "disconnected",
+
+            status:
+                "unhealthy",
+
+            message:
+                error.message
+
         });
 
     }
@@ -130,20 +163,27 @@ async function createUsersTable() {
 
                 referred_by VARCHAR(50),
 
-                wallet_balance NUMERIC(15,2) DEFAULT 0,
+                wallet_balance NUMERIC(15,2)
+                    DEFAULT 0,
 
-                cumulative_income NUMERIC(15,2) DEFAULT 0,
+                cumulative_income NUMERIC(15,2)
+                    DEFAULT 0,
 
-                account_status VARCHAR(20) DEFAULT 'active',
+                account_status VARCHAR(20)
+                    DEFAULT 'active',
 
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                created_at TIMESTAMP
+                    DEFAULT CURRENT_TIMESTAMP,
 
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                updated_at TIMESTAMP
+                    DEFAULT CURRENT_TIMESTAMP
 
             );
         `);
 
-        console.log("FINORA users table is ready");
+        console.log(
+            "FINORA users table is ready"
+        );
 
     } catch (error) {
 
@@ -163,7 +203,24 @@ async function createUsersTable() {
 
 app.post("/api/register", async (req, res) => {
 
+    console.log(
+        "================================="
+    );
+
+    console.log(
+        "FINORA REGISTER REQUEST RECEIVED"
+    );
+
+    console.log(
+        "================================="
+    );
+
+
     try {
+
+        /* ---------------------------------
+           READ REQUEST
+        --------------------------------- */
 
         const {
             fullName,
@@ -172,6 +229,11 @@ app.post("/api/register", async (req, res) => {
             password,
             referralCode
         } = req.body;
+
+
+        console.log(
+            "Registration data received"
+        );
 
 
         /* ---------------------------------
@@ -202,22 +264,24 @@ app.post("/api/register", async (req, res) => {
         --------------------------------- */
 
         const cleanName =
-            fullName.trim();
+            String(fullName).trim();
 
         const cleanPhone =
-            phone.trim();
+            String(phone).trim();
 
         const cleanEmail =
-            email.trim().toLowerCase();
+            String(email)
+                .trim()
+                .toLowerCase();
 
         const cleanReferral =
             referralCode
-                ? referralCode.trim()
+                ? String(referralCode).trim()
                 : null;
 
 
         /* ---------------------------------
-           PASSWORD
+           PASSWORD VALIDATION
         --------------------------------- */
 
         if (password.length < 6) {
@@ -241,7 +305,9 @@ app.post("/api/register", async (req, res) => {
         const emailPattern =
             /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if (!emailPattern.test(cleanEmail)) {
+        if (
+            !emailPattern.test(cleanEmail)
+        ) {
 
             return res.status(400).json({
 
@@ -262,7 +328,9 @@ app.post("/api/register", async (req, res) => {
         const phonePattern =
             /^07[0-9]{8}$/;
 
-        if (!phonePattern.test(cleanPhone)) {
+        if (
+            !phonePattern.test(cleanPhone)
+        ) {
 
             return res.status(400).json({
 
@@ -276,9 +344,28 @@ app.post("/api/register", async (req, res) => {
         }
 
 
-        /* ---------------------------------
+        /* =================================
+           DATABASE CONNECTION TEST
+        ================================= */
+
+        console.log(
+            "Testing database connection..."
+        );
+
+        await pool.query("SELECT 1");
+
+        console.log(
+            "Database connection successful"
+        );
+
+
+        /* =================================
            CHECK EXISTING USER
-        --------------------------------- */
+        ================================= */
+
+        console.log(
+            "Checking existing account..."
+        );
 
         const existingUser =
             await pool.query(
@@ -296,7 +383,14 @@ app.post("/api/register", async (req, res) => {
             );
 
 
-        if (existingUser.rows.length > 0) {
+        console.log(
+            "Existing account check completed"
+        );
+
+
+        if (
+            existingUser.rows.length > 0
+        ) {
 
             return res.status(409).json({
 
@@ -310,9 +404,13 @@ app.post("/api/register", async (req, res) => {
         }
 
 
-        /* ---------------------------------
+        /* =================================
            HASH PASSWORD
-        --------------------------------- */
+        ================================= */
+
+        console.log(
+            "Hashing password..."
+        );
 
         const passwordHash =
             await bcrypt.hash(
@@ -320,10 +418,14 @@ app.post("/api/register", async (req, res) => {
                 10
             );
 
+        console.log(
+            "Password hashing completed"
+        );
 
-        /* ---------------------------------
+
+        /* =================================
            CREATE REFERRAL CODE
-        --------------------------------- */
+        ================================= */
 
         const referralCodeForUser =
             "FIN" +
@@ -333,9 +435,13 @@ app.post("/api/register", async (req, res) => {
                 .toUpperCase();
 
 
-        /* ---------------------------------
+        /* =================================
            SAVE USER
-        --------------------------------- */
+        ================================= */
+
+        console.log(
+            "Creating user in database..."
+        );
 
         const result =
             await pool.query(
@@ -384,33 +490,58 @@ app.post("/api/register", async (req, res) => {
             result.rows[0];
 
 
-        /* ---------------------------------
+        console.log(
+            "USER CREATED SUCCESSFULLY:",
+            user
+        );
+
+
+        /* =================================
            SUCCESS
-        --------------------------------- */
+        ================================= */
 
         return res.status(201).json({
 
             success: true,
 
             message:
-                "FINORA account created successfully.",
+                "Account created successfully!",
 
-            user: user
+            user:
+                user
 
         });
+
 
     } catch (error) {
 
         console.error(
-            "Registration error:",
+            "================================="
+        );
+
+        console.error(
+            "FINORA REGISTRATION ERROR:"
+        );
+
+        console.error(
             error
         );
+
+        console.error(
+            "================================="
+        );
+
+
+        /* =================================
+           DATABASE / SERVER ERROR
+        ================================= */
 
         return res.status(500).json({
 
             success: false,
 
             message:
+                error.message ||
                 "Unable to create account. Please try again."
 
         });
@@ -430,18 +561,29 @@ const PORT =
 
 async function startServer() {
 
-    await createUsersTable();
+    try {
 
-    app.listen(
-        PORT,
-        () => {
+        await createUsersTable();
 
-            console.log(
-                `FINORA backend running on port ${PORT}`
-            );
+        app.listen(
+            PORT,
+            () => {
 
-        }
-    );
+                console.log(
+                    `FINORA backend running on port ${PORT}`
+                );
+
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "FINORA SERVER START ERROR:",
+            error
+        );
+
+    }
 
 }
 
