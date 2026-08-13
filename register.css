@@ -1,0 +1,1021 @@
+/* =========================================================
+   FINORA — REGISTER PAGE
+   register.css
+   ========================================================= */
+
+:root {
+    --pink: #EA3CFF;
+    --pink-light: #FF72FF;
+    --pink-dark: #9E18BD;
+
+    --orange: #F5A623;
+    --gold: #FFD76A;
+
+    --black: #050409;
+    --dark: #0A0710;
+    --card: #130B19;
+
+    --white: #FFFFFF;
+    --muted: #A9A0AE;
+
+    --danger: #FF5C7A;
+    --success: #49E6A1;
+
+    --border: rgba(255,255,255,.09);
+    --pink-border: rgba(234,60,255,.24);
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    color: var(--white);
+
+    background:
+        radial-gradient(
+            circle at 12% 10%,
+            rgba(234,60,255,.13),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 88% 85%,
+            rgba(245,166,35,.09),
+            transparent 28%
+        ),
+        linear-gradient(
+            135deg,
+            #050409,
+            #0A0610 52%,
+            #050409
+        );
+}
+
+
+/* =========================================================
+   BACKGROUND
+   ========================================================= */
+
+.background-orb {
+    position: fixed;
+    z-index: -1;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    filter: blur(100px);
+}
+
+.orb-one {
+    width: 320px;
+    height: 320px;
+
+    top: -120px;
+    left: -130px;
+
+    background: var(--pink);
+    opacity: .09;
+}
+
+.orb-two {
+    width: 300px;
+    height: 300px;
+
+    right: -130px;
+    bottom: -100px;
+
+    background: var(--orange);
+    opacity: .07;
+}
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.page {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.header {
+    width: 100%;
+    padding: 24px 20px;
+}
+
+.header-inner {
+    width: min(1100px, 100%);
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    text-decoration: none;
+}
+
+.finora-mark {
+    width: 47px;
+    height: 56px;
+
+    flex-shrink: 0;
+
+    filter:
+        drop-shadow(
+            0 7px 17px
+            rgba(245,166,35,.20)
+        );
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-name {
+    font-size: 27px;
+    line-height: 1;
+
+    font-weight: 750;
+
+    letter-spacing: 2.5px;
+}
+
+.brand-name .fin {
+    color: var(--pink);
+}
+
+.brand-name .ora {
+    color: var(--orange);
+}
+
+.brand-tagline {
+    margin-top: 5px;
+
+    color: var(--orange);
+
+    font-size: 7px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+
+/* =========================================================
+   LOGIN LINK
+   ========================================================= */
+
+.login-top {
+    color: #AAA1B0;
+
+    font-size: 13px;
+
+    text-decoration: none;
+
+    transition: .25s ease;
+}
+
+.login-top strong {
+    color: var(--pink-light);
+}
+
+.login-top:hover {
+    color: white;
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.main {
+    flex: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 35px 20px 70px;
+}
+
+
+/* =========================================================
+   REGISTER WRAPPER
+   ========================================================= */
+
+.register-wrapper {
+    width: min(1050px, 100%);
+
+    display: grid;
+
+    grid-template-columns: .82fr 1.18fr;
+
+    gap: 30px;
+
+    align-items: stretch;
+}
+
+
+/* =========================================================
+   INFORMATION PANEL
+   ========================================================= */
+
+.info-panel {
+    position: relative;
+
+    padding: 45px 38px;
+
+    border-radius: 27px;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 15% 10%,
+            rgba(234,60,255,.16),
+            transparent 35%
+        ),
+        linear-gradient(
+            145deg,
+            rgba(28,13,39,.96),
+            rgba(9,7,14,.98)
+        );
+
+    border: 1px solid var(--pink-border);
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.35);
+}
+
+.info-panel::after {
+    content: "";
+
+    position: absolute;
+
+    width: 200px;
+    height: 200px;
+
+    right: -100px;
+    bottom: -100px;
+
+    border-radius: 50%;
+
+    background: var(--orange);
+
+    opacity: .06;
+
+    filter: blur(50px);
+}
+
+.info-kicker {
+    color: var(--orange);
+
+    font-size: 10px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+}
+
+.info-panel h1 {
+    margin-top: 18px;
+
+    font-size: clamp(34px, 4vw, 52px);
+
+    line-height: 1.03;
+
+    letter-spacing: -1.8px;
+}
+
+.info-panel h1 span {
+    color: var(--pink);
+}
+
+.info-panel > p {
+    margin-top: 20px;
+
+    color: var(--muted);
+
+    font-size: 14px;
+
+    line-height: 1.75;
+}
+
+
+/* =========================================================
+   BENEFITS
+   ========================================================= */
+
+.benefits {
+    margin-top: 35px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+.benefit {
+    display: flex;
+
+    gap: 14px;
+
+    align-items: flex-start;
+}
+
+.benefit-icon {
+    width: 38px;
+    height: 38px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: rgba(234,60,255,.08);
+
+    border: 1px solid rgba(234,60,255,.18);
+
+    color: var(--orange);
+
+    font-size: 15px;
+}
+
+.benefit h3 {
+    font-size: 14px;
+}
+
+.benefit p {
+    margin-top: 4px;
+
+    color: #807686;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   REFERRAL INFORMATION
+   ========================================================= */
+
+.referral-info {
+    margin-top: 35px;
+
+    padding: 15px;
+
+    border-radius: 14px;
+
+    background: rgba(245,166,35,.045);
+
+    border: 1px solid rgba(245,166,35,.14);
+}
+
+.referral-info-title {
+    color: var(--orange);
+
+    font-size: 10px;
+
+    font-weight: 900;
+
+    letter-spacing: 1.3px;
+}
+
+.referral-levels {
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 10px;
+}
+
+.level {
+    flex: 1;
+
+    padding: 9px 5px;
+
+    text-align: center;
+
+    border-radius: 9px;
+
+    background: rgba(255,255,255,.035);
+}
+
+.level strong {
+    display: block;
+
+    color: white;
+
+    font-size: 15px;
+}
+
+.level small {
+    color: #827987;
+
+    font-size: 8px;
+}
+
+
+/* =========================================================
+   FORM CARD
+   ========================================================= */
+
+.form-card {
+    padding: 40px;
+
+    border-radius: 27px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(21,11,29,.98),
+            rgba(8,6,12,.99)
+        );
+
+    border: 1px solid var(--border);
+
+    box-shadow:
+        0 30px 90px rgba(0,0,0,.48);
+}
+
+
+/* =========================================================
+   FORM HEADER
+   ========================================================= */
+
+.form-header {
+    margin-bottom: 30px;
+}
+
+.form-header h2 {
+    font-size: 30px;
+
+    line-height: 1.1;
+}
+
+.form-header p {
+    margin-top: 9px;
+
+    color: #8F8696;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   FORM GROUP
+   ========================================================= */
+
+.form-group {
+    margin-bottom: 19px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #D7D0DB;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: .2px;
+}
+
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
+.input-wrapper {
+    position: relative;
+}
+
+.form-input {
+    width: 100%;
+
+    height: 52px;
+
+    padding: 0 15px;
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    border-radius: 12px;
+
+    outline: none;
+
+    background: rgba(255,255,255,.035);
+
+    color: white;
+
+    font-size: 14px;
+
+    transition: .25s ease;
+}
+
+.form-input::placeholder {
+    color: #625A68;
+}
+
+.form-input:focus {
+    border-color: rgba(234,60,255,.65);
+
+    background: rgba(234,60,255,.035);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(234,60,255,.07);
+}
+
+.form-input.valid {
+    border-color: rgba(73,230,161,.45);
+}
+
+.form-input.invalid {
+    border-color: rgba(255,92,122,.60);
+}
+
+
+/* =========================================================
+   PASSWORD INPUT
+   ========================================================= */
+
+.password-input {
+    padding-right: 52px;
+}
+
+.toggle-password {
+    position: absolute;
+
+    top: 50%;
+    right: 12px;
+
+    transform: translateY(-50%);
+
+    width: 34px;
+    height: 34px;
+
+    border: 0;
+
+    background: transparent;
+
+    color: #817887;
+
+    cursor: pointer;
+
+    border-radius: 8px;
+
+    transition: .2s ease;
+}
+
+.toggle-password:hover {
+    color: var(--pink-light);
+
+    background: rgba(234,60,255,.06);
+}
+
+
+/* =========================================================
+   FIELD MESSAGE
+   ========================================================= */
+
+.field-message {
+    display: none;
+
+    margin-top: 7px;
+
+    font-size: 10px;
+
+    line-height: 1.4;
+}
+
+.field-message.show {
+    display: block;
+}
+
+.field-message.error {
+    color: var(--danger);
+}
+
+.field-message.success {
+    color: var(--success);
+}
+
+
+/* =========================================================
+   PASSWORD STRENGTH
+   ========================================================= */
+
+.password-strength {
+    margin-top: 9px;
+
+    display: none;
+}
+
+.password-strength.show {
+    display: block;
+}
+
+.strength-bars {
+    display: flex;
+
+    gap: 5px;
+}
+
+.strength-bar {
+    flex: 1;
+
+    height: 4px;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,.08);
+
+    transition: .25s ease;
+}
+
+.strength-text {
+    margin-top: 6px;
+
+    color: #756D7A;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   REFERRAL FIELD
+   ========================================================= */
+
+.referral-wrapper {
+    position: relative;
+}
+
+.referral-status {
+    position: absolute;
+
+    top: 50%;
+    right: 14px;
+
+    transform: translateY(-50%);
+
+    display: none;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.referral-status.show {
+    display: block;
+}
+
+.referral-status.valid {
+    color: var(--success);
+}
+
+.referral-status.invalid {
+    color: var(--danger);
+}
+
+
+/* =========================================================
+   TERMS
+   ========================================================= */
+
+.terms {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    margin-top: 7px;
+
+    color: #817887;
+
+    font-size: 10px;
+
+    line-height: 1.5;
+}
+
+.terms input {
+    margin-top: 2px;
+
+    accent-color: var(--pink);
+
+    width: 14px;
+    height: 14px;
+
+    flex-shrink: 0;
+}
+
+.terms a {
+    color: var(--pink-light);
+
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   CREATE BUTTON
+   ========================================================= */
+
+.create-button {
+    width: 100%;
+
+    height: 55px;
+
+    margin-top: 22px;
+
+    border: 0;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--pink),
+            var(--pink-dark)
+        );
+
+    color: white;
+
+    font-size: 12px;
+
+    font-weight: 900;
+
+    letter-spacing: .8px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 14px 35px
+        rgba(234,60,255,.19);
+
+    transition: .25s ease;
+}
+
+.create-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 18px 40px
+        rgba(234,60,255,.28);
+}
+
+.create-button:active {
+    transform: translateY(0);
+}
+
+.create-button:disabled {
+    opacity: .55;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   FORM STATUS
+   ========================================================= */
+
+.form-status {
+    display: none;
+
+    margin-top: 15px;
+
+    padding: 12px 14px;
+
+    border-radius: 11px;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+.form-status.show {
+    display: block;
+}
+
+.form-status.error {
+    color: #FF9CAE;
+
+    background: rgba(255,92,122,.07);
+
+    border: 1px solid rgba(255,92,122,.16);
+}
+
+.form-status.success {
+    color: #8AF0C2;
+
+    background: rgba(73,230,161,.07);
+
+    border: 1px solid rgba(73,230,161,.16);
+}
+
+
+/* =========================================================
+   BOTTOM LOGIN
+   ========================================================= */
+
+.bottom-login {
+    margin-top: 24px;
+
+    text-align: center;
+
+    color: #716877;
+
+    font-size: 11px;
+}
+
+.bottom-login a {
+    color: var(--pink-light);
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer {
+    padding: 20px;
+
+    text-align: center;
+
+    color: #5F5765;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+    .register-wrapper {
+        grid-template-columns: 1fr;
+
+        max-width: 620px;
+    }
+
+    .info-panel {
+        padding: 35px;
+    }
+
+    .benefits {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 18px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .header {
+        padding: 18px 15px;
+    }
+
+    .header-inner {
+        align-items: center;
+    }
+
+    .finora-mark {
+        width: 40px;
+        height: 49px;
+    }
+
+    .brand-name {
+        font-size: 22px;
+
+        letter-spacing: 2px;
+    }
+
+    .brand-tagline {
+        font-size: 6px;
+
+        letter-spacing: 1.5px;
+    }
+
+    .login-top {
+        font-size: 11px;
+    }
+
+    .main {
+        padding: 15px 14px 45px;
+    }
+
+    .register-wrapper {
+        gap: 15px;
+    }
+
+    .info-panel {
+        padding: 28px 23px;
+
+        border-radius: 21px;
+    }
+
+    .info-panel h1 {
+        font-size: 37px;
+    }
+
+    .benefits {
+        display: flex;
+    }
+
+    .referral-levels {
+        gap: 5px;
+    }
+
+    .form-card {
+        padding: 27px 20px;
+
+        border-radius: 21px;
+    }
+
+    .form-header h2 {
+        font-size: 26px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL DEVICES
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+    .login-top {
+        display: none;
+    }
+
+    .form-card {
+        padding: 24px 16px;
+    }
+
+    .info-panel {
+        padding: 24px 18px;
+    }
+}
