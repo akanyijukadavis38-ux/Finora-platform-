@@ -1,5 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
 
+    /* =========================================
+       FINORA REGISTER.JS
+       ========================================= */
+
     const form = document.getElementById("registerForm");
     const createButton = document.getElementById("createButton");
     const formStatus = document.getElementById("formStatus");
@@ -12,7 +16,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const referralCode = document.getElementById("referralCode");
     const terms = document.getElementById("terms");
 
-    const API_URL = "https://finora-backend-l949.onrender.com";
+    const API_URL =
+        "https://finora-backend-l949.onrender.com";
+
+
+    /* =========================================
+       CHECK THAT FORM EXISTS
+    ========================================= */
+
+    if (!form) {
+        console.error("FINORA: registerForm was not found.");
+        return;
+    }
 
 
     /* =========================================
@@ -23,21 +38,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
         button.addEventListener("click", function () {
 
-            const target = document.getElementById(
-                button.dataset.target
-            );
+            const targetId =
+                button.getAttribute("data-target");
 
-            if (!target) return;
+            const target =
+                document.getElementById(targetId);
+
+            if (!target) {
+                return;
+            }
 
             if (target.type === "password") {
 
                 target.type = "text";
+
                 button.textContent = "🙈";
+
+                button.setAttribute(
+                    "aria-label",
+                    "Hide password"
+                );
 
             } else {
 
                 target.type = "password";
+
                 button.textContent = "👁";
+
+                button.setAttribute(
+                    "aria-label",
+                    "Show password"
+                );
 
             }
 
@@ -50,428 +81,593 @@ document.addEventListener("DOMContentLoaded", function () {
        PASSWORD STRENGTH
     ========================================= */
 
-    password.addEventListener("input", function () {
+    if (password) {
 
-        const value = password.value;
+        password.addEventListener("input", function () {
 
-        const bars =
-            document.querySelectorAll(".strength-bar");
+            const value = password.value;
 
-        const strengthText =
-            document.getElementById("strengthText");
+            const bars =
+                document.querySelectorAll(".strength-bar");
 
-        let score = 0;
+            const strengthText =
+                document.getElementById("strengthText");
 
-        if (value.length >= 6) score++;
-        if (/[A-Z]/.test(value)) score++;
-        if (/[0-9]/.test(value)) score++;
-        if (/[^A-Za-z0-9]/.test(value)) score++;
+            let score = 0;
 
-        bars.forEach(function (bar, index) {
+            if (value.length >= 6) {
+                score++;
+            }
 
-            if (index < score) {
-                bar.classList.add("active");
+            if (/[A-Z]/.test(value)) {
+                score++;
+            }
+
+            if (/[0-9]/.test(value)) {
+                score++;
+            }
+
+            if (/[^A-Za-z0-9]/.test(value)) {
+                score++;
+            }
+
+
+            bars.forEach(function (bar, index) {
+
+                if (index < score) {
+
+                    bar.classList.add("active");
+
+                } else {
+
+                    bar.classList.remove("active");
+
+                }
+
+            });
+
+
+            if (!value) {
+
+                strengthText.textContent =
+                    "Password strength";
+
+            } else if (score === 1) {
+
+                strengthText.textContent =
+                    "Weak";
+
+            } else if (score === 2) {
+
+                strengthText.textContent =
+                    "Fair";
+
+            } else if (score === 3) {
+
+                strengthText.textContent =
+                    "Good";
+
             } else {
-                bar.classList.remove("active");
+
+                strengthText.textContent =
+                    "Strong";
+
             }
 
         });
 
-        if (!value) {
-
-            strengthText.textContent =
-                "Password strength";
-
-        } else if (score === 1) {
-
-            strengthText.textContent =
-                "Weak";
-
-        } else if (score === 2) {
-
-            strengthText.textContent =
-                "Fair";
-
-        } else if (score === 3) {
-
-            strengthText.textContent =
-                "Good";
-
-        } else {
-
-            strengthText.textContent =
-                "Strong";
-
-        }
-
-    });
+    }
 
 
     /* =========================================
        PASSWORD MATCH
     ========================================= */
 
-    confirmPassword.addEventListener("input", function () {
+    if (confirmPassword) {
 
-        const message =
-            document.getElementById("confirmMessage");
+        confirmPassword.addEventListener(
+            "input",
+            function () {
 
-        if (!confirmPassword.value) {
+                const message =
+                    document.getElementById(
+                        "confirmMessage"
+                    );
 
-            message.textContent = "";
-            message.className = "field-message";
+                if (!message) {
+                    return;
+                }
 
-            return;
 
-        }
+                if (!confirmPassword.value) {
 
-        if (password.value !== confirmPassword.value) {
+                    message.textContent = "";
 
-            message.textContent =
-                "Passwords do not match.";
+                    message.className =
+                        "field-message";
 
-            message.className =
-                "field-message error";
+                    return;
 
-        } else {
+                }
 
-            message.textContent =
-                "Passwords match.";
 
-            message.className =
-                "field-message success";
+                if (
+                    password.value !==
+                    confirmPassword.value
+                ) {
 
-        }
+                    message.textContent =
+                        "Passwords do not match.";
 
-    });
+                    message.className =
+                        "field-message error";
+
+                } else {
+
+                    message.textContent =
+                        "Passwords match.";
+
+                    message.className =
+                        "field-message success";
+
+                }
+
+            }
+        );
+
+    }
 
 
     /* =========================================
-       REGISTRATION
+       FORM SUBMISSION
     ========================================= */
 
-    form.addEventListener("submit", async function (event) {
+    form.addEventListener(
+        "submit",
+        async function (event) {
 
-        event.preventDefault();
-        event.stopPropagation();
+            /* STOP NORMAL HTML SUBMISSION */
 
+            event.preventDefault();
+            event.stopPropagation();
 
-        /* -----------------------------------------
-           READ FORM
-        ----------------------------------------- */
-
-        const nameValue =
-            fullName.value.trim();
-
-        const phoneValue =
-            phone.value.trim();
-
-        const emailValue =
-            email.value.trim().toLowerCase();
-
-        const passwordValue =
-            password.value;
-
-        const confirmValue =
-            confirmPassword.value;
-
-        const referralValue =
-            referralCode.value.trim();
-
-
-        /* -----------------------------------------
-           CLEAR OLD MESSAGE
-        ----------------------------------------- */
-
-        formStatus.textContent = "";
-        formStatus.className = "form-status";
-
-
-        /* -----------------------------------------
-           VALIDATE NAME
-        ----------------------------------------- */
-
-        if (nameValue.length < 2) {
-
-            formStatus.textContent =
-                "Please enter your full name.";
-
-            formStatus.className =
-                "form-status error";
-
-            return;
-
-        }
-
-
-        /* -----------------------------------------
-           VALIDATE PHONE
-        ----------------------------------------- */
-
-        if (!/^07[0-9]{8}$/.test(phoneValue)) {
-
-            formStatus.textContent =
-                "Enter a valid Uganda phone number, e.g. 0701234567.";
-
-            formStatus.className =
-                "form-status error";
-
-            return;
-
-        }
-
-
-        /* -----------------------------------------
-           VALIDATE EMAIL
-        ----------------------------------------- */
-
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
-
-            formStatus.textContent =
-                "Please enter a valid email address.";
-
-            formStatus.className =
-                "form-status error";
-
-            return;
-
-        }
-
-
-        /* -----------------------------------------
-           VALIDATE PASSWORD
-        ----------------------------------------- */
-
-        if (passwordValue.length < 6) {
-
-            formStatus.textContent =
-                "Password must contain at least 6 characters.";
-
-            formStatus.className =
-                "form-status error";
-
-            return;
-
-        }
-
-
-        /* -----------------------------------------
-           CONFIRM PASSWORD
-        ----------------------------------------- */
-
-        if (passwordValue !== confirmValue) {
-
-            formStatus.textContent =
-                "Passwords do not match.";
-
-            formStatus.className =
-                "form-status error";
-
-            return;
-
-        }
-
-
-        /* -----------------------------------------
-           TERMS
-        ----------------------------------------- */
-
-        if (!terms.checked) {
-
-            formStatus.textContent =
-                "Please agree to the Terms & Conditions and Privacy Policy.";
-
-            formStatus.className =
-                "form-status error";
-
-            return;
-
-        }
-
-
-        /* =========================================
-           START REGISTRATION
-        ========================================= */
-
-        createButton.disabled = true;
-
-        createButton.textContent =
-            "CREATING ACCOUNT...";
-
-        formStatus.textContent =
-            "Creating your FINORA account...";
-
-        formStatus.className =
-            "form-status";
-
-
-        try {
-
-            /* -------------------------------------
-               SEND TO FINORA BACKEND
-            ------------------------------------- */
-
-            const response = await fetch(
-                API_URL + "/api/register",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json"
-                    },
-
-                    body: JSON.stringify({
-
-                        fullName: nameValue,
-
-                        phone: phoneValue,
-
-                        email: emailValue,
-
-                        password: passwordValue,
-
-                        referralCode:
-                            referralValue || null
-
-                    })
-                }
-            );
-
-
-            /* -------------------------------------
-               READ RESPONSE SAFELY
-            ------------------------------------- */
-
-            const responseText =
-                await response.text();
 
             console.log(
-                "FINORA REGISTER RESPONSE:",
-                response.status,
-                responseText
+                "FINORA: Registration form submitted."
             );
 
 
-            let data = null;
+            /* =====================================
+               READ VALUES
+            ===================================== */
 
-            try {
+            const nameValue =
+                fullName.value.trim();
 
-                data =
-                    JSON.parse(responseText);
+            const phoneValue =
+                phone.value.trim();
 
-            } catch (parseError) {
+            const emailValue =
+                email.value.trim().toLowerCase();
 
-                console.error(
-                    "FINORA RESPONSE JSON ERROR:",
-                    parseError
-                );
+            const passwordValue =
+                password.value;
 
-                formStatus.textContent =
-                    "The FINORA server returned an invalid response.";
+            const confirmValue =
+                confirmPassword.value;
 
-                formStatus.className =
-                    "form-status error";
-
-                createButton.disabled = false;
-
-                createButton.textContent =
-                    "CREATE FINORA ACCOUNT";
-
-                return;
-
-            }
+            const referralValue =
+                referralCode.value.trim();
 
 
             /* =====================================
-               REGISTRATION FAILED
+               CLEAR OLD STATUS
             ===================================== */
 
-            if (!response.ok || data.success !== true) {
-
-                formStatus.textContent =
-                    data.message ||
-                    "Unable to create your FINORA account.";
-
-                formStatus.className =
-                    "form-status error";
-
-                createButton.disabled = false;
-
-                createButton.textContent =
-                    "CREATE FINORA ACCOUNT";
-
-                return;
-
-            }
-
-
-            /* =====================================
-               ACCOUNT CREATED
-            ===================================== */
-
-            if (data.user) {
-
-                localStorage.setItem(
-                    "finoraCurrentUser",
-                    JSON.stringify(data.user)
-                );
-
-            }
-
-
-            /* -------------------------------------
-               SHOW SUCCESS
-            ------------------------------------- */
-
-            formStatus.textContent =
-                data.message ||
-                "Account created successfully!";
+            formStatus.textContent = "";
 
             formStatus.className =
-                "form-status success";
+                "form-status";
 
+
+            /* =====================================
+               VALIDATE NAME
+            ===================================== */
+
+            if (nameValue.length < 2) {
+
+                formStatus.textContent =
+                    "Please enter your full name.";
+
+                formStatus.className =
+                    "form-status error";
+
+                fullName.focus();
+
+                return;
+
+            }
+
+
+            /* =====================================
+               VALIDATE UGANDA PHONE
+            ===================================== */
+
+            if (
+                !/^07[0-9]{8}$/.test(
+                    phoneValue
+                )
+            ) {
+
+                formStatus.textContent =
+                    "Enter a valid Uganda phone number, e.g. 0701234567.";
+
+                formStatus.className =
+                    "form-status error";
+
+                phone.focus();
+
+                return;
+
+            }
+
+
+            /* =====================================
+               VALIDATE EMAIL
+            ===================================== */
+
+            if (
+                !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+                    emailValue
+                )
+            ) {
+
+                formStatus.textContent =
+                    "Please enter a valid email address.";
+
+                formStatus.className =
+                    "form-status error";
+
+                email.focus();
+
+                return;
+
+            }
+
+
+            /* =====================================
+               VALIDATE PASSWORD
+            ===================================== */
+
+            if (passwordValue.length < 6) {
+
+                formStatus.textContent =
+                    "Password must contain at least 6 characters.";
+
+                formStatus.className =
+                    "form-status error";
+
+                password.focus();
+
+                return;
+
+            }
+
+
+            /* =====================================
+               CONFIRM PASSWORD
+            ===================================== */
+
+            if (
+                passwordValue !==
+                confirmValue
+            ) {
+
+                formStatus.textContent =
+                    "Passwords do not match.";
+
+                formStatus.className =
+                    "form-status error";
+
+                confirmPassword.focus();
+
+                return;
+
+            }
+
+
+            /* =====================================
+               TERMS
+            ===================================== */
+
+            if (!terms.checked) {
+
+                formStatus.textContent =
+                    "Please agree to the Terms & Conditions and Privacy Policy.";
+
+                formStatus.className =
+                    "form-status error";
+
+                return;
+
+            }
+
+
+            /* =====================================
+               START LOADING
+            ===================================== */
 
             createButton.disabled = true;
 
             createButton.textContent =
-                "ACCOUNT CREATED ✓";
+                "CREATING ACCOUNT...";
 
+            formStatus.textContent =
+                "Creating your FINORA account...";
 
-            /* -------------------------------------
-               CLEAR PASSWORDS ONLY
-            ------------------------------------- */
-
-            password.value = "";
-            confirmPassword.value = "";
+            formStatus.className =
+                "form-status";
 
 
             console.log(
-                "FINORA ACCOUNT CREATED SUCCESSFULLY:",
-                data.user
+                "FINORA: Sending registration request..."
             );
 
 
-        } catch (error) {
+            /* =====================================
+               SERVER REQUEST WITH TIMEOUT
+            ===================================== */
 
-            console.error(
-                "FINORA REGISTRATION ERROR:",
-                error
-            );
+            const controller =
+                new AbortController();
 
-            formStatus.textContent =
-                "Unable to connect to the FINORA server. Please try again.";
+            const timeout =
+                setTimeout(function () {
 
-            formStatus.className =
-                "form-status error";
+                    controller.abort();
 
-            createButton.disabled = false;
+                }, 30000);
 
-            createButton.textContent =
-                "CREATE FINORA ACCOUNT";
+
+            try {
+
+                const response =
+                    await fetch(
+                        API_URL + "/api/register",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json",
+
+                                "Accept":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                fullName:
+                                    nameValue,
+
+                                phone:
+                                    phoneValue,
+
+                                email:
+                                    emailValue,
+
+                                password:
+                                    passwordValue,
+
+                                referralCode:
+                                    referralValue || null
+
+                            }),
+
+                            signal:
+                                controller.signal
+                        }
+                    );
+
+
+                clearTimeout(timeout);
+
+
+                console.log(
+                    "FINORA SERVER STATUS:",
+                    response.status
+                );
+
+
+                /* =================================
+                   READ SERVER RESPONSE
+                ================================= */
+
+                const responseText =
+                    await response.text();
+
+
+                console.log(
+                    "FINORA SERVER RESPONSE:",
+                    responseText
+                );
+
+
+                let data;
+
+
+                try {
+
+                    data =
+                        JSON.parse(
+                            responseText
+                        );
+
+                } catch (jsonError) {
+
+                    console.error(
+                        "FINORA JSON ERROR:",
+                        jsonError
+                    );
+
+
+                    formStatus.textContent =
+                        "The FINORA server returned an invalid response.";
+
+                    formStatus.className =
+                        "form-status error";
+
+
+                    createButton.disabled =
+                        false;
+
+                    createButton.textContent =
+                        "CREATE FINORA ACCOUNT";
+
+
+                    return;
+
+                }
+
+
+                /* =================================
+                   REGISTRATION FAILED
+                ================================= */
+
+                if (
+                    !response.ok ||
+                    data.success !== true
+                ) {
+
+                    formStatus.textContent =
+                        data.message ||
+                        "Unable to create your FINORA account.";
+
+                    formStatus.className =
+                        "form-status error";
+
+
+                    createButton.disabled =
+                        false;
+
+                    createButton.textContent =
+                        "CREATE FINORA ACCOUNT";
+
+
+                    return;
+
+                }
+
+
+                /* =================================
+                   REGISTRATION SUCCESS
+                ================================= */
+
+                console.log(
+                    "FINORA: ACCOUNT CREATED",
+                    data.user
+                );
+
+
+                /* =================================
+                   SAVE USER
+                ================================= */
+
+                if (data.user) {
+
+                    localStorage.setItem(
+                        "finoraCurrentUser",
+                        JSON.stringify(
+                            data.user
+                        )
+                    );
+
+                }
+
+
+                /* =================================
+                   SHOW SUCCESS
+                ================================= */
+
+                formStatus.textContent =
+                    "Account created successfully! Redirecting to login...";
+
+                formStatus.className =
+                    "form-status success";
+
+
+                createButton.disabled =
+                    true;
+
+                createButton.textContent =
+                    "ACCOUNT CREATED ✓";
+
+
+                /* =================================
+                   CLEAR PASSWORDS
+                ================================= */
+
+                password.value = "";
+
+                confirmPassword.value = "";
+
+
+                /* =================================
+                   REDIRECT TO LOGIN
+                ================================= */
+
+                setTimeout(function () {
+
+                    window.location.href =
+                        "login.html";
+
+                }, 1200);
+
+
+            } catch (error) {
+
+                clearTimeout(timeout);
+
+
+                console.error(
+                    "FINORA REGISTRATION ERROR:",
+                    error
+                );
+
+
+                /* =================================
+                   TIMEOUT
+                ================================= */
+
+                if (
+                    error.name ===
+                    "AbortError"
+                ) {
+
+                    formStatus.textContent =
+                        "The FINORA server took too long to respond. Please try again.";
+
+                } else {
+
+                    formStatus.textContent =
+                        "Unable to connect to the FINORA server. Please try again.";
+
+                }
+
+
+                formStatus.className =
+                    "form-status error";
+
+
+                createButton.disabled =
+                    false;
+
+                createButton.textContent =
+                    "CREATE FINORA ACCOUNT";
+
+            }
 
         }
-
-    });
+    );
 
 });
