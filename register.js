@@ -224,18 +224,22 @@ alert("SUBMIT HANDLER IS WORKING");
 
         }
 
+if (!terms.checked) {
 
-        if (!terms.checked) {
+    alert("TERMS CHECKBOX FAILED");
 
-            formStatus.textContent =
-                "Please agree to the Terms & Conditions and Privacy Policy.";
+    formStatus.textContent =
+        "Please agree to the Terms & Conditions and Privacy Policy.";
 
-            formStatus.className =
-                "form-status error";
+    formStatus.className =
+        "form-status error";
 
-            return;
+    return;
 
-        }
+}
+
+alert("ALL VALIDATION PASSED");
+        
 
 
         /* -----------------------------------------
