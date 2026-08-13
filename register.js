@@ -1,6 +1,8 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
 
     const form = document.getElementById("registerForm");
+    const createButton = document.getElementById("createButton");
+    const formStatus = document.getElementById("formStatus");
 
     const fullName = document.getElementById("fullName");
     const phone = document.getElementById("phone");
@@ -10,36 +12,32 @@ document.addEventListener("DOMContentLoaded", () => {
     const referralCode = document.getElementById("referralCode");
     const terms = document.getElementById("terms");
 
-    const createButton = document.getElementById("createButton");
-    const formStatus = document.getElementById("formStatus");
-
     const API_URL = "https://finora-backend-l949.onrender.com";
 
 
     /* =========================================
        PASSWORD SHOW / HIDE
-    ========================================== */
+    ========================================= */
 
-    document.querySelectorAll(".toggle-password").forEach(button => {
+    document.querySelectorAll(".toggle-password").forEach(function (button) {
 
-        button.addEventListener("click", () => {
+        button.addEventListener("click", function () {
 
-            const targetId = button.dataset.target;
-            const input = document.getElementById(targetId);
+            const target = document.getElementById(
+                button.dataset.target
+            );
 
-            if (!input) return;
+            if (!target) return;
 
-            if (input.type === "password") {
+            if (target.type === "password") {
 
-                input.type = "text";
+                target.type = "text";
                 button.textContent = "🙈";
-                button.setAttribute("aria-label", "Hide password");
 
             } else {
 
-                input.type = "password";
+                target.type = "password";
                 button.textContent = "👁";
-                button.setAttribute("aria-label", "Show password");
 
             }
 
@@ -49,83 +47,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================
-       MESSAGE HELPER
-    ========================================== */
-
-    function showMessage(id, message, type = "") {
-
-        const element = document.getElementById(id);
-
-        if (!element) return;
-
-        element.textContent = message;
-        element.className = "field-message";
-
-        if (type) {
-            element.classList.add(type);
-        }
-
-    }
-
-
-    /* =========================================
-       CLEAR MESSAGES
-    ========================================== */
-
-    function clearMessages() {
-
-        [
-            "nameMessage",
-            "phoneMessage",
-            "emailMessage",
-            "passwordMessage",
-            "confirmMessage",
-            "referralMessage"
-        ].forEach(id => {
-
-            showMessage(id, "");
-
-        });
-
-        formStatus.textContent = "";
-        formStatus.className = "form-status";
-
-    }
-
-
-    /* =========================================
-       EMAIL VALIDATION
-    ========================================== */
-
-    function validEmail(value) {
-
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-
-    }
-
-
-    /* =========================================
-       UGANDA PHONE VALIDATION
-    ========================================== */
-
-    function validUgandaPhone(value) {
-
-        return /^07\d{8}$/.test(value);
-
-    }
-
-
-    /* =========================================
        PASSWORD STRENGTH
-    ========================================== */
+    ========================================= */
 
-    function checkPasswordStrength(value) {
+    password.addEventListener("input", function () {
 
-        const bars =
-            document.querySelectorAll(".strength-bar");
-
-        const strengthText =
-            document.getElementById("strengthText");
+        const value = password.value;
+        const bars = document.querySelectorAll(".strength-bar");
+        const strengthText = document.getElementById("strengthText");
 
         let score = 0;
 
@@ -134,91 +63,55 @@ document.addEventListener("DOMContentLoaded", () => {
         if (/[0-9]/.test(value)) score++;
         if (/[^A-Za-z0-9]/.test(value)) score++;
 
-
-        bars.forEach((bar, index) => {
-
-            bar.classList.remove("active");
+        bars.forEach(function (bar, index) {
 
             if (index < score) {
                 bar.classList.add("active");
+            } else {
+                bar.classList.remove("active");
             }
 
         });
 
-
         if (!value) {
-
-            strengthText.textContent =
-                "Password strength";
-
-        } else if (score <= 1) {
-
-            strengthText.textContent =
-                "Weak";
-
+            strengthText.textContent = "Password strength";
+        } else if (score === 1) {
+            strengthText.textContent = "Weak";
         } else if (score === 2) {
-
-            strengthText.textContent =
-                "Fair";
-
+            strengthText.textContent = "Fair";
         } else if (score === 3) {
-
-            strengthText.textContent =
-                "Good";
-
+            strengthText.textContent = "Good";
         } else {
-
-            strengthText.textContent =
-                "Strong";
-
+            strengthText.textContent = "Strong";
         }
-
-    }
-
-
-    password.addEventListener("input", () => {
-
-        checkPasswordStrength(password.value);
 
     });
 
 
     /* =========================================
        PASSWORD MATCH
-    ========================================== */
+    ========================================= */
 
-    confirmPassword.addEventListener("input", () => {
+    confirmPassword.addEventListener("input", function () {
+
+        const message = document.getElementById("confirmMessage");
 
         if (!confirmPassword.value) {
 
-            showMessage(
-                "confirmMessage",
-                ""
-            );
-
+            message.textContent = "";
             return;
 
         }
 
+        if (password.value !== confirmPassword.value) {
 
-        if (
-            password.value !==
-            confirmPassword.value
-        ) {
-
-            showMessage(
-                "confirmMessage",
-                "Passwords do not match.",
-                "error"
-            );
+            message.textContent = "Passwords do not match.";
+            message.className = "field-message error";
 
         } else {
 
-            showMessage(
-                "confirmMessage",
-                "Passwords match.",
-                "success"
-            );
+            message.textContent = "Passwords match.";
+            message.className = "field-message success";
 
         }
 
@@ -227,132 +120,110 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =========================================
        REGISTRATION
-    ========================================== */
+    ========================================= */
 
-    form.addEventListener("submit", async (event) => {
+    form.addEventListener("submit", async function (event) {
+
+        /*
+         * VERY IMPORTANT:
+         * Stop the browser from submitting/reloading
+         * the HTML page.
+         */
 
         event.preventDefault();
+        event.stopPropagation();
 
-        clearMessages();
-
-
-        const nameValue =
-            fullName.value.trim();
-
-        const phoneValue =
-            phone.value.trim();
-
-        const emailValue =
-            email.value.trim().toLowerCase();
-
-        const passwordValue =
-            password.value;
-
-        const confirmValue =
-            confirmPassword.value;
-
-        const referralValue =
-            referralCode.value.trim();
+        console.log("FINORA REGISTER FORM SUBMITTED");
 
 
-        /* =====================================
-           VALIDATE NAME
-        ===================================== */
+        /* -----------------------------------------
+           READ FORM
+        ----------------------------------------- */
+
+        const nameValue = fullName.value.trim();
+        const phoneValue = phone.value.trim();
+        const emailValue = email.value.trim().toLowerCase();
+        const passwordValue = password.value;
+        const confirmValue = confirmPassword.value;
+        const referralValue = referralCode.value.trim();
+
+
+        /* -----------------------------------------
+           CLEAR STATUS
+        ----------------------------------------- */
+
+        formStatus.textContent = "";
+        formStatus.className = "form-status";
+
+
+        /* -----------------------------------------
+           VALIDATION
+        ----------------------------------------- */
 
         if (nameValue.length < 2) {
 
-            showMessage(
-                "nameMessage",
-                "Please enter your full name.",
-                "error"
-            );
+            formStatus.textContent =
+                "Please enter your full name.";
 
-            fullName.focus();
+            formStatus.className =
+                "form-status error";
 
             return;
 
         }
 
 
-        /* =====================================
-           VALIDATE PHONE
-        ===================================== */
+        if (!/^07[0-9]{8}$/.test(phoneValue)) {
 
-        if (!validUgandaPhone(phoneValue)) {
+            formStatus.textContent =
+                "Enter a valid Uganda phone number, e.g. 0701234567.";
 
-            showMessage(
-                "phoneMessage",
-                "Enter a valid Uganda phone number, e.g. 0701234567.",
-                "error"
-            );
-
-            phone.focus();
+            formStatus.className =
+                "form-status error";
 
             return;
 
         }
 
 
-        /* =====================================
-           VALIDATE EMAIL
-        ===================================== */
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
 
-        if (!validEmail(emailValue)) {
+            formStatus.textContent =
+                "Please enter a valid email address.";
 
-            showMessage(
-                "emailMessage",
-                "Please enter a valid email address.",
-                "error"
-            );
-
-            email.focus();
+            formStatus.className =
+                "form-status error";
 
             return;
 
         }
 
-
-        /* =====================================
-           VALIDATE PASSWORD
-        ===================================== */
 
         if (passwordValue.length < 6) {
 
-            showMessage(
-                "passwordMessage",
-                "Password must contain at least 6 characters.",
-                "error"
-            );
+            formStatus.textContent =
+                "Password must contain at least 6 characters.";
 
-            password.focus();
+            formStatus.className =
+                "form-status error";
 
             return;
 
         }
 
-
-        /* =====================================
-           CONFIRM PASSWORD
-        ===================================== */
 
         if (passwordValue !== confirmValue) {
 
-            showMessage(
-                "confirmMessage",
-                "Passwords do not match.",
-                "error"
-            );
+            formStatus.textContent =
+                "Passwords do not match.";
 
-            confirmPassword.focus();
+            formStatus.className =
+                "form-status error";
 
             return;
 
         }
 
-
-        /* =====================================
-           TERMS
-        ===================================== */
 
         if (!terms.checked) {
 
@@ -367,15 +238,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /* =====================================
-           BUTTON LOADING
-        ===================================== */
+        /* -----------------------------------------
+           SHOW LOADING
+        ----------------------------------------- */
 
         createButton.disabled = true;
 
         createButton.textContent =
             "CREATING ACCOUNT...";
-
 
         formStatus.textContent =
             "Creating your FINORA account...";
@@ -386,12 +256,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
 
-            /* =================================
-               SEND TO SERVER
-            ================================= */
+            console.log(
+                "Sending registration request to:",
+                API_URL + "/api/register"
+            );
+
+
+            /* -----------------------------------------
+               SEND REQUEST
+            ----------------------------------------- */
 
             const response = await fetch(
-                `${API_URL}/api/register`,
+                API_URL + "/api/register",
                 {
                     method: "POST",
 
@@ -402,77 +278,44 @@ document.addEventListener("DOMContentLoaded", () => {
                     body: JSON.stringify({
 
                         fullName: nameValue,
-
                         phone: phoneValue,
-
                         email: emailValue,
-
                         password: passwordValue,
-
-                        referralCode:
-                            referralValue || null
+                        referralCode: referralValue || null
 
                     })
                 }
             );
 
 
-            /* =================================
-               READ SERVER RESPONSE
-            ================================= */
-
-            const responseText =
-                await response.text();
-
-
             console.log(
-                "FINORA SERVER RESPONSE:",
-                responseText
+                "FINORA RESPONSE STATUS:",
+                response.status
             );
 
 
-            let data;
+            /* -----------------------------------------
+               GET RESPONSE
+            ----------------------------------------- */
 
-            try {
-
-                data =
-                    JSON.parse(responseText);
-
-            } catch (error) {
-
-                console.error(
-                    "Invalid server response:",
-                    responseText
-                );
-
-                formStatus.textContent =
-                    "The FINORA server returned an unexpected response.";
-
-                formStatus.className =
-                    "form-status error";
-
-                createButton.disabled = false;
-
-                createButton.textContent =
-                    "CREATE FINORA ACCOUNT";
-
-                return;
-
-            }
+            const data = await response.json();
 
 
-            /* =================================
+            console.log(
+                "FINORA RESPONSE DATA:",
+                data
+            );
+
+
+            /* -----------------------------------------
                SERVER ERROR
-            ================================= */
+            ----------------------------------------- */
 
-            if (
-                !response.ok ||
-                !data.success
-            ) {
+            if (!response.ok || !data.success) {
 
                 formStatus.textContent =
                     data.message ||
-                    "Registration failed. Please try again.";
+                    "Registration failed.";
 
                 formStatus.className =
                     "form-status error";
@@ -487,17 +330,20 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            /* =================================
-               REGISTRATION SUCCESS
-            ================================= */
+            /* -----------------------------------------
+               SUCCESS
+            ----------------------------------------- */
 
-            console.log(
-                "FINORA ACCOUNT CREATED:",
-                data.user
-            );
+            formStatus.textContent =
+                "ACCOUNT CREATED SUCCESSFULLY!";
+
+            formStatus.className =
+                "form-status success";
 
 
-            /* SAVE USER INFORMATION */
+            /* -----------------------------------------
+               SAVE USER
+            ----------------------------------------- */
 
             if (data.user) {
 
@@ -509,16 +355,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            /* SHOW SUCCESS */
-
-            formStatus.textContent =
-                "Account created successfully! Welcome to FINORA.";
-
-            formStatus.className =
-                "form-status success";
-
-
-            /* CHANGE BUTTON */
+            /* -----------------------------------------
+               KEEP USER ON REGISTER PAGE
+            ----------------------------------------- */
 
             createButton.disabled = true;
 
@@ -526,24 +365,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 "ACCOUNT CREATED ✓";
 
 
-            /* MAKE MESSAGE VISIBLE */
-
-            formStatus.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-            });
-
+            console.log(
+                "FINORA ACCOUNT CREATED SUCCESSFULLY"
+            );
 
         } catch (error) {
 
             console.error(
-                "FINORA registration error:",
+                "FINORA REGISTRATION ERROR:",
                 error
             );
 
 
             formStatus.textContent =
-                "Unable to connect to the FINORA server. Please try again.";
+                "Registration failed: " + error.message;
 
             formStatus.className =
                 "form-status error";
