@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         event.preventDefault();
         event.stopPropagation();
-
+alert("SUBMIT HANDLER IS WORKING");
         console.log("FINORA REGISTER FORM SUBMITTED");
 
 
