@@ -270,27 +270,36 @@ alert("ALL VALIDATION PASSED");
                SEND REQUEST
             ----------------------------------------- */
 alert("SENDING TO FINORA SERVER");
-            const response = await fetch(
-                API_URL + "/api/register",
-                {
-                    method: "POST",
+       
+alert("REQUEST SENT — WAITING FOR SERVER");
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+const response = await fetch(
+    API_URL + "/api/register",
+    {
+        method: "POST",
 
-                    body: JSON.stringify({
+        headers: {
+            "Content-Type": "application/json"
+        },
 
-                        fullName: nameValue,
-                        phone: phoneValue,
-                        email: emailValue,
-                        password: passwordValue,
-                        referralCode: referralValue || null
+        body: JSON.stringify({
 
-                    })
-                }
-            );
+            fullName: nameValue,
+            phone: phoneValue,
+            email: emailValue,
+            password: passwordValue,
+            referralCode: referralValue || null
 
+        })
+    }
+);
+
+alert("SERVER RESPONDED");
+
+console.log(
+    "FINORA RESPONSE STATUS:",
+    response.status
+);
 
             console.log(
                 "FINORA RESPONSE STATUS:",
