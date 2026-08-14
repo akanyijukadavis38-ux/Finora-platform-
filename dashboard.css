@@ -543,3 +543,895 @@ main{
         height:19px;
     }
 }
+/* =========================================================
+   FINORA DASHBOARD — PART TWO
+   WELCOME + REAL BANNERS + WALLET + FINANCIAL OVERVIEW
+   ========================================================= */
+
+
+/* =========================================================
+   WELCOME SECTION
+   ========================================================= */
+
+.welcome-section{
+    width:100%;
+
+    padding-top:24px;
+    padding-bottom:18px;
+}
+
+.welcome-section .dashboard-container{
+    width:100%;
+}
+
+.welcome-title{
+    margin:0;
+
+    color:#ffffff;
+
+    font-size:27px;
+    font-weight:850;
+
+    line-height:1.15;
+    letter-spacing:-.5px;
+}
+
+.welcome-subtitle{
+    margin-top:7px;
+
+    color:rgba(255,255,255,.66);
+
+    font-size:13px;
+    font-weight:500;
+
+    line-height:1.4;
+}
+
+
+/* =========================================================
+   BANNER SECTION
+   ========================================================= */
+
+.banner-section{
+    width:100%;
+
+    padding-top:2px;
+    padding-bottom:20px;
+
+    overflow:hidden;
+}
+
+
+/* =========================================================
+   BANNER TRACK
+   ========================================================= */
+
+.banner-track{
+    width:100%;
+
+    display:flex;
+
+    gap:14px;
+
+    overflow-x:auto;
+    overflow-y:hidden;
+
+    scroll-snap-type:x mandatory;
+
+    scrollbar-width:none;
+
+    -webkit-overflow-scrolling:touch;
+}
+
+.banner-track::-webkit-scrollbar{
+    display:none;
+}
+
+
+/* =========================================================
+   REAL FINORA DASHBOARD BANNER
+   ========================================================= */
+
+.dashboard-banner{
+    position:relative;
+
+    flex:0 0 100%;
+
+    width:100%;
+    min-height:205px;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    scroll-snap-align:start;
+
+    isolation:isolate;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2A1438 0%,
+            #21102E 48%,
+            #16091F 100%
+        );
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+        0 12px 32px rgba(0,0,0,.20);
+}
+
+
+/* =========================================================
+   BANNER VARIATIONS
+   ========================================================= */
+
+.dashboard-banner.banner-invest{
+    background:
+        linear-gradient(
+            135deg,
+            #30113D 0%,
+            #24102F 48%,
+            #18091F 100%
+        );
+}
+
+.dashboard-banner.banner-wealth{
+    background:
+        linear-gradient(
+            135deg,
+            #351A35 0%,
+            #26122F 52%,
+            #170A20 100%
+        );
+}
+
+.dashboard-banner.banner-plans{
+    background:
+        linear-gradient(
+            135deg,
+            #321A30 0%,
+            #24112F 50%,
+            #16091F 100%
+        );
+}
+
+.dashboard-banner.banner-future{
+    background:
+        linear-gradient(
+            135deg,
+            #2C1538 0%,
+            #21102E 52%,
+            #15081E 100%
+        );
+}
+
+
+/* =========================================================
+   BANNER CONTENT
+   ========================================================= */
+
+.banner-content{
+    position:relative;
+    z-index:5;
+
+    width:58%;
+    min-height:205px;
+
+    display:flex;
+    flex-direction:column;
+
+    justify-content:center;
+
+    padding:
+        24px
+        0
+        24px
+        24px;
+}
+
+
+/* =========================================================
+   BANNER LABEL
+   ========================================================= */
+
+.banner-label{
+    display:inline-flex;
+    align-items:center;
+
+    width:max-content;
+
+    padding:6px 10px;
+
+    margin-bottom:9px;
+
+    border-radius:30px;
+
+    background:rgba(245,166,35,.12);
+
+    border:1px solid rgba(245,166,35,.25);
+
+    color:var(--finora-gold-light);
+
+    font-size:9px;
+    font-weight:850;
+
+    letter-spacing:1.2px;
+
+    text-transform:uppercase;
+}
+
+
+/* =========================================================
+   BANNER TITLE
+   ========================================================= */
+
+.banner-title{
+    max-width:310px;
+
+    color:#ffffff;
+
+    font-size:25px;
+    font-weight:900;
+
+    line-height:1.08;
+
+    letter-spacing:-.6px;
+}
+
+
+/* =========================================================
+   BANNER HIGHLIGHT
+   ========================================================= */
+
+.banner-title span{
+    color:var(--finora-gold);
+}
+
+
+/* =========================================================
+   BANNER DESCRIPTION
+   ========================================================= */
+
+.banner-description{
+    max-width:285px;
+
+    margin-top:9px;
+
+    color:rgba(255,255,255,.72);
+
+    font-size:11px;
+    font-weight:500;
+
+    line-height:1.45;
+}
+
+
+/* =========================================================
+   BANNER BUTTON
+   ========================================================= */
+
+.banner-button{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    width:max-content;
+
+    min-height:36px;
+
+    margin-top:15px;
+
+    padding:0 17px;
+
+    border-radius:9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #F5A623,
+            #FFD76A
+        );
+
+    color:#16091F;
+
+    text-decoration:none;
+
+    font-size:11px;
+    font-weight:900;
+
+    border:0;
+
+    box-shadow:
+        0 7px 18px rgba(245,166,35,.20);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.banner-button:hover{
+    transform:translateY(-1px);
+
+    box-shadow:
+        0 9px 22px rgba(245,166,35,.28);
+}
+
+
+/* =========================================================
+   REAL BANNER ARTWORK
+   ========================================================= */
+
+.banner-artwork{
+    position:absolute;
+
+    top:0;
+    right:0;
+
+    width:53%;
+    height:100%;
+
+    z-index:2;
+
+    pointer-events:none;
+}
+
+
+/* =========================================================
+   BANNER ARTWORK — INVESTMENT
+   ========================================================= */
+
+.investment-artwork{
+    background:
+        radial-gradient(
+            circle at 62% 48%,
+            rgba(234,60,255,.27) 0%,
+            rgba(234,60,255,.10) 30%,
+            transparent 68%
+        );
+}
+
+
+/* =========================================================
+   BANNER ARTWORK — WEALTH
+   ========================================================= */
+
+.wealth-artwork{
+    background:
+        radial-gradient(
+            circle at 58% 48%,
+            rgba(245,166,35,.24) 0%,
+            rgba(245,166,35,.08) 32%,
+            transparent 70%
+        );
+}
+
+
+/* =========================================================
+   BANNER ARTWORK — PLANS
+   ========================================================= */
+
+.plans-artwork{
+    background:
+        radial-gradient(
+            circle at 58% 50%,
+            rgba(234,60,255,.22) 0%,
+            rgba(245,166,35,.08) 34%,
+            transparent 72%
+        );
+}
+
+
+/* =========================================================
+   BANNER ARTWORK — FUTURE
+   ========================================================= */
+
+.future-artwork{
+    background:
+        radial-gradient(
+            circle at 58% 45%,
+            rgba(255,114,255,.20) 0%,
+            rgba(234,60,255,.08) 34%,
+            transparent 72%
+        );
+}
+
+
+/* =========================================================
+   FINORA FINANCIAL OVERVIEW
+   ========================================================= */
+
+.financial-overview{
+    width:100%;
+
+    padding-bottom:22px;
+}
+
+
+/* =========================================================
+   WALLET CARD
+   ========================================================= */
+
+.wallet-card{
+    position:relative;
+
+    width:100%;
+
+    padding:21px;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2A1438 0%,
+            #21102E 55%,
+            #1A0B26 100%
+        );
+
+    border:1px solid rgba(245,166,35,.18);
+
+    box-shadow:
+        0 10px 28px rgba(0,0,0,.18);
+}
+
+
+/* =========================================================
+   WALLET CARD GLOW
+   ========================================================= */
+
+.wallet-card::after{
+    content:"";
+
+    position:absolute;
+
+    width:150px;
+    height:150px;
+
+    right:-65px;
+    top:-70px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(234,60,255,.20) 0%,
+            transparent 70%
+        );
+
+    pointer-events:none;
+}
+
+
+/* =========================================================
+   WALLET LABEL
+   ========================================================= */
+
+.wallet-label{
+    position:relative;
+    z-index:2;
+
+    color:rgba(255,255,255,.64);
+
+    font-size:11px;
+    font-weight:700;
+
+    letter-spacing:.4px;
+}
+
+
+/* =========================================================
+   WALLET BALANCE
+   ========================================================= */
+
+.wallet-balance{
+    position:relative;
+    z-index:2;
+
+    margin-top:7px;
+
+    color:#ffffff;
+
+    font-size:31px;
+    font-weight:900;
+
+    line-height:1.1;
+
+    letter-spacing:-.8px;
+}
+
+
+/* =========================================================
+   WALLET CURRENCY
+   ========================================================= */
+
+.wallet-currency{
+    color:var(--finora-gold);
+}
+
+
+/* =========================================================
+   WALLET ACTIONS
+   ========================================================= */
+
+.wallet-actions{
+    position:relative;
+    z-index:3;
+
+    display:flex;
+    align-items:center;
+
+    gap:10px;
+
+    margin-top:17px;
+}
+
+
+/* =========================================================
+   WALLET BUTTON
+   ========================================================= */
+
+.wallet-action{
+    min-height:38px;
+
+    padding:0 17px;
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:10px;
+
+    border:1px solid rgba(255,255,255,.10);
+
+    font-size:11px;
+    font-weight:850;
+
+    text-decoration:none;
+
+    cursor:pointer;
+
+    transition:
+        transform .2s ease,
+        background .2s ease;
+}
+
+
+/* =========================================================
+   DEPOSIT
+   ========================================================= */
+
+.wallet-action.deposit{
+    background:
+        linear-gradient(
+            135deg,
+            #F5A623,
+            #FFD76A
+        );
+
+    color:#17091F;
+}
+
+
+/* =========================================================
+   WITHDRAW
+   ========================================================= */
+
+.wallet-action.withdraw{
+    background:rgba(234,60,255,.12);
+
+    color:#ffffff;
+
+    border-color:rgba(234,60,255,.28);
+}
+
+
+.wallet-action:hover{
+    transform:translateY(-1px);
+}
+
+
+/* =========================================================
+   FINANCIAL SUMMARY
+   ========================================================= */
+
+.financial-summary{
+    width:100%;
+
+    margin-top:14px;
+}
+
+
+/* =========================================================
+   SUMMARY GRID
+   ========================================================= */
+
+.summary-grid{
+    width:100%;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0,1fr));
+
+    gap:11px;
+}
+
+
+/* =========================================================
+   SUMMARY CARD
+   ========================================================= */
+
+.summary-card{
+    min-width:0;
+
+    padding:15px 13px;
+
+    border-radius:16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #251231,
+            #1D0D29
+        );
+
+    border:1px solid rgba(255,255,255,.07);
+
+    box-shadow:
+        0 7px 20px rgba(0,0,0,.14);
+}
+
+
+/* =========================================================
+   SUMMARY ICON
+   ========================================================= */
+
+.summary-card-icon{
+    width:34px;
+    height:34px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    margin-bottom:10px;
+
+    border-radius:10px;
+
+    background:rgba(234,60,255,.11);
+
+    color:var(--finora-pink);
+}
+
+
+/* =========================================================
+   SUMMARY TITLE
+   ========================================================= */
+
+.summary-card-title{
+    color:rgba(255,255,255,.58);
+
+    font-size:9px;
+    font-weight:700;
+
+    line-height:1.3;
+
+    text-transform:uppercase;
+}
+
+
+/* =========================================================
+   SUMMARY VALUE
+   ========================================================= */
+
+.summary-card-value{
+    margin-top:5px;
+
+    color:#ffffff;
+
+    font-size:16px;
+    font-weight:900;
+
+    line-height:1.15;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+
+/* =========================================================
+   SUMMARY VALUE HIGHLIGHT
+   ========================================================= */
+
+.summary-card-value.gold{
+    color:var(--finora-gold-light);
+}
+
+.summary-card-value.pink{
+    color:var(--finora-pink-light);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width:600px){
+
+    .welcome-section{
+        padding-top:20px;
+        padding-bottom:15px;
+    }
+
+    .welcome-title{
+        font-size:24px;
+    }
+
+    .welcome-subtitle{
+        font-size:12px;
+        margin-top:6px;
+    }
+
+    .banner-section{
+        padding-bottom:17px;
+    }
+
+    .banner-track{
+        gap:11px;
+    }
+
+    .dashboard-banner{
+        min-height:190px;
+
+        border-radius:18px;
+    }
+
+    .banner-content{
+        width:64%;
+
+        min-height:190px;
+
+        padding:
+            20px
+            0
+            20px
+            18px;
+    }
+
+    .banner-title{
+        font-size:21px;
+    }
+
+    .banner-description{
+        max-width:210px;
+
+        font-size:10px;
+    }
+
+    .banner-button{
+        min-height:34px;
+
+        padding:0 14px;
+
+        margin-top:12px;
+
+        font-size:10px;
+    }
+
+    .banner-artwork{
+        width:48%;
+    }
+
+    .wallet-card{
+        padding:18px;
+
+        border-radius:18px;
+    }
+
+    .wallet-balance{
+        font-size:27px;
+    }
+
+    .summary-grid{
+        gap:8px;
+    }
+
+    .summary-card{
+        padding:13px 10px;
+
+        border-radius:14px;
+    }
+
+    .summary-card-icon{
+        width:31px;
+        height:31px;
+
+        margin-bottom:8px;
+    }
+
+    .summary-card-value{
+        font-size:14px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width:380px){
+
+    .welcome-section{
+        padding-top:17px;
+        padding-bottom:13px;
+    }
+
+    .welcome-title{
+        font-size:22px;
+    }
+
+    .dashboard-banner{
+        min-height:180px;
+    }
+
+    .banner-content{
+        min-height:180px;
+
+        padding-left:16px;
+    }
+
+    .banner-title{
+        font-size:19px;
+    }
+
+    .banner-description{
+        font-size:9px;
+    }
+
+    .banner-artwork{
+        width:45%;
+    }
+
+    .wallet-card{
+        padding:16px;
+    }
+
+    .wallet-balance{
+        font-size:25px;
+    }
+
+    .wallet-actions{
+        gap:7px;
+    }
+
+    .wallet-action{
+        min-height:36px;
+
+        padding:0 13px;
+
+        font-size:10px;
+    }
+
+    .summary-grid{
+        gap:6px;
+    }
+
+    .summary-card{
+        padding:11px 8px;
+    }
+
+    .summary-card-title{
+        font-size:8px;
+    }
+
+    .summary-card-value{
+        font-size:12px;
+    }
+}
