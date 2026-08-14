@@ -12,7 +12,7 @@
 
     <meta
         name="theme-color"
-        content="#090313"
+        content="#0B0315"
     >
 
     <meta
@@ -33,27 +33,25 @@
 <body>
 
 
-<div class="finora-app">
+<div class="dashboard-page">
 
 
-    <!-- =====================================================
+    <!-- =========================================
          TOP HEADER
-    ====================================================== -->
+    ========================================== -->
 
-    <header class="top-header">
+    <header class="dashboard-header">
 
-        <div class="top-header-inner">
+        <div class="dashboard-header-inner">
 
 
             <!-- HAMBURGER -->
 
             <button
+                type="button"
                 class="menu-button"
                 id="menuButton"
-                type="button"
                 aria-label="Open menu"
-                aria-controls="sideMenu"
-                aria-expanded="false"
             >
 
                 <span></span>
@@ -64,47 +62,107 @@
 
 
 
-            <!-- FINORA BRAND -->
+            <!-- CENTER FINORA BRAND -->
 
             <a
                 href="dashboard.html"
                 class="finora-brand"
-                aria-label="FINORA Home"
             >
 
-                <!--
-                    FINORA F MARK
-                    Kept as the established brand structure.
-                    We will refine this against the exact
-                    index.html logo styling in the CSS.
-                -->
+                <!-- REAL FINORA F MARK FROM INDEX.HTML -->
 
-                <span class="finora-f-mark">
+                <svg
+                    class="finora-mark"
+                    viewBox="0 0 100 110"
+                    aria-hidden="true"
+                >
 
-                    <span class="f-mark-top"></span>
-                    <span class="f-mark-middle"></span>
-                    <span class="f-mark-bottom"></span>
+                    <defs>
 
-                </span>
+                        <linearGradient
+                            id="finoraGold"
+                            x1="0%"
+                            y1="0%"
+                            x2="100%"
+                            y2="100%"
+                        >
+
+                            <stop
+                                offset="0%"
+                                stop-color="#FFD96A"
+                            >
+
+                            <stop
+                                offset="50%"
+                                stop-color="#F3B72F"
+                            >
+
+                            <stop
+                                offset="100%"
+                                stop-color="#B87912"
+                            >
+
+                        </linearGradient>
 
 
-                <span class="finora-wordmark">
+                        <linearGradient
+                            id="finoraShine"
+                            x1="0%"
+                            y1="0%"
+                            x2="100%"
+                            y2="0%"
+                        >
 
-                    <span class="finora-name">
-                        FINORA
-                    </span>
+                            <stop
+                                offset="0%"
+                                stop-color="#FFF1A8"
+                            >
 
-                    <span class="finora-tagline">
+                            <stop
+                                offset="100%"
+                                stop-color="#F3B72F"
+                            >
+
+                        </linearGradient>
+
+                    </defs>
+
+
+                    <path
+                        class="finora-ribbon"
+                        fill="url(#finoraGold)"
+                        d="M18 8h64L68 28H31L18 8zm13 27h37L55 55H18l13-20zm-13 27h37L42 82H18l-13 20h37l37-57H45L18 62z"
+                    />
+
+                    <path
+                        class="finora-highlight"
+                        fill="url(#finoraShine)"
+                        d="M18 8h64L68 28H31L18 8z"
+                    />
+
+                </svg>
+
+
+                <div class="finora-brand-text">
+
+                    <div class="finora-name">
+
+                        <span>FIN</span><span>ORA</span>
+
+                    </div>
+
+
+                    <div class="finora-tagline">
                         INVEST • GROW • EARN
-                    </span>
+                    </div>
 
-                </span>
+                </div>
 
             </a>
 
 
 
-            <!-- HEADER ACTIONS -->
+            <!-- RIGHT HEADER ACTIONS -->
 
             <div class="header-actions">
 
@@ -112,37 +170,21 @@
                 <!-- NOTIFICATIONS -->
 
                 <button
-                    class="notification-button"
-                    id="notificationButton"
                     type="button"
+                    class="header-action notification-button"
+                    id="notificationButton"
                     aria-label="Notifications"
                 >
 
-                    <span class="header-svg-icon">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                        >
-
-                            <path
-                                d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
-                            />
-
-                            <path
-                                d="M10 21h4"
-                            />
-
-                        </svg>
-
+                    <span class="notification-icon">
+                        ♧
                     </span>
 
-
                     <span
-                        class="notification-badge"
-                        id="notificationBadge"
+                        class="notification-count"
+                        id="notificationCount"
                     >
-                        0
+                        3
                     </span>
 
                 </button>
@@ -153,29 +195,12 @@
 
                 <a
                     href="mine.html"
-                    class="profile-button"
+                    class="header-action profile-button"
                     aria-label="My profile"
                 >
 
-                    <span class="profile-svg-icon">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                        >
-
-                            <circle
-                                cx="12"
-                                cy="8"
-                                r="4"
-                            />
-
-                            <path
-                                d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7"
-                            />
-
-                        </svg>
-
+                    <span class="profile-icon">
+                        ●
                     </span>
 
                 </a>
@@ -188,1299 +213,18 @@
 
 
 
-    <!-- =====================================================
-         SIDE MENU
-         Hidden until hamburger is opened.
-         Nothing from this menu appears on the dashboard.
-    ====================================================== -->
-
-    <aside
-        class="side-menu"
-        id="sideMenu"
-        aria-hidden="true"
-    >
-
-        <div class="side-menu-header">
-
-            <div>
-
-                <span class="side-menu-kicker">
-                    FINORA
-                </span>
-
-                <h2>
-                    Menu
-                </h2>
-
-            </div>
-
-
-            <button
-                class="menu-close"
-                id="menuClose"
-                type="button"
-                aria-label="Close menu"
-            >
-                ×
-            </button>
-
-        </div>
-
-
-        <nav class="side-menu-links">
-
-
-            <a href="help.html" class="side-menu-link">
-
-                <span class="side-menu-icon">?</span>
-
-                <span>
-                    <strong>Help & FAQ</strong>
-                    <small>Get answers and support</small>
-                </span>
-
-            </a>
-
-
-            <a href="about.html" class="side-menu-link">
-
-                <span class="side-menu-icon">i</span>
-
-                <span>
-                    <strong>About FINORA</strong>
-                    <small>Learn about FINORA</small>
-                </span>
-
-            </a>
-
-
-            <a href="terms.html" class="side-menu-link">
-
-                <span class="side-menu-icon">✓</span>
-
-                <span>
-                    <strong>Terms & Conditions</strong>
-                    <small>Platform terms</small>
-                </span>
-
-            </a>
-
-
-            <a href="privacy.html" class="side-menu-link">
-
-                <span class="side-menu-icon">◈</span>
-
-                <span>
-                    <strong>Privacy Policy</strong>
-                    <small>Your privacy matters</small>
-                </span>
-
-            </a>
-
-
-            <a href="contact.html" class="side-menu-link">
-
-                <span class="side-menu-icon">✆</span>
-
-                <span>
-                    <strong>Contact Us</strong>
-                    <small>Reach the FINORA team</small>
-                </span>
-
-            </a>
-
-
-            <a href="settings.html" class="side-menu-link">
-
-                <span class="side-menu-icon">⚙</span>
-
-                <span>
-                    <strong>Settings</strong>
-                    <small>Manage your account</small>
-                </span>
-
-            </a>
-
-
-            <button
-                type="button"
-                class="side-menu-link logout-link"
-                id="logoutButton"
-            >
-
-                <span class="side-menu-icon">↪</span>
-
-                <span>
-                    <strong>Log Out</strong>
-                    <small>Leave your FINORA account</small>
-                </span>
-
-            </button>
-
-        </nav>
-
-    </aside>
-
-
-    <div
-        class="menu-overlay"
-        id="menuOverlay"
-    ></div>
-
-
-
-    <!-- =====================================================
-         MAIN CONTENT
-    ====================================================== -->
-
-    <main class="dashboard-content">
-
-
-
-        <!-- =================================================
-             HERO / PROMOTIONAL BANNER
-        ================================================== -->
-
-        <section class="hero-banner">
-
-
-            <div class="hero-copy">
-
-                <span class="hero-kicker">
-                    FINORA INVESTMENT
-                </span>
-
-
-                <h1>
-                    INVEST
-                    <span>SMART.</span>
-                    <br>
-
-                    EARN
-                    <span>DAILY.</span>
-                </h1>
-
-
-                <p>
-                    Stable returns. Real growth.
-                </p>
-
-
-                <a
-                    href="invest.html"
-                    class="hero-button"
-                >
-
-                    INVEST NOW
-
-                    <span>›</span>
-
-                </a>
-
-            </div>
-
-
-
-            <!-- CSS / SVG FINANCIAL ARTWORK -->
-
-            <div class="hero-art" aria-hidden="true">
-
-                <div class="vault">
-
-                    <div class="vault-body">
-
-                        <div class="vault-door">
-
-                            <div class="vault-lock">
-
-                                <div class="lock-center"></div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="shield">
-
-                    <span>✓</span>
-
-                </div>
-
-
-                <div class="coin-stack coin-stack-one">
-                    <i></i>
-                    <i></i>
-                    <i></i>
-                    <i></i>
-                </div>
-
-
-                <div class="coin-stack coin-stack-two">
-                    <i></i>
-                    <i></i>
-                    <i></i>
-                </div>
-
-
-                <div class="coin-stack coin-stack-three">
-                    <i></i>
-                    <i></i>
-                    <i></i>
-                    <i></i>
-                    <i></i>
-                </div>
-
-            </div>
-
-
-
-            <!-- BANNER INDICATORS -->
-
-            <div class="hero-indicators">
-
-                <span class="active"></span>
-                <span></span>
-                <span></span>
-                <span></span>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             FINANCIAL SUMMARY
-        ================================================== -->
-
-        <section class="financial-section">
-
-
-            <!-- WALLET -->
-
-            <div class="wallet-card">
-
-
-                <div class="wallet-heading">
-
-                    <span>
-                        WALLET BALANCE
-                    </span>
-
-
-                    <button
-                        type="button"
-                        class="balance-eye"
-                        id="balanceEye"
-                        aria-label="Show or hide balance"
-                    >
-
-                        <svg viewBox="0 0 24 24">
-
-                            <path
-                                d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"
-                            />
-
-                            <circle
-                                cx="12"
-                                cy="12"
-                                r="2.5"
-                            />
-
-                        </svg>
-
-                    </button>
-
-                </div>
-
-
-                <div class="wallet-main">
-
-                    <div class="wallet-icon">
-
-                        <svg viewBox="0 0 24 24">
-
-                            <path
-                                d="M3 7h15a3 3 0 0 1 3 3v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"
-                            />
-
-                            <path
-                                d="M3 7V5a2 2 0 0 1 2-2h12"
-                            />
-
-                            <path
-                                d="M16 14h3"
-                            />
-
-                        </svg>
-
-                    </div>
-
-
-                    <div>
-
-                        <strong
-                            id="walletBalance"
-                            class="wallet-balance"
-                        >
-                            UGX 0
-                        </strong>
-
-                        <span>
-                            Available balance
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="wallet-actions">
-
-                    <a
-                        href="deposit.html"
-                        class="deposit-button"
-                    >
-                        DEPOSIT
-                    </a>
-
-
-                    <a
-                        href="withdraw.html"
-                        class="withdraw-button"
-                    >
-                        WITHDRAW
-                    </a>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- SMALL FINANCIAL CARDS -->
-
-            <div class="financial-small-grid">
-
-
-                <div class="financial-card">
-
-                    <div class="financial-icon">
-
-                        <svg viewBox="0 0 24 24">
-
-                            <path d="M4 18V6" />
-                            <path d="M4 18h16" />
-                            <path d="m7 14 4-4 3 2 5-6" />
-
-                        </svg>
-
-                    </div>
-
-                    <div>
-
-                        <span>
-                            TOTAL EARNINGS
-                        </span>
-
-                        <strong id="totalEarnings">
-                            UGX 0
-                        </strong>
-
-                        <small>
-                            All time earnings
-                        </small>
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="financial-card">
-
-                    <div class="financial-icon">
-
-                        <svg viewBox="0 0 24 24">
-
-                            <rect
-                                x="4"
-                                y="5"
-                                width="16"
-                                height="15"
-                                rx="2"
-                            />
-
-                            <path d="M8 3v4M16 3v4M4 10h16" />
-
-                        </svg>
-
-                    </div>
-
-                    <div>
-
-                        <span>
-                            TODAY'S EARNINGS
-                        </span>
-
-                        <strong id="todayEarnings">
-                            UGX 0
-                        </strong>
-
-                        <small>
-                            Updated daily
-                        </small>
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="financial-card">
-
-                    <div class="financial-icon">
-
-                        <svg viewBox="0 0 24 24">
-
-                            <path
-                                d="M5 7h14v14H5z"
-                            />
-
-                            <path
-                                d="M8 4h8v3H8z"
-                            />
-
-                            <path d="M8 12h8M8 16h5" />
-
-                        </svg>
-
-                    </div>
-
-                    <div>
-
-                        <span>
-                            TOTAL INVESTED
-                        </span>
-
-                        <strong id="totalInvestment">
-                            UGX 0
-                        </strong>
-
-                        <small>
-                            Active investments
-                        </small>
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="financial-card">
-
-                    <div class="financial-icon">
-
-                        <svg viewBox="0 0 24 24">
-
-                            <circle cx="9" cy="8" r="3" />
-                            <circle cx="17" cy="9" r="2.5" />
-
-                            <path
-                                d="M3 20c0-3.2 2.7-5 6-5s6 1.8 6 5"
-                            />
-
-                            <path
-                                d="M15 15c3 0 5 1.6 5 4"
-                            />
-
-                        </svg>
-
-                    </div>
-
-                    <div>
-
-                        <span>
-                            REFERRAL BONUS
-                        </span>
-
-                        <strong id="referralIncome">
-                            UGX 0
-                        </strong>
-
-                        <small>
-                            Total referral income
-                        </small>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             QUICK ACTIONS
-        ================================================== -->
-
-        <section class="quick-section">
-
-
-            <div class="section-title-row">
-
-                <div>
-
-                    <span class="section-icon-mark">
-                        ✓
-                    </span>
-
-                    <h2>
-                        QUICK ACTIONS
-                    </h2>
-
-                </div>
-
-
-                <span class="section-hint">
-                    Tap to open
-                </span>
-
-            </div>
-
-
-            <div class="quick-actions">
-
-
-                <!-- DEPOSIT -->
-
-                <a
-                    href="deposit.html"
-                    class="quick-card"
-                >
-
-                    <div class="quick-icon">
-
-                        <svg viewBox="0 0 24 24">
-
-                            <path
-                                d="M3 7h15a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3H5a2 2 0 0 1-2-2V7Z"
-                            />
-
-                            <path
-                                d="M3 7V5a2 2 0 0 1 2-2h10"
-                            />
-
-                            <path
-                                d="M16 14h3"
-                            />
-
-                        </svg>
-
-                    </div>
-
-                    <strong>
-                        Deposit
-                    </strong>
-
-                    <span>
-                        Fund wallet
-                    </span>
-
-                </a>
-
-
-
-                <!-- INVEST -->
-
-                <a
-                    href="invest.html"
-                    class="quick-card"
-                >
-
-                    <div class="quick-icon">
-
-                        <svg viewBox="0 0 24 24">
-
-                            <path d="M4 19V5" />
-                            <path d="M4 19h16" />
-                            <path d="m7 15 4-5 3 3 5-7" />
-
-                        </svg>
-
-                    </div>
-
-                    <strong>
-                        Invest
-                    </strong>
-
-                    <span>
-                        Start investing
-                    </span>
-
-                </a>
-
-
-
-                <!-- WITHDRAW -->
-
-                <a
-                    href="withdraw.html"
-                    class="quick-card"
-                >
-
-                    <div class="quick-icon">
-
-                        <svg viewBox="0 0 24 24">
-
-                            <path
-                                d="M12 20V4"
-                            />
-
-                            <path
-                                d="m6 10 6-6 6 6"
-                            />
-
-                            <path
-                                d="M4 20h16"
-                            />
-
-                        </svg>
-
-                    </div>
-
-                    <strong>
-                        Withdraw
-                    </strong>
-
-                    <span>
-                        Mobile Money
-                    </span>
-
-                </a>
-
-
-
-                <!-- INVESTMENTS -->
-
-                <a
-                    href="my-investments.html"
-                    class="quick-card"
-                >
-
-                    <div class="quick-icon">
-
-                        <svg viewBox="0 0 24 24">
-
-                            <path
-                                d="M4 5h16v14H4z"
-                            />
-
-                            <path d="M8 9h8M8 13h5" />
-
-                        </svg>
-
-                    </div>
-
-                    <strong>
-                        Investments
-                    </strong>
-
-                    <span>
-                        Active plans
-                    </span>
-
-                </a>
-
-
-
-                <!-- TEAM -->
-
-                <a
-                    href="team.html"
-                    class="quick-card"
-                >
-
-                    <div class="quick-icon">
-
-                        <svg viewBox="0 0 24 24">
-
-                            <circle cx="9" cy="8" r="3" />
-                            <circle cx="17" cy="9" r="2.5" />
-
-                            <path
-                                d="M3 20c0-3.2 2.7-5 6-5s6 1.8 6 5"
-                            />
-
-                            <path
-                                d="M15 15c3 0 5 1.7 5 4"
-                            />
-
-                        </svg>
-
-                    </div>
-
-                    <strong>
-                        Team
-                    </strong>
-
-                    <span>
-                        Referrals
-                    </span>
-
-                </a>
-
-
-
-                <!-- RECORDS -->
-
-                <a
-                    href="records.html"
-                    class="quick-card"
-                >
-
-                    <div class="quick-icon">
-
-                        <svg viewBox="0 0 24 24">
-
-                            <path
-                                d="M5 3h14v18H5z"
-                            />
-
-                            <path
-                                d="M8 8h8M8 12h8M8 16h5"
-                            />
-
-                        </svg>
-
-                    </div>
-
-                    <strong>
-                        Records
-                    </strong>
-
-                    <span>
-                        Transactions
-                    </span>
-
-                </a>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             PREMIUM PLAN PROMOTION
-        ================================================== -->
-
-        <section class="plan-banner">
-
-
-            <div class="plan-content">
-
-
-                <div class="plan-badge">
-                    PREMIUM PLAN
-                </div>
-
-
-                <h2>
-                    GROW YOUR
-                    <span>INVESTMENT.</span>
-                </h2>
-
-
-                <p>
-                    Choose an investment plan and build
-                    your financial journey with FINORA.
-                </p>
-
-
-                <a
-                    href="invest.html"
-                    class="plan-button"
-                >
-                    VIEW PLAN DETAILS
-                    <span>›</span>
-                </a>
-
-            </div>
-
-
-
-            <!-- Decorative investment artwork -->
-
-            <div
-                class="plan-art"
-                aria-hidden="true"
-            >
-
-                <div class="chart-line"></div>
-
-                <div class="bar bar-one"></div>
-                <div class="bar bar-two"></div>
-                <div class="bar bar-three"></div>
-
-                <div class="percent-symbol">
-                    %
-                </div>
-
-                <div class="plan-coins">
-                    <i></i>
-                    <i></i>
-                    <i></i>
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             REFERRAL
-        ================================================== -->
-
-        <section class="referral-card">
-
-
-            <div class="referral-icon">
-
-                <svg viewBox="0 0 24 24">
-
-                    <circle
-                        cx="10"
-                        cy="8"
-                        r="3"
-                    />
-
-                    <path
-                        d="M4 20c0-3.2 2.7-5 6-5"
-                    />
-
-                    <circle
-                        cx="17"
-                        cy="16"
-                        r="3"
-                    />
-
-                    <path
-                        d="M17 12v8M13 16h8"
-                    />
-
-                </svg>
-
-            </div>
-
-
-            <div class="referral-content">
-
-                <h2>
-                    INVITE FRIENDS & EARN
-                </h2>
-
-                <p>
-                    Earn through your FINORA referral network.
-                </p>
-
-
-                <div class="referral-link-box">
-
-                    <span id="referralLink">
-                        Your referral link
-                    </span>
-
-                    <button
-                        type="button"
-                        id="copyReferral"
-                        aria-label="Copy referral link"
-                    >
-
-                        <svg viewBox="0 0 24 24">
-
-                            <rect
-                                x="8"
-                                y="8"
-                                width="11"
-                                height="11"
-                                rx="2"
-                            />
-
-                            <path
-                                d="M5 16H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1"
-                            />
-
-                        </svg>
-
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <button
-                type="button"
-                class="copy-button"
-                id="copyReferralButton"
-            >
-
-                <svg viewBox="0 0 24 24">
-
-                    <rect
-                        x="8"
-                        y="8"
-                        width="11"
-                        height="11"
-                        rx="2"
-                    />
-
-                    <path
-                        d="M5 16H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1"
-                    />
-
-                </svg>
-
-                COPY
-
-            </button>
-
-        </section>
-
-
-
-        <!-- =================================================
-             COMMUNITY / SUPPORT
-        ================================================== -->
-
-        <section class="support-grid">
-
-
-            <a
-                href="contact.html"
-                class="support-card"
-            >
-
-                <div class="support-icon">
-
-                    <svg viewBox="0 0 24 24">
-
-                        <path
-                            d="M21 11.5a8.5 8.5 0 0 1-9 8.5 9.8 9.8 0 0 1-4-.8L3 21l1.8-4.2A8.3 8.3 0 0 1 3 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5Z"
-                        />
-
-                    </svg>
-
-                </div>
-
-
-                <div>
-
-                    <strong>
-                        Community
-                    </strong>
-
-                    <span>
-                        Connect with FINORA
-                    </span>
-
-                </div>
-
-
-                <b>›</b>
-
-            </a>
-
-
-
-            <a
-                href="help.html"
-                class="support-card"
-            >
-
-                <div class="support-icon">
-
-                    <svg viewBox="0 0 24 24">
-
-                        <path
-                            d="M4 13v-1a8 8 0 0 1 16 0v1"
-                        />
-
-                        <path
-                            d="M4 13h3v6H5a1 1 0 0 1-1-1v-5ZM20 13h-3v6h2a1 1 0 0 0 1-1v-5Z"
-                        />
-
-                        <path
-                            d="M17 19c0 1.1-1.8 2-4 2h-1"
-                        />
-
-                    </svg>
-
-                </div>
-
-
-                <div>
-
-                    <strong>
-                        Support
-                    </strong>
-
-                    <span>
-                        We're here to help
-                    </span>
-
-                </div>
-
-
-                <b>›</b>
-
-            </a>
-
-        </section>
-
+    <!-- =========================================
+         DASHBOARD CONTENT
+         
+         NEXT HTML SECTION WILL GO HERE
+    ========================================== -->
+
+    <main class="dashboard-main" id="dashboardMain">
 
     </main>
 
 
-
-    <!-- =====================================================
-         BOTTOM NAVIGATION
-    ====================================================== -->
-
-    <nav class="bottom-navigation">
-
-
-        <a
-            href="dashboard.html"
-            class="bottom-nav-item active"
-        >
-
-            <span class="bottom-nav-icon">
-
-                <svg viewBox="0 0 24 24">
-
-                    <path
-                        d="m3 11 9-8 9 8"
-                    />
-
-                    <path
-                        d="M5 10v10h14V10"
-                    />
-
-                    <path
-                        d="M9 20v-6h6v6"
-                    />
-
-                </svg>
-
-            </span>
-
-            <span>
-                Home
-            </span>
-
-        </a>
-
-
-
-        <a
-            href="invest.html"
-            class="bottom-nav-item"
-        >
-
-            <span class="bottom-nav-icon">
-
-                <svg viewBox="0 0 24 24">
-
-                    <path d="M4 19V5" />
-                    <path d="M4 19h16" />
-                    <path d="m7 15 4-5 3 3 5-7" />
-
-                </svg>
-
-            </span>
-
-            <span>
-                Invest
-            </span>
-
-        </a>
-
-
-
-        <a
-            href="team.html"
-            class="bottom-nav-item"
-        >
-
-            <span class="bottom-nav-icon">
-
-                <svg viewBox="0 0 24 24">
-
-                    <circle cx="9" cy="8" r="3" />
-                    <circle cx="17" cy="9" r="2.5" />
-
-                    <path
-                        d="M3 20c0-3.2 2.7-5 6-5s6 1.8 6 5"
-                    />
-
-                    <path
-                        d="M15 15c3 0 5 1.7 5 4"
-                    />
-
-                </svg>
-
-            </span>
-
-            <span>
-                Team
-            </span>
-
-        </a>
-
-
-
-        <a
-            href="records.html"
-            class="bottom-nav-item"
-        >
-
-            <span class="bottom-nav-icon">
-
-                <svg viewBox="0 0 24 24">
-
-                    <path
-                        d="M5 3h14v18H5z"
-                    />
-
-                    <path
-                        d="M8 8h8M8 12h8M8 16h5"
-                    />
-
-                </svg>
-
-            </span>
-
-            <span>
-                Records
-            </span>
-
-        </a>
-
-
-
-        <a
-            href="mine.html"
-            class="bottom-nav-item"
-        >
-
-            <span class="bottom-nav-icon">
-
-                <svg viewBox="0 0 24 24">
-
-                    <circle
-                        cx="12"
-                        cy="8"
-                        r="3.5"
-                    />
-
-                    <path
-                        d="M4 21c0-4 3.5-6.5 8-6.5s8 2.5 8 6.5"
-                    />
-
-                </svg>
-
-            </span>
-
-            <span>
-                Profile
-            </span>
-
-        </a>
-
-    </nav>
-
-
-
-    <!-- =====================================================
-         NOTIFICATION PANEL
-    ====================================================== -->
-
-    <div
-        class="notification-panel"
-        id="notificationPanel"
-        aria-hidden="true"
-    >
-
-        <div class="notification-panel-inner">
-
-            <div class="notification-panel-heading">
-
-                <h2>
-                    Notifications
-                </h2>
-
-                <button
-                    type="button"
-                    id="closeNotifications"
-                    aria-label="Close notifications"
-                >
-                    ×
-                </button>
-
-            </div>
-
-
-            <div
-                id="notificationContent"
-                class="notification-content"
-            >
-
-                <div class="notification-empty">
-
-                    <span>♢</span>
-
-                    <p>
-                        No new notifications.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =====================================================
-         FOOTER
-    ====================================================== -->
-
-    <footer class="dashboard-footer">
-
-        © 2026 FINORA
-        <span>•</span>
-        INVEST • GROW • EARN
-
-    </footer>
-
-
 </div>
-
-
-<!-- Dashboard functionality will be added in dashboard.js -->
-
-<script src="dashboard.js?v=1"></script>
 
 
 </body>
