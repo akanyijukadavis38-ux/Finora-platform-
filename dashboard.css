@@ -2,20 +2,20 @@
    FINORA DASHBOARD — PART ONE
    BLUSH PINK BACKGROUND + CENTERED FINORA BRAND
    ========================================================= */
-
 :root{
-    --finora-bg:#F3DCE7;
+    --finora-bg:#8F174F;
 
-    --finora-pink:#e83f8f;
-    --finora-pink-dark:#c72f75;
+    --finora-pink:#EA3F8F;
+    --finora-pink-dark:#C72F75;
 
-    --finora-gold:#d69a2d;
-    --finora-gold-light:#f4c44f;
+    --finora-gold:#D69A2D;
+    --finora-gold-light:#F4C44F;
 
-    --finora-dark:#07050a;
+    --finora-dark:#07050A;
 
-    --white:#ffffff;
+    --white:#FFFFFF;
 }
+
 
 
 /* =========================================================
