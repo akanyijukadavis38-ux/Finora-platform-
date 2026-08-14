@@ -1,6 +1,6 @@
 /* =========================================================
    FINORA DASHBOARD — PART ONE
-   SAME BACKGROUND AS FINORA INDEX
+   DARK BACKGROUND / HEADER FOUNDATION
    ========================================================= */
 
 :root{
@@ -33,6 +33,9 @@
 
 /* =========================================================
    PAGE
+   IMPORTANT:
+   NO PINK RADIAL GRADIENT
+   DARK FINORA INDEX-STYLE BACKGROUND
    ========================================================= */
 
 html,
@@ -40,30 +43,14 @@ body{
     width:100%;
     min-height:100%;
 
-    background:
-        radial-gradient(
-            circle at 8% 8%,
-            rgba(234,60,255,.12),
-            transparent 28%
-        ),
-        radial-gradient(
-            circle at 92% 30%,
-            rgba(245,166,35,.08),
-            transparent 27%
-        ),
-        linear-gradient(
-            135deg,
-            #050409 0%,
-            #0A0610 50%,
-            #050409 100%
-        );
+    background:#050409;
 }
 
 
 body{
     min-height:100vh;
 
-    color:var(--finora-dark);
+    color:#ffffff;
 
     font-family:
         Inter,
@@ -81,29 +68,14 @@ body{
 
 /* =========================================================
    DASHBOARD SHELL
+   KEEPING THE BACKGROUND SOLID/DARK
    ========================================================= */
 
 .dashboard-shell{
     width:100%;
     min-height:100vh;
 
-    background:
-        radial-gradient(
-            circle at 8% 8%,
-            rgba(234,60,255,.12),
-            transparent 28%
-        ),
-        radial-gradient(
-            circle at 92% 30%,
-            rgba(245,166,35,.08),
-            transparent 27%
-        ),
-        linear-gradient(
-            135deg,
-            #050409 0%,
-            #0A0610 50%,
-            #050409 100%
-        );
+    background:#050409;
 
     overflow-x:hidden;
 }
@@ -131,8 +103,7 @@ body{
 .dashboard-header{
     width:100%;
 
-    background:
-        rgba(5,4,9,.91);
+    background:#050409;
 
     border-bottom:1px solid rgba(255,255,255,.08);
 
@@ -179,7 +150,6 @@ body{
 
 /* =========================================================
    FINORA F LOGO
-   SLIGHTLY LARGER
    ========================================================= */
 
 .finora-logo-mark{
@@ -210,7 +180,6 @@ body{
 
 /* =========================================================
    FINORA NAME
-   SLIGHTLY LARGER
    ========================================================= */
 
 .finora-name{
@@ -288,8 +257,7 @@ body{
 
 
 /* =========================================================
-   NOTIFICATION
-   KEEPING WORKING VERSION
+   NOTIFICATION BUTTON
    ========================================================= */
 
 .notification-button{
@@ -314,6 +282,10 @@ body{
 }
 
 
+/* =========================================================
+   HEADER ICON
+   ========================================================= */
+
 .header-icon{
     width:22px;
     height:22px;
@@ -323,6 +295,10 @@ body{
     color:#ffffff;
 }
 
+
+/* =========================================================
+   NOTIFICATION COUNT
+   ========================================================= */
 
 .notification-count{
     position:absolute;
@@ -355,8 +331,7 @@ body{
 
 
 /* =========================================================
-   PROFILE
-   KEEPING WORKING VERSION
+   PROFILE BUTTON
    ========================================================= */
 
 .profile-button{
@@ -398,6 +373,10 @@ body{
 }
 
 
+/* =========================================================
+   PROFILE ICON
+   ========================================================= */
+
 .profile-icon{
     width:21px;
     height:21px;
@@ -410,28 +389,16 @@ body{
 
 /* =========================================================
    MAIN
+   IMPORTANT:
+   TRANSPARENT — INHERITS THE DARK SHELL
    ========================================================= */
 
 main{
     width:100%;
 
-    background:
-        radial-gradient(
-            circle at 8% 8%,
-            rgba(234,60,255,.12),
-            transparent 28%
-        ),
-        radial-gradient(
-            circle at 92% 30%,
-            rgba(245,166,35,.08),
-            transparent 27%
-        ),
-        linear-gradient(
-            135deg,
-            #050409 0%,
-            #0A0610 50%,
-            #050409 100%
-        );
+    background:transparent;
+
+    color:#ffffff;
 }
 
 
