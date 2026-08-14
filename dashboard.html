@@ -10,7 +10,7 @@
 
     <meta
         name="theme-color"
-        content="#08060b"
+        content="#07050A"
     >
 
     <meta
@@ -20,8 +20,10 @@
 
     <title>FINORA | Dashboard</title>
 
-    <!-- Dashboard CSS -->
-    <link rel="stylesheet" href="dashboard.css">
+    <link
+        rel="stylesheet"
+        href="dashboard.css"
+    >
 </head>
 
 <body>
@@ -31,21 +33,26 @@
     <!-- =====================================================
          HEADER
     ====================================================== -->
+
     <header class="dashboard-header">
 
         <div class="header-inner">
 
-            <!-- CENTERED FINORA BRAND -->
+            <!-- FINORA BRAND -->
             <a href="dashboard.html" class="dashboard-brand">
 
-                <!-- FINORA F MARK -->
-                <span class="brand-mark" aria-hidden="true">
+                <!-- F LOGO MARK -->
+                <span class="brand-mark" aria-label="FINORA">
+
                     <span class="brand-mark-line"></span>
                     <span class="brand-mark-line"></span>
                     <span class="brand-mark-line"></span>
+
                 </span>
 
+                <!-- WORDMARK -->
                 <span class="brand-text">
+
                     <span class="brand-name">
                         <span class="brand-fin">FIN</span><span class="brand-ora">ORA</span>
                     </span>
@@ -53,32 +60,50 @@
                     <span class="brand-tagline">
                         INVEST • GROW • EARN
                     </span>
+
                 </span>
 
             </a>
 
 
-            <!-- NOTIFICATION + PROFILE -->
+            <!-- HEADER ACTIONS -->
             <div class="header-actions">
 
+                <!-- NOTIFICATION -->
                 <button
                     type="button"
-                    class="header-icon-button"
+                    class="header-icon-button notification-button"
                     id="notificationButton"
                     aria-label="Notifications"
                 >
-                    <span class="notification-icon">♢</span>
-                    <span class="notification-dot"></span>
+                    <span
+                        class="notification-icon"
+                        aria-hidden="true"
+                    >
+                        ♢
+                    </span>
+
+                    <span
+                        class="notification-dot"
+                        id="notificationDot"
+                    ></span>
                 </button>
 
 
-                <a
-                    href="profile.html"
+                <!-- PROFILE -->
+                <button
+                    type="button"
                     class="profile-button"
+                    id="profileButton"
                     aria-label="Profile"
                 >
-                    <span class="profile-icon">●</span>
-                </a>
+                    <span
+                        class="profile-icon"
+                        aria-hidden="true"
+                    >
+                        ●
+                    </span>
+                </button>
 
             </div>
 
@@ -87,24 +112,26 @@
     </header>
 
 
-
     <!-- =====================================================
          MAIN DASHBOARD
     ====================================================== -->
+
     <main class="dashboard-main">
 
 
         <!-- =================================================
              WELCOME
         ================================================== -->
+
         <section class="welcome-section">
 
-            <div class="welcome-small">
-                WELCOME BACK
-            </div>
+            <p class="welcome-small">
+                WELCOME TO FINORA
+            </p>
 
             <h1>
-                Welcome back
+                Welcome back,
+                <span id="userName">Investor</span>
             </h1>
 
             <p class="welcome-subtitle">
@@ -114,38 +141,36 @@
         </section>
 
 
-
         <!-- =================================================
              MAIN PROMOTIONAL BANNER
-             BLUEPRINT:
-             INVEST SMART & DAILY
-             STABLE RETURNS
-             REAL GROWTH
+             INVEST SMART • DAILY
         ================================================== -->
+
         <section class="hero-banner">
 
             <div class="hero-content">
 
-                <div class="hero-label">
+                <p class="hero-label">
                     FINORA INVESTMENT
-                </div>
+                </p>
 
                 <h2>
-                    Invest Smart &amp; Daily
+                    Invest Smart.
+                    <br>
+                    Grow Daily.
                 </h2>
 
                 <p class="hero-highlight">
-                    Stable Returns. Real Growth.
+                    STABLE RETURNS • REAL GROWTH
                 </p>
 
                 <p>
-                    Put your money to work with FINORA
-                    and take another step toward your
-                    financial goals.
+                    Put your money to work with carefully
+                    structured investment opportunities.
                 </p>
 
                 <a
-                    href="invest.html"
+                    href="investment.html"
                     class="hero-button"
                 >
                     EXPLORE INVESTMENTS
@@ -155,26 +180,37 @@
             </div>
 
 
-            <!-- INVESTMENT DECORATION -->
+            <!-- BANNER ARTWORK STRUCTURE -->
             <div
                 class="hero-decoration"
                 aria-hidden="true"
             >
 
-                <div class="hero-glow"></div>
+                <span class="hero-glow"></span>
 
                 <span class="hero-circle hero-circle-one"></span>
+
                 <span class="hero-circle hero-circle-two"></span>
+
+                <span class="hero-chart-line"></span>
+
+                <span class="hero-chart-line hero-chart-line-two"></span>
+
+                <span class="hero-coin hero-coin-one">₵</span>
+
+                <span class="hero-coin hero-coin-two">₵</span>
+
+                <span class="hero-coin hero-coin-three">₵</span>
 
             </div>
 
         </section>
 
 
-
         <!-- =================================================
-             WALLET / FINANCIAL SUMMARY
+             WALLET
         ================================================== -->
+
         <section class="wallet-section">
 
             <div class="wallet-card">
@@ -183,9 +219,9 @@
 
                     <div>
 
-                        <div class="wallet-label">
-                            TOTAL WALLET BALANCE
-                        </div>
+                        <p class="wallet-label">
+                            AVAILABLE WALLET BALANCE
+                        </p>
 
                         <h2 id="walletBalance">
                             UGX 0
@@ -193,8 +229,10 @@
 
                     </div>
 
-
-                    <div class="wallet-icon">
+                    <div
+                        class="wallet-icon"
+                        aria-hidden="true"
+                    >
                         ◇
                     </div>
 
@@ -206,7 +244,7 @@
                     <div class="wallet-stat">
 
                         <span>
-                            Cumulative Income
+                            CUMULATIVE INCOME
                         </span>
 
                         <strong id="cumulativeIncome">
@@ -219,7 +257,7 @@
                     <div class="wallet-stat">
 
                         <span>
-                            Total Investment
+                            TOTAL INVESTMENT
                         </span>
 
                         <strong id="totalInvestment">
@@ -235,23 +273,25 @@
         </section>
 
 
-
         <!-- =================================================
              QUICK ACTIONS
              HORIZONTAL
         ================================================== -->
+
         <section class="quick-actions-section">
 
             <div class="section-heading">
 
                 <div>
-                    <div class="section-kicker">
-                        QUICK ACCESS
-                    </div>
+
+                    <p class="section-kicker">
+                        MANAGE YOUR MONEY
+                    </p>
 
                     <h2>
-                        Manage your money
+                        Quick Actions
                     </h2>
+
                 </div>
 
             </div>
@@ -266,7 +306,10 @@
                     class="quick-action"
                 >
 
-                    <span class="quick-action-icon deposit-icon">
+                    <span
+                        class="quick-action-icon deposit-icon"
+                        aria-hidden="true"
+                    >
                         ↓
                     </span>
 
@@ -277,7 +320,7 @@
                         </strong>
 
                         <span>
-                            Add funds
+                            Add money
                         </span>
 
                     </span>
@@ -291,7 +334,10 @@
                     class="quick-action"
                 >
 
-                    <span class="quick-action-icon withdraw-icon">
+                    <span
+                        class="quick-action-icon withdraw-icon"
+                        aria-hidden="true"
+                    >
                         ↑
                     </span>
 
@@ -302,7 +348,7 @@
                         </strong>
 
                         <span>
-                            Mobile Money
+                            Mobile money
                         </span>
 
                     </span>
@@ -312,11 +358,14 @@
 
                 <!-- INVEST -->
                 <a
-                    href="invest.html"
+                    href="investment.html"
                     class="quick-action"
                 >
 
-                    <span class="quick-action-icon invest-icon">
+                    <span
+                        class="quick-action-icon invest-icon"
+                        aria-hidden="true"
+                    >
                         ↗
                     </span>
 
@@ -327,7 +376,7 @@
                         </strong>
 
                         <span>
-                            Grow your money
+                            Grow money
                         </span>
 
                     </span>
@@ -341,18 +390,21 @@
                     class="quick-action"
                 >
 
-                    <span class="quick-action-icon investment-icon">
-                        ◈
+                    <span
+                        class="quick-action-icon investment-icon"
+                        aria-hidden="true"
+                    >
+                        ◫
                     </span>
 
                     <span class="quick-action-text">
 
                         <strong>
-                            My Investments
+                            Investments
                         </strong>
 
                         <span>
-                            View portfolio
+                            My investments
                         </span>
 
                     </span>
@@ -366,7 +418,10 @@
                     class="quick-action"
                 >
 
-                    <span class="quick-action-icon team-icon">
+                    <span
+                        class="quick-action-icon team-icon"
+                        aria-hidden="true"
+                    >
                         ♧
                     </span>
 
@@ -377,7 +432,7 @@
                         </strong>
 
                         <span>
-                            Grow your network
+                            Referrals
                         </span>
 
                     </span>
@@ -387,11 +442,14 @@
 
                 <!-- RECORDS -->
                 <a
-                    href="records.html"
+                    href="transaction-history.html"
                     class="quick-action"
                 >
 
-                    <span class="quick-action-icon records-icon">
+                    <span
+                        class="quick-action-icon records-icon"
+                        aria-hidden="true"
+                    >
                         ≡
                     </span>
 
@@ -402,7 +460,7 @@
                         </strong>
 
                         <span>
-                            View transactions
+                            Transactions
                         </span>
 
                     </span>
@@ -414,28 +472,29 @@
         </section>
 
 
-
         <!-- =================================================
              PREMIUM PLAN BANNER
+             10% DAILY • 20 DAYS
         ================================================== -->
+
         <section class="premium-banner">
 
             <div class="premium-content">
 
-                <div class="premium-label">
-                    PREMIUM PLAN
-                </div>
+                <p class="premium-label">
+                    PREMIUM INVESTMENT
+                </p>
 
                 <h2>
-                    10% Daily Returns
+                    Premium Plan
                 </h2>
 
                 <p>
-                    20 Days
+                    10% Daily Returns • 20 Days
                 </p>
 
                 <a
-                    href="invest.html"
+                    href="investment.html"
                     class="premium-button"
                 >
                     INVEST NOW
@@ -445,50 +504,58 @@
             </div>
 
 
-            <!-- COINS / INVESTMENT VISUAL -->
+            <!-- PREMIUM VISUAL -->
             <div
                 class="premium-visual"
                 aria-hidden="true"
             >
 
-                <div class="coin coin-one">F</div>
-                <div class="coin coin-two">F</div>
-                <div class="coin coin-three">F</div>
+                <span class="premium-glow"></span>
 
-                <div class="premium-glow"></div>
+                <span class="premium-ring premium-ring-one"></span>
+
+                <span class="premium-ring premium-ring-two"></span>
+
+                <span class="coin coin-one">
+                    ₵
+                </span>
+
+                <span class="coin coin-two">
+                    ₵
+                </span>
+
+                <span class="coin coin-three">
+                    ₵
+                </span>
+
+                <span class="growth-arrow">
+                    ↗
+                </span>
 
             </div>
 
         </section>
 
 
-
         <!-- =================================================
-             INVESTMENT OVERVIEW
+             INVESTMENT SUMMARY
         ================================================== -->
+
         <section class="investment-summary">
 
             <div class="section-heading">
 
                 <div>
 
-                    <div class="section-kicker">
-                        INVESTMENT OVERVIEW
-                    </div>
+                    <p class="section-kicker">
+                        YOUR PROGRESS
+                    </p>
 
                     <h2>
-                        Your progress
+                        Investment Overview
                     </h2>
 
                 </div>
-
-
-                <a
-                    href="my-investments.html"
-                    class="section-link"
-                >
-                    View all
-                </a>
 
             </div>
 
@@ -496,17 +563,19 @@
             <div class="summary-grid">
 
 
-                <!-- ACTIVE INVESTMENTS -->
                 <div class="summary-card">
 
-                    <div class="summary-card-icon">
+                    <div
+                        class="summary-card-icon"
+                        aria-hidden="true"
+                    >
                         ◈
                     </div>
 
                     <div>
 
                         <span>
-                            Active Investments
+                            ACTIVE INVESTMENTS
                         </span>
 
                         <strong id="activeInvestments">
@@ -518,17 +587,19 @@
                 </div>
 
 
-                <!-- DAILY INCOME -->
                 <div class="summary-card">
 
-                    <div class="summary-card-icon">
+                    <div
+                        class="summary-card-icon"
+                        aria-hidden="true"
+                    >
                         ↗
                     </div>
 
                     <div>
 
                         <span>
-                            Daily Income
+                            DAILY INCOME
                         </span>
 
                         <strong id="dailyIncome">
@@ -540,20 +611,22 @@
                 </div>
 
 
-                <!-- REFERRAL INCOME -->
                 <div class="summary-card">
 
-                    <div class="summary-card-icon">
-                        ♧
+                    <div
+                        class="summary-card-icon"
+                        aria-hidden="true"
+                    >
+                        ✓
                     </div>
 
                     <div>
 
                         <span>
-                            Referral Income
+                            TOTAL EARNINGS
                         </span>
 
-                        <strong id="referralIncome">
+                        <strong id="totalEarnings">
                             UGX 0
                         </strong>
 
@@ -566,27 +639,45 @@
         </section>
 
 
-
         <!-- =================================================
              INVITE & EARN
         ================================================== -->
+
         <section class="referral-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <p class="section-kicker">
+                        GROW TOGETHER
+                    </p>
+
+                    <h2>
+                        Invite & Earn
+                    </h2>
+
+                </div>
+
+            </div>
+
 
             <div class="referral-card">
 
                 <div class="referral-content">
 
-                    <div class="section-kicker">
-                        INVITE &amp; EARN
-                    </div>
+                    <p class="premium-label">
+                        REFERRAL PROGRAM
+                    </p>
 
                     <h2>
-                        Grow together. Earn together.
+                        Earn More When You Share
                     </h2>
 
                     <p>
-                        Invite friends and earn from
-                        three levels of referrals.
+                        Invite friends to FINORA and earn
+                        referral income through our three-level
+                        referral program.
                     </p>
 
 
@@ -594,15 +685,15 @@
                     <div class="referral-levels">
 
                         <span>
-                            Level 1
+                            LEVEL 1
                         </span>
 
                         <span>
-                            Level 2
+                            LEVEL 2
                         </span>
 
                         <span>
-                            Level 3
+                            LEVEL 3
                         </span>
 
                     </div>
@@ -616,6 +707,7 @@
                             id="referralLink"
                             value=""
                             readonly
+                            aria-label="Your referral link"
                             placeholder="Your referral link"
                         >
 
@@ -623,7 +715,7 @@
                             type="button"
                             id="copyReferralButton"
                         >
-                            Copy
+                            COPY
                         </button>
 
                     </div>
@@ -631,12 +723,28 @@
                 </div>
 
 
-                <!-- REFERRAL VISUAL -->
+                <!-- REFERRAL ARTWORK -->
                 <div
                     class="referral-visual"
                     aria-hidden="true"
                 >
-                    ♧
+
+                    <span class="referral-person person-one">
+                        ●
+                    </span>
+
+                    <span class="referral-person person-two">
+                        ●
+                    </span>
+
+                    <span class="referral-person person-three">
+                        ●
+                    </span>
+
+                    <span class="referral-connect connect-one"></span>
+
+                    <span class="referral-connect connect-two"></span>
+
                 </div>
 
             </div>
@@ -644,11 +752,28 @@
         </section>
 
 
-
         <!-- =================================================
              COMMUNITY
         ================================================== -->
+
         <section class="community-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <p class="section-kicker">
+                        FINORA COMMUNITY
+                    </p>
+
+                    <h2>
+                        Stay Connected
+                    </h2>
+
+                </div>
+
+            </div>
+
 
             <div class="community-card">
 
@@ -660,7 +785,10 @@
                     id="telegramLink"
                 >
 
-                    <span class="community-icon telegram-icon">
+                    <span
+                        class="community-icon telegram-icon"
+                        aria-hidden="true"
+                    >
                         ✈
                     </span>
 
@@ -671,12 +799,15 @@
                         </strong>
 
                         <span>
-                            Connect with the FINORA community
+                            Get updates, news and announcements
                         </span>
 
                     </span>
 
-                    <span class="community-arrow">
+                    <span
+                        class="community-arrow"
+                        aria-hidden="true"
+                    >
                         →
                     </span>
 
@@ -685,27 +816,34 @@
 
                 <!-- SUPPORT -->
                 <a
-                    href="help.html"
+                    href="#"
                     class="community-item"
+                    id="supportLink"
                 >
 
-                    <span class="community-icon support-icon">
+                    <span
+                        class="community-icon support-icon"
+                        aria-hidden="true"
+                    >
                         ?
                     </span>
 
                     <span class="community-text">
 
                         <strong>
-                            Support
+                            FINORA Support
                         </strong>
 
                         <span>
-                            Need help? We are here for you.
+                            Need help? Contact our support team
                         </span>
 
                     </span>
 
-                    <span class="community-arrow">
+                    <span
+                        class="community-arrow"
+                        aria-hidden="true"
+                    >
                         →
                     </span>
 
@@ -716,46 +854,52 @@
         </section>
 
 
-
         <!-- =================================================
              RECENT ACTIVITY
         ================================================== -->
+
         <section class="recent-activity">
 
             <div class="section-heading">
 
                 <div>
 
-                    <div class="section-kicker">
+                    <p class="section-kicker">
                         ACTIVITY
-                    </div>
+                    </p>
 
                     <h2>
-                        Recent activity
+                        Recent Transactions
                     </h2>
 
                 </div>
 
                 <a
-                    href="records.html"
+                    href="transaction-history.html"
                     class="section-link"
                 >
-                    View records
+                    VIEW ALL
                 </a>
 
             </div>
 
 
-            <div class="activity-list">
+            <div
+                class="activity-list"
+                id="recentActivityList"
+            >
 
                 <div class="activity-empty">
 
-                    <div class="activity-empty-icon">
-                        ≡
+                    <div
+                        class="activity-empty-icon"
+                        aria-hidden="true"
+                    >
+                        ◷
                     </div>
 
                     <p>
-                        Your recent transactions will appear here.
+                        No recent transactions
                     </p>
 
                 </div>
@@ -765,28 +909,82 @@
         </section>
 
 
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer class="dashboard-footer">
+
+            <p>
+                FINORA
+                <span>•</span>
+                Invest
+                <span>•</span>
+                Grow
+                <span>•</span>
+                Earn
+            </p>
+
+        </footer>
+
     </main>
 
 
-
     <!-- =====================================================
-         FOOTER
+         NOTIFICATION PANEL
     ====================================================== -->
-    <footer class="dashboard-footer">
 
-        © 2026 FINORA
-        <span>•</span>
-        INVEST • GROW • EARN
+    <aside
+        class="notification-panel"
+        id="notificationPanel"
+        aria-hidden="true"
+    >
 
-    </footer>
+        <div class="notification-panel-header">
 
+            <h3>
+                Notifications
+            </h3>
+
+            <button
+                type="button"
+                class="close-notifications"
+                id="closeNotifications"
+                aria-label="Close notifications"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="notification-content">
+
+            <div class="notification-empty">
+
+                <span aria-hidden="true">
+                    ♢
+                </span>
+
+                <p>
+                    No new notifications
+                </p>
+
+            </div>
+
+        </div>
+
+    </aside>
 
 
     <!-- =====================================================
          BOTTOM NAVIGATION
     ====================================================== -->
-    <nav class="bottom-navigation">
 
+    <nav
+        class="bottom-navigation"
+        aria-label="Main navigation"
+    >
 
         <!-- HOME -->
         <a
@@ -794,7 +992,10 @@
             class="bottom-nav-item active"
         >
 
-            <span class="bottom-nav-icon">
+            <span
+                class="bottom-nav-icon"
+                aria-hidden="true"
+            >
                 ⌂
             </span>
 
@@ -811,7 +1012,10 @@
             class="bottom-nav-item"
         >
 
-            <span class="bottom-nav-icon">
+            <span
+                class="bottom-nav-icon"
+                aria-hidden="true"
+            >
                 ◈
             </span>
 
@@ -828,7 +1032,10 @@
             class="bottom-nav-item"
         >
 
-            <span class="bottom-nav-icon">
+            <span
+                class="bottom-nav-icon"
+                aria-hidden="true"
+            >
                 ♧
             </span>
 
@@ -845,7 +1052,10 @@
             class="bottom-nav-item"
         >
 
-            <span class="bottom-nav-icon">
+            <span
+                class="bottom-nav-icon"
+                aria-hidden="true"
+            >
                 ●
             </span>
 
@@ -857,56 +1067,15 @@
 
     </nav>
 
-
-
-    <!-- =====================================================
-         NOTIFICATION PANEL
-    ====================================================== -->
-    <div
-        class="notification-panel"
-        id="notificationPanel"
-    >
-
-        <div class="notification-panel-header">
-
-            <h3>
-                Notifications
-            </h3>
-
-            <button
-                type="button"
-                class="close-notifications"
-                id="closeNotifications"
-            >
-                ×
-            </button>
-
-        </div>
-
-
-        <div class="notification-content">
-
-            <div class="notification-empty">
-
-                <span>
-                    ♢
-                </span>
-
-                <p>
-                    No new notifications
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- Dashboard JavaScript will be connected later -->
-    <script src="dashboard.js"></script>
-
 </div>
+
+
+<!-- =========================================================
+     DASHBOARD JAVASCRIPT
+     We will connect this later.
+========================================================= -->
+
+<script src="dashboard.js"></script>
 
 </body>
 </html>
