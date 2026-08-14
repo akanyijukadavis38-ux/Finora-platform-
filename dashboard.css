@@ -520,3 +520,15 @@ main{
         height:19px;
     }
 }
+/* =========================================================
+   FINORA BACKGROUND — FORCE BLUSH PINK
+   ========================================================= */
+
+html,
+body,
+.dashboard-shell,
+.dashboard-header,
+main,
+.dashboard-container{
+    background-color:#F3DCE7 !important;
+}
