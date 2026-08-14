@@ -1,0 +1,652 @@
+/* =========================================
+   FINORA LOGIN CSS
+========================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #07050A;
+    color: #F5F1E8;
+}
+
+
+/* =========================================
+   PAGE
+========================================= */
+
+.page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(214, 157, 32, 0.08),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(214, 157, 32, 0.06),
+            transparent 35%
+        ),
+        #07050A;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.header {
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 211, 90, 0.12);
+    background: rgba(7, 5, 10, 0.96);
+}
+
+.header-inner {
+    width: min(1180px, 92%);
+    margin: auto;
+    min-height: 82px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+
+/* =========================================
+   BRAND
+========================================= */
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    text-decoration: none;
+    color: inherit;
+}
+
+.finora-mark {
+    width: 42px;
+    height: 48px;
+    display: block;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-name {
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    line-height: 1;
+}
+
+.brand-name .fin {
+    color: #F5F1E8;
+}
+
+.brand-name .ora {
+    color: #E4AA2F;
+}
+
+.brand-tagline {
+    margin-top: 5px;
+
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: rgba(245, 241, 232, 0.55);
+}
+
+
+/* =========================================
+   TOP LOGIN
+========================================= */
+
+.login-top {
+    font-size: 13px;
+    color: rgba(245, 241, 232, 0.65);
+}
+
+.login-top a {
+    margin-left: 5px;
+    color: #E9B43A;
+    text-decoration: none;
+}
+
+.login-top a:hover {
+    color: #FFD76A;
+}
+
+
+/* =========================================
+   MAIN
+========================================= */
+
+.main {
+    flex: 1;
+
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 55px 20px;
+}
+
+
+/* =========================================
+   LOGIN WRAPPER
+========================================= */
+
+.login-wrapper {
+    width: min(1050px, 100%);
+
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(360px, 450px);
+
+    gap: 70px;
+
+    align-items: center;
+}
+
+
+/* =========================================
+   INFORMATION PANEL
+========================================= */
+
+.info-panel {
+    max-width: 530px;
+}
+
+.info-kicker {
+    display: inline-block;
+
+    margin-bottom: 18px;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+
+    color: #E8B33B;
+}
+
+.info-panel h1 {
+    font-size: clamp(42px, 5vw, 68px);
+    line-height: 0.98;
+
+    font-weight: 800;
+    letter-spacing: -2px;
+
+    margin-bottom: 22px;
+}
+
+.info-panel h1 span {
+    color: #E6AD35;
+}
+
+.info-panel > p {
+    max-width: 500px;
+
+    font-size: 15px;
+    line-height: 1.75;
+
+    color: rgba(245, 241, 232, 0.63);
+}
+
+
+/* =========================================
+   BENEFITS
+========================================= */
+
+.benefits {
+    margin-top: 34px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.benefit {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.benefit-icon {
+    width: 34px;
+    height: 34px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    border: 1px solid rgba(228, 170, 47, 0.3);
+
+    background: rgba(228, 170, 47, 0.07);
+
+    color: #E7B13A;
+
+    font-size: 15px;
+}
+
+.benefit h3 {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.benefit p {
+    font-size: 12px;
+    line-height: 1.5;
+
+    color: rgba(245, 241, 232, 0.52);
+}
+
+
+/* =========================================
+   FORM CARD
+========================================= */
+
+.form-card {
+    width: 100%;
+
+    padding: 34px;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.055),
+            rgba(255, 255, 255, 0.018)
+        );
+
+    border: 1px solid rgba(255, 211, 90, 0.13);
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035);
+
+    backdrop-filter: blur(14px);
+}
+
+
+/* =========================================
+   FORM HEADER
+========================================= */
+
+.form-header {
+    margin-bottom: 28px;
+}
+
+.form-header h2 {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.form-header p {
+    font-size: 13px;
+    line-height: 1.6;
+
+    color: rgba(245, 241, 232, 0.55);
+}
+
+
+/* =========================================
+   FORM GROUP
+========================================= */
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    color: rgba(245, 241, 232, 0.82);
+}
+
+
+/* =========================================
+   INPUT
+========================================= */
+
+.form-input {
+    width: 100%;
+
+    height: 48px;
+
+    padding: 0 14px;
+
+    border-radius: 11px;
+
+    border: 1px solid rgba(255, 255, 255, 0.11);
+
+    outline: none;
+
+    background: rgba(0, 0, 0, 0.22);
+
+    color: #F5F1E8;
+
+    font-size: 14px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.form-input::placeholder {
+    color: rgba(245, 241, 232, 0.32);
+}
+
+.form-input:focus {
+    border-color: rgba(230, 173, 53, 0.75);
+
+    background: rgba(0, 0, 0, 0.3);
+
+    box-shadow:
+        0 0 0 3px rgba(230, 173, 53, 0.08);
+}
+
+
+/* =========================================
+   PASSWORD WRAPPER
+========================================= */
+
+.input-wrapper {
+    position: relative;
+}
+
+.password-input {
+    padding-right: 50px;
+}
+
+
+/* =========================================
+   PASSWORD TOGGLE
+========================================= */
+
+.toggle-password {
+    position: absolute;
+
+    top: 50%;
+    right: 12px;
+
+    transform: translateY(-50%);
+
+    width: 32px;
+    height: 32px;
+
+    border: 0;
+    background: transparent;
+
+    color: rgba(245, 241, 232, 0.65);
+
+    cursor: pointer;
+
+    font-size: 16px;
+}
+
+.toggle-password:hover {
+    color: #E8B33B;
+}
+
+
+/* =========================================
+   FORGOT PASSWORD
+========================================= */
+
+.forgot-password {
+    display: flex;
+    justify-content: flex-end;
+
+    margin-top: -7px;
+    margin-bottom: 20px;
+}
+
+.forgot-password a {
+    font-size: 12px;
+
+    color: #E5AC34;
+
+    text-decoration: none;
+}
+
+.forgot-password a:hover {
+    color: #FFD66A;
+    text-decoration: underline;
+}
+
+
+/* =========================================
+   FORM STATUS
+========================================= */
+
+.form-status {
+    min-height: 20px;
+
+    margin-bottom: 14px;
+
+    font-size: 12px;
+    line-height: 1.5;
+
+    text-align: center;
+}
+
+.form-status.error {
+    color: #F18B8B;
+}
+
+.form-status.success {
+    color: #72D6A1;
+}
+
+
+/* =========================================
+   LOGIN BUTTON
+========================================= */
+
+.login-button {
+    width: 100%;
+    height: 50px;
+
+    border: 0;
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    background:
+        linear-gradient(
+            135deg,
+            #FFE17A,
+            #E8AA2F
+        );
+
+    color: #171007;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    box-shadow:
+        0 10px 30px rgba(219, 158, 32, 0.16);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.login-button:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 14px 35px rgba(219, 158, 32, 0.24);
+}
+
+.login-button:active {
+    transform: translateY(0);
+}
+
+.login-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+    transform: none;
+}
+
+
+/* =========================================
+   BOTTOM REGISTER
+========================================= */
+
+.bottom-register {
+    margin-top: 23px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+
+    text-align: center;
+
+    font-size: 12px;
+
+    color: rgba(245, 241, 232, 0.5);
+}
+
+.bottom-register a {
+    color: #E6AD35;
+
+    text-decoration: none;
+
+    font-weight: 600;
+}
+
+.bottom-register a:hover {
+    color: #FFD66A;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.footer {
+    padding: 22px 15px;
+
+    text-align: center;
+
+    border-top: 1px solid rgba(255, 211, 90, 0.08);
+
+    color: rgba(245, 241, 232, 0.35);
+
+    font-size: 10px;
+
+    letter-spacing: 0.4px;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 850px) {
+
+    .main {
+        padding: 35px 18px 45px;
+    }
+
+    .login-wrapper {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+
+    .info-panel {
+        max-width: 600px;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .info-panel > p {
+        margin: 0 auto;
+    }
+
+    .benefits {
+        text-align: left;
+    }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 520px) {
+
+    .header-inner {
+        min-height: 70px;
+    }
+
+    .login-top {
+        font-size: 11px;
+    }
+
+    .brand-name {
+        font-size: 21px;
+    }
+
+    .brand-tagline {
+        font-size: 7px;
+    }
+
+    .finora-mark {
+        width: 36px;
+        height: 42px;
+    }
+
+    .main {
+        padding: 25px 13px 35px;
+    }
+
+    .form-card {
+        padding: 24px 18px;
+        border-radius: 18px;
+    }
+
+    .form-header h2 {
+        font-size: 24px;
+    }
+
+    .info-panel h1 {
+        font-size: 42px;
+    }
+
+}
