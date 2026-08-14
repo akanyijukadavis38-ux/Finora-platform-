@@ -7,71 +7,8 @@
 <meta name="description" content="FINORA Dashboard — Invest • Grow • Earn">
 <title>FINORA | Dashboard</title>
 
-<!--
-    ============================================================
-    FINORA DASHBOARD
-    ============================================================
+<link rel="stylesheet" href="dashboard.css">
 
-    STRUCTURE:
-    - Header
-    - Four-banner horizontal carousel
-    - Wallet / earnings overview
-    - Quick Actions
-    - Premium investment banner
-    - Referral section
-    - Community / Support
-    - Recent Transactions
-    - Bottom Navigation
-
-    IMPORTANT:
-    This file contains the STRUCTURE only.
-    The dashboard CSS will style these elements separately.
--->
-
-<style>
-/* Temporary structural defaults.
-   The complete FINORA dashboard CSS will replace/override these. */
-
-html,
-body{
-    margin:0;
-    padding:0;
-}
-
-*{
-    box-sizing:border-box;
-}
-
-body{
-    background:#07050A;
-    color:#fff;
-    font-family:Arial, sans-serif;
-}
-
-a{
-    color:inherit;
-    text-decoration:none;
-}
-
-button{
-    font:inherit;
-}
-
-img,
-svg{
-    display:block;
-    max-width:100%;
-}
-
-.dashboard-shell{
-    width:100%;
-}
-
-.dashboard-container{
-    width:min(100% - 32px, 1100px);
-    margin:0 auto;
-}
-</style>
 </head>
 
 <body>
@@ -928,8 +865,6 @@ svg{
 
 <section class="financial-overview">
 
-    <!-- WALLET -->
-
     <article class="wallet-card">
 
         <div class="wallet-header">
@@ -947,9 +882,6 @@ svg{
                     Available balance
                 </p>
             </div>
-
-
-            <!-- WALLET ICON -->
 
             <div class="wallet-icon">
 
@@ -985,9 +917,6 @@ svg{
 
         </div>
 
-
-        <!-- WALLET BUTTONS -->
-
         <div class="wallet-actions">
 
             <a
@@ -1011,12 +940,7 @@ svg{
     </article>
 
 
-    <!-- FINANCIAL CARDS -->
-
     <div class="financial-summary">
-
-
-        <!-- TOTAL EARNINGS -->
 
         <article class="summary-card">
 
@@ -1062,8 +986,6 @@ svg{
         </article>
 
 
-        <!-- TODAY'S EARNINGS -->
-
         <article class="summary-card">
 
             <div class="summary-icon">
@@ -1099,23 +1021,9 @@ svg{
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
-                    <circle
-                        cx="8"
-                        cy="14"
-                        r="1"
-                        fill="currentColor"/>
-
-                    <circle
-                        cx="12"
-                        cy="14"
-                        r="1"
-                        fill="currentColor"/>
-
-                    <circle
-                        cx="16"
-                        cy="14"
-                        r="1"
-                        fill="currentColor"/>
+                    <circle cx="8" cy="14" r="1" fill="currentColor"/>
+                    <circle cx="12" cy="14" r="1" fill="currentColor"/>
+                    <circle cx="16" cy="14" r="1" fill="currentColor"/>
 
                 </svg>
 
@@ -1139,8 +1047,6 @@ svg{
 
         </article>
 
-
-        <!-- TOTAL INVESTED -->
 
         <article class="summary-card">
 
@@ -1192,8 +1098,6 @@ svg{
         </article>
 
 
-        <!-- REFERRAL BONUS -->
-
         <article class="summary-card">
 
             <div class="summary-icon">
@@ -1203,17 +1107,11 @@ svg{
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg">
 
-                    <circle
-                        cx="9"
-                        cy="8"
-                        r="3"
+                    <circle cx="9" cy="8" r="3"
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
-                    <circle
-                        cx="17"
-                        cy="9"
-                        r="2.5"
+                    <circle cx="17" cy="9" r="2.5"
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
@@ -1285,39 +1183,27 @@ svg{
 
     <div class="quick-actions">
 
-
-        <!-- DEPOSIT -->
-
-        <a
-            href="deposit.html"
-            class="quick-action">
+        <a href="deposit.html" class="quick-action">
 
             <div class="quick-action-icon">
 
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                <svg viewBox="0 0 24 24" fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
 
                     <path
                         d="M3 7.5C3 6.119 4.119 5 5.5 5H19C20.105 5 21 5.895 21 7V19C21 20.105 20.105 21 19 21H5C3.895 21 3 20.105 3 19V7.5Z"
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
-                    <path
-                        d="M3 8H19"
+                    <path d="M3 8H19"
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
-                    <path
-                        d="M16 13H21"
+                    <path d="M16 13H21"
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
-                    <circle
-                        cx="16"
-                        cy="13"
-                        r="1.5"
+                    <circle cx="16" cy="13" r="1.5"
                         fill="currentColor"/>
 
                 </svg>
@@ -1330,18 +1216,12 @@ svg{
         </a>
 
 
-        <!-- INVEST -->
-
-        <a
-            href="investment.html"
-            class="quick-action">
+        <a href="investment.html" class="quick-action">
 
             <div class="quick-action-icon">
 
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                <svg viewBox="0 0 24 24" fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
 
                     <path
                         d="M4 18L10 12L14 15L21 7"
@@ -1367,21 +1247,14 @@ svg{
         </a>
 
 
-        <!-- WITHDRAW -->
-
-        <a
-            href="withdraw.html"
-            class="quick-action">
+        <a href="withdraw.html" class="quick-action">
 
             <div class="quick-action-icon">
 
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                <svg viewBox="0 0 24 24" fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
 
-                    <path
-                        d="M12 16V4"
+                    <path d="M12 16V4"
                         stroke="currentColor"
                         stroke-width="2"
                         stroke-linecap="round"/>
@@ -1409,18 +1282,12 @@ svg{
         </a>
 
 
-        <!-- MY INVESTMENTS -->
-
-        <a
-            href="my-investments.html"
-            class="quick-action">
+        <a href="my-investments.html" class="quick-action">
 
             <div class="quick-action-icon">
 
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                <svg viewBox="0 0 24 24" fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
 
                     <rect
                         x="4"
@@ -1436,8 +1303,7 @@ svg{
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
-                    <path
-                        d="M4 12H20"
+                    <path d="M4 12H20"
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
@@ -1456,30 +1322,18 @@ svg{
         </a>
 
 
-        <!-- TEAM -->
-
-        <a
-            href="team.html"
-            class="quick-action">
+        <a href="team.html" class="quick-action">
 
             <div class="quick-action-icon">
 
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                <svg viewBox="0 0 24 24" fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
 
-                    <circle
-                        cx="9"
-                        cy="8"
-                        r="3"
+                    <circle cx="9" cy="8" r="3"
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
-                    <circle
-                        cx="17"
-                        cy="9"
-                        r="2.5"
+                    <circle cx="17" cy="9" r="2.5"
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
@@ -1505,18 +1359,12 @@ svg{
         </a>
 
 
-        <!-- RECORDS -->
-
-        <a
-            href="transaction-history.html"
-            class="quick-action">
+        <a href="transaction-history.html" class="quick-action">
 
             <div class="quick-action-icon">
 
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                <svg viewBox="0 0 24 24" fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
 
                     <rect
                         x="5"
@@ -1527,20 +1375,17 @@ svg{
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
-                    <path
-                        d="M9 8H15"
+                    <path d="M9 8H15"
                         stroke="currentColor"
                         stroke-width="1.8"
                         stroke-linecap="round"/>
 
-                    <path
-                        d="M9 12H15"
+                    <path d="M9 12H15"
                         stroke="currentColor"
                         stroke-width="1.8"
                         stroke-linecap="round"/>
 
-                    <path
-                        d="M9 16H13"
+                    <path d="M9 16H13"
                         stroke="currentColor"
                         stroke-width="1.8"
                         stroke-linecap="round"/>
@@ -1595,8 +1440,6 @@ svg{
         </div>
 
 
-        <!-- PREMIUM ARTWORK -->
-
         <div class="premium-artwork">
 
             <svg
@@ -1604,8 +1447,6 @@ svg{
                 xmlns="http://www.w3.org/2000/svg"
                 aria-label="Premium investment artwork"
                 role="img">
-
-                <!-- Gold growth arrow -->
 
                 <path
                     d="M25 185 C100 180 135 150 190 140 C245 130 280 80 340 65 C380 55 410 35 435 15"
@@ -1621,9 +1462,6 @@ svg{
                     stroke-width="9"
                     stroke-linecap="round"
                     stroke-linejoin="round"/>
-
-
-                <!-- Purple bars -->
 
                 <rect
                     x="220"
@@ -1649,9 +1487,6 @@ svg{
                     rx="6"
                     fill="#B647E6"/>
 
-
-                <!-- 10% -->
-
                 <text
                     x="255"
                     y="205"
@@ -1661,9 +1496,6 @@ svg{
                     font-family="Arial, sans-serif">
                     10%
                 </text>
-
-
-                <!-- Coins -->
 
                 <g
                     fill="#C88716"
@@ -1703,10 +1535,7 @@ svg{
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg">
 
-                <circle
-                    cx="9"
-                    cy="8"
-                    r="3"
+                <circle cx="9" cy="8" r="3"
                     stroke="currentColor"
                     stroke-width="1.8"/>
 
@@ -1716,21 +1545,16 @@ svg{
                     stroke-width="1.8"
                     stroke-linecap="round"/>
 
-                <circle
-                    cx="18"
-                    cy="17"
-                    r="3"
+                <circle cx="18" cy="17" r="3"
                     stroke="currentColor"
                     stroke-width="1.8"/>
 
-                <path
-                    d="M18 15V19"
+                <path d="M18 15V19"
                     stroke="currentColor"
                     stroke-width="1.5"
                     stroke-linecap="round"/>
 
-                <path
-                    d="M16 17H20"
+                <path d="M16 17H20"
                     stroke="currentColor"
                     stroke-width="1.5"
                     stroke-linecap="round"/>
@@ -1760,39 +1584,18 @@ svg{
             <div class="referral-levels">
 
                 <div class="referral-level">
-
-                    <span>
-                        LEVEL 1
-                    </span>
-
-                    <strong id="levelOneRate">
-                        15%
-                    </strong>
-
+                    <span>LEVEL 1</span>
+                    <strong id="levelOneRate">15%</strong>
                 </div>
 
                 <div class="referral-level">
-
-                    <span>
-                        LEVEL 2
-                    </span>
-
-                    <strong id="levelTwoRate">
-                        5%
-                    </strong>
-
+                    <span>LEVEL 2</span>
+                    <strong id="levelTwoRate">5%</strong>
                 </div>
 
                 <div class="referral-level">
-
-                    <span>
-                        LEVEL 3
-                    </span>
-
-                    <strong id="levelThreeRate">
-                        2%
-                    </strong>
-
+                    <span>LEVEL 3</span>
+                    <strong id="levelThreeRate">2%</strong>
                 </div>
 
             </div>
@@ -1859,7 +1662,7 @@ svg{
                     stroke-width="1.8"/>
 
                 <path
-                    d="M16 8V6C16 4.895 15.105 4 14 4H6C4.895 4 4 4.895 4 6V14C4 15.105 4.895 16 6 16H8"
+                    d="M16 8V6C16 4.895 15.105 4 14 4H6C4.895 4 4 4.895 4 6V14C4 15.105 4 16 6 16H8"
                     stroke="currentColor"
                     stroke-width="1.8"/>
 
@@ -1900,9 +1703,6 @@ svg{
 
 
     <div class="overview-grid">
-
-
-        <!-- ACTIVE INVESTMENTS -->
 
         <article class="overview-card">
 
@@ -1954,8 +1754,6 @@ svg{
         </article>
 
 
-        <!-- DAILY INCOME -->
-
         <article class="overview-card">
 
             <div class="overview-icon">
@@ -2001,8 +1799,6 @@ svg{
 
         </article>
 
-
-        <!-- TOTAL EARNINGS -->
 
         <article class="overview-card">
 
@@ -2091,10 +1887,7 @@ svg{
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg">
 
-                <circle
-                    cx="9"
-                    cy="8"
-                    r="3"
+                <circle cx="9" cy="8" r="3"
                     stroke="currentColor"
                     stroke-width="1.8"/>
 
@@ -2104,21 +1897,16 @@ svg{
                     stroke-width="1.8"
                     stroke-linecap="round"/>
 
-                <circle
-                    cx="18"
-                    cy="17"
-                    r="3"
+                <circle cx="18" cy="17" r="3"
                     stroke="currentColor"
                     stroke-width="1.8"/>
 
-                <path
-                    d="M18 15V19"
+                <path d="M18 15V19"
                     stroke="currentColor"
                     stroke-width="1.5"
                     stroke-linecap="round"/>
 
-                <path
-                    d="M16 17H20"
+                <path d="M16 17H20"
                     stroke="currentColor"
                     stroke-width="1.5"
                     stroke-linecap="round"/>
@@ -2185,9 +1973,6 @@ svg{
 
     <div class="community-grid">
 
-
-        <!-- COMMUNITY -->
-
         <a
             href="#"
             class="community-card"
@@ -2235,8 +2020,6 @@ svg{
 
         </a>
 
-
-        <!-- SUPPORT -->
 
         <a
             href="#"
@@ -2440,8 +2223,6 @@ svg{
     class="bottom-navigation"
     aria-label="Main navigation">
 
-    <!-- HOME -->
-
     <a
         href="dashboard.html"
         class="bottom-nav-item active">
@@ -2467,8 +2248,6 @@ svg{
 
     </a>
 
-
-    <!-- INVEST -->
 
     <a
         href="investment.html"
@@ -2501,8 +2280,6 @@ svg{
 
     </a>
 
-
-    <!-- TEAM -->
 
     <a
         href="team.html"
@@ -2548,8 +2325,6 @@ svg{
     </a>
 
 
-    <!-- RECORDS -->
-
     <a
         href="transaction-history.html"
         class="bottom-nav-item">
@@ -2594,8 +2369,6 @@ svg{
 
     </a>
 
-
-    <!-- MINE -->
 
     <a
         href="mine.html"
