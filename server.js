@@ -639,7 +639,207 @@ app.post(
 
     }
 );
+/* =========================================
+   LOGIN USER
+========================================= */
 
+app.post(
+    "/api/login",
+    async function (req, res) {
+
+        console.log(
+            "FINORA: Login request received."
+        );
+
+        try {
+
+            const {
+                identifier,
+                password
+            } = req.body;
+
+
+            /* ==============================
+               REQUIRED FIELDS
+            ============================== */
+
+            if (
+                !identifier ||
+                !password
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Phone/email and password are required."
+
+                });
+
+            }
+
+
+            /* ==============================
+               CLEAN DATA
+            ============================== */
+
+            const cleanIdentifier =
+                String(identifier).trim();
+
+
+            /* ==============================
+               FIND USER
+               PHONE OR EMAIL
+            ============================== */
+
+            const result =
+                await pool.query(
+                    `
+                    SELECT
+                        id,
+                        full_name,
+                        phone,
+                        email,
+                        password_hash,
+                        referral_code,
+                        referred_by,
+                        wallet_balance,
+                        cumulative_income,
+                        account_status,
+                        created_at
+                    FROM users
+                    WHERE phone = $1
+                       OR LOWER(email) = LOWER($1)
+                    LIMIT 1
+                    `,
+                    [
+                        cleanIdentifier
+                    ]
+                );
+
+
+            /* ==============================
+               USER NOT FOUND
+            ============================== */
+
+            if (
+                result.rows.length === 0
+            ) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    message:
+                        "Invalid phone/email or password."
+
+                });
+
+            }
+
+
+            const user =
+                result.rows[0];
+
+
+            /* ==============================
+               CHECK ACCOUNT STATUS
+            ============================== */
+
+            if (
+                user.account_status !==
+                "active"
+            ) {
+
+                return res.status(403).json({
+
+                    success: false,
+
+                    message:
+                        "Your FINORA account is currently unavailable. Please contact support."
+
+                });
+
+            }
+
+
+            /* ==============================
+               VERIFY PASSWORD
+            ============================== */
+
+            const passwordMatch =
+                await bcrypt.compare(
+                    password,
+                    user.password_hash
+                );
+
+
+            if (!passwordMatch) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    message:
+                        "Invalid phone/email or password."
+
+                });
+
+            }
+
+
+            /* ==============================
+               REMOVE PASSWORD HASH
+            ============================== */
+
+            delete user.password_hash;
+
+
+            /* ==============================
+               LOGIN SUCCESS
+            ============================== */
+
+            console.log(
+                "FINORA: User logged in:",
+                user.id
+            );
+
+
+            return res.status(200).json({
+
+                success: true,
+
+                message:
+                    "Login successful.",
+
+                user: user
+
+            });
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "FINORA LOGIN ERROR:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Unable to login. Please try again."
+
+            });
+
+        }
+
+    }
+);
 
 /* =========================================
    START SERVER
