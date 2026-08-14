@@ -32,13 +32,12 @@
 
 <body>
 
-
 <div class="dashboard-page">
 
 
-    <!-- =========================================
-         TOP HEADER
-    ========================================== -->
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
 
     <header class="dashboard-header">
 
@@ -52,6 +51,7 @@
                 class="menu-button"
                 id="menuButton"
                 aria-label="Open menu"
+                aria-expanded="false"
             >
 
                 <span></span>
@@ -62,95 +62,31 @@
 
 
 
-            <!-- CENTER FINORA BRAND -->
+            <!-- CENTERED FINORA BRAND -->
 
             <a
                 href="dashboard.html"
                 class="finora-brand"
+                aria-label="FINORA Dashboard"
             >
 
-                <!-- REAL FINORA F MARK FROM INDEX.HTML -->
+                <!--
+                    IMPORTANT:
+                    Keep the exact F-mark/logo markup from
+                    the FINORA index.html here.
+                    Do NOT replace it with another F design.
+                -->
 
-                <svg
-                    class="finora-mark"
-                    viewBox="0 0 100 110"
-                    aria-hidden="true"
-                >
-
-                    <defs>
-
-                        <linearGradient
-                            id="finoraGold"
-                            x1="0%"
-                            y1="0%"
-                            x2="100%"
-                            y2="100%"
-                        >
-
-                            <stop
-                                offset="0%"
-                                stop-color="#FFD96A"
-                            >
-
-                            <stop
-                                offset="50%"
-                                stop-color="#F3B72F"
-                            >
-
-                            <stop
-                                offset="100%"
-                                stop-color="#B87912"
-                            >
-
-                        </linearGradient>
-
-
-                        <linearGradient
-                            id="finoraShine"
-                            x1="0%"
-                            y1="0%"
-                            x2="100%"
-                            y2="0%"
-                        >
-
-                            <stop
-                                offset="0%"
-                                stop-color="#FFF1A8"
-                            >
-
-                            <stop
-                                offset="100%"
-                                stop-color="#F3B72F"
-                            >
-
-                        </linearGradient>
-
-                    </defs>
-
-
-                    <path
-                        class="finora-ribbon"
-                        fill="url(#finoraGold)"
-                        d="M18 8h64L68 28H31L18 8zm13 27h37L55 55H18l13-20zm-13 27h37L42 82H18l-13 20h37l37-57H45L18 62z"
-                    />
-
-                    <path
-                        class="finora-highlight"
-                        fill="url(#finoraShine)"
-                        d="M18 8h64L68 28H31L18 8z"
-                    />
-
-                </svg>
+                <div class="finora-logo-mark">
+                    F
+                </div>
 
 
                 <div class="finora-brand-text">
 
                     <div class="finora-name">
-
-                        <span>FIN</span><span>ORA</span>
-
+                        FINORA
                     </div>
-
 
                     <div class="finora-tagline">
                         INVEST • GROW • EARN
@@ -162,7 +98,7 @@
 
 
 
-            <!-- RIGHT HEADER ACTIONS -->
+            <!-- HEADER ACTIONS -->
 
             <div class="header-actions">
 
@@ -177,14 +113,14 @@
                 >
 
                     <span class="notification-icon">
-                        ♧
+                        ♢
                     </span>
 
                     <span
-                        class="notification-count"
-                        id="notificationCount"
+                        class="notification-badge"
+                        id="notificationBadge"
                     >
-                        3
+                        0
                     </span>
 
                 </button>
@@ -196,11 +132,11 @@
                 <a
                     href="mine.html"
                     class="header-action profile-button"
-                    aria-label="My profile"
+                    aria-label="My account"
                 >
 
                     <span class="profile-icon">
-                        ●
+                        ◎
                     </span>
 
                 </a>
@@ -213,189 +149,1080 @@
 
 
 
-    <!-- =========================================
-         DASHBOARD CONTENT
+    <!-- =====================================================
+         HAMBURGER MENU
          
-         NEXT HTML SECTION WILL GO HERE
-    ========================================== -->
+         ONLY INFORMATION / ACCOUNT OPTIONS GO HERE.
+         No Deposit, Invest, Withdraw, Team, etc.
+    ====================================================== -->
 
-    <main class="dashboard-main" id="dashboardMain">
-<!-- =========================================
-     HAMBURGER MENU
-========================================== -->
+    <aside
+        class="side-menu"
+        id="sideMenu"
+        aria-hidden="true"
+    >
 
-<div
-    class="side-menu"
-    id="sideMenu"
-    aria-hidden="true"
->
+        <div class="side-menu-header">
 
-    <div class="side-menu-header">
+            <div class="side-menu-brand">
 
-        <div class="side-menu-brand">
+                <strong>FINORA</strong>
 
-            <strong>FINORA</strong>
+                <span>
+                    INVEST • GROW • EARN
+                </span>
 
-            <span>
-                INVEST • GROW • EARN
-            </span>
+            </div>
+
+
+            <button
+                type="button"
+                class="side-menu-close"
+                id="sideMenuClose"
+                aria-label="Close menu"
+            >
+                ×
+            </button>
 
         </div>
 
 
-        <button
-            type="button"
-            class="side-menu-close"
-            id="sideMenuClose"
-            aria-label="Close menu"
-        >
-            ×
-        </button>
+        <div class="side-menu-content">
 
-    </div>
 
+            <a
+                href="help.html"
+                class="side-menu-item"
+            >
 
-    <div class="side-menu-content">
+                <span class="side-menu-icon">
+                    ?
+                </span>
 
+                <span class="side-menu-text">
 
-        <a href="help.html" class="side-menu-item">
+                    <strong>
+                        Help & FAQ
+                    </strong>
 
-            <span class="side-menu-item-icon">?</span>
+                    <small>
+                        Get answers and support
+                    </small>
 
-            <span class="side-menu-item-text">
+                </span>
 
-                <strong>Help & FAQ</strong>
+            </a>
 
-                <small>
-                    Get answers and support
-                </small>
 
-            </span>
 
-        </a>
+            <a
+                href="about.html"
+                class="side-menu-item"
+            >
 
+                <span class="side-menu-icon">
+                    i
+                </span>
 
-        <a href="about.html" class="side-menu-item">
+                <span class="side-menu-text">
 
-            <span class="side-menu-item-icon">i</span>
+                    <strong>
+                        About FINORA
+                    </strong>
 
-            <span class="side-menu-item-text">
+                    <small>
+                        Learn about our platform
+                    </small>
 
-                <strong>About FINORA</strong>
+                </span>
 
-                <small>
-                    Learn about our platform
-                </small>
+            </a>
 
-            </span>
 
-        </a>
 
+            <a
+                href="terms.html"
+                class="side-menu-item"
+            >
 
-        <a href="terms.html" class="side-menu-item">
+                <span class="side-menu-icon">
+                    ✓
+                </span>
 
-            <span class="side-menu-item-icon">✓</span>
+                <span class="side-menu-text">
 
-            <span class="side-menu-item-text">
+                    <strong>
+                        Terms & Conditions
+                    </strong>
 
-                <strong>Terms & Conditions</strong>
+                    <small>
+                        Platform terms
+                    </small>
 
-                <small>
-                    Platform terms
-                </small>
+                </span>
 
-            </span>
+            </a>
 
-        </a>
 
 
-        <a href="privacy.html" class="side-menu-item">
+            <a
+                href="privacy.html"
+                class="side-menu-item"
+            >
 
-            <span class="side-menu-item-icon">◇</span>
+                <span class="side-menu-icon">
+                    ◇
+                </span>
 
-            <span class="side-menu-item-text">
+                <span class="side-menu-text">
 
-                <strong>Privacy Policy</strong>
+                    <strong>
+                        Privacy Policy
+                    </strong>
 
-                <small>
-                    Your privacy matters
-                </small>
+                    <small>
+                        Your privacy matters
+                    </small>
 
-            </span>
+                </span>
 
-        </a>
+            </a>
 
 
-        <a href="contact.html" class="side-menu-item">
 
-            <span class="side-menu-item-icon">✉</span>
+            <a
+                href="contact.html"
+                class="side-menu-item"
+            >
 
-            <span class="side-menu-item-text">
+                <span class="side-menu-icon">
+                    ✉
+                </span>
 
-                <strong>Contact Us</strong>
+                <span class="side-menu-text">
 
-                <small>
-                    Reach the FINORA team
-                </small>
+                    <strong>
+                        Contact Us
+                    </strong>
 
-            </span>
+                    <small>
+                        Reach the FINORA team
+                    </small>
 
-        </a>
+                </span>
 
+            </a>
 
-        <a href="settings.html" class="side-menu-item">
 
-            <span class="side-menu-item-icon">⚙</span>
 
-            <span class="side-menu-item-text">
+            <a
+                href="settings.html"
+                class="side-menu-item"
+            >
 
-                <strong>Settings</strong>
+                <span class="side-menu-icon">
+                    ⚙
+                </span>
 
-                <small>
-                    Manage your account
-                </small>
+                <span class="side-menu-text">
 
-            </span>
+                    <strong>
+                        Settings
+                    </strong>
 
-        </a>
+                    <small>
+                        Manage your account
+                    </small>
 
+                </span>
 
-        <button
-            type="button"
-            class="side-menu-item logout-item"
-            id="logoutButton"
-        >
+            </a>
 
-            <span class="side-menu-item-icon">↪</span>
 
-            <span class="side-menu-item-text">
 
-                <strong>Log Out</strong>
+            <!-- LOGOUT -->
 
-                <small>
-                    Sign out of your account
-                </small>
+            <button
+                type="button"
+                class="side-menu-item logout-item"
+                id="logoutButton"
+            >
 
-            </span>
+                <span class="side-menu-icon">
+                    ↪
+                </span>
 
-        </button>
+                <span class="side-menu-text">
 
+                    <strong>
+                        Log Out
+                    </strong>
 
-    </div>
+                    <small>
+                        Sign out of your account
+                    </small>
 
-</div>
+                </span>
 
+            </button>
 
-<!-- MENU BACKDROP -->
 
-<div
-    class="menu-backdrop"
-    id="menuBackdrop"
-></div>
+        </div>
+
+    </aside>
+
+
+    <div
+        class="menu-backdrop"
+        id="menuBackdrop"
+    ></div>
+
+
+
+    <!-- =====================================================
+         MAIN DASHBOARD
+    ====================================================== -->
+
+    <main class="dashboard-main">
+
+
+        <!-- =================================================
+             WELCOME
+        ================================================== -->
+
+        <section class="welcome-section">
+
+            <div>
+
+                <span class="welcome-kicker">
+                    WELCOME BACK
+                </span>
+
+                <h1 id="dashboardUserName">
+                    Welcome back
+                </h1>
+
+                <p>
+                    Your financial journey continues with FINORA.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             MAIN INVESTMENT BANNER
+        ================================================== -->
+
+        <section class="investment-hero">
+
+            <div class="investment-hero-content">
+
+                <span class="investment-hero-label">
+                    FINORA INVESTMENT
+                </span>
+
+                <h2>
+                    Invest smart.
+                    <span>Earn with purpose.</span>
+                </h2>
+
+                <p>
+                    Put your money to work with FINORA
+                    and take another step toward your
+                    financial goals.
+                </p>
+
+                <a
+                    href="invest.html"
+                    class="investment-hero-button"
+                >
+                    EXPLORE INVESTMENTS
+                    <span>→</span>
+                </a>
+
+            </div>
+
+
+            <!-- VISUAL COMPOSITION -->
+
+            <div class="investment-hero-visual">
+
+                <div class="hero-glow"></div>
+
+                <div class="hero-orbit hero-orbit-one"></div>
+
+                <div class="hero-orbit hero-orbit-two"></div>
+
+                <div class="hero-vault">
+
+                    <div class="vault-top"></div>
+
+                    <div class="vault-body">
+
+                        <span>
+                            F
+                        </span>
+
+                    </div>
+
+                    <div class="vault-handle"></div>
+
+                </div>
+
+
+                <div class="hero-coin coin-one">
+                    $
+                </div>
+
+                <div class="hero-coin coin-two">
+                    $
+                </div>
+
+                <div class="hero-coin coin-three">
+                    $
+                </div>
+
+            </div>
+
+
+            <div class="hero-indicators">
+
+                <span class="hero-indicator active"></span>
+                <span class="hero-indicator"></span>
+                <span class="hero-indicator"></span>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             WALLET / FINANCIAL SUMMARY
+        ================================================== -->
+
+        <section class="wallet-section">
+
+            <div class="wallet-card">
+
+
+                <div class="wallet-header">
+
+                    <div>
+
+                        <span>
+                            TOTAL WALLET BALANCE
+                        </span>
+
+                        <h2 id="walletBalance">
+                            UGX 0
+                        </h2>
+
+                    </div>
+
+
+                    <div class="wallet-symbol">
+                        ◈
+                    </div>
+
+                </div>
+
+
+                <div class="wallet-stats">
+
+
+                    <div class="wallet-stat">
+
+                        <span>
+                            Total Earnings
+                        </span>
+
+                        <strong id="cumulativeIncome">
+                            UGX 0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="wallet-stat">
+
+                        <span>
+                            Today's Earnings
+                        </span>
+
+                        <strong id="dailyIncome">
+                            UGX 0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="wallet-stat">
+
+                        <span>
+                            Total Invested
+                        </span>
+
+                        <strong id="totalInvestment">
+                            UGX 0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="wallet-stat">
+
+                        <span>
+                            Referral Income
+                        </span>
+
+                        <strong id="referralIncome">
+                            UGX 0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="wallet-actions">
+
+                    <a
+                        href="deposit.html"
+                        class="wallet-action deposit-action"
+                    >
+                        <span>+</span>
+                        Deposit
+                    </a>
+
+
+                    <a
+                        href="withdraw.html"
+                        class="wallet-action withdraw-action"
+                    >
+                        <span>↑</span>
+                        Mobile Money
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             QUICK ACCESS
+        ================================================== -->
+
+        <section class="quick-access-section">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span>
+                        QUICK ACCESS
+                    </span>
+
+                    <h2>
+                        Manage your money
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="quick-access-grid">
+
+
+                <a
+                    href="deposit.html"
+                    class="quick-action"
+                >
+
+                    <span class="quick-action-icon">
+                        +
+                    </span>
+
+                    <strong>
+                        Deposit
+                    </strong>
+
+                    <small>
+                        Add funds
+                    </small>
+
+                </a>
+
+
+
+                <a
+                    href="invest.html"
+                    class="quick-action"
+                >
+
+                    <span class="quick-action-icon">
+                        ◈
+                    </span>
+
+                    <strong>
+                        Invest
+                    </strong>
+
+                    <small>
+                        Grow your money
+                    </small>
+
+                </a>
+
+
+
+                <a
+                    href="withdraw.html"
+                    class="quick-action"
+                >
+
+                    <span class="quick-action-icon">
+                        ↑
+                    </span>
+
+                    <strong>
+                        Withdraw
+                    </strong>
+
+                    <small>
+                        Mobile money
+                    </small>
+
+                </a>
+
+
+
+                <a
+                    href="my-investments.html"
+                    class="quick-action"
+                >
+
+                    <span class="quick-action-icon">
+                        ◆
+                    </span>
+
+                    <strong>
+                        Investments
+                    </strong>
+
+                    <small>
+                        View portfolio
+                    </small>
+
+                </a>
+
+
+
+                <a
+                    href="team.html"
+                    class="quick-action"
+                >
+
+                    <span class="quick-action-icon">
+                        ♧
+                    </span>
+
+                    <strong>
+                        Team
+                    </strong>
+
+                    <small>
+                        Grow your network
+                    </small>
+
+                </a>
+
+
+
+                <a
+                    href="records.html"
+                    class="quick-action"
+                >
+
+                    <span class="quick-action-icon">
+                        ≡
+                    </span>
+
+                    <strong>
+                        Records
+                    </strong>
+
+                    <small>
+                        View transactions
+                    </small>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             INVESTMENT OVERVIEW
+        ================================================== -->
+
+        <section class="investment-overview">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span>
+                        INVESTMENT OVERVIEW
+                    </span>
+
+                    <h2>
+                        Your progress
+                    </h2>
+
+                </div>
+
+
+                <a
+                    href="my-investments.html"
+                    class="section-link"
+                >
+                    View all
+                </a>
+
+            </div>
+
+
+            <div class="overview-grid">
+
+
+                <div class="overview-card">
+
+                    <span class="overview-icon">
+                        ◆
+                    </span>
+
+                    <div>
+
+                        <small>
+                            Active Investments
+                        </small>
+
+                        <strong id="activeInvestments">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="overview-card">
+
+                    <span class="overview-icon">
+                        ↗
+                    </span>
+
+                    <div>
+
+                        <small>
+                            Daily Income
+                        </small>
+
+                        <strong>
+                            UGX 0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="overview-card">
+
+                    <span class="overview-icon">
+                        ♧
+                    </span>
+
+                    <div>
+
+                        <small>
+                            Referral Income
+                        </small>
+
+                        <strong>
+                            UGX 0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             PREMIUM INVESTMENT BANNER
+        ================================================== -->
+
+        <section class="premium-banner">
+
+            <div class="premium-banner-content">
+
+                <span>
+                    FINORA PREMIUM
+                </span>
+
+                <h2>
+                    Grow your investment journey.
+                </h2>
+
+                <p>
+                    Explore investment plans designed
+                    for your financial goals.
+                </p>
+
+                <a
+                    href="invest.html"
+                    class="premium-button"
+                >
+                    VIEW PLANS
+                    <span>→</span>
+                </a>
+
+            </div>
+
+
+            <div class="premium-visual">
+
+                <div class="premium-circle"></div>
+
+                <div class="premium-coin premium-coin-one">
+                    $
+                </div>
+
+                <div class="premium-coin premium-coin-two">
+                    $
+                </div>
+
+                <div class="premium-bars">
+
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             REFERRAL
+        ================================================== -->
+
+        <section class="referral-section">
+
+            <div class="referral-card">
+
+                <div class="referral-content">
+
+                    <span class="section-kicker">
+                        REFERRAL PROGRAM
+                    </span>
+
+                    <h2>
+                        Grow together with FINORA.
+                    </h2>
+
+                    <p>
+                        Invite friends and build your
+                        FINORA network.
+                    </p>
+
+                    <a
+                        href="team.html"
+                        class="referral-button"
+                    >
+                        VIEW MY TEAM
+                        <span>→</span>
+                    </a>
+
+                </div>
+
+
+                <div class="referral-visual">
+
+                    <span>♧</span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             COMMUNITY + SUPPORT
+        ================================================== -->
+
+        <section class="community-support">
+
+            <div class="community-card">
+
+                <span class="community-icon">
+                    ♧
+                </span>
+
+                <div>
+
+                    <strong>
+                        FINORA Community
+                    </strong>
+
+                    <p>
+                        Stay connected with the FINORA community.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="help.html"
+                class="support-card"
+            >
+
+                <span class="support-icon">
+                    ?
+                </span>
+
+                <div>
+
+                    <strong>
+                        Need Help?
+                    </strong>
+
+                    <p>
+                        Visit Help & FAQ.
+                    </p>
+
+                </div>
+
+                <span class="support-arrow">
+                    →
+                </span>
+
+            </a>
+
+        </section>
+
+
     </main>
 
 
+
+    <!-- =====================================================
+         BOTTOM NAVIGATION
+    ====================================================== -->
+
+    <nav class="bottom-navigation">
+
+
+        <a
+            href="dashboard.html"
+            class="bottom-nav-item active"
+        >
+
+            <span class="bottom-nav-icon">
+                ⌂
+            </span>
+
+            <span>
+                Home
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="invest.html"
+            class="bottom-nav-item"
+        >
+
+            <span class="bottom-nav-icon">
+                ◆
+            </span>
+
+            <span>
+                Invest
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="team.html"
+            class="bottom-nav-item"
+        >
+
+            <span class="bottom-nav-icon">
+                ♧
+            </span>
+
+            <span>
+                Team
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="records.html"
+            class="bottom-nav-item"
+        >
+
+            <span class="bottom-nav-icon">
+                ≡
+            </span>
+
+            <span>
+                Records
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="mine.html"
+            class="bottom-nav-item"
+        >
+
+            <span class="bottom-nav-icon">
+                ◎
+            </span>
+
+            <span>
+                Mine
+            </span>
+
+        </a>
+
+    </nav>
+
+
+
+    <!-- =====================================================
+         NOTIFICATION PANEL
+    ====================================================== -->
+
+    <div
+        class="notification-panel"
+        id="notificationPanel"
+        aria-hidden="true"
+    >
+
+        <div class="notification-panel-header">
+
+            <div>
+
+                <span>
+                    FINORA
+                </span>
+
+                <h3>
+                    Notifications
+                </h3>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="closeNotifications"
+                aria-label="Close notifications"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            class="notification-content"
+            id="notificationContent"
+        >
+
+            <div class="notification-empty">
+
+                <span>
+                    ♢
+                </span>
+
+                <strong>
+                    No new notifications
+                </strong>
+
+                <p>
+                    Your latest FINORA updates will appear here.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="dashboard-footer">
+
+        © 2026 FINORA
+        <span>•</span>
+        INVEST • GROW • EARN
+
+    </footer>
+
+
 </div>
+
+
+<!-- =====================================================
+     DASHBOARD JAVASCRIPT
+     
+     We will create this AFTER the CSS is completed.
+====================================================== -->
+
+<script src="dashboard.js?v=1"></script>
 
 
 </body>
