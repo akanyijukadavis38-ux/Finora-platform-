@@ -41,13 +41,19 @@
 
 /* =========================================================
    PAGE
-   CLEAR DARK PURPLE
+   DARK PURPLE — NOT BLACK
    ========================================================= */
 
-html,
-body{
+html{
     width:100%;
     min-height:100%;
+
+    background:#1A0B26 !important;
+}
+
+body{
+    width:100%;
+    min-height:100vh;
 
     background:
         linear-gradient(
@@ -55,16 +61,7 @@ body{
             #1A0B26 0%,
             #241033 50%,
             #16091F 100%
-        );
-}
-
-
-/* =========================================================
-   BODY
-   ========================================================= */
-
-body{
-    min-height:100vh;
+        ) !important;
 
     color:#ffffff;
 
@@ -96,7 +93,7 @@ body{
             #1A0B26 0%,
             #241033 50%,
             #16091F 100%
-        );
+        ) !important;
 
     overflow-x:hidden;
 }
@@ -126,7 +123,7 @@ body{
     width:100%;
 
     background:
-        rgba(18,8,26,.94);
+        rgba(18,8,26,.94) !important;
 
     border-bottom:1px solid rgba(255,255,255,.10);
 
@@ -415,7 +412,7 @@ body{
 
 /* =========================================================
    MAIN
-   SAME DARK PURPLE FAMILY
+   DARK PURPLE — NOT BLACK
    ========================================================= */
 
 main{
@@ -427,7 +424,7 @@ main{
             #1A0B26 0%,
             #241033 50%,
             #16091F 100%
-        );
+        ) !important;
 
     color:#ffffff;
 }
@@ -444,45 +441,34 @@ main{
         padding-right:15px;
     }
 
-
     .top-header{
         min-height:78px;
     }
 
-
     .finora-brand{
         gap:9px;
     }
-
 
     .finora-logo-mark{
         width:45px;
         height:50px;
     }
 
-
     .finora-name{
         font-size:33px;
-
         letter-spacing:-1.6px;
     }
 
-
     .finora-tagline{
         font-size:7px;
-
         letter-spacing:1.6px;
-
         margin-top:4px;
     }
 
-
     .header-actions{
         right:15px;
-
         gap:7px;
     }
-
 
     .notification-button,
     .profile-button{
@@ -490,12 +476,10 @@ main{
         height:39px;
     }
 
-
     .header-icon{
         width:21px;
         height:21px;
     }
-
 
     .profile-icon{
         width:20px;
@@ -515,43 +499,33 @@ main{
         padding-right:12px;
     }
 
-
     .top-header{
         min-height:74px;
     }
 
-
     .finora-brand{
         gap:7px;
     }
-
 
     .finora-logo-mark{
         width:40px;
         height:44px;
     }
 
-
     .finora-name{
         font-size:30px;
-
         letter-spacing:-1.4px;
     }
 
-
     .finora-tagline{
         font-size:6px;
-
         letter-spacing:1.3px;
     }
 
-
     .header-actions{
         right:12px;
-
         gap:3px;
     }
-
 
     .notification-button,
     .profile-button{
@@ -559,12 +533,10 @@ main{
         height:36px;
     }
 
-
     .header-icon{
         width:20px;
         height:20px;
     }
-
 
     .profile-icon{
         width:19px;
