@@ -1,12 +1,12 @@
 /* =========================================================
    FINORA DASHBOARD — PART ONE
-   BACKGROUND + HEADER + FINORA BRANDING
+   BLUSH PINK BACKGROUND + CENTERED FINORA BRAND
    ========================================================= */
 
 :root{
+    /* FINORA BLUEPRINT BACKGROUND — BLUSH PINK */
     --finora-bg:#F8EEF3;
 
-    --finora-pale-pink:#F8EEF3;
     --finora-pink:#e83f8f;
     --finora-pink-dark:#c72f75;
 
@@ -14,14 +14,13 @@
     --finora-gold-light:#f4c44f;
 
     --finora-dark:#07050a;
-    --finora-dark-soft:#151019;
 
     --white:#ffffff;
 }
 
 
 /* =========================================================
-   GLOBAL RESET
+   RESET
    ========================================================= */
 
 *{
@@ -30,18 +29,22 @@
     padding:0;
 }
 
-html{
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+html,
+body{
     width:100%;
     min-height:100%;
 
-    background:var(--finora-bg);
+    background:#F8EEF3;
 }
 
-body{
-    width:100%;
-    min-height:100vh;
 
-    background:var(--finora-bg);
+body{
+    min-height:100vh;
 
     color:var(--finora-dark);
 
@@ -58,21 +61,21 @@ body{
 
 
 /* =========================================================
-   MAIN DASHBOARD SHELL
+   DASHBOARD SHELL
    ========================================================= */
 
 .dashboard-shell{
     width:100%;
     min-height:100vh;
 
-    background:var(--finora-bg);
+    background:#F8EEF3;
 
     overflow-x:hidden;
 }
 
 
 /* =========================================================
-   COMMON CONTAINER
+   CONTAINER
    ========================================================= */
 
 .dashboard-container{
@@ -93,7 +96,7 @@ body{
 .dashboard-header{
     width:100%;
 
-    background:var(--finora-bg);
+    background:#F8EEF3;
 
     border-bottom:1px solid rgba(232,63,143,.12);
 
@@ -104,6 +107,7 @@ body{
 
 /* =========================================================
    TOP HEADER
+   FINORA BRAND IS CENTERED
    ========================================================= */
 
 .top-header{
@@ -120,7 +124,6 @@ body{
 
 /* =========================================================
    FINORA BRAND
-   CENTERED
    ========================================================= */
 
 .finora-brand{
@@ -139,13 +142,13 @@ body{
 
 
 /* =========================================================
-   FINORA F LOGO
-   LARGER
+   F LOGO
+   SLIGHTLY LARGER
    ========================================================= */
 
 .finora-logo-mark{
-    width:45px;
-    height:49px;
+    width:48px;
+    height:53px;
 
     display:block;
 
@@ -154,7 +157,7 @@ body{
 
 
 /* =========================================================
-   FINORA WORDMARK
+   WORDMARK
    ========================================================= */
 
 .finora-brand-text{
@@ -170,18 +173,18 @@ body{
 
 
 /* =========================================================
-   FINORA NAME
-   LARGER
+   FINORA WORD
+   SLIGHTLY LARGER
    ========================================================= */
 
 .finora-name{
     display:flex;
     align-items:center;
 
-    font-size:34px;
+    font-size:36px;
     font-weight:900;
 
-    letter-spacing:-1.7px;
+    letter-spacing:-1.8px;
 
     line-height:.95;
 
@@ -230,6 +233,8 @@ body{
 
 /* =========================================================
    HEADER ACTIONS
+   IMPORTANT:
+   NOTIFICATION + PROFILE ARE LEFT UNCHANGED
    ========================================================= */
 
 .header-actions{
@@ -250,7 +255,7 @@ body{
 
 /* =========================================================
    NOTIFICATION
-   KEEP AS WORKING
+   KEEPING THE WORKING VERSION
    ========================================================= */
 
 .notification-button{
@@ -285,11 +290,6 @@ body{
 }
 
 
-/* =========================================================
-   NOTIFICATION NUMBER
-   KEEP AS WORKING
-   ========================================================= */
-
 .notification-count{
     position:absolute;
 
@@ -316,13 +316,13 @@ body{
 
     line-height:1;
 
-    border:2px solid var(--finora-bg);
+    border:2px solid #F8EEF3;
 }
 
 
 /* =========================================================
    PROFILE
-   KEEP PINK
+   KEEPING THE WORKING VERSION
    ========================================================= */
 
 .profile-button{
@@ -375,14 +375,13 @@ body{
 
 
 /* =========================================================
-   MAIN
-   SAME BLUEPRINT BACKGROUND
+   MAIN BACKGROUND
    ========================================================= */
 
 main{
     width:100%;
 
-    background:var(--finora-bg);
+    background:#F8EEF3;
 }
 
 
@@ -409,15 +408,15 @@ main{
 
 
     .finora-logo-mark{
-        width:42px;
-        height:46px;
+        width:45px;
+        height:50px;
     }
 
 
     .finora-name{
-        font-size:31px;
+        font-size:33px;
 
-        letter-spacing:-1.5px;
+        letter-spacing:-1.6px;
     }
 
 
@@ -480,15 +479,15 @@ main{
 
 
     .finora-logo-mark{
-        width:37px;
-        height:41px;
+        width:40px;
+        height:44px;
     }
 
 
     .finora-name{
-        font-size:28px;
+        font-size:30px;
 
-        letter-spacing:-1.3px;
+        letter-spacing:-1.4px;
     }
 
 
