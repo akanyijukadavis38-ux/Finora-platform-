@@ -14,10 +14,10 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("formStatus");
 
     const identifier =
-        document.getElementById("identifier");
+        document.getElementById("loginIdentifier");
 
     const password =
-        document.getElementById("password");
+        document.getElementById("loginPassword");
 
 
     /* =========================================
@@ -36,6 +36,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.error(
             "FINORA: loginForm was not found."
+        );
+
+        return;
+    }
+
+
+    if (!identifier) {
+
+        console.error(
+            "FINORA: loginIdentifier was not found."
+        );
+
+        return;
+    }
+
+
+    if (!password) {
+
+        console.error(
+            "FINORA: loginPassword was not found."
         );
 
         return;
@@ -130,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             /* =================================
-               CLEAR STATUS
+               CLEAR OLD STATUS
             ================================= */
 
             if (formStatus) {
@@ -354,7 +374,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 /* =================================
-                   SUCCESS MESSAGE
+                   SHOW SUCCESS MESSAGE
                 ================================= */
 
                 if (formStatus) {
@@ -376,10 +396,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 /* =================================
-                   OPEN DASHBOARD
+                   REDIRECT TO DASHBOARD
                    
                    NO LOCAL STORAGE
-                   NO LOCAL ACCOUNT DATA
                 ================================= */
 
                 setTimeout(function () {
@@ -387,7 +406,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     window.location.href =
                         "dashboard.html";
 
-                }, 700);
+                }, 1200);
 
             }
 
