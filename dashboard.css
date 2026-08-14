@@ -1,16 +1,18 @@
 /* =========================================================
    FINORA DASHBOARD — PART ONE
-   DARK PINK BACKGROUND + CENTERED FINORA BRAND
+   SAME BACKGROUND AS FINORA INDEX
    ========================================================= */
 
 :root{
-    --finora-bg:#8F174F;
+    --finora-bg:#050409;
 
-    --finora-pink:#e83f8f;
-    --finora-pink-dark:#c72f75;
+    --finora-pink:#EA3CFF;
+    --finora-pink-dark:#9E18BD;
+    --finora-pink-light:#FF72FF;
 
-    --finora-gold:#d69a2d;
-    --finora-gold-light:#f4c44f;
+    --finora-gold:#F5A623;
+    --finora-gold-light:#FFD76A;
+    --finora-gold-dark:#C97908;
 
     --finora-dark:#07050a;
 
@@ -38,7 +40,23 @@ body{
     width:100%;
     min-height:100%;
 
-    background:#8F174F !important;
+    background:
+        radial-gradient(
+            circle at 8% 8%,
+            rgba(234,60,255,.12),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 92% 30%,
+            rgba(245,166,35,.08),
+            transparent 27%
+        ),
+        linear-gradient(
+            135deg,
+            #050409 0%,
+            #0A0610 50%,
+            #050409 100%
+        );
 }
 
 
@@ -56,6 +74,8 @@ body{
 
     -webkit-font-smoothing:antialiased;
     text-rendering:optimizeLegibility;
+
+    overflow-x:hidden;
 }
 
 
@@ -63,10 +83,31 @@ body{
    DASHBOARD SHELL
    ========================================================= */
 
-.dashboard-header{
+.dashboard-shell{
     width:100%;
+    min-height:100vh;
 
-    background:var(--finora-bg);
+    background:
+        radial-gradient(
+            circle at 8% 8%,
+            rgba(234,60,255,.12),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 92% 30%,
+            rgba(245,166,35,.08),
+            transparent 27%
+        ),
+        linear-gradient(
+            135deg,
+            #050409 0%,
+            #0A0610 50%,
+            #050409 100%
+        );
+
+    overflow-x:hidden;
+}
+
 
 /* =========================================================
    CONTAINER
@@ -90,9 +131,10 @@ body{
 .dashboard-header{
     width:100%;
 
-    background:var(--finora-bg);
+    background:
+        rgba(5,4,9,.91);
 
-    border-bottom:1px solid rgba(232,63,143,.12);
+    border-bottom:1px solid rgba(255,255,255,.08);
 
     position:relative;
     z-index:100;
@@ -264,7 +306,7 @@ body{
 
     background:transparent;
 
-    color:var(--finora-dark);
+    color:#ffffff;
 
     cursor:pointer;
 
@@ -278,7 +320,7 @@ body{
 
     display:block;
 
-    color:var(--finora-dark);
+    color:#ffffff;
 }
 
 
@@ -308,7 +350,7 @@ body{
 
     line-height:1;
 
-    border:2px solid var(--finora-bg);
+    border:2px solid #050409;
 }
 
 
@@ -336,7 +378,7 @@ body{
     border:2px solid rgba(255,255,255,.75);
 
     box-shadow:
-        0 4px 12px rgba(232,63,143,.22);
+        0 4px 12px rgba(234,60,255,.22);
 
     transition:
         transform .2s ease,
@@ -352,7 +394,7 @@ body{
     color:#ffffff !important;
 
     box-shadow:
-        0 6px 16px rgba(232,63,143,.30);
+        0 6px 16px rgba(234,60,255,.30);
 }
 
 
@@ -373,7 +415,23 @@ body{
 main{
     width:100%;
 
-    background:#8F174F !important;
+    background:
+        radial-gradient(
+            circle at 8% 8%,
+            rgba(234,60,255,.12),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 92% 30%,
+            rgba(245,166,35,.08),
+            transparent 27%
+        ),
+        linear-gradient(
+            135deg,
+            #050409 0%,
+            #0A0610 50%,
+            #050409 100%
+        );
 }
 
 
