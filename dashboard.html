@@ -39,16 +39,23 @@
         <div class="header-inner">
 
             <!-- FINORA BRAND -->
-            <a href="dashboard.html" class="dashboard-brand">
+
+            <a
+                href="dashboard.html"
+                class="dashboard-brand"
+            >
 
                 <span
                     class="brand-mark"
                     aria-hidden="true"
                 >
+
                     <span class="brand-mark-line"></span>
                     <span class="brand-mark-line"></span>
                     <span class="brand-mark-line"></span>
+
                 </span>
+
 
                 <span class="brand-text">
 
@@ -66,15 +73,18 @@
 
 
             <!-- HEADER ACTIONS -->
+
             <div class="header-actions">
 
                 <!-- NOTIFICATIONS -->
+
                 <button
                     type="button"
                     class="header-icon-button notification-button"
                     id="notificationButton"
                     aria-label="Notifications"
                 >
+
                     <span
                         class="ui-icon icon-notification"
                         aria-hidden="true"
@@ -84,20 +94,24 @@
                         class="notification-dot"
                         id="notificationDot"
                     ></span>
+
                 </button>
 
 
                 <!-- PROFILE -->
+
                 <button
                     type="button"
                     class="profile-button"
                     id="profileButton"
                     aria-label="Profile"
                 >
+
                     <span
                         class="ui-icon icon-profile"
                         aria-hidden="true"
                     ></span>
+
                 </button>
 
             </div>
@@ -137,19 +151,29 @@
 
 
         <!-- =================================================
-             TOP PROMOTIONAL BANNER CAROUSEL
-             ONLY THIS BANNER IS A CAROUSEL
+             TOP PROMOTIONAL BANNER
+             
+             IMPORTANT:
+             THIS IS ONE SINGLE BANNER AREA.
+
+             ONLY BANNER 1 IS VISIBLE INITIALLY.
+             BANNERS 2–4 ARE HIDDEN INSIDE THE
+             HORIZONTAL CAROUSEL TRACK UNTIL SWIPED.
         ================================================== -->
 
         <section
             class="hero-banner-section"
-            aria-label="FINORA promotional offers"
+            aria-label="FINORA promotional banners"
         >
+
+            <!-- SINGLE BANNER VIEWPORT -->
 
             <div
                 class="hero-banner-carousel"
                 id="heroBannerCarousel"
             >
+
+                <!-- HORIZONTAL SLIDE TRACK -->
 
                 <div
                     class="hero-banner-track"
@@ -158,7 +182,7 @@
 
 
                     <!-- =====================================
-                         BANNER 1
+                         SLIDE 1 — INITIALLY VISIBLE
                     ====================================== -->
 
                     <article
@@ -192,7 +216,10 @@
                                 href="investment.html"
                                 class="hero-button"
                             >
-                                EXPLORE INVESTMENTS
+
+                                <span>
+                                    EXPLORE INVESTMENTS
+                                </span>
 
                                 <span
                                     class="button-icon icon-arrow"
@@ -204,7 +231,8 @@
                         </div>
 
 
-                        <!-- BANNER 1 ARTWORK -->
+                        <!-- SLIDE 1 VISUAL -->
+
                         <div
                             class="hero-visual hero-visual-one"
                             aria-hidden="true"
@@ -219,8 +247,11 @@
                             </div>
 
                             <div class="hero-financial-image">
+
                                 <div class="financial-chart"></div>
+
                                 <div class="financial-growth"></div>
+
                             </div>
 
                             <span class="hero-light hero-light-one"></span>
@@ -232,7 +263,8 @@
 
 
                     <!-- =====================================
-                         BANNER 2
+                         SLIDE 2
+                         ONLY SEEN AFTER HORIZONTAL SWIPE
                     ====================================== -->
 
                     <article
@@ -266,7 +298,10 @@
                                 href="investment.html"
                                 class="hero-button"
                             >
-                                START INVESTING
+
+                                <span>
+                                    START INVESTING
+                                </span>
 
                                 <span
                                     class="button-icon icon-arrow"
@@ -278,7 +313,8 @@
                         </div>
 
 
-                        <!-- BANNER 2 ARTWORK -->
+                        <!-- SLIDE 2 VISUAL -->
+
                         <div
                             class="hero-visual hero-visual-two"
                             aria-hidden="true"
@@ -321,7 +357,8 @@
 
 
                     <!-- =====================================
-                         BANNER 3
+                         SLIDE 3
+                         ONLY SEEN AFTER HORIZONTAL SWIPE
                     ====================================== -->
 
                     <article
@@ -355,7 +392,10 @@
                                 href="investment.html"
                                 class="hero-button"
                             >
-                                VIEW PLANS
+
+                                <span>
+                                    VIEW PLANS
+                                </span>
 
                                 <span
                                     class="button-icon icon-arrow"
@@ -367,7 +407,8 @@
                         </div>
 
 
-                        <!-- BANNER 3 ARTWORK -->
+                        <!-- SLIDE 3 VISUAL -->
+
                         <div
                             class="hero-visual hero-visual-three"
                             aria-hidden="true"
@@ -401,7 +442,8 @@
 
 
                     <!-- =====================================
-                         BANNER 4
+                         SLIDE 4
+                         ONLY SEEN AFTER HORIZONTAL SWIPE
                     ====================================== -->
 
                     <article
@@ -434,7 +476,10 @@
                                 href="investment.html"
                                 class="hero-button"
                             >
-                                GET STARTED
+
+                                <span>
+                                    GET STARTED
+                                </span>
 
                                 <span
                                     class="button-icon icon-arrow"
@@ -446,7 +491,8 @@
                         </div>
 
 
-                        <!-- BANNER 4 ARTWORK -->
+                        <!-- SLIDE 4 VISUAL -->
+
                         <div
                             class="hero-visual hero-visual-four"
                             aria-hidden="true"
@@ -477,7 +523,9 @@
             </div>
 
 
-            <!-- CAROUSEL INDICATORS -->
+            <!-- =================================================
+                 CAROUSEL POSITION INDICATORS
+            ================================================== -->
 
             <div
                 class="hero-carousel-dots"
@@ -489,7 +537,7 @@
                     type="button"
                     class="hero-carousel-dot active"
                     data-slide="0"
-                    aria-label="Banner 1"
+                    aria-label="Show banner 1"
                     aria-current="true"
                 ></button>
 
@@ -497,21 +545,21 @@
                     type="button"
                     class="hero-carousel-dot"
                     data-slide="1"
-                    aria-label="Banner 2"
+                    aria-label="Show banner 2"
                 ></button>
 
                 <button
                     type="button"
                     class="hero-carousel-dot"
                     data-slide="2"
-                    aria-label="Banner 3"
+                    aria-label="Show banner 3"
                 ></button>
 
                 <button
                     type="button"
                     class="hero-carousel-dot"
                     data-slide="3"
-                    aria-label="Banner 4"
+                    aria-label="Show banner 4"
                 ></button>
 
             </div>
@@ -791,7 +839,10 @@
 
         <!-- =================================================
              PREMIUM PLAN BANNER
-             THIS IS SEPARATE FROM THE TOP CAROUSEL
+             
+             IMPORTANT:
+             THIS IS NOT PART OF THE TOP CAROUSEL.
+             IT REMAINS A SINGLE SEPARATE BANNER.
         ================================================== -->
 
         <section class="premium-banner">
@@ -814,7 +865,10 @@
                     href="investment.html"
                     class="premium-button"
                 >
-                    INVEST NOW
+
+                    <span>
+                        INVEST NOW
+                    </span>
 
                     <span
                         class="button-icon icon-arrow"
@@ -1043,25 +1097,41 @@
 
                     <div class="referral-network">
 
-                        <span class="referral-node referral-node-main">
+                        <span
+                            class="referral-node referral-node-main"
+                        >
                             <span class="ui-icon icon-user"></span>
                         </span>
 
-                        <span class="referral-node referral-node-one">
+                        <span
+                            class="referral-node referral-node-one"
+                        >
                             <span class="ui-icon icon-user"></span>
                         </span>
 
-                        <span class="referral-node referral-node-two">
+                        <span
+                            class="referral-node referral-node-two"
+                        >
                             <span class="ui-icon icon-user"></span>
                         </span>
 
-                        <span class="referral-node referral-node-three">
+                        <span
+                            class="referral-node referral-node-three"
+                        >
                             <span class="ui-icon icon-user"></span>
                         </span>
 
-                        <span class="referral-connection referral-connection-one"></span>
-                        <span class="referral-connection referral-connection-two"></span>
-                        <span class="referral-connection referral-connection-three"></span>
+                        <span
+                            class="referral-connection referral-connection-one"
+                        ></span>
+
+                        <span
+                            class="referral-connection referral-connection-two"
+                        ></span>
+
+                        <span
+                            class="referral-connection referral-connection-three"
+                        ></span>
 
                     </div>
 
