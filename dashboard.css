@@ -1,78 +1,122 @@
 /* =========================================================
    FINORA DASHBOARD — PART ONE
-   HEADER / BRANDING / TOP ACTIONS
-
-   Based directly on the newest dashboard.html supplied.
-   DO NOT CHANGE THE HTML STRUCTURE.
+   BACKGROUND + HEADER + FINORA BRAND
    ========================================================= */
 
 
 /* =========================================================
-   ROOT HEADER VARIABLES
+   1. GLOBAL BACKGROUND
    ========================================================= */
 
 :root {
     --finora-bg: #07050A;
-    --finora-white: #FFFFFF;
-    --finora-muted: #B9B4C2;
+    --finora-bg-soft: #0D0912;
 
     --finora-gold: #F2B52F;
     --finora-gold-light: #FFD35A;
-    --finora-gold-dark: #A95E05;
 
-    --finora-pink: #E52B9A;
-    --finora-pink-light: #F05AB5;
+    --finora-pink: #EA2B9A;
 
-    --header-height: 78px;
+    --finora-white: #FFFFFF;
+}
+
+
+/* Main page background */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+
+    min-height: 100%;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(112, 28, 102, 0.22) 0%,
+            rgba(38, 14, 38, 0.14) 28%,
+            rgba(7, 5, 10, 0) 58%
+        ),
+        linear-gradient(
+            180deg,
+            #0B0710 0%,
+            #07050A 45%,
+            #07050A 100%
+        );
+
+    color: #FFFFFF;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+}
+
+
+/* Entire dashboard */
+
+.dashboard-shell {
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 50% 8%,
+            rgba(91, 24, 87, 0.14),
+            transparent 42%
+        ),
+        #07050A;
 }
 
 
 /* =========================================================
-   DASHBOARD HEADER
+   2. DASHBOARD CONTAINER
    ========================================================= */
 
-.dashboard-header {
-    width: 100%;
-    height: var(--header-height);
-
-    background: #07050A;
-
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-
-    position: relative;
-    z-index: 100;
-
-    display: flex;
-    align-items: center;
-}
-
-
-/* =========================================================
-   HEADER CONTAINER
-   ========================================================= */
-
-.dashboard-header .dashboard-container {
+.dashboard-container {
     width: 100%;
     max-width: 1180px;
 
-    margin: 0 auto;
-    padding: 0 20px;
+    margin-left: auto;
+    margin-right: auto;
 
     box-sizing: border-box;
 }
 
 
 /* =========================================================
-   TOP HEADER
+   3. HEADER
+   ========================================================= */
 
-   IMPORTANT:
-   FINORA BRAND IS CENTERED.
-   It is NOT pushed left or right by flex positioning.
+.dashboard-header {
+    width: 100%;
+    height: 78px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(18, 11, 21, 0.98),
+            rgba(7, 5, 10, 0.98)
+        );
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+
+    position: relative;
+    z-index: 100;
+}
+
+
+.dashboard-header .dashboard-container {
+    height: 100%;
+}
+
+
+/* =========================================================
+   4. TOP HEADER
    ========================================================= */
 
 .top-header {
     width: 100%;
-    height: var(--header-height);
+    height: 100%;
 
     position: relative;
 
@@ -83,7 +127,7 @@
 
 
 /* =========================================================
-   FINORA BRAND
+   5. CENTERED FINORA BRAND
    ========================================================= */
 
 .finora-brand {
@@ -102,55 +146,45 @@
 
     width: max-content;
 
-    text-decoration: none;
+    color: #FFFFFF;
 
-    color: var(--finora-white);
+    text-decoration: none;
 
     z-index: 5;
 }
 
 
 /* =========================================================
-   FINORA F LOGO
-
-   LARGE — matching the visual importance of the blueprint.
+   6. FINORA F LOGO
+   Keep the actual SVG design from dashboard.html.
+   Only increase its display size.
    ========================================================= */
 
 .finora-logo-mark {
-    width: 40px;
-    height: 45px;
-
-    flex: 0 0 auto;
+    width: 44px;
+    height: 49px;
 
     display: block;
 
-    filter:
-        drop-shadow(0 0 5px rgba(242, 181, 47, 0.18));
-
-    transform: scale(1.04);
+    flex-shrink: 0;
 }
 
 
 /* =========================================================
-   FINORA WORDMARK
+   7. FINORA WORDMARK
    ========================================================= */
 
 .finora-brand-text {
     display: flex;
+
     flex-direction: column;
 
     align-items: flex-start;
     justify-content: center;
-
-    line-height: 1;
 }
 
 
-/* =========================================================
-   FINORA NAME
-
-   LARGE AND PROMINENT.
-   ========================================================= */
+/* FINORA WORD */
 
 .finora-name {
     display: flex;
@@ -161,12 +195,13 @@
         Helvetica,
         sans-serif;
 
-    font-size: 30px;
+    font-size: 34px;
+
     font-weight: 900;
 
-    letter-spacing: 1.8px;
-
     line-height: 0.95;
+
+    letter-spacing: 1.5px;
 
     white-space: nowrap;
 
@@ -174,14 +209,14 @@
 }
 
 
-/* FIN */
+/* FIN = GOLD */
 
 .finora-fin {
-    color: var(--finora-white);
+    color: var(--finora-gold);
 }
 
 
-/* ORA */
+/* ORA = PINK */
 
 .finora-ora {
     color: var(--finora-pink);
@@ -189,11 +224,13 @@
 
 
 /* =========================================================
-   FINORA TAGLINE
+   8. FINORA TAGLINE
    ========================================================= */
 
 .finora-tagline {
     margin-top: 5px;
+
+    color: var(--finora-gold-light);
 
     font-family:
         Arial,
@@ -201,20 +238,20 @@
         sans-serif;
 
     font-size: 7px;
+
     font-weight: 700;
 
-    letter-spacing: 2px;
+    letter-spacing: 1.9px;
 
-    color: var(--finora-gold-light);
+    line-height: 1;
 
     white-space: nowrap;
 }
 
 
 /* =========================================================
-   HEADER ACTIONS
-
-   Notification + Profile remain at the right side.
+   9. HEADER ACTIONS
+   Notification and profile stay on the RIGHT.
    ========================================================= */
 
 .header-actions {
@@ -228,14 +265,15 @@
     display: flex;
     align-items: center;
 
-    gap: 12px;
+    gap: 10px;
 
     z-index: 10;
 }
 
 
 /* =========================================================
-   NOTIFICATION BUTTON
+   10. NOTIFICATION
+   KEEP NOTIFICATION GOLD
    ========================================================= */
 
 .notification-button {
@@ -245,9 +283,9 @@
     height: 40px;
 
     padding: 0;
+    margin: 0;
 
     border: 0;
-    outline: none;
 
     background: transparent;
 
@@ -261,10 +299,6 @@
 }
 
 
-/* =========================================================
-   NOTIFICATION ICON
-   ========================================================= */
-
 .header-icon {
     width: 22px;
     height: 22px;
@@ -275,15 +309,13 @@
 }
 
 
-/* =========================================================
-   NOTIFICATION COUNT
-   ========================================================= */
+/* Notification number */
 
 .notification-count {
     position: absolute;
 
     top: 1px;
-    right: 0px;
+    right: 0;
 
     min-width: 16px;
     height: 16px;
@@ -292,32 +324,28 @@
 
     box-sizing: border-box;
 
-    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
 
     background: var(--finora-pink);
-    color: #FFFFFF;
 
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+    color: #FFFFFF;
 
     font-size: 9px;
     font-weight: 800;
 
-    line-height: 16px;
-
-    text-align: center;
+    line-height: 1;
 
     border: 1px solid #07050A;
 }
 
 
 /* =========================================================
-   PROFILE BUTTON
-
-   WHITE — NOT PINK.
-   This follows the blueprint direction.
+   11. PROFILE
+   PROFILE = PINK
    ========================================================= */
 
 .profile-button {
@@ -328,25 +356,15 @@
     align-items: center;
     justify-content: center;
 
-    text-decoration: none;
-
-    color: #FFFFFF;
+    color: var(--finora-pink);
 
     background: transparent;
 
     border: 0;
 
-    border-radius: 50%;
-
-    box-sizing: border-box;
+    text-decoration: none;
 }
 
-
-/* =========================================================
-   PROFILE ICON
-
-   WHITE, clean and simple.
-   ========================================================= */
 
 .profile-icon {
     width: 25px;
@@ -354,105 +372,55 @@
 
     display: block;
 
-    color: #FFFFFF;
+    color: var(--finora-pink);
 }
 
 
 /* =========================================================
-   REMOVE DEFAULT LINK EFFECTS
-   ========================================================= */
-
-.finora-brand:hover,
-.finora-brand:focus,
-.profile-button:hover,
-.profile-button:focus {
-    text-decoration: none;
-}
-
-
-/* =========================================================
-   DESKTOP / TABLET
-   ========================================================= */
-
-@media (min-width: 769px) {
-
-    .dashboard-header .dashboard-container {
-        padding-left: 28px;
-        padding-right: 28px;
-    }
-
-    .header-actions {
-        right: 28px;
-    }
-
-    .finora-logo-mark {
-        width: 44px;
-        height: 49px;
-    }
-
-    .finora-name {
-        font-size: 32px;
-        letter-spacing: 2px;
-    }
-
-    .finora-tagline {
-        font-size: 7.5px;
-        letter-spacing: 2.2px;
-    }
-}
-
-
-/* =========================================================
-   MOBILE
-
-   Keep the brand centered even on small screens.
+   12. MOBILE
    ========================================================= */
 
 @media (max-width: 768px) {
 
-    :root {
-        --header-height: 72px;
-    }
-
     .dashboard-header {
-        height: var(--header-height);
+        height: 72px;
     }
 
-    .top-header {
-        height: var(--header-height);
-    }
 
     .dashboard-header .dashboard-container {
-        padding-left: 14px;
-        padding-right: 14px;
+        padding-left: 12px;
+        padding-right: 12px;
     }
+
 
     .finora-brand {
         gap: 7px;
     }
 
+
     .finora-logo-mark {
-        width: 37px;
-        height: 42px;
+        width: 40px;
+        height: 45px;
     }
+
 
     .finora-name {
-        font-size: 27px;
-        letter-spacing: 1.5px;
+        font-size: 30px;
+        letter-spacing: 1.3px;
     }
+
 
     .finora-tagline {
-        margin-top: 4px;
-
-        font-size: 6.5px;
-        letter-spacing: 1.7px;
+        font-size: 6.3px;
+        letter-spacing: 1.6px;
     }
+
 
     .header-actions {
-        right: 12px;
-
-        gap: 6px;
+        right: 10px;
+        gap: 5px;
     }
+
 
     .notification-button,
     .profile-button {
@@ -460,10 +428,12 @@
         height: 38px;
     }
 
+
     .header-icon {
         width: 21px;
         height: 21px;
     }
+
 
     .profile-icon {
         width: 24px;
@@ -473,33 +443,38 @@
 
 
 /* =========================================================
-   VERY SMALL PHONES
+   13. VERY SMALL PHONES
    ========================================================= */
 
 @media (max-width: 390px) {
 
     .finora-brand {
-        gap: 6px;
+        gap: 5px;
     }
+
 
     .finora-logo-mark {
-        width: 33px;
-        height: 38px;
+        width: 36px;
+        height: 41px;
     }
+
 
     .finora-name {
-        font-size: 24px;
-        letter-spacing: 1.2px;
+        font-size: 27px;
+        letter-spacing: 1px;
     }
 
+
     .finora-tagline {
-        font-size: 5.8px;
+        font-size: 5.6px;
         letter-spacing: 1.35px;
     }
 
+
     .header-actions {
-        right: 8px;
+        right: 6px;
     }
+
 
     .notification-button,
     .profile-button {
