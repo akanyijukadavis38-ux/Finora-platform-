@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#07050A"
+    >
+
+    <meta
+        name="description"
+        content="Login to your FINORA investment account."
+    >
+
+    <title>FINORA | Login</title>
+
+    <!-- =========================================
+         HIDE PAGE BEFORE CSS LOADS
+         PREVENTS UNSTYLED PAGE FLASH
+    ========================================== -->
+
+    <style>
+
+        html {
+            visibility: hidden;
+        }
+
+        html.css-loaded {
+            visibility: visible;
+        }
+
+    </style>
+
+
+    <!-- FINORA LOGIN CSS -->
+
+    <link
+        rel="stylesheet"
+        href="login.css"
+        onload="document.documentElement.classList.add('css-loaded')"
+    >
+
+    <noscript>
+
+        <style>
+            html {
+                visibility: visible;
+            }
+        </style>
+
+    </noscript>
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header class="header">
+
+        <div class="header-inner">
+
+
+            <!-- FINORA BRAND -->
+
+            <a
+                href="index.html"
+                class="brand"
+            >
+
+
+                <!-- FINORA LOGO -->
+
+                <svg
+                    class="finora-mark"
+                    viewBox="0 0 100 110"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-label="FINORA logo"
+                >
+
+                    <defs>
+
+                        <linearGradient
+                            id="finoraGold"
+                            x1="12"
+                            y1="5"
+                            x2="88"
+                            y2="105"
+                            gradientUnits="userSpaceOnUse"
+                        >
+
+                            <stop
+                                offset="0"
+                                stop-color="#FFF0A8"
+                            />
+
+                            <stop
+                                offset=".22"
+                                stop-color="#FFD35A"
+                            />
+
+                            <stop
+                                offset=".55"
+                                stop-color="#F2B52F"
+                            />
+
+                            <stop
+                                offset=".82"
+                                stop-color="#D88A12"
+                            />
+
+                            <stop
+                                offset="1"
+                                stop-color="#A95E05"
+                            />
+
+                        </linearGradient>
+
+
+                        <linearGradient
+                            id="finoraShine"
+                            x1="20"
+                            y1="4"
+                            x2="55"
+                            y2="70"
+                            gradientUnits="userSpaceOnUse"
+                        >
+
+                            <stop
+                                offset="0"
+                                stop-color="#FFF8D0"
+                            />
+
+                            <stop
+                                offset=".45"
+                                stop-color="#FFE27A"
+                            />
+
+                            <stop
+                                offset="1"
+                                stop-color="#E9A51E"
+                            />
+
+                        </linearGradient>
+
+                    </defs>
+
+
+                    <path
+                        fill="url(#finoraGold)"
+                        d="
+                            M20 8
+                            C21 5 24 3 28 3
+                            H82
+                            C85 3 87 5 85 8
+                            L78 19
+                            C77 21 75 22 72 22
+                            H46
+                            C39 22 34 24 29 27
+                            C25 30 22 33 20 37
+                            L15 49
+                            C14 52 16 54 19 52
+                            L28 46
+                            C33 42 39 40 45 40
+                            H67
+                            C70 40 72 42 70 45
+                            L63 56
+                            C62 58 60 59 57 59
+                            H46
+                            C40 59 36 62 33 67
+                            C30 72 27 80 24 88
+                            L20 101
+                            H5
+                            L18 56
+                            C20 49 23 42 27 37
+                            C32 30 39 27 47 26
+                            H72
+                            L77 18
+                            H43
+                            C34 18 27 21 21 27
+                            L16 32
+                            Z
+                        "
+                    ></path>
+
+
+                    <path
+                        fill="url(#finoraShine)"
+                        opacity=".72"
+                        d="
+                            M27 7
+                            H79
+                            L75 13
+                            H45
+                            C36 13 29 16 23 21
+                            L20 23
+                            L24 10
+                            C24 8 25 7 27 7
+                            Z
+                        "
+                    ></path>
+
+                </svg>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+
+                        <span class="fin">
+                            FIN
+                        </span>
+
+                        <span class="ora">
+                            ORA
+                        </span>
+
+                    </div>
+
+
+                    <div class="brand-tagline">
+                        INVEST • GROW • EARN
+                    </div>
+
+                </div>
+
+            </a>
+
+
+            <!-- REGISTER LINK -->
+
+            <div class="login-top">
+
+                Don't have an account?
+
+                <a href="register.html">
+                    <strong>Create Account</strong>
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
+
+    <main class="main">
+
+        <div class="login-wrapper">
+
+
+            <!-- =================================
+                 INFORMATION PANEL
+            ================================== -->
+
+            <section class="info-panel">
+
+
+                <div class="info-kicker">
+                    WELCOME BACK
+                </div>
+
+
+                <h1>
+
+                    Continue your
+
+                    <span>
+                        journey.
+                    </span>
+
+                </h1>
+
+
+                <p>
+
+                    Sign in to your FINORA account and
+                    continue managing your investment
+                    journey from one secure place.
+
+                </p>
+
+
+                <!-- BENEFITS -->
+
+                <div class="benefits">
+
+
+                    <div class="benefit">
+
+                        <div class="benefit-icon">
+                            ✓
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Secure Access
+                            </h3>
+
+                            <p>
+                                Access your personal FINORA
+                                account securely.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="benefit">
+
+                        <div class="benefit-icon">
+                            ◈
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Track Your Account
+                            </h3>
+
+                            <p>
+                                View your balance, activity
+                                and investment information.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="benefit">
+
+                        <div class="benefit-icon">
+                            ↗
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Grow With FINORA
+                            </h3>
+
+                            <p>
+                                Continue building your
+                                investment journey.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================
+                 LOGIN FORM
+            ================================== -->
+
+            <section class="form-card">
+
+
+                <!-- FORM HEADER -->
+
+                <div class="form-header">
+
+                    <h2>
+                        Welcome Back
+                    </h2>
+
+                    <p>
+                        Login to your FINORA account.
+                    </p>
+
+                </div>
+
+
+
+                <!-- LOGIN FORM -->
+
+                <form
+                    id="loginForm"
+                    novalidate
+                >
+
+
+                    <!-- =================================
+                         PHONE / EMAIL
+                    ================================== -->
+
+                    <div class="form-group">
+
+                        <label for="loginIdentifier">
+
+                            Phone Number or Email
+
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="loginIdentifier"
+                            name="loginIdentifier"
+                            class="form-input"
+                            placeholder="Enter phone number or email"
+                            autocomplete="username"
+                            required
+                        >
+
+
+                        <div
+                            id="identifierMessage"
+                            class="field-message"
+                        ></div>
+
+                    </div>
+
+
+
+                    <!-- =================================
+                         PASSWORD
+                    ================================== -->
+
+                    <div class="form-group">
+
+
+                        <div class="password-label-row">
+
+                            <label for="loginPassword">
+                                Password
+                            </label>
+
+
+                            <a
+                                href="forgot-password.html"
+                                class="forgot-password"
+                            >
+                                Forgot Password?
+                            </a>
+
+                        </div>
+
+
+                        <div class="input-wrapper">
+
+
+                            <input
+                                type="password"
+                                id="loginPassword"
+                                name="password"
+                                class="form-input password-input"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
+
+
+                            <button
+                                type="button"
+                                class="toggle-password"
+                                data-target="loginPassword"
+                                aria-label="Show password"
+                            >
+                                👁
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            id="passwordMessage"
+                            class="field-message"
+                        ></div>
+
+                    </div>
+
+
+
+                    <!-- =================================
+                         REMEMBER LOGIN
+                    ================================== -->
+
+                    <label class="remember-me">
+
+
+                        <input
+                            type="checkbox"
+                            id="rememberMe"
+                            name="rememberMe"
+                        >
+
+
+                        <span>
+                            Remember me
+                        </span>
+
+
+                    </label>
+
+
+
+                    <!-- =================================
+                         FORM STATUS
+                    ================================== -->
+
+                    <div
+                        id="formStatus"
+                        class="form-status"
+                        role="alert"
+                        aria-live="polite"
+                    ></div>
+
+
+
+                    <!-- =================================
+                         LOGIN BUTTON
+                    ================================== -->
+
+                    <button
+                        type="submit"
+                        class="login-button"
+                        id="loginButton"
+                    >
+
+                        LOGIN TO FINORA
+
+                    </button>
+
+
+                </form>
+
+
+
+                <!-- =================================
+                     REGISTER
+                ================================== -->
+
+                <div class="bottom-login">
+
+                    Don't have a FINORA account?
+
+                    <a href="register.html">
+                        Create your account
+                    </a>
+
+                </div>
+
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer class="footer">
+
+        © 2026 FINORA • Invest • Grow • Earn
+
+    </footer>
+
+
+</div>
+
+
+
+<!-- =========================================
+     FINORA LOGIN JAVASCRIPT
+========================================== -->
+
+<script src="login.js?v=1"></script>
+
+
+<!-- =========================================
+     CSS FALLBACK
+     If CSS fails to load, reveal page after
+     a short delay instead of leaving it blank.
+========================================== -->
+
+<script>
+
+    window.addEventListener(
+        "load",
+        function () {
+
+            document.documentElement.classList.add(
+                "css-loaded"
+            );
+
+        }
+    );
+
+</script>
+
+
+</body>
+</html>
