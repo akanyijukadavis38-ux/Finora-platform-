@@ -1,59 +1,30 @@
-/* =========================================================
-   FINORA — DASHBOARD
-   PREMIUM PURPLE • GOLD • PINK
-   CSS FOR THE CURRENT DASHBOARD.HTML
-========================================================= */
-
-
-/* =========================================================
-   1. ROOT
-========================================================= */
+/* =========================================
+   FINORA DASHBOARD — PHASE 1
+   FOUNDATION + HEADER ONLY
+========================================= */
 
 :root {
+    --finora-black: #08060b;
+    --finora-bg: #0d0911;
+    --finora-card: #17101c;
 
-    --bg: #08050c;
-    --bg-2: #0e0814;
-    --surface: #140c1b;
-    --surface-2: #1a1023;
-    --surface-3: #21142c;
+    --finora-pink: #ec3f8f;
+    --finora-pink-light: #ff72b2;
 
-    --gold: #f4b82f;
-    --gold-light: #ffd96a;
-    --gold-dark: #a96d12;
+    --finora-gold: #f2b632;
+    --finora-gold-light: #ffd96a;
 
-    --pink: #f02f8f;
-    --pink-light: #ff63ad;
-    --pink-dark: #a8185e;
+    --finora-white: #ffffff;
+    --finora-soft: #c8becb;
+    --finora-muted: #837887;
 
-    --purple: #8d43b5;
-    --purple-light: #b968db;
-
-    --white: #ffffff;
-    --text: #f8f2fa;
-    --muted: #b6a9bc;
-    --muted-2: #796c81;
-
-    --green: #53d89b;
-    --red: #ff6477;
-
-    --border: rgba(255,255,255,.08);
-    --gold-border: rgba(244,184,47,.22);
-    --pink-border: rgba(240,47,143,.20);
-
-    --radius-xl: 24px;
-    --radius-lg: 19px;
-    --radius-md: 15px;
-    --radius-sm: 11px;
-
-    --shadow:
-        0 18px 50px rgba(0,0,0,.42);
-
+    --finora-border: rgba(255,255,255,0.08);
 }
 
 
-/* =========================================================
-   2. RESET
-========================================================= */
+/* =========================================
+   RESET
+========================================= */
 
 * {
     margin: 0;
@@ -63,31 +34,20 @@
 
 html {
     scroll-behavior: smooth;
-    background: var(--bg);
+    background: var(--finora-black);
 }
 
 body {
-
     min-height: 100vh;
-
     background:
         radial-gradient(
-            circle at 85% 5%,
-            rgba(141,67,181,.16),
-            transparent 28%
+            circle at 50% -10%,
+            rgba(236,63,143,0.10),
+            transparent 35%
         ),
-        radial-gradient(
-            circle at 5% 45%,
-            rgba(240,47,143,.07),
-            transparent 25%
-        ),
-        linear-gradient(
-            180deg,
-            #09050d 0%,
-            #0b0610 100%
-        );
+        var(--finora-black);
 
-    color: var(--text);
+    color: var(--finora-white);
 
     font-family:
         Inter,
@@ -97,8 +57,6 @@ body {
         Roboto,
         Arial,
         sans-serif;
-
-    overflow-x: hidden;
 }
 
 a {
@@ -110,316 +68,282 @@ button {
     font: inherit;
 }
 
-img {
-    max-width: 100%;
-    display: block;
-}
 
-
-/* =========================================================
-   3. PAGE
-========================================================= */
+/* =========================================
+   PAGE FOUNDATION
+========================================= */
 
 .dashboard-page {
-
     width: 100%;
     min-height: 100vh;
+    padding-bottom: 100px;
+}
 
-    padding-bottom: 105px;
-
+.dashboard-main {
+    width: min(1120px, calc(100% - 32px));
+    margin: 0 auto;
 }
 
 
-/* =========================================================
-   4. HEADER
-========================================================= */
+/* =========================================
+   TOP HEADER
+========================================= */
 
 .dashboard-header {
+    width: 100%;
+    height: 72px;
+
+    background:
+        rgba(8,6,11,0.97);
+
+    border-bottom:
+        1px solid var(--finora-border);
 
     position: sticky;
     top: 0;
-    z-index: 100;
 
-    width: 100%;
+    z-index: 1000;
 
-    background:
-        rgba(8,5,12,.94);
-
-    border-bottom:
-        1px solid var(--border);
-
-    backdrop-filter:
-        blur(18px);
-
-    -webkit-backdrop-filter:
-        blur(18px);
-
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
 }
-
 
 .header-inner {
+    width: min(1120px, calc(100% - 28px));
+    height: 100%;
 
-    position: relative;
-
-    width:
-        min(1180px, calc(100% - 30px));
-
-    min-height: 68px;
-
-    margin: auto;
+    margin: 0 auto;
 
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
 
+    position: relative;
 }
 
 
-/* =========================================================
-   5. FINORA BRAND
-========================================================= */
+/* =========================================
+   FINORA BRAND
+========================================= */
 
 .dashboard-brand {
-
     display: flex;
-
     align-items: center;
-
     gap: 8px;
+
+    height: 100%;
+
+    position: relative;
+    z-index: 2;
+}
+
+
+/* =========================================
+   REAL FINORA F MARK
+========================================= */
+
+.brand-mark {
+    width: 30px;
+    height: 34px;
 
     position: relative;
 
+    flex-shrink: 0;
+}
+
+.brand-mark-line {
+    position: absolute;
+
+    display: block;
+
+    height: 5px;
+
+    border-radius: 3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--finora-pink),
+            var(--finora-gold)
+        );
+
+    box-shadow:
+        0 0 8px rgba(236,63,143,0.18);
+
+    transform: skewX(-18deg);
+}
+
+
+/* top stroke */
+
+.brand-mark-line:nth-child(1) {
+    width: 25px;
+    top: 3px;
+    left: 2px;
+}
+
+
+/* middle stroke */
+
+.brand-mark-line:nth-child(2) {
+    width: 19px;
+    top: 14px;
+    left: 1px;
+}
+
+
+/* lower stroke */
+
+.brand-mark-line:nth-child(3) {
+    width: 14px;
+    top: 25px;
+    left: 0;
+}
+
+
+/* =========================================
+   FINORA WORDMARK
+========================================= */
+
+.brand-text {
+    line-height: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.brand-name {
+    display: flex;
+    align-items: center;
+
+    font-size: 20px;
+    line-height: 1;
+
+    font-weight: 900;
+
+    letter-spacing: 0.8px;
+
+    white-space: nowrap;
 }
 
 
 /*
    IMPORTANT:
-   The F remains compact and gold.
-   It is NOT a large black icon.
+   FIN + ORA are visually joined.
+   No large artificial gap.
 */
 
-.brand-mark {
-
-    position: relative;
-
-    width: 30px;
-    height: 31px;
-
-    flex: 0 0 30px;
-
-    transform: skewX(-8deg);
-
-}
-
-
-.brand-mark-line {
-
-    position: absolute;
-
-    display: block;
-
-    height: 6px;
-
-    border-radius: 4px;
-
-    background:
-        linear-gradient(
-            90deg,
-            var(--gold-dark),
-            var(--gold),
-            var(--gold-light)
-        );
-
-    box-shadow:
-        0 0 8px rgba(244,184,47,.12);
-
-}
-
-
-.brand-mark-line:nth-child(1) {
-
-    width: 24px;
-
-    top: 2px;
-    left: 4px;
-
-}
-
-
-.brand-mark-line:nth-child(2) {
-
-    width: 18px;
-
-    top: 13px;
-    left: 3px;
-
-}
-
-
-.brand-mark-line:nth-child(3) {
-
-    width: 13px;
-
-    top: 24px;
-    left: 1px;
-
-}
-
-
-.brand-text {
-
-    line-height: 1;
-
-}
-
-
-.brand-name {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 0;
-
-    font-size: 21px;
-
-    line-height: 1;
-
-    font-weight: 900;
-
-    letter-spacing: .5px;
-
-}
-
-
 .brand-fin {
-
-    color: var(--white);
-
+    color: var(--finora-white);
 }
-
 
 .brand-ora {
-
-    color: var(--gold);
-
+    color: var(--finora-gold);
+    margin-left: 0;
 }
 
 
+/* =========================================
+   TAGLINE
+========================================= */
+
 .brand-tagline {
-
     margin-top: 4px;
-
-    color: var(--muted-2);
 
     font-size: 6px;
 
     line-height: 1;
 
-    letter-spacing: 2px;
+    letter-spacing: 1.7px;
+
+    color: var(--finora-muted);
 
     font-weight: 800;
 
+    white-space: nowrap;
 }
 
 
-/* =========================================================
-   6. HEADER ACTIONS
-========================================================= */
+/* =========================================
+   HEADER ACTIONS
+========================================= */
 
 .header-actions {
-
     display: flex;
-
     align-items: center;
-
     gap: 9px;
 
+    position: relative;
+    z-index: 5;
 }
 
+
+/* =========================================
+   NOTIFICATION + PROFILE BUTTONS
+========================================= */
 
 .header-icon-button,
 .profile-button {
-
-    width: 39px;
-    height: 39px;
-
-    flex: 0 0 39px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
+    width: 38px;
+    height: 38px;
 
     border-radius: 50%;
 
-    border:
-        1px solid
-        rgba(240,47,143,.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid
+        rgba(236,63,143,0.25);
 
     background:
-        linear-gradient(
-            145deg,
-            #211126,
-            #130a18
-        );
+        rgba(236,63,143,0.08);
 
-    color: var(--pink);
+    color: var(--finora-pink-light);
 
-    box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,.02);
-
-    cursor: pointer;
+    position: relative;
 
     transition:
-        transform .2s ease,
-        border-color .2s ease,
-        box-shadow .2s ease;
-
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
 }
-
 
 .header-icon-button:hover,
 .profile-button:hover {
-
     transform: translateY(-1px);
 
+    background:
+        rgba(236,63,143,0.15);
+
     border-color:
-        rgba(240,47,143,.55);
-
-    box-shadow:
-        0 0 16px
-        rgba(240,47,143,.13);
-
+        rgba(236,63,143,0.55);
 }
 
+
+/* =========================================
+   NOTIFICATION ICON
+========================================= */
 
 .notification-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    color: var(--pink-light);
+    width: 20px;
+    height: 20px;
 
-    font-size: 19px;
-
-    line-height: 1;
-
-}
-
-
-.profile-icon {
-
-    color: var(--pink-light);
+    color: var(--finora-pink-light);
 
     font-size: 19px;
 
     line-height: 1;
-
 }
 
+
+/* notification dot */
 
 .notification-dot {
-
     position: absolute;
 
     top: 6px;
@@ -430,1751 +354,168 @@ img {
 
     border-radius: 50%;
 
-    background: var(--pink);
+    background: var(--finora-pink);
 
     box-shadow:
-        0 0 8px
-        rgba(240,47,143,.7);
+        0 0 7px rgba(236,63,143,0.8);
 
     display: none;
-
 }
 
 
-/* =========================================================
-   7. MAIN
-========================================================= */
+/* =========================================
+   PROFILE ICON
+========================================= */
 
-.dashboard-main {
-
-    width:
-        min(1180px, calc(100% - 30px));
-
-    margin: auto;
-
-    padding-top: 20px;
-
-}
-
-
-/* =========================================================
-   8. WELCOME
-========================================================= */
-
-.welcome-section {
-
-    margin-bottom: 15px;
-
-}
-
-
-.welcome-small {
-
-    color: var(--pink-light);
-
-    font-size: 9px;
-
-    font-weight: 900;
-
-    letter-spacing: 2px;
-
-    margin-bottom: 5px;
-
-}
-
-
-.welcome-section h1 {
-
-    font-size:
-        clamp(24px, 4vw, 32px);
-
-    line-height: 1.1;
-
-    font-weight: 900;
-
-    letter-spacing: -.5px;
-
-}
-
-
-.welcome-subtitle {
-
-    margin-top: 5px;
-
-    color: var(--muted);
-
-    font-size: 12px;
-
-}
-
-
-/* =========================================================
-   9. MAIN INVESTMENT HERO
-========================================================= */
-
-.hero-banner {
-
-    position: relative;
-
-    min-height: 230px;
-
-    overflow: hidden;
-
+.profile-icon {
     display: flex;
-
-    align-items: center;
-
-    padding: 28px 30px;
-
-    margin-bottom: 16px;
-
-    border-radius: var(--radius-xl);
-
-    background:
-
-        radial-gradient(
-            circle at 88% 50%,
-            rgba(240,47,143,.30),
-            transparent 24%
-        ),
-
-        radial-gradient(
-            circle at 75% 30%,
-            rgba(244,184,47,.18),
-            transparent 25%
-        ),
-
-        linear-gradient(
-            115deg,
-            #160b20 0%,
-            #32123f 48%,
-            #5d174f 100%
-        );
-
-    border:
-        1px solid
-        rgba(244,184,47,.25);
-
-    box-shadow:
-        0 20px 55px
-        rgba(0,0,0,.38);
-
-}
-
-
-/* subtle gold edge */
-
-.hero-banner::before {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    border-radius: inherit;
-
-    pointer-events: none;
-
-    background:
-        linear-gradient(
-            120deg,
-            rgba(244,184,47,.16),
-            transparent 35%,
-            transparent 70%,
-            rgba(240,47,143,.13)
-        );
-
-}
-
-
-/* decorative circles */
-
-.hero-banner::after {
-
-    content: "";
-
-    position: absolute;
-
-    width: 250px;
-    height: 250px;
-
-    right: -65px;
-    top: -20px;
-
-    border-radius: 50%;
-
-    border:
-        1px solid
-        rgba(244,184,47,.25);
-
-    box-shadow:
-        0 0 0 28px rgba(244,184,47,.035),
-        0 0 0 58px rgba(240,47,143,.025);
-
-}
-
-
-.hero-content {
-
-    position: relative;
-
-    z-index: 3;
-
-    max-width: 570px;
-
-}
-
-
-.hero-label {
-
-    color: var(--gold-light);
-
-    font-size: 9px;
-
-    font-weight: 900;
-
-    letter-spacing: 2px;
-
-    margin-bottom: 8px;
-
-}
-
-
-.hero-banner h2 {
-
-    color: var(--white);
-
-    font-size:
-        clamp(28px, 5vw, 42px);
-
-    line-height: 1.04;
-
-    font-weight: 900;
-
-    letter-spacing: -.8px;
-
-}
-
-
-.hero-banner h2 span {
-
-    display: block;
-
-    color: var(--gold-light);
-
-}
-
-
-.hero-banner p {
-
-    max-width: 500px;
-
-    margin-top: 10px;
-
-    color: rgba(255,255,255,.74);
-
-    font-size: 12px;
-
-    line-height: 1.55;
-
-}
-
-
-.hero-button {
-
-    display: inline-flex;
-
     align-items: center;
     justify-content: center;
 
-    margin-top: 15px;
+    width: 20px;
+    height: 20px;
 
-    min-height: 39px;
+    color: var(--finora-pink-light);
 
-    padding:
-        0 17px;
-
-    border-radius: 10px;
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--gold-light),
-            var(--gold)
-        );
-
-    color: #1a0c20;
-
-    font-size: 9px;
-
-    font-weight: 900;
-
-    letter-spacing: .8px;
-
-    box-shadow:
-        0 8px 20px
-        rgba(244,184,47,.18);
-
-    transition: .2s ease;
-
-}
-
-
-.hero-button:hover {
-
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 11px 25px
-        rgba(244,184,47,.25);
-
-}
-
-
-.hero-decoration {
-
-    position: absolute;
-
-    right: 0;
-    top: 0;
-
-    width: 45%;
-    height: 100%;
-
-    pointer-events: none;
-
-}
-
-
-.hero-circle {
-
-    position: absolute;
-
-    border-radius: 50%;
-
-    border:
-        1px solid
-        rgba(255,255,255,.12);
-
-}
-
-
-.hero-circle-one {
-
-    width: 280px;
-    height: 280px;
-
-    right: -45px;
-    top: -25px;
-
-}
-
-
-.hero-circle-two {
-
-    width: 190px;
-    height: 190px;
-
-    right: 20px;
-    top: 20px;
-
-}
-
-
-.hero-glow {
-
-    position: absolute;
-
-    width: 170px;
-    height: 170px;
-
-    right: 35px;
-    top: 45px;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(240,47,143,.34),
-            transparent 68%
-        );
-
-    filter: blur(5px);
-
-}
-
-
-/* =========================================================
-   10. WALLET
-========================================================= */
-
-.wallet-section {
-
-    margin-bottom: 17px;
-
-}
-
-
-.wallet-card {
-
-    position: relative;
-
-    overflow: hidden;
-
-    padding: 21px;
-
-    border-radius: var(--radius-lg);
-
-    background:
-        linear-gradient(
-            145deg,
-            #21112c,
-            #120a18
-        );
-
-    border:
-        1px solid
-        var(--gold-border);
-
-    box-shadow: var(--shadow);
-
-}
-
-
-.wallet-card::before {
-
-    content: "";
-
-    position: absolute;
-
-    width: 180px;
-    height: 180px;
-
-    right: -80px;
-    top: -100px;
-
-    border-radius: 50%;
-
-    background:
-        rgba(244,184,47,.07);
-
-}
-
-
-.wallet-top {
-
-    position: relative;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-}
-
-
-.wallet-label {
-
-    color: var(--muted);
-
-    font-size: 9px;
-
-    font-weight: 800;
-
-    letter-spacing: 1.5px;
-
-}
-
-
-.wallet-card h2 {
-
-    margin-top: 5px;
-
-    color: var(--gold-light);
-
-    font-size:
-        clamp(27px, 5vw, 36px);
-
-    font-weight: 900;
-
-}
-
-
-.wallet-icon {
-
-    width: 45px;
-    height: 45px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 13px;
-
-    color: var(--gold-light);
-
-    background:
-        rgba(244,184,47,.11);
-
-    border:
-        1px solid
-        rgba(244,184,47,.15);
-
-    font-size: 21px;
-
-}
-
-
-.wallet-bottom {
-
-    position: relative;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, 1fr);
-
-    gap: 12px;
-
-    margin-top: 18px;
-
-    padding-top: 14px;
-
-    border-top:
-        1px solid var(--border);
-
-}
-
-
-.wallet-stat {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 4px;
-
-}
-
-
-.wallet-stat span {
-
-    color: var(--muted-2);
-
-    font-size: 9px;
-
-}
-
-
-.wallet-stat strong {
-
-    color: var(--text);
-
-    font-size: 13px;
-
-}
-
-
-/* =========================================================
-   11. SECTION HEADINGS
-========================================================= */
-
-.section-heading {
-
-    display: flex;
-
-    align-items: flex-end;
-
-    justify-content: space-between;
-
-    margin-bottom: 11px;
-
-}
-
-
-.section-kicker {
-
-    color: var(--pink-light);
-
-    font-size: 8px;
-
-    font-weight: 900;
-
-    letter-spacing: 1.8px;
-
-}
-
-
-.section-heading h2 {
-
-    margin-top: 3px;
-
-    color: var(--text);
-
-    font-size: 17px;
-
-    font-weight: 850;
-
-}
-
-
-.section-link {
-
-    color: var(--gold-light);
-
-    font-size: 10px;
-
-    font-weight: 800;
-
-}
-
-
-/* =========================================================
-   12. QUICK ACTIONS
-========================================================= */
-
-.quick-actions-section {
-
-    margin-bottom: 20px;
-
-}
-
-
-.quick-actions-grid {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 10px;
-
-}
-
-
-.quick-action {
-
-    position: relative;
-
-    min-height: 88px;
-
-    padding: 12px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 11px;
-
-    overflow: hidden;
-
-    border-radius: var(--radius-md);
-
-    background:
-        linear-gradient(
-            145deg,
-            #1c1026,
-            #110a16
-        );
-
-    border:
-        1px solid var(--border);
-
-    transition:
-        transform .2s ease,
-        border-color .2s ease,
-        background .2s ease;
-
-}
-
-
-.quick-action:hover {
-
-    transform: translateY(-2px);
-
-    border-color:
-        rgba(240,47,143,.30);
-
-    background:
-        linear-gradient(
-            145deg,
-            #25122f,
-            #160c1c
-        );
-
-}
-
-
-/* ICON CONTAINER */
-
-.quick-action-icon {
-
-    width: 42px;
-    height: 42px;
-
-    flex: 0 0 42px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 12px;
-
-    color: var(--pink-light);
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(240,47,143,.16),
-            rgba(141,67,181,.12)
-        );
-
-    border:
-        1px solid
-        rgba(240,47,143,.16);
-
-    font-size: 19px;
-
-    font-weight: 800;
-
-}
-
-
-/*
-   Individual action colours.
-   These prevent every action from looking identical.
-*/
-
-.deposit-icon {
-
-    color: var(--gold-light);
-
-    background:
-        rgba(244,184,47,.12);
-
-    border-color:
-        rgba(244,184,47,.18);
-
-}
-
-
-.invest-icon {
-
-    color: var(--green);
-
-}
-
-
-.withdraw-icon {
-
-    color: var(--pink-light);
-
-}
-
-
-.investment-icon {
-
-    color: var(--purple-light);
-
-}
-
-
-.team-icon {
-
-    color: #ff8ec4;
-
-}
-
-
-.records-icon {
-
-    color: var(--gold-light);
-
-}
-
-
-.quick-action-text {
-
-    min-width: 0;
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 4px;
-
-}
-
-
-.quick-action-text strong {
-
-    color: var(--text);
-
-    font-size: 11px;
-
-    font-weight: 800;
-
-}
-
-
-.quick-action-text span {
-
-    color: var(--muted-2);
-
-    font-size: 8px;
-
-}
-
-
-/* =========================================================
-   13. INVESTMENT SUMMARY
-========================================================= */
-
-.investment-summary {
-
-    margin-bottom: 20px;
-
-}
-
-
-.summary-grid {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 10px;
-
-}
-
-
-.summary-card {
-
-    min-height: 87px;
-
-    padding: 13px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 10px;
-
-    border-radius: var(--radius-md);
-
-    background:
-        linear-gradient(
-            145deg,
-            #191020,
-            #100914
-        );
-
-    border:
-        1px solid var(--border);
-
-}
-
-
-.summary-card-icon {
-
-    width: 37px;
-    height: 37px;
-
-    flex: 0 0 37px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 10px;
-
-    color: var(--gold-light);
-
-    background:
-        rgba(244,184,47,.10);
-
-}
-
-
-.summary-card div:last-child {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 4px;
-
-}
-
-
-.summary-card span {
-
-    color: var(--muted-2);
-
-    font-size: 9px;
-
-}
-
-
-.summary-card strong {
-
-    color: var(--text);
-
-    font-size: 14px;
-
-}
-
-
-/* =========================================================
-   14. RECENT ACTIVITY
-========================================================= */
-
-.recent-activity {
-
-    margin-bottom: 25px;
-
-}
-
-
-.activity-list {
-
-    overflow: hidden;
-
-    border-radius: var(--radius-lg);
-
-    background:
-        var(--surface);
-
-    border:
-        1px solid var(--border);
-
-}
-
-
-.activity-empty {
-
-    min-height: 105px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    flex-direction: column;
-
-    text-align: center;
-
-    padding: 20px;
-
-}
-
-
-.activity-empty-icon {
-
-    width: 36px;
-    height: 36px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    margin-bottom: 8px;
-
-    border-radius: 50%;
-
-    color: var(--gold-light);
-
-    background:
-        rgba(244,184,47,.10);
-
-}
-
-
-.activity-empty p {
-
-    color: var(--muted-2);
-
-    font-size: 10px;
-
-}
-
-
-/* =========================================================
-   15. BOTTOM NAVIGATION
-========================================================= */
-
-.bottom-navigation {
-
-    position: fixed;
-
-    left: 50%;
-    bottom: 10px;
-
-    transform:
-        translateX(-50%);
-
-    z-index: 200;
-
-    width:
-        min(520px, calc(100% - 18px));
-
-    height: 65px;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, 1fr);
-
-    overflow: hidden;
-
-    border-radius: 20px;
-
-    background:
-        rgba(22,11,29,.97);
-
-    border:
-        1px solid
-        rgba(240,47,143,.18);
-
-    box-shadow:
-        0 20px 55px
-        rgba(0,0,0,.60);
-
-    backdrop-filter:
-        blur(20px);
-
-}
-
-
-.bottom-nav-item {
-
-    position: relative;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    flex-direction: column;
-
-    gap: 4px;
-
-    color: var(--muted-2);
-
-    transition: .2s ease;
-
-}
-
-
-.bottom-nav-icon {
-
-    font-size: 18px;
+    font-size: 20px;
 
     line-height: 1;
-
 }
 
 
-.bottom-nav-label {
+/* =========================================
+   MENU BUTTON
+   ONLY IF THE CURRENT HTML CONTAINS IT
+========================================= */
 
-    font-size: 8px;
-
-    font-weight: 800;
-
-}
-
-
-.bottom-nav-item.active {
-
-    color: var(--gold-light);
-
-}
-
-
-.bottom-nav-item.active::before {
-
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-
-    left: 30%;
-
-    right: 30%;
-
-    height: 2px;
-
-    border-radius: 0 0 4px 4px;
-
-    background:
-        linear-gradient(
-            90deg,
-            var(--pink),
-            var(--gold)
-        );
-
-    box-shadow:
-        0 0 10px
-        rgba(240,47,143,.35);
-
-}
-
-
-.bottom-nav-item:hover {
-
-    color: var(--pink-light);
-
-}
-
-
-/* =========================================================
-   16. NOTIFICATION PANEL
-========================================================= */
-
-.notification-panel {
-
-    position: fixed;
-
-    top: 76px;
-    right: 15px;
-
-    z-index: 300;
-
-    width:
-        min(350px, calc(100% - 30px));
-
-    max-height: 420px;
-
-    overflow-y: auto;
-
-    border-radius: 18px;
-
-    background:
-        #180d20;
-
-    border:
-        1px solid
-        rgba(240,47,143,.18);
-
-    box-shadow:
-        0 25px 65px
-        rgba(0,0,0,.65);
-
-    transform:
-        translateY(-12px);
-
-    opacity: 0;
-
-    visibility: hidden;
-
-    transition: .22s ease;
-
-}
-
-
-.notification-panel.open {
-
-    transform:
-        translateY(0);
-
-    opacity: 1;
-
-    visibility: visible;
-
-}
-
-
-.notification-panel-header {
-
-    padding: 15px;
+.menu-button,
+.hamburger-button,
+#menuButton {
+    width: 38px;
+    height: 38px;
 
     display: flex;
-
     align-items: center;
+    justify-content: center;
 
-    justify-content: space-between;
+    border: 1px solid
+        rgba(236,63,143,0.25);
 
-    border-bottom:
-        1px solid var(--border);
+    border-radius: 50%;
 
-}
+    background:
+        rgba(236,63,143,0.08);
 
-
-.notification-panel-header h3 {
-
-    font-size: 14px;
-
-}
-
-
-.close-notifications {
-
-    border: 0;
-
-    background: transparent;
-
-    color: var(--pink-light);
-
-    font-size: 24px;
+    color: var(--finora-pink-light);
 
     cursor: pointer;
 
+    flex-shrink: 0;
+
+    position: relative;
+
+    z-index: 10;
 }
 
 
-.notification-content {
+/* If the hamburger uses spans */
 
-    padding: 15px;
+.menu-button span,
+.hamburger-button span,
+#menuButton span {
+    display: block;
 
+    width: 17px;
+    height: 2px;
+
+    margin: 3px 0;
+
+    border-radius: 2px;
+
+    background:
+        var(--finora-pink-light);
 }
 
 
-.notification-empty {
-
-    min-height: 130px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    flex-direction: column;
-
-    text-align: center;
-
-}
-
-
-.notification-empty span {
-
-    color: var(--pink-light);
-
-    font-size: 26px;
-
-    margin-bottom: 8px;
-
-}
-
-
-.notification-empty p {
-
-    color: var(--muted-2);
-
-    font-size: 11px;
-
-}
-
-
-/* =========================================================
-   17. FOOTER
-========================================================= */
-
-.dashboard-footer {
-
-    padding:
-        8px 20px 18px;
-
-    text-align: center;
-
-    color: var(--muted-2);
-
-    font-size: 8px;
-
-    letter-spacing: .4px;
-
-}
-
-
-/* =========================================================
-   18. TABLET
-========================================================= */
-
-@media (max-width: 760px) {
-
-    .dashboard-main {
-
-        width:
-            calc(100% - 22px);
-
-    }
-
-    .header-inner {
-
-        width:
-            calc(100% - 22px);
-
-    }
-
-    .hero-banner {
-
-        min-height: 215px;
-
-        padding:
-            24px 21px;
-
-    }
-
-    .hero-decoration {
-
-        right: -70px;
-
-        opacity: .65;
-
-    }
-
-}
-
-
-/* =========================================================
-   19. MOBILE
-========================================================= */
+/* =========================================
+   MOBILE HEADER
+========================================= */
 
 @media (max-width: 520px) {
 
-    .dashboard-page {
-
-        padding-bottom: 90px;
-
+    .dashboard-header {
+        height: 66px;
     }
-
 
     .header-inner {
-
-        min-height: 64px;
-
-        width:
-            calc(100% - 18px);
-
+        width: calc(100% - 18px);
     }
-
 
     .dashboard-brand {
-
         gap: 6px;
-
     }
-
 
     .brand-mark {
-
         width: 27px;
-        height: 29px;
-
-        flex-basis: 27px;
-
+        height: 31px;
     }
 
+    .brand-mark-line:nth-child(1) {
+        width: 22px;
+    }
+
+    .brand-mark-line:nth-child(2) {
+        width: 17px;
+    }
+
+    .brand-mark-line:nth-child(3) {
+        width: 12px;
+    }
 
     .brand-name {
-
-        font-size: 19px;
-
-        letter-spacing: .35px;
-
+        font-size: 18px;
+        letter-spacing: 0.6px;
     }
-
 
     .brand-tagline {
-
         font-size: 5px;
-
-        letter-spacing: 1.6px;
-
+        letter-spacing: 1.4px;
     }
-
 
     .header-icon-button,
-    .profile-button {
-
-        width: 36px;
-        height: 36px;
-
-        flex-basis: 36px;
-
+    .profile-button,
+    .menu-button,
+    .hamburger-button,
+    #menuButton {
+        width: 35px;
+        height: 35px;
     }
 
+    .header-actions {
+        gap: 6px;
+    }
 
     .dashboard-main {
-
-        width:
-            calc(100% - 18px);
-
-        padding-top: 15px;
-
+        width: calc(100% - 18px);
     }
-
-
-    .welcome-section {
-
-        margin-bottom: 12px;
-
-    }
-
-
-    .welcome-section h1 {
-
-        font-size: 23px;
-
-    }
-
-
-    .welcome-subtitle {
-
-        font-size: 10px;
-
-    }
-
-
-    .hero-banner {
-
-        min-height: 205px;
-
-        padding: 20px 17px;
-
-        border-radius: 19px;
-
-    }
-
-
-    .hero-banner h2 {
-
-        max-width: 270px;
-
-        font-size: 27px;
-
-    }
-
-
-    .hero-banner p {
-
-        max-width: 255px;
-
-        font-size: 10px;
-
-    }
-
-
-    .hero-decoration {
-
-        right: -120px;
-
-        opacity: .45;
-
-    }
-
-
-    .wallet-card {
-
-        padding: 17px;
-
-        border-radius: 17px;
-
-    }
-
-
-    .wallet-card h2 {
-
-        font-size: 28px;
-
-    }
-
-
-    .wallet-label {
-
-        font-size: 8px;
-
-    }
-
-
-    .wallet-stat span {
-
-        font-size: 8px;
-
-    }
-
-
-    .wallet-stat strong {
-
-        font-size: 11px;
-
-    }
-
-
-    .section-heading h2 {
-
-        font-size: 15px;
-
-    }
-
-
-    /* THREE ACTIONS PER ROW */
-
-    .quick-actions-grid {
-
-        grid-template-columns:
-            repeat(3, 1fr);
-
-        gap: 7px;
-
-    }
-
-
-    .quick-action {
-
-        min-height: 80px;
-
-        padding: 8px 5px;
-
-        flex-direction: column;
-
-        justify-content: center;
-
-        align-items: center;
-
-        text-align: center;
-
-        gap: 5px;
-
-    }
-
-
-    .quick-action-icon {
-
-        width: 32px;
-        height: 32px;
-
-        flex-basis: 32px;
-
-        border-radius: 9px;
-
-        font-size: 15px;
-
-    }
-
-
-    .quick-action-text {
-
-        width: 100%;
-
-        align-items: center;
-
-    }
-
-
-    .quick-action-text strong {
-
-        font-size: 8px;
-
-        max-width: 100%;
-
-        white-space: nowrap;
-
-        overflow: hidden;
-
-        text-overflow: ellipsis;
-
-    }
-
-
-    .quick-action-text span {
-
-        display: none;
-
-    }
-
-
-    .summary-grid {
-
-        grid-template-columns:
-            repeat(3, 1fr);
-
-        gap: 6px;
-
-    }
-
-
-    .summary-card {
-
-        min-height: 76px;
-
-        padding: 7px;
-
-        flex-direction: column;
-
-        justify-content: center;
-
-        text-align: center;
-
-        gap: 5px;
-
-    }
-
-
-    .summary-card-icon {
-
-        width: 28px;
-        height: 28px;
-
-        flex-basis: 28px;
-
-        font-size: 12px;
-
-    }
-
-
-    .summary-card span {
-
-        font-size: 7px;
-
-    }
-
-
-    .summary-card strong {
-
-        font-size: 10px;
-
-    }
-
-
-    .bottom-navigation {
-
-        width:
-            calc(100% - 14px);
-
-        height: 61px;
-
-        bottom: 7px;
-
-        border-radius: 18px;
-
-    }
-
-
-    .bottom-nav-icon {
-
-        font-size: 17px;
-
-    }
-
-
-    .bottom-nav-label {
-
-        font-size: 7px;
-
-    }
-
 }
 
 
-/* =========================================================
-   20. VERY SMALL PHONES
-========================================================= */
+/* =========================================
+   VERY SMALL PHONES
+========================================= */
 
 @media (max-width: 360px) {
 
     .brand-tagline {
-
         display: none;
-
     }
-
 
     .brand-name {
-
-        font-size: 18px;
-
+        font-size: 17px;
     }
 
-
-    .quick-action {
-
-        min-height: 73px;
-
+    .header-inner {
+        width: calc(100% - 14px);
     }
-
-
-    .quick-action-icon {
-
-        width: 29px;
-        height: 29px;
-
-        flex-basis: 29px;
-
-        font-size: 13px;
-
-    }
-
-
-    .quick-action-text strong {
-
-        font-size: 7px;
-
-    }
-
-
-    .hero-banner {
-
-        min-height: 190px;
-
-    }
-
-
-    .hero-banner h2 {
-
-        font-size: 24px;
-
-    }
-
-
-    .hero-banner p {
-
-        font-size: 9px;
-
-    }
-
-}
-
-
-/* =========================================================
-   21. ACCESSIBILITY
-========================================================= */
-
-button:focus-visible,
-a:focus-visible {
-
-    outline:
-        2px solid var(--pink);
-
-    outline-offset: 3px;
-
-}
-
-
-/* =========================================================
-   22. REDUCE MOTION
-========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-
-        scroll-behavior: auto !important;
-
-        transition: none !important;
-
-        animation: none !important;
-
-    }
-
 }
