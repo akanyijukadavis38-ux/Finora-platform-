@@ -1,426 +1,177 @@
 /* =========================================================
-   FINORA DASHBOARD
-   PART 1 — HEADER / FINORA BRANDING
-   ========================================================= */
-
-* {
-    box-sizing: border-box;
-}
-
-html,
-body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    background: #07050A;
-    color: #FFFFFF;
-    font-family: Arial, sans-serif;
-}
-
-body {
-    overflow-x: hidden;
-}
-
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-button {
-    font: inherit;
-}
-
-svg {
-    display: block;
-}
-
-
-/* =========================================================
-   DASHBOARD CONTAINER
-   ========================================================= */
-
-.dashboard-shell {
-    width: 100%;
-    min-height: 100vh;
-}
-
-.dashboard-container {
-    width: calc(100% - 28px);
-    max-width: 1180px;
-    margin: 0 auto;
-}
-
-
-/* =========================================================
-   FINORA HEADER
+   PART 1 — FINORA HEADER / BRAND
    ========================================================= */
 
 .dashboard-header {
-    width: 100%;
-    background: #07050A;
-    border-bottom: 1px solid rgba(255,255,255,0.07);
     position: relative;
-    z-index: 100;
-}
-
-.dashboard-header .dashboard-container {
     width: 100%;
-    max-width: none;
-    margin: 0;
-    padding: 0 14px;
-}
-
-
-/* =========================================================
-   TOP HEADER
-   ========================================================= */
-
-.top-header {
-    width: 100%;
-    height: 88px;
-
+    min-height: 78px;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    position: relative;
+    padding: 10px 18px;
+    box-sizing: border-box;
 }
 
-
-/* =========================================================
-   FINORA BRAND
-   ========================================================= */
-
-.finora-brand {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    gap: 9px;
-
-    margin: 0 auto;
-    padding: 0;
-
+/* FINORA brand area */
+.brand,
+.logo,
+.logo-area,
+.brand-area {
     position: absolute;
     left: 50%;
     top: 50%;
-
     transform: translate(-50%, -50%);
-}
-
-
-/* =========================================================
-   FINORA F MARK
-   ========================================================= */
-
-.finora-logo-mark {
-    width: 42px;
-    height: 46px;
-
-    flex: 0 0 42px;
-
-    object-fit: contain;
-
-    filter: drop-shadow(
-        0 0 8px rgba(245,190,55,0.22)
-    );
-}
-
-
-/* =========================================================
-   FINORA WORD + TAGLINE
-   ========================================================= */
-
-.finora-brand-text {
     display: flex;
     flex-direction: column;
-
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
-
-    margin: 0;
-    padding: 0;
+    text-align: center;
+    z-index: 2;
+    white-space: nowrap;
 }
 
-
-/* =========================================================
-   FINORA WORDMARK
-   ========================================================= */
-
-.finora-name {
-    margin: 0;
-    padding: 0;
-
+/* FINORA main word */
+.brand-title,
+.logo-text,
+.brand-name,
+.logo-name {
     font-size: 30px;
     line-height: 1;
-
-    font-family: Arial, sans-serif;
     font-weight: 900;
-
-    letter-spacing: 2.8px;
-
-    white-space: nowrap;
-
-    /*
-       FINORA remains ONE word.
-       The gradient gives the word its premium
-       multi-tone gold appearance.
-    */
-
-    background: linear-gradient(
-        90deg,
-        #FFF8D7 0%,
-        #FFD85A 38%,
-        #F1B62F 68%,
-        #D98A12 100%
-    );
-
-    -webkit-background-clip: text;
-    background-clip: text;
-
-    -webkit-text-fill-color: transparent;
-
-    color: #FFD85A;
-
-    text-shadow:
-        0 2px 12px rgba(239,180,48,0.18);
-}
-
-
-/* =========================================================
-   INVEST • GROW • EARN
-   ========================================================= */
-
-.finora-tagline {
-    margin: 6px 0 0 0;
+    letter-spacing: 1.5px;
+    margin: 0;
     padding: 0;
-
-    font-size: 9px;
-    line-height: 1;
-
-    font-family: Arial, sans-serif;
-    font-weight: 800;
-
-    letter-spacing: 2.1px;
-
-    white-space: nowrap;
-
-    /*
-       Separate color from FINORA.
-    */
-
-    color: #E5A7CF;
 }
 
+/* Individual FINORA colors */
+.brand-title .fin,
+.logo-text .fin,
+.brand-name .fin,
+.logo-name .fin {
+    color: #EA4B9B;
+}
 
-/* =========================================================
-   RIGHT HEADER BUTTONS
-   ========================================================= */
+.brand-title .ora,
+.logo-text .ora,
+.brand-name .ora,
+.logo-name .ora {
+    color: #D4AF37;
+}
 
+/* Subtitle beneath FINORA */
+.brand-tagline,
+.logo-tagline,
+.brand-subtitle,
+.logo-subtitle {
+    margin-top: 6px;
+    font-size: 10px;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #F4C95D;
+    text-transform: uppercase;
+}
+
+/* Header action area */
 .header-actions {
     position: absolute;
-
+    right: 18px;
     top: 50%;
-    right: 14px;
-
     transform: translateY(-50%);
-
     display: flex;
     align-items: center;
-    justify-content: center;
-
-    gap: 8px;
+    gap: 14px;
+    z-index: 5;
 }
 
-
-/* =========================================================
-   NOTIFICATION
-   ========================================================= */
-
-.notification-button {
+/* Notification and profile icons */
+.header-actions button,
+.header-actions a,
+.notification-icon,
+.profile-icon {
     width: 38px;
     height: 38px;
-
-    position: relative;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
-    padding: 0;
-
-    background: #151018;
-    color: #F2C44C;
-
-    border: 1px solid rgba(242,196,76,0.18);
-    border-radius: 11px;
-
-    cursor: pointer;
-}
-
-.header-icon {
-    width: 19px;
-    height: 19px;
-}
-
-
-/* =========================================================
-   NOTIFICATION COUNT
-   ========================================================= */
-
-.notification-count {
-    position: absolute;
-
-    top: -4px;
-    right: -4px;
-
-    min-width: 15px;
-    height: 15px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 0 3px;
-
-    background: #E83C88;
+    border: 0;
+    background: transparent;
     color: #FFFFFF;
-
-    border: 2px solid #07050A;
-    border-radius: 50%;
-
-    font-size: 8px;
-    font-weight: 800;
-    line-height: 1;
+    font-size: 20px;
+    padding: 0;
 }
 
-
-/* =========================================================
-   PROFILE
-   ========================================================= */
-
-.profile-button {
-    width: 38px;
-    height: 38px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: #151018;
-    color: #F2C44C;
-
-    border: 1px solid rgba(242,196,76,0.18);
-    border-radius: 11px;
+/* Keep header icons separated from FINORA */
+.notification-icon {
+    margin-right: 4px;
 }
 
 .profile-icon {
-    width: 20px;
-    height: 20px;
+    margin-left: 2px;
 }
 
+/* Hamburger */
+.menu-icon,
+.hamburger,
+.header-menu {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+}
 
-/* =========================================================
-   MOBILE — KEEP BRAND CENTERED
-   ========================================================= */
+/* Mobile spacing */
+@media (max-width: 480px) {
 
-@media (max-width: 599px) {
-
-    .top-header {
-        height: 88px;
+    .dashboard-header {
+        min-height: 76px;
+        padding-left: 14px;
+        padding-right: 14px;
     }
 
-    .finora-brand {
+    .brand,
+    .logo,
+    .logo-area,
+    .brand-area {
         left: 50%;
-        transform: translate(-50%, -50%);
     }
 
-    .finora-logo-mark {
-        width: 40px;
-        height: 44px;
-
-        flex-basis: 40px;
+    .brand-title,
+    .logo-text,
+    .brand-name,
+    .logo-name {
+        font-size: 28px;
+        letter-spacing: 1.3px;
     }
 
-    .finora-name {
-        font-size: 29px;
-        letter-spacing: 2.6px;
-    }
-
-    .finora-tagline {
+    .brand-tagline,
+    .logo-tagline,
+    .brand-subtitle,
+    .logo-subtitle {
         margin-top: 6px;
-        font-size: 8px;
-        letter-spacing: 1.9px;
+        font-size: 9px;
+        letter-spacing: 1.7px;
     }
 
     .header-actions {
         right: 12px;
-        gap: 7px;
+        gap: 8px;
     }
 
-    .notification-button,
-    .profile-button {
-        width: 36px;
-        height: 36px;
-        border-radius: 10px;
-    }
-
-    .header-icon {
-        width: 18px;
-        height: 18px;
-    }
-
+    .header-actions button,
+    .header-actions a,
+    .notification-icon,
     .profile-icon {
-        width: 19px;
-        height: 19px;
-    }
-}
-
-
-/* =========================================================
-   LARGER SCREENS
-   ========================================================= */
-
-@media (min-width: 600px) {
-
-    .top-header {
-        height: 94px;
+        width: 34px;
+        height: 34px;
+        font-size: 18px;
     }
 
-    .finora-logo-mark {
-        width: 45px;
-        height: 49px;
-
-        flex-basis: 45px;
-    }
-
-    .finora-name {
-        font-size: 32px;
-        letter-spacing: 3px;
-    }
-
-    .finora-tagline {
-        font-size: 9px;
-        letter-spacing: 2.3px;
-    }
-
-    .header-actions {
-        right: 24px;
-    }
-
-    .notification-button,
-    .profile-button {
-        width: 42px;
-        height: 42px;
-    }
-
-    .header-icon {
-        width: 20px;
-        height: 20px;
-    }
-
-    .profile-icon {
-        width: 21px;
-        height: 21px;
+    .menu-icon,
+    .hamburger,
+    .header-menu {
+        left: 12px;
     }
 }
