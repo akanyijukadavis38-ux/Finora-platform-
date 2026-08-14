@@ -10,7 +10,7 @@
 
     <meta
         name="theme-color"
-        content="#08060B"
+        content="#08060b"
     >
 
     <meta
@@ -22,37 +22,21 @@
 
     <!-- Dashboard CSS -->
     <link rel="stylesheet" href="dashboard.css">
-
-    <!-- Font Awesome icons -->
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    >
 </head>
 
 <body>
 
-<!-- =====================================================
-     DASHBOARD PAGE
-===================================================== -->
-
 <div class="dashboard-page">
 
-
-    <!-- =================================================
+    <!-- =====================================================
          HEADER
-    ================================================== -->
-
+    ====================================================== -->
     <header class="dashboard-header">
 
         <div class="header-inner">
 
-            <!-- FINORA BRAND -->
-            <a
-                href="dashboard.html"
-                class="dashboard-brand"
-                aria-label="FINORA Home"
-            >
+            <!-- CENTERED FINORA BRAND -->
+            <a href="dashboard.html" class="dashboard-brand">
 
                 <!-- FINORA F MARK -->
                 <span class="brand-mark" aria-hidden="true">
@@ -62,7 +46,6 @@
                 </span>
 
                 <span class="brand-text">
-
                     <span class="brand-name">
                         <span class="brand-fin">FIN</span><span class="brand-ora">ORA</span>
                     </span>
@@ -70,42 +53,31 @@
                     <span class="brand-tagline">
                         INVEST • GROW • EARN
                     </span>
-
                 </span>
 
             </a>
 
 
-            <!-- HEADER ACTIONS -->
+            <!-- NOTIFICATION + PROFILE -->
             <div class="header-actions">
 
-                <!-- Notifications -->
                 <button
                     type="button"
                     class="header-icon-button"
                     id="notificationButton"
                     aria-label="Notifications"
                 >
-                    <span class="notification-icon">
-                        <i class="fa-regular fa-bell"></i>
-                    </span>
-
-                    <span
-                        class="notification-dot"
-                        id="notificationDot"
-                    ></span>
+                    <span class="notification-icon">♢</span>
+                    <span class="notification-dot"></span>
                 </button>
 
 
-                <!-- Profile -->
                 <a
-                    href="mine.html"
+                    href="profile.html"
                     class="profile-button"
-                    aria-label="My Profile"
+                    aria-label="Profile"
                 >
-                    <span class="profile-icon">
-                        <i class="fa-regular fa-user"></i>
-                    </span>
+                    <span class="profile-icon">●</span>
                 </a>
 
             </div>
@@ -116,24 +88,22 @@
 
 
 
-    <!-- =================================================
-         MAIN CONTENT
-    ================================================== -->
-
+    <!-- =====================================================
+         MAIN DASHBOARD
+    ====================================================== -->
     <main class="dashboard-main">
 
 
         <!-- =================================================
              WELCOME
         ================================================== -->
-
         <section class="welcome-section">
 
             <div class="welcome-small">
                 WELCOME BACK
             </div>
 
-            <h1 id="welcomeName">
+            <h1>
                 Welcome back
             </h1>
 
@@ -146,9 +116,12 @@
 
 
         <!-- =================================================
-             MAIN FINORA INVESTMENT BANNER
+             MAIN PROMOTIONAL BANNER
+             BLUEPRINT:
+             INVEST SMART & DAILY
+             STABLE RETURNS
+             REAL GROWTH
         ================================================== -->
-
         <section class="hero-banner">
 
             <div class="hero-content">
@@ -158,10 +131,12 @@
                 </div>
 
                 <h2>
-                    Build your future.
-                    <br>
-                    <span>Grow with purpose.</span>
+                    Invest Smart &amp; Daily
                 </h2>
+
+                <p class="hero-highlight">
+                    Stable Returns. Real Growth.
+                </p>
 
                 <p>
                     Put your money to work with FINORA
@@ -174,22 +149,21 @@
                     class="hero-button"
                 >
                     EXPLORE INVESTMENTS
-                    <span aria-hidden="true">&nbsp;→</span>
+                    <span>→</span>
                 </a>
 
             </div>
 
 
-            <!-- Decorative banner artwork -->
+            <!-- INVESTMENT DECORATION -->
             <div
                 class="hero-decoration"
                 aria-hidden="true"
             >
 
-                <span class="hero-glow"></span>
+                <div class="hero-glow"></div>
 
                 <span class="hero-circle hero-circle-one"></span>
-
                 <span class="hero-circle hero-circle-two"></span>
 
             </div>
@@ -199,9 +173,8 @@
 
 
         <!-- =================================================
-             WALLET BALANCE
+             WALLET / FINANCIAL SUMMARY
         ================================================== -->
-
         <section class="wallet-section">
 
             <div class="wallet-card">
@@ -221,11 +194,8 @@
                     </div>
 
 
-                    <div
-                        class="wallet-icon"
-                        aria-hidden="true"
-                    >
-                        <i class="fa-solid fa-wallet"></i>
+                    <div class="wallet-icon">
+                        ◇
                     </div>
 
                 </div>
@@ -267,15 +237,14 @@
 
 
         <!-- =================================================
-             QUICK ACCESS
+             QUICK ACTIONS
+             HORIZONTAL
         ================================================== -->
-
         <section class="quick-actions-section">
 
             <div class="section-heading">
 
                 <div>
-
                     <div class="section-kicker">
                         QUICK ACCESS
                     </div>
@@ -283,7 +252,6 @@
                     <h2>
                         Manage your money
                     </h2>
-
                 </div>
 
             </div>
@@ -298,11 +266,8 @@
                     class="quick-action"
                 >
 
-                    <span
-                        class="quick-action-icon"
-                        aria-hidden="true"
-                    >
-                        <i class="fa-solid fa-circle-arrow-down"></i>
+                    <span class="quick-action-icon deposit-icon">
+                        ↓
                     </span>
 
                     <span class="quick-action-text">
@@ -320,6 +285,30 @@
                 </a>
 
 
+                <!-- WITHDRAW -->
+                <a
+                    href="withdraw.html"
+                    class="quick-action"
+                >
+
+                    <span class="quick-action-icon withdraw-icon">
+                        ↑
+                    </span>
+
+                    <span class="quick-action-text">
+
+                        <strong>
+                            Withdraw
+                        </strong>
+
+                        <span>
+                            Mobile Money
+                        </span>
+
+                    </span>
+
+                </a>
+
 
                 <!-- INVEST -->
                 <a
@@ -327,11 +316,8 @@
                     class="quick-action"
                 >
 
-                    <span
-                        class="quick-action-icon"
-                        aria-hidden="true"
-                    >
-                        <i class="fa-solid fa-chart-line"></i>
+                    <span class="quick-action-icon invest-icon">
+                        ↗
                     </span>
 
                     <span class="quick-action-text">
@@ -349,47 +335,14 @@
                 </a>
 
 
-
-                <!-- WITHDRAW -->
-                <a
-                    href="withdraw.html"
-                    class="quick-action"
-                >
-
-                    <span
-                        class="quick-action-icon"
-                        aria-hidden="true"
-                    >
-                        <i class="fa-solid fa-circle-arrow-up"></i>
-                    </span>
-
-                    <span class="quick-action-text">
-
-                        <strong>
-                            Withdraw
-                        </strong>
-
-                        <span>
-                            Access funds
-                        </span>
-
-                    </span>
-
-                </a>
-
-
-
                 <!-- MY INVESTMENTS -->
                 <a
                     href="my-investments.html"
                     class="quick-action"
                 >
 
-                    <span
-                        class="quick-action-icon"
-                        aria-hidden="true"
-                    >
-                        <i class="fa-solid fa-chart-pie"></i>
+                    <span class="quick-action-icon investment-icon">
+                        ◈
                     </span>
 
                     <span class="quick-action-text">
@@ -407,18 +360,14 @@
                 </a>
 
 
-
                 <!-- TEAM -->
                 <a
                     href="team.html"
                     class="quick-action"
                 >
 
-                    <span
-                        class="quick-action-icon"
-                        aria-hidden="true"
-                    >
-                        <i class="fa-solid fa-users"></i>
+                    <span class="quick-action-icon team-icon">
+                        ♧
                     </span>
 
                     <span class="quick-action-text">
@@ -436,18 +385,14 @@
                 </a>
 
 
-
                 <!-- RECORDS -->
                 <a
                     href="records.html"
                     class="quick-action"
                 >
 
-                    <span
-                        class="quick-action-icon"
-                        aria-hidden="true"
-                    >
-                        <i class="fa-solid fa-receipt"></i>
+                    <span class="quick-action-icon records-icon">
+                        ≡
                     </span>
 
                     <span class="quick-action-text">
@@ -471,9 +416,56 @@
 
 
         <!-- =================================================
+             PREMIUM PLAN BANNER
+        ================================================== -->
+        <section class="premium-banner">
+
+            <div class="premium-content">
+
+                <div class="premium-label">
+                    PREMIUM PLAN
+                </div>
+
+                <h2>
+                    10% Daily Returns
+                </h2>
+
+                <p>
+                    20 Days
+                </p>
+
+                <a
+                    href="invest.html"
+                    class="premium-button"
+                >
+                    INVEST NOW
+                    <span>→</span>
+                </a>
+
+            </div>
+
+
+            <!-- COINS / INVESTMENT VISUAL -->
+            <div
+                class="premium-visual"
+                aria-hidden="true"
+            >
+
+                <div class="coin coin-one">F</div>
+                <div class="coin coin-two">F</div>
+                <div class="coin coin-three">F</div>
+
+                <div class="premium-glow"></div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
              INVESTMENT OVERVIEW
         ================================================== -->
-
         <section class="investment-summary">
 
             <div class="section-heading">
@@ -507,11 +499,8 @@
                 <!-- ACTIVE INVESTMENTS -->
                 <div class="summary-card">
 
-                    <div
-                        class="summary-card-icon"
-                        aria-hidden="true"
-                    >
-                        <i class="fa-solid fa-briefcase"></i>
+                    <div class="summary-card-icon">
+                        ◈
                     </div>
 
                     <div>
@@ -529,15 +518,11 @@
                 </div>
 
 
-
                 <!-- DAILY INCOME -->
                 <div class="summary-card">
 
-                    <div
-                        class="summary-card-icon"
-                        aria-hidden="true"
-                    >
-                        <i class="fa-solid fa-coins"></i>
+                    <div class="summary-card-icon">
+                        ↗
                     </div>
 
                     <div>
@@ -555,15 +540,11 @@
                 </div>
 
 
-
                 <!-- REFERRAL INCOME -->
                 <div class="summary-card">
 
-                    <div
-                        class="summary-card-icon"
-                        aria-hidden="true"
-                    >
-                        <i class="fa-solid fa-user-group"></i>
+                    <div class="summary-card-icon">
+                        ♧
                     </div>
 
                     <div>
@@ -587,9 +568,158 @@
 
 
         <!-- =================================================
+             INVITE & EARN
+        ================================================== -->
+        <section class="referral-section">
+
+            <div class="referral-card">
+
+                <div class="referral-content">
+
+                    <div class="section-kicker">
+                        INVITE &amp; EARN
+                    </div>
+
+                    <h2>
+                        Grow together. Earn together.
+                    </h2>
+
+                    <p>
+                        Invite friends and earn from
+                        three levels of referrals.
+                    </p>
+
+
+                    <!-- THREE LEVELS -->
+                    <div class="referral-levels">
+
+                        <span>
+                            Level 1
+                        </span>
+
+                        <span>
+                            Level 2
+                        </span>
+
+                        <span>
+                            Level 3
+                        </span>
+
+                    </div>
+
+
+                    <!-- REFERRAL LINK -->
+                    <div class="referral-link-box">
+
+                        <input
+                            type="text"
+                            id="referralLink"
+                            value=""
+                            readonly
+                            placeholder="Your referral link"
+                        >
+
+                        <button
+                            type="button"
+                            id="copyReferralButton"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- REFERRAL VISUAL -->
+                <div
+                    class="referral-visual"
+                    aria-hidden="true"
+                >
+                    ♧
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             COMMUNITY
+        ================================================== -->
+        <section class="community-section">
+
+            <div class="community-card">
+
+
+                <!-- TELEGRAM -->
+                <a
+                    href="#"
+                    class="community-item"
+                    id="telegramLink"
+                >
+
+                    <span class="community-icon telegram-icon">
+                        ✈
+                    </span>
+
+                    <span class="community-text">
+
+                        <strong>
+                            Join our Telegram group
+                        </strong>
+
+                        <span>
+                            Connect with the FINORA community
+                        </span>
+
+                    </span>
+
+                    <span class="community-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <!-- SUPPORT -->
+                <a
+                    href="help.html"
+                    class="community-item"
+                >
+
+                    <span class="community-icon support-icon">
+                        ?
+                    </span>
+
+                    <span class="community-text">
+
+                        <strong>
+                            Support
+                        </strong>
+
+                        <span>
+                            Need help? We are here for you.
+                        </span>
+
+                    </span>
+
+                    <span class="community-arrow">
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
              RECENT ACTIVITY
         ================================================== -->
-
         <section class="recent-activity">
 
             <div class="section-heading">
@@ -620,11 +750,8 @@
 
                 <div class="activity-empty">
 
-                    <div
-                        class="activity-empty-icon"
-                        aria-hidden="true"
-                    >
-                        <i class="fa-regular fa-clock"></i>
+                    <div class="activity-empty-icon">
+                        ≡
                     </div>
 
                     <p>
@@ -638,31 +765,106 @@
         </section>
 
 
-
-        <!-- =================================================
-             FOOTER
-        ================================================== -->
-
-        <footer class="dashboard-footer">
-
-            © 2026 FINORA
-            &nbsp; • &nbsp;
-            INVEST • GROW • EARN
-
-        </footer>
-
     </main>
 
 
 
-    <!-- =================================================
-         NOTIFICATION PANEL
-    ================================================== -->
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+    <footer class="dashboard-footer">
 
-    <aside
+        © 2026 FINORA
+        <span>•</span>
+        INVEST • GROW • EARN
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         BOTTOM NAVIGATION
+    ====================================================== -->
+    <nav class="bottom-navigation">
+
+
+        <!-- HOME -->
+        <a
+            href="dashboard.html"
+            class="bottom-nav-item active"
+        >
+
+            <span class="bottom-nav-icon">
+                ⌂
+            </span>
+
+            <span class="bottom-nav-label">
+                Home
+            </span>
+
+        </a>
+
+
+        <!-- INVESTMENTS -->
+        <a
+            href="my-investments.html"
+            class="bottom-nav-item"
+        >
+
+            <span class="bottom-nav-icon">
+                ◈
+            </span>
+
+            <span class="bottom-nav-label">
+                Investments
+            </span>
+
+        </a>
+
+
+        <!-- TEAM -->
+        <a
+            href="team.html"
+            class="bottom-nav-item"
+        >
+
+            <span class="bottom-nav-icon">
+                ♧
+            </span>
+
+            <span class="bottom-nav-label">
+                Team
+            </span>
+
+        </a>
+
+
+        <!-- MINE -->
+        <a
+            href="mine.html"
+            class="bottom-nav-item"
+        >
+
+            <span class="bottom-nav-icon">
+                ●
+            </span>
+
+            <span class="bottom-nav-label">
+                Mine
+            </span>
+
+        </a>
+
+    </nav>
+
+
+
+    <!-- =====================================================
+         NOTIFICATION PANEL
+    ====================================================== -->
+    <div
         class="notification-panel"
         id="notificationPanel"
-        aria-hidden="true"
     >
 
         <div class="notification-panel-header">
@@ -675,7 +877,6 @@
                 type="button"
                 class="close-notifications"
                 id="closeNotifications"
-                aria-label="Close notifications"
             >
                 ×
             </button>
@@ -688,126 +889,24 @@
             <div class="notification-empty">
 
                 <span>
-                    <i class="fa-regular fa-bell"></i>
+                    ♢
                 </span>
 
                 <p>
-                    No new notifications.
+                    No new notifications
                 </p>
 
             </div>
 
         </div>
 
-    </aside>
+    </div>
 
 
-
-    <!-- =================================================
-         BOTTOM NAVIGATION
-    ================================================== -->
-
-    <nav
-        class="bottom-navigation"
-        aria-label="Main navigation"
-    >
-
-
-        <!-- HOME -->
-        <a
-            href="dashboard.html"
-            class="bottom-nav-item active"
-        >
-
-            <span
-                class="bottom-nav-icon"
-                aria-hidden="true"
-            >
-                <i class="fa-solid fa-house"></i>
-            </span>
-
-            <span class="bottom-nav-label">
-                Home
-            </span>
-
-        </a>
-
-
-
-        <!-- INVESTMENTS -->
-        <a
-            href="my-investments.html"
-            class="bottom-nav-item"
-        >
-
-            <span
-                class="bottom-nav-icon"
-                aria-hidden="true"
-            >
-                <i class="fa-solid fa-chart-line"></i>
-            </span>
-
-            <span class="bottom-nav-label">
-                Investments
-            </span>
-
-        </a>
-
-
-
-        <!-- TEAM -->
-        <a
-            href="team.html"
-            class="bottom-nav-item"
-        >
-
-            <span
-                class="bottom-nav-icon"
-                aria-hidden="true"
-            >
-                <i class="fa-solid fa-users"></i>
-            </span>
-
-            <span class="bottom-nav-label">
-                Team
-            </span>
-
-        </a>
-
-
-
-        <!-- MINE -->
-        <a
-            href="mine.html"
-            class="bottom-nav-item"
-        >
-
-            <span
-                class="bottom-nav-icon"
-                aria-hidden="true"
-            >
-                <i class="fa-regular fa-user"></i>
-            </span>
-
-            <span class="bottom-nav-label">
-                Mine
-            </span>
-
-        </a>
-
-    </nav>
+    <!-- Dashboard JavaScript will be connected later -->
+    <script src="dashboard.js"></script>
 
 </div>
-
-
-<!-- =====================================================
-     DASHBOARD JAVASCRIPT
-     NOT IMPLEMENTED YET
-===================================================== -->
-
-<!--
-<script src="dashboard.js"></script>
--->
 
 </body>
 </html>
