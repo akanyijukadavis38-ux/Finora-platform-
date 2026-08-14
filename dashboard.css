@@ -31,18 +31,16 @@
 html{
     width:100%;
     min-height:100%;
-    scroll-behavior:smooth;
+    background:#f7e9f1;
 }
 
 body{
     width:100%;
     min-height:100vh;
 
-    /* BLUEPRINT BACKGROUND:
-       ONE PALE-PINK BACKGROUND THROUGHOUT THE DASHBOARD */
-    background:var(--finora-pale-pink);
+    background:#f7e9f1;
 
-    color:var(--finora-dark);
+    color:#07050a;
 
     font-family:
         Inter,
@@ -57,18 +55,14 @@ body{
 
 
 /* =========================================================
-   MAIN DASHBOARD SHELL
+   DASHBOARD SHELL
    ========================================================= */
 
 .dashboard-shell{
     width:100%;
     min-height:100vh;
 
-    /* IMPORTANT:
-       Do NOT create another background here.
-       The entire dashboard uses the same pale-pink background. */
-
-    background:transparent;
+    background:#f7e9f1;
 
     overflow-x:hidden;
 }
@@ -81,6 +75,7 @@ body{
 .dashboard-container{
     width:100%;
     max-width:1180px;
+
     margin:0 auto;
 
     padding-left:20px;
@@ -95,7 +90,7 @@ body{
 .dashboard-header{
     width:100%;
 
-    background:var(--finora-pale-pink);
+    background:#f7e9f1;
 
     border-bottom:1px solid rgba(232,63,143,.12);
 
@@ -114,7 +109,6 @@ body{
 
     display:flex;
     align-items:center;
-
     justify-content:space-between;
 
     position:relative;
@@ -167,7 +161,9 @@ body{
 }
 
 
-/* FINORA */
+/* =========================================================
+   FINORA NAME
+   ========================================================= */
 
 .finora-name{
     display:flex;
@@ -184,17 +180,13 @@ body{
 }
 
 
-/* FIRST THREE LETTERS — GOLD */
-
 .finora-fin{
-    color:var(--finora-gold);
+    color:#d69a2d;
 }
 
 
-/* LAST THREE LETTERS — PINK */
-
 .finora-ora{
-    color:var(--finora-pink);
+    color:#e83f8f;
 }
 
 
@@ -205,7 +197,7 @@ body{
 .finora-tagline{
     margin-top:5px;
 
-    color:var(--finora-gold);
+    color:#d69a2d;
 
     font-size:8px;
 
@@ -235,7 +227,6 @@ body{
 
 /* =========================================================
    NOTIFICATION
-   LEAVE THE NOTIFICATION STYLING/BEHAVIOR ALONE
    ========================================================= */
 
 .notification-button{
@@ -249,9 +240,10 @@ body{
     justify-content:center;
 
     border:0;
+
     background:transparent;
 
-    color:var(--finora-dark);
+    color:#07050a;
 
     cursor:pointer;
 
@@ -259,18 +251,18 @@ body{
 }
 
 
-/* Notification SVG */
-
 .header-icon{
     width:22px;
     height:22px;
 
     display:block;
+
+    color:#07050a;
 }
 
 
 /* =========================================================
-   NOTIFICATION NUMBER
+   NOTIFICATION COUNT
    ========================================================= */
 
 .notification-count{
@@ -290,7 +282,8 @@ body{
 
     border-radius:50px;
 
-    background:var(--finora-pink);
+    background:#e83f8f;
+
     color:#ffffff;
 
     font-size:9px;
@@ -298,13 +291,12 @@ body{
 
     line-height:1;
 
-    border:2px solid var(--finora-pale-pink);
+    border:2px solid #f7e9f1;
 }
 
 
 /* =========================================================
-   PROFILE ICON
-   THIS IS THE PART WE ARE CHANGING
+   PROFILE BUTTON
    ========================================================= */
 
 .profile-button{
@@ -319,11 +311,9 @@ body{
 
     border-radius:50%;
 
-    /* PINK PROFILE CIRCLE */
+    background:#e83f8f !important;
 
-    background:var(--finora-pink);
-
-    color:#ffffff;
+    color:#ffffff !important;
 
     border:2px solid rgba(255,255,255,.75);
 
@@ -339,6 +329,10 @@ body{
 .profile-button:hover{
     transform:translateY(-1px);
 
+    background:#e83f8f !important;
+
+    color:#ffffff !important;
+
     box-shadow:
         0 6px 16px rgba(232,63,143,.30);
 }
@@ -350,15 +344,17 @@ body{
 
     display:block;
 
-    color:#ffffff;
+    color:#ffffff !important;
 }
 
 
 /* =========================================================
-   IMPORTANT:
-   KEEP THE DESCRIPTION / WELCOME TEXT UNCHANGED.
-   PART ONE DOES NOT MODIFY IT.
+   MAIN
    ========================================================= */
+
+main{
+    background:#f7e9f1;
+}
 
 
 /* =========================================================
