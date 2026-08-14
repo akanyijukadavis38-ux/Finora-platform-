@@ -38,7 +38,7 @@ body{
     width:100%;
     min-height:100%;
 
-    background:var(--finora-bg);
+    background:#8F174F !important;
 }
 
 
@@ -63,15 +63,10 @@ body{
    DASHBOARD SHELL
    ========================================================= */
 
-.dashboard-shell{
+.dashboard-header{
     width:100%;
-    min-height:100vh;
 
     background:var(--finora-bg);
-
-    overflow-x:hidden;
-}
-
 
 /* =========================================================
    CONTAINER
@@ -378,7 +373,7 @@ body{
 main{
     width:100%;
 
-    background:var(--finora-bg);
+    background:#8F174F !important;
 }
 
 
