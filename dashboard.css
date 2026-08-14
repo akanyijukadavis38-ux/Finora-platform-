@@ -1,6 +1,6 @@
 /* =========================================================
    FINORA DASHBOARD — PART ONE
-   DARK PURPLE FINORA BACKGROUND
+   DARK PURPLE BACKGROUND
    ========================================================= */
 
 
@@ -9,11 +9,12 @@
    ========================================================= */
 
 :root{
-    --finora-bg:#0B0612;
+    --finora-bg:#1A0B26;
 
-    --finora-purple-dark:#08040D;
-    --finora-purple:#100719;
-    --finora-purple-light:#160A20;
+    --finora-purple-dark:#12071A;
+    --finora-purple:#1A0B26;
+    --finora-purple-mid:#21102E;
+    --finora-purple-light:#2A1438;
 
     --finora-pink:#EA3CFF;
     --finora-pink-dark:#9E18BD;
@@ -22,8 +23,6 @@
     --finora-gold:#F5A623;
     --finora-gold-light:#FFD76A;
     --finora-gold-dark:#C97908;
-
-    --finora-dark:#07050a;
 
     --white:#ffffff;
 }
@@ -42,7 +41,7 @@
 
 /* =========================================================
    PAGE
-   DARK PURPLE — NOT BLACK
+   CLEAR DARK PURPLE
    ========================================================= */
 
 html,
@@ -53,9 +52,9 @@ body{
     background:
         linear-gradient(
             135deg,
-            #0B0612 0%,
-            #12091A 48%,
-            #09050F 100%
+            #1A0B26 0%,
+            #241033 50%,
+            #16091F 100%
         );
 }
 
@@ -85,7 +84,6 @@ body{
 
 /* =========================================================
    DASHBOARD SHELL
-   DARK PURPLE BACKGROUND
    ========================================================= */
 
 .dashboard-shell{
@@ -95,9 +93,9 @@ body{
     background:
         linear-gradient(
             135deg,
-            #0B0612 0%,
-            #12091A 48%,
-            #09050F 100%
+            #1A0B26 0%,
+            #241033 50%,
+            #16091F 100%
         );
 
     overflow-x:hidden;
@@ -121,15 +119,16 @@ body{
 
 /* =========================================================
    HEADER
+   DEEP PURPLE — NOT BLACK
    ========================================================= */
 
 .dashboard-header{
     width:100%;
 
     background:
-        rgba(8,4,13,.94);
+        rgba(18,8,26,.94);
 
-    border-bottom:1px solid rgba(255,255,255,.08);
+    border-bottom:1px solid rgba(255,255,255,.10);
 
     position:relative;
     z-index:100;
@@ -138,7 +137,6 @@ body{
 
 /* =========================================================
    TOP HEADER
-   FINORA CENTERED
    ========================================================= */
 
 .top-header{
@@ -350,7 +348,7 @@ body{
 
     line-height:1;
 
-    border:2px solid #08040D;
+    border:2px solid #12081A;
 }
 
 
@@ -417,7 +415,7 @@ body{
 
 /* =========================================================
    MAIN
-   INHERITS THE DARK PURPLE VISUAL SYSTEM
+   SAME DARK PURPLE FAMILY
    ========================================================= */
 
 main{
@@ -426,9 +424,9 @@ main{
     background:
         linear-gradient(
             135deg,
-            #0B0612 0%,
-            #12091A 48%,
-            #09050F 100%
+            #1A0B26 0%,
+            #241033 50%,
+            #16091F 100%
         );
 
     color:#ffffff;
