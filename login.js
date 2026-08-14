@@ -4,12 +4,20 @@ document.addEventListener("DOMContentLoaded", function () {
        FINORA LOGIN.JS
     ========================================= */
 
-    const form = document.getElementById("loginForm");
-    const loginButton = document.getElementById("loginButton");
-    const formStatus = document.getElementById("formStatus");
+    const form =
+        document.getElementById("loginForm");
 
-    const identifier = document.getElementById("identifier");
-    const password = document.getElementById("password");
+    const loginButton =
+        document.getElementById("loginButton");
+
+    const formStatus =
+        document.getElementById("formStatus");
+
+    const identifier =
+        document.getElementById("identifier");
+
+    const password =
+        document.getElementById("password");
 
 
     /* =========================================
@@ -99,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       LOGIN FORM
+       LOGIN SUBMISSION
     ========================================= */
 
     form.addEventListener(
@@ -209,7 +217,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             /* =================================
-               SERVER REQUEST
+               SERVER TIMEOUT
             ================================= */
 
             const controller =
@@ -224,6 +232,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             try {
+
+                /* =================================
+                   SEND LOGIN TO FINORA SERVER
+                ================================= */
 
                 const response =
                     await fetch(
@@ -265,18 +277,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 clearTimeout(timeout);
 
 
-                console.log(
-                    "FINORA LOGIN STATUS:",
-                    response.status
-                );
-
-
                 /* =================================
-                   READ RESPONSE
+                   READ SERVER RESPONSE
                 ================================= */
 
                 const responseText =
                     await response.text();
+
+
+                console.log(
+                    "FINORA LOGIN STATUS:",
+                    response.status
+                );
 
 
                 console.log(
@@ -337,46 +349,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 ================================= */
 
                 console.log(
-                    "FINORA: LOGIN SUCCESS",
-                    data.user
-                );
-
-
-                /* =================================
-                   SAVE USER
-                ================================= */
-
-                if (data.user) {
-
-                    localStorage.setItem(
-                        "finoraCurrentUser",
-                        JSON.stringify(
-                            data.user
-                        )
-                    );
-
-
-                    if (data.user.id) {
-
-                        localStorage.setItem(
-                            "finoraUserId",
-                            String(
-                                data.user.id
-                            )
-                        );
-
-                    }
-
-                }
-
-
-                /* =================================
-                   SAVE LOGIN STATE
-                ================================= */
-
-                localStorage.setItem(
-                    "finoraLoggedIn",
-                    "true"
+                    "FINORA: LOGIN SUCCESS"
                 );
 
 
@@ -395,10 +368,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
 
-                /* =================================
-                   BUTTON
-                ================================= */
-
                 loginButton.disabled =
                     true;
 
@@ -407,7 +376,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 /* =================================
-                   REDIRECT
+                   OPEN DASHBOARD
+                   
+                   NO LOCAL STORAGE
+                   NO LOCAL ACCOUNT DATA
                 ================================= */
 
                 setTimeout(function () {
@@ -417,8 +389,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 }, 700);
 
+            }
 
-            } catch (error) {
+
+            /* =================================
+               CONNECTION ERROR
+            ================================= */
+
+            catch (error) {
 
                 clearTimeout(timeout);
 
@@ -475,7 +453,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       RESET BUTTON
+       RESET LOGIN BUTTON
     ========================================= */
 
     function resetLoginButton() {
