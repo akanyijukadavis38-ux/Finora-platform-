@@ -1,33 +1,35 @@
 /* =========================================================
-   FINORA DASHBOARD
-   PREMIUM GOLD • PINK • BLACK
-   ========================================================= */
+   FINORA — DASHBOARD
+   PREMIUM GOLD • PINK • DARK
+   VISUAL LAYER ONLY
+========================================================= */
 
 :root {
     --black: #07050a;
-    --black-2: #0d0911;
-    --panel: #151019;
-    --panel-2: #1c1421;
+    --black-2: #0d0910;
+    --dark: #120b18;
+    --card: #18101f;
+    --card-2: #211329;
 
-    --gold: #f4bd3f;
+    --pink: #ea2f8f;
+    --pink-light: #ff69b4;
+    --pink-soft: rgba(234, 47, 143, .14);
+
+    --gold: #f3b72f;
     --gold-light: #ffd96a;
-    --gold-dark: #b77a18;
-
-    --pink: #ed3f88;
-    --pink-light: #ff6ca7;
-    --pink-dark: #a91f5b;
+    --gold-dark: #b87812;
 
     --white: #ffffff;
-    --text: #f8f4f8;
-    --muted: #aaa0ad;
-    --dim: #766d79;
+    --text: #f8f3f8;
+    --muted: #b6a8ba;
+    --muted-2: #817487;
 
     --line: rgba(255,255,255,.08);
 
-    --radius-xl: 24px;
-    --radius-lg: 18px;
-    --radius-md: 14px;
-    --radius-sm: 11px;
+    --radius-xl: 22px;
+    --radius-lg: 17px;
+    --radius-md: 13px;
+    --radius-sm: 10px;
 
     --shadow:
         0 18px 45px rgba(0,0,0,.38);
@@ -36,7 +38,7 @@
 
 /* =========================================================
    RESET
-   ========================================================= */
+========================================================= */
 
 * {
     margin: 0;
@@ -51,16 +53,18 @@ html {
 
 body {
     min-height: 100vh;
+    overflow-x: hidden;
+
     background:
         radial-gradient(
-            circle at 85% 0%,
-            rgba(237,63,136,.09),
-            transparent 27%
+            circle at 50% -10%,
+            rgba(234,47,143,.11),
+            transparent 30%
         ),
         radial-gradient(
-            circle at 10% 20%,
-            rgba(244,189,63,.055),
-            transparent 28%
+            circle at 100% 20%,
+            rgba(243,183,47,.08),
+            transparent 25%
         ),
         var(--black);
 
@@ -74,8 +78,6 @@ body {
         Roboto,
         Arial,
         sans-serif;
-
-    overflow-x: hidden;
 }
 
 a {
@@ -85,6 +87,7 @@ a {
 
 button {
     font: inherit;
+    border: 0;
 }
 
 button,
@@ -95,7 +98,7 @@ a {
 
 /* =========================================================
    PAGE
-   ========================================================= */
+========================================================= */
 
 .dashboard-page {
     min-height: 100vh;
@@ -105,12 +108,12 @@ a {
 
 /* =========================================================
    HEADER
-   ========================================================= */
+========================================================= */
 
 .dashboard-header {
     position: sticky;
     top: 0;
-    z-index: 500;
+    z-index: 1000;
 
     width: 100%;
 
@@ -127,8 +130,8 @@ a {
 .header-inner {
     position: relative;
 
-    width: min(1120px, calc(100% - 28px));
-    height: 68px;
+    width: min(1180px, calc(100% - 28px));
+    min-height: 70px;
 
     margin: auto;
 
@@ -140,60 +143,77 @@ a {
 
 /* =========================================================
    HAMBURGER
-   ========================================================= */
+   IMPORTANT:
+   The menu itself is NOT visible here.
+   Only the button is styled.
+========================================================= */
 
 .dashboard-menu-button {
-    width: 40px;
-    height: 40px;
-
-    flex-shrink: 0;
-
-    border: 1px solid rgba(237,63,136,.22);
-    border-radius: 12px;
-
-    background:
-        rgba(237,63,136,.08);
+    width: 42px;
+    height: 42px;
 
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 
+    gap: 5px;
+
+    border-radius: 12px;
+
+    background:
+        rgba(234,47,143,.09);
+
+    border:
+        1px solid rgba(234,47,143,.18);
+
     cursor: pointer;
+
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        border-color .2s ease;
 }
 
 .dashboard-menu-button span {
-    position: absolute;
+    display: block;
 
-    width: 18px;
+    width: 19px;
     height: 2px;
 
     border-radius: 10px;
 
-    background: var(--pink);
+    background:
+        linear-gradient(
+            90deg,
+            var(--pink),
+            var(--pink-light)
+        );
 }
 
-.dashboard-menu-button span:nth-child(1) {
-    transform: translateY(-6px);
-}
+.dashboard-menu-button:hover {
+    transform: translateY(-1px);
 
-.dashboard-menu-button span:nth-child(2) {
-    transform: translateY(0);
-}
+    background:
+        rgba(234,47,143,.16);
 
-.dashboard-menu-button span:nth-child(3) {
-    transform: translateY(6px);
+    border-color:
+        rgba(234,47,143,.38);
 }
 
 
 /* =========================================================
-   FINORA BRAND
-   CENTERED
-   ========================================================= */
+   CENTER BRAND
+========================================================= */
 
 .dashboard-brand {
     position: absolute;
+
     left: 50%;
-    transform: translateX(-50%);
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%);
 
     display: flex;
     align-items: center;
@@ -201,23 +221,20 @@ a {
 
     gap: 7px;
 
-    height: 58px;
+    white-space: nowrap;
 }
 
 
-/*
-   REAL FINORA F-MARK AREA
-
-   The existing HTML brand-mark can be styled into
-   the compact gold F identity without creating
-   a large black icon.
-*/
+/* =========================================================
+   FINORA F MARK
+   Clean geometric gold mark.
+========================================================= */
 
 .brand-mark {
     position: relative;
 
     width: 27px;
-    height: 31px;
+    height: 30px;
 
     flex-shrink: 0;
 }
@@ -229,53 +246,62 @@ a {
 
     height: 5px;
 
-    border-radius: 3px;
+    border-radius: 4px;
 
     background:
         linear-gradient(
             90deg,
-            var(--gold-light),
+            var(--gold-dark),
             var(--gold),
-            var(--gold-dark)
+            var(--gold-light)
         );
+
+    box-shadow:
+        0 0 8px rgba(243,183,47,.12);
 }
 
 .brand-mark-line:nth-child(1) {
-    width: 22px;
-    left: 3px;
-    top: 2px;
+    width: 25px;
+    top: 1px;
+    left: 1px;
 }
 
 .brand-mark-line:nth-child(2) {
-    width: 17px;
-    left: 3px;
+    width: 19px;
     top: 12px;
+    left: 1px;
 }
 
 .brand-mark-line:nth-child(3) {
-    width: 13px;
-    left: 3px;
-    top: 22px;
+    width: 14px;
+    top: 23px;
+    left: 1px;
 }
 
+
+/* =========================================================
+   BRAND TEXT
+========================================================= */
+
 .brand-text {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
     line-height: 1;
-    text-align: left;
 }
 
 .brand-name {
     display: flex;
+    align-items: center;
 
     font-size: 20px;
-    line-height: 20px;
+    line-height: 1;
 
-    font-weight: 900;
-    letter-spacing: 1px;
+    font-weight: 950;
 
-    /*
-       Keeps FINORA visually connected.
-    */
-    gap: 0;
+    letter-spacing: .4px;
 }
 
 .brand-fin {
@@ -284,87 +310,201 @@ a {
 
 .brand-ora {
     color: var(--gold);
+    margin-left: -1px;
 }
 
 .brand-tagline {
     margin-top: 4px;
 
-    color: var(--dim);
+    font-size: 5px;
 
-    font-size: 5.5px;
-    line-height: 1;
+    letter-spacing: 1.9px;
 
     font-weight: 800;
 
-    letter-spacing: 2px;
+    color: var(--muted-2);
 }
 
 
 /* =========================================================
    HEADER ACTIONS
-   ========================================================= */
+========================================================= */
 
 .header-actions {
     display: flex;
     align-items: center;
+
     gap: 8px;
 }
 
 .header-icon-button,
 .profile-button {
-    width: 39px;
-    height: 39px;
-
-    border-radius: 12px;
-
-    border: 1px solid rgba(237,63,136,.18);
-
-    background:
-        rgba(237,63,136,.07);
-
-    color: var(--pink);
+    width: 40px;
+    height: 40px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    position: relative;
+    border-radius: 12px;
 
-    transition: .2s ease;
+    background:
+        rgba(234,47,143,.09);
+
+    border:
+        1px solid rgba(234,47,143,.20);
+
+    color: var(--pink-light);
+
+    cursor: pointer;
+
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        border-color .2s ease;
 }
 
 .header-icon-button:hover,
 .profile-button:hover {
-    border-color: rgba(237,63,136,.45);
-    background: rgba(237,63,136,.13);
+    transform: translateY(-1px);
+
+    background:
+        rgba(234,47,143,.17);
+
+    border-color:
+        rgba(234,47,143,.42);
 }
+
+
+/* =========================================================
+   REAL CSS ICONS
+   No ugly Unicode symbols.
+========================================================= */
 
 .notification-icon {
-    color: var(--pink);
+    position: relative;
 
-    font-size: 19px;
-    line-height: 1;
+    width: 18px;
+    height: 18px;
+
+    display: block;
 }
+
+
+/* bell */
+
+.notification-icon::before {
+    content: "";
+
+    position: absolute;
+
+    width: 12px;
+    height: 12px;
+
+    left: 3px;
+    top: 2px;
+
+    border:
+        2px solid var(--pink-light);
+
+    border-bottom: 0;
+
+    border-radius:
+        8px 8px 4px 4px;
+}
+
+.notification-icon::after {
+    content: "";
+
+    position: absolute;
+
+    width: 16px;
+    height: 2px;
+
+    left: 1px;
+    bottom: 2px;
+
+    border-radius: 5px;
+
+    background:
+        var(--pink-light);
+
+    box-shadow:
+        6px 3px 0 -1px var(--pink-light);
+}
+
+
+/* profile */
 
 .profile-icon {
-    color: var(--pink);
+    position: relative;
 
-    font-size: 20px;
-    line-height: 1;
+    width: 19px;
+    height: 19px;
+
+    display: block;
+
+    border:
+        2px solid var(--pink-light);
+
+    border-radius: 50%;
 }
+
+.profile-icon::before {
+    content: "";
+
+    position: absolute;
+
+    width: 5px;
+    height: 5px;
+
+    left: 5px;
+    top: 3px;
+
+    border:
+        1.8px solid var(--pink-light);
+
+    border-radius: 50%;
+}
+
+.profile-icon::after {
+    content: "";
+
+    position: absolute;
+
+    width: 9px;
+    height: 5px;
+
+    left: 3px;
+    bottom: 3px;
+
+    border:
+        1.8px solid var(--pink-light);
+
+    border-bottom: 0;
+
+    border-radius: 8px 8px 0 0;
+}
+
+
+/* notification dot */
 
 .notification-dot {
     position: absolute;
 
+    width: 7px;
+    height: 7px;
+
     top: 7px;
     right: 7px;
 
-    width: 6px;
-    height: 6px;
-
     border-radius: 50%;
 
-    background: var(--gold);
+    background:
+        var(--pink-light);
+
+    box-shadow:
+        0 0 8px rgba(234,47,143,.75);
 
     display: none;
 }
@@ -372,7 +512,7 @@ a {
 
 /* =========================================================
    MAIN
-   ========================================================= */
+========================================================= */
 
 .dashboard-main {
     width: min(1120px, calc(100% - 28px));
@@ -385,29 +525,30 @@ a {
 
 /* =========================================================
    WELCOME
-   ========================================================= */
+========================================================= */
 
 .welcome-section {
-    margin-bottom: 16px;
+    margin-bottom: 15px;
 }
 
 .welcome-small {
     margin-bottom: 5px;
 
-    color: var(--pink);
+    color: var(--pink-light);
 
     font-size: 9px;
+
     font-weight: 900;
 
     letter-spacing: 2px;
 }
 
 .welcome-section h1 {
-    font-size: clamp(23px, 4vw, 31px);
+    font-size: clamp(24px, 4vw, 32px);
 
-    line-height: 1.1;
+    line-height: 1.08;
 
-    font-weight: 850;
+    font-weight: 900;
 }
 
 .welcome-subtitle {
@@ -421,7 +562,8 @@ a {
 
 /* =========================================================
    HERO BANNER
-   ========================================================= */
+   GOLD + PINK + BLACK
+========================================================= */
 
 .hero-banner {
     position: relative;
@@ -430,71 +572,101 @@ a {
 
     overflow: hidden;
 
-    margin-bottom: 17px;
+    margin-bottom: 16px;
 
-    padding: 25px 27px;
+    padding: 27px 29px;
+
+    display: flex;
+    align-items: center;
 
     border-radius: var(--radius-xl);
 
     background:
         linear-gradient(
-            110deg,
-            #301020 0%,
-            #6d183e 25%,
-            #d42d72 54%,
-            #f0a72e 83%,
-            #9b6013 100%
+            115deg,
+            #8e4c12 0%,
+            #d4931e 34%,
+            #f3b72f 59%,
+            #ea2f8f 100%
         );
 
     box-shadow:
-        0 20px 55px rgba(237,63,136,.18),
-        inset 0 1px 0 rgba(255,255,255,.13);
+        0 20px 55px rgba(234,47,143,.13),
+        0 15px 40px rgba(243,183,47,.15);
 }
+
+
+/* dark overlay */
+
+.hero-banner::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(15,7,17,.05),
+            transparent 45%,
+            rgba(7,5,10,.25)
+        );
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   HERO CONTENT
+========================================================= */
 
 .hero-content {
     position: relative;
-    z-index: 10;
+    z-index: 5;
 
-    max-width: 580px;
+    max-width: 590px;
 }
 
 .hero-label {
     margin-bottom: 8px;
 
-    color: rgba(255,255,255,.78);
+    color:
+        rgba(255,255,255,.82);
 
-    font-size: 8px;
+    font-size: 9px;
+
     font-weight: 900;
 
     letter-spacing: 2px;
 }
 
 .hero-banner h2 {
-    color: white;
+    max-width: 580px;
 
-    max-width: 500px;
+    color: #fff;
 
-    font-size: clamp(27px, 5vw, 40px);
+    font-size: clamp(27px, 5vw, 42px);
 
-    line-height: 1.03;
+    line-height: 1.02;
 
     font-weight: 950;
 }
 
 .hero-banner h2 span {
-    color: #ffe17d;
+    color: #291225;
 }
 
 .hero-banner p {
-    max-width: 500px;
+    max-width: 510px;
 
     margin-top: 10px;
 
-    color: rgba(255,255,255,.83);
+    color:
+        rgba(255,255,255,.88);
 
-    font-size: 11px;
+    font-size: 12px;
 
-    line-height: 1.5;
+    line-height: 1.55;
 }
 
 .hero-button {
@@ -505,15 +677,20 @@ a {
 
     margin-top: 15px;
 
-    padding: 10px 16px;
+    min-height: 36px;
+
+    padding: 0 15px;
 
     border-radius: 9px;
 
-    background: var(--black);
+    background:
+        #100a11;
 
-    color: var(--gold-light);
+    color:
+        var(--gold-light);
 
     font-size: 9px;
+
     font-weight: 900;
 
     letter-spacing: .8px;
@@ -523,19 +700,24 @@ a {
 
 .hero-button:hover {
     transform: translateY(-2px);
-    background: #140b16;
+
+    background:
+        #1c0d1d;
+
+    color:
+        #fff;
 }
 
 
 /* =========================================================
    HERO DECORATION
-   ========================================================= */
+========================================================= */
 
 .hero-decoration {
     position: absolute;
 
-    right: -35px;
-    top: -45px;
+    right: -30px;
+    top: -65px;
 
     width: 370px;
     height: 370px;
@@ -549,24 +731,23 @@ a {
     border-radius: 50%;
 
     border:
-        1px solid
-        rgba(255,255,255,.25);
+        1px solid rgba(255,255,255,.30);
 }
 
 .hero-circle-one {
     width: 285px;
     height: 285px;
 
-    right: 25px;
-    top: 50px;
+    right: 18px;
+    top: 43px;
 }
 
 .hero-circle-two {
     width: 190px;
     height: 190px;
 
-    right: 72px;
-    top: 97px;
+    right: 66px;
+    top: 91px;
 }
 
 .hero-glow {
@@ -575,65 +756,92 @@ a {
     width: 190px;
     height: 190px;
 
-    right: 72px;
-    top: 97px;
+    right: 66px;
+    top: 91px;
 
     border-radius: 50%;
 
     background:
-        rgba(255,255,255,.13);
+        rgba(255,255,255,.15);
 
-    filter: blur(28px);
+    filter: blur(25px);
 }
 
 
 /* =========================================================
    WALLET
-   ========================================================= */
+========================================================= */
 
 .wallet-section {
     margin-bottom: 18px;
 }
 
 .wallet-card {
-    padding: 19px 20px;
+    position: relative;
+
+    padding: 20px 22px;
+
+    overflow: hidden;
 
     border-radius: var(--radius-lg);
 
     background:
         linear-gradient(
             135deg,
-            #211527,
-            #120c17
+            #24152c,
+            #140d1a 70%
         );
 
     border:
-        1px solid rgba(244,189,63,.16);
+        1px solid rgba(243,183,47,.18);
 
     box-shadow: var(--shadow);
 }
 
+.wallet-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 150px;
+    height: 150px;
+
+    right: -70px;
+    top: -70px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(234,47,143,.08);
+}
+
 .wallet-top {
+    position: relative;
+    z-index: 2;
+
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 }
 
 .wallet-label {
     color: var(--muted);
 
-    font-size: 8px;
-    font-weight: 900;
+    font-size: 9px;
 
-    letter-spacing: 1.5px;
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
 }
 
 .wallet-card h2 {
-    margin-top: 6px;
+    margin-top: 5px;
 
     color: var(--gold-light);
 
-    font-size: clamp(27px, 5vw, 36px);
+    font-size: clamp(27px, 5vw, 35px);
 
     line-height: 1;
 
@@ -641,47 +849,49 @@ a {
 }
 
 .wallet-icon {
-    width: 43px;
-    height: 43px;
-
-    border-radius: 13px;
+    width: 44px;
+    height: 44px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    color: var(--pink);
+    border-radius: 13px;
 
     background:
-        rgba(237,63,136,.1);
+        var(--pink-soft);
 
-    border:
-        1px solid rgba(237,63,136,.15);
+    color: var(--pink-light);
 
-    font-size: 19px;
+    font-size: 21px;
 }
 
 .wallet-bottom {
+    position: relative;
+    z-index: 2;
+
     display: grid;
 
     grid-template-columns: repeat(2, 1fr);
 
-    gap: 12px;
+    gap: 15px;
 
-    margin-top: 17px;
+    margin-top: 18px;
     padding-top: 14px;
 
-    border-top: 1px solid var(--line);
+    border-top:
+        1px solid var(--line);
 }
 
 .wallet-stat {
     display: flex;
     flex-direction: column;
+
     gap: 4px;
 }
 
 .wallet-stat span {
-    color: var(--dim);
+    color: var(--muted-2);
 
     font-size: 9px;
 }
@@ -695,7 +905,7 @@ a {
 
 /* =========================================================
    SECTION HEADINGS
-   ========================================================= */
+========================================================= */
 
 .section-heading {
     display: flex;
@@ -707,19 +917,21 @@ a {
 }
 
 .section-kicker {
-    color: var(--pink);
+    color: var(--pink-light);
 
     font-size: 8px;
+
     font-weight: 900;
 
-    letter-spacing: 1.8px;
+    letter-spacing: 1.7px;
 }
 
 .section-heading h2 {
     margin-top: 3px;
 
+    color: var(--text);
+
     font-size: 17px;
-    line-height: 1.2;
 
     font-weight: 850;
 }
@@ -727,17 +939,18 @@ a {
 .section-link {
     color: var(--gold-light);
 
-    font-size: 9px;
-    font-weight: 850;
+    font-size: 10px;
+
+    font-weight: 800;
 }
 
 
 /* =========================================================
    QUICK ACTIONS
-   ========================================================= */
+========================================================= */
 
 .quick-actions-section {
-    margin-bottom: 19px;
+    margin-bottom: 20px;
 }
 
 .quick-actions-grid {
@@ -746,30 +959,31 @@ a {
     grid-template-columns:
         repeat(3, 1fr);
 
-    gap: 9px;
+    gap: 10px;
 }
 
 .quick-action {
-    min-height: 76px;
+    min-height: 78px;
 
-    padding: 10px;
+    padding: 11px 12px;
 
     display: flex;
+
     align-items: center;
 
     gap: 10px;
-
-    border:
-        1px solid var(--line);
 
     border-radius: var(--radius-md);
 
     background:
         linear-gradient(
             145deg,
-            #1b1220,
-            #110b15
+            #211329,
+            #130c18
         );
+
+    border:
+        1px solid var(--line);
 
     transition: .2s ease;
 }
@@ -778,14 +992,25 @@ a {
     transform: translateY(-2px);
 
     border-color:
-        rgba(237,63,136,.28);
+        rgba(234,47,143,.30);
+
+    background:
+        #24162d;
 }
 
-.quick-action-icon {
-    flex: 0 0 37px;
 
-    width: 37px;
-    height: 37px;
+/* =========================================================
+   ACTION ICONS
+   Pink/gold — NOT black.
+========================================================= */
+
+.quick-action-icon {
+    position: relative;
+
+    flex: 0 0 38px;
+
+    width: 38px;
+    height: 38px;
 
     display: flex;
     align-items: center;
@@ -793,17 +1018,28 @@ a {
 
     border-radius: 11px;
 
-    color: var(--pink);
-
     background:
-        rgba(237,63,136,.09);
+        linear-gradient(
+            145deg,
+            rgba(234,47,143,.17),
+            rgba(243,183,47,.09)
+        );
 
     border:
-        1px solid rgba(237,63,136,.14);
+        1px solid rgba(234,47,143,.16);
 
-    font-size: 17px;
+    color:
+        var(--pink-light);
+
+    font-size: 19px;
+
     font-weight: 900;
 }
+
+
+/* =========================================================
+   ACTION TEXT
+========================================================= */
 
 .quick-action-text {
     min-width: 0;
@@ -819,26 +1055,34 @@ a {
 
     font-size: 11px;
 
+    font-weight: 850;
+
     white-space: nowrap;
+
     overflow: hidden;
+
     text-overflow: ellipsis;
 }
 
 .quick-action-text span {
-    color: var(--dim);
+    color: var(--muted-2);
 
     font-size: 8px;
 
     white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
 }
 
 
 /* =========================================================
    INVESTMENT SUMMARY
-   ========================================================= */
+========================================================= */
 
 .investment-summary {
-    margin-bottom: 19px;
+    margin-bottom: 20px;
 }
 
 .summary-grid {
@@ -847,25 +1091,27 @@ a {
     grid-template-columns:
         repeat(3, 1fr);
 
-    gap: 9px;
+    gap: 10px;
 }
 
 .summary-card {
     min-height: 84px;
 
-    padding: 12px;
+    padding: 13px;
 
     display: flex;
+
     align-items: center;
 
     gap: 10px;
 
-    border:
-        1px solid var(--line);
-
     border-radius: var(--radius-md);
 
-    background: var(--panel);
+    background:
+        var(--card);
+
+    border:
+        1px solid var(--line);
 }
 
 .summary-card-icon {
@@ -880,83 +1126,141 @@ a {
 
     border-radius: 10px;
 
-    color: var(--gold-light);
-
     background:
-        rgba(244,189,63,.08);
+        rgba(234,47,143,.12);
 
-    border:
-        1px solid rgba(244,189,63,.13);
+    color:
+        var(--pink-light);
+
+    font-size: 15px;
 }
 
 .summary-card div:last-child {
     display: flex;
+
     flex-direction: column;
 
     gap: 4px;
 }
 
 .summary-card span {
-    color: var(--dim);
+    color: var(--muted-2);
 
-    font-size: 8px;
+    font-size: 9px;
 }
 
 .summary-card strong {
     color: var(--text);
 
-    font-size: 13px;
+    font-size: 14px;
 }
 
 
 /* =========================================================
    RECENT ACTIVITY
-   ========================================================= */
+   Kept compact if present in HTML.
+========================================================= */
 
 .recent-activity {
-    display: none;
+    margin-bottom: 20px;
+}
+
+.activity-list {
+    overflow: hidden;
+
+    border:
+        1px solid var(--line);
+
+    border-radius: var(--radius-lg);
+
+    background:
+        var(--card);
+}
+
+.activity-empty {
+    min-height: 90px;
+
+    padding: 18px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+.activity-empty-icon {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 6px;
+
+    border-radius: 50%;
+
+    background:
+        var(--pink-soft);
+
+    color:
+        var(--pink-light);
+}
+
+.activity-empty p {
+    color: var(--muted-2);
+
+    font-size: 9px;
 }
 
 
 /* =========================================================
    BOTTOM NAVIGATION
-   ========================================================= */
+========================================================= */
 
 .bottom-navigation {
     position: fixed;
 
     left: 50%;
-    bottom: 9px;
+    bottom: 10px;
 
-    transform: translateX(-50%);
+    transform:
+        translateX(-50%);
 
-    z-index: 400;
+    z-index: 1500;
 
-    width: min(520px, calc(100% - 18px));
+    width: min(520px, calc(100% - 22px));
 
-    height: 62px;
+    height: 65px;
 
     display: grid;
 
     grid-template-columns:
         repeat(4, 1fr);
 
-    border:
-        1px solid rgba(255,255,255,.09);
+    padding: 4px;
 
-    border-radius: 19px;
+    border-radius: 20px;
 
     background:
-        rgba(20,13,25,.96);
+        rgba(24,16,31,.97);
+
+    border:
+        1px solid rgba(234,47,143,.14);
 
     box-shadow:
-        0 18px 50px rgba(0,0,0,.58);
+        0 20px 55px rgba(0,0,0,.60);
 
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
 }
 
 .bottom-nav-item {
+    position: relative;
+
     display: flex;
 
     flex-direction: column;
@@ -966,72 +1270,82 @@ a {
 
     gap: 4px;
 
-    color: var(--dim);
+    border-radius: 16px;
+
+    color: var(--muted-2);
 
     transition: .2s ease;
 }
 
+.bottom-nav-item.active {
+    color: var(--gold-light);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(234,47,143,.12),
+            rgba(243,183,47,.06)
+        );
+}
+
+.bottom-nav-item:hover {
+    color: var(--pink-light);
+}
+
 .bottom-nav-icon {
-    width: 26px;
-    height: 26px;
+    width: 20px;
+    height: 20px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 8px;
+    font-size: 17px;
 
-    font-size: 16px;
+    line-height: 1;
 }
 
 .bottom-nav-label {
-    font-size: 7px;
+    font-size: 8px;
+
     font-weight: 800;
-}
-
-.bottom-nav-item.active {
-    color: var(--pink);
-}
-
-.bottom-nav-item.active .bottom-nav-icon {
-    background:
-        rgba(237,63,136,.1);
 }
 
 
 /* =========================================================
    NOTIFICATION PANEL
-   ========================================================= */
+========================================================= */
 
 .notification-panel {
     position: fixed;
 
-    z-index: 700;
-
-    top: 76px;
+    top: 77px;
     right: 14px;
 
-    width: min(340px, calc(100% - 28px));
+    z-index: 1800;
 
-    max-height: 420px;
+    width: min(350px, calc(100% - 28px));
+
+    max-height: 430px;
 
     overflow-y: auto;
 
-    background:
-        #171019;
-
-    border:
-        1px solid rgba(237,63,136,.18);
-
     border-radius: 17px;
 
+    background:
+        #1a1021;
+
+    border:
+        1px solid rgba(234,47,143,.16);
+
     box-shadow:
-        0 25px 70px rgba(0,0,0,.62);
+        0 25px 65px rgba(0,0,0,.65);
 
     transform:
-        translateY(-10px);
+        translateY(-8px);
 
     opacity: 0;
+
     visibility: hidden;
 
     transition: .22s ease;
@@ -1042,6 +1356,7 @@ a {
         translateY(0);
 
     opacity: 1;
+
     visibility: visible;
 }
 
@@ -1049,6 +1364,7 @@ a {
     padding: 15px;
 
     display: flex;
+
     align-items: center;
     justify-content: space-between;
 
@@ -1061,8 +1377,6 @@ a {
 }
 
 .close-notifications {
-    border: 0;
-
     background: transparent;
 
     color: var(--muted);
@@ -1089,15 +1403,15 @@ a {
 }
 
 .notification-empty span {
-    color: var(--pink);
+    color: var(--pink-light);
 
-    font-size: 25px;
+    font-size: 24px;
 
     margin-bottom: 8px;
 }
 
 .notification-empty p {
-    color: var(--dim);
+    color: var(--muted-2);
 
     font-size: 10px;
 }
@@ -1105,7 +1419,7 @@ a {
 
 /* =========================================================
    FOOTER
-   ========================================================= */
+========================================================= */
 
 .dashboard-footer {
     padding:
@@ -1113,19 +1427,24 @@ a {
 
     text-align: center;
 
-    color: var(--dim);
+    color: var(--muted-2);
 
     font-size: 8px;
+
+    letter-spacing: .3px;
 }
 
 
 /* =========================================================
    TABLET
-   ========================================================= */
+========================================================= */
 
 @media (max-width: 760px) {
 
-    .dashboard-main,
+    .dashboard-main {
+        width: calc(100% - 22px);
+    }
+
     .header-inner {
         width: calc(100% - 22px);
     }
@@ -1133,11 +1452,13 @@ a {
     .hero-banner {
         min-height: 190px;
 
-        padding: 22px 21px;
+        padding:
+            23px 21px;
     }
 
     .hero-decoration {
-        right: -100px;
+        right: -110px;
+
         opacity: .65;
     }
 }
@@ -1145,71 +1466,84 @@ a {
 
 /* =========================================================
    MOBILE
-   ========================================================= */
+========================================================= */
 
 @media (max-width: 520px) {
 
     .dashboard-page {
-        padding-bottom: 87px;
+        padding-bottom: 88px;
     }
 
     .header-inner {
-        height: 64px;
+        min-height: 64px;
+    }
+
+    .dashboard-menu-button {
+        width: 38px;
+        height: 38px;
     }
 
     .dashboard-brand {
-        height: 54px;
+        gap: 5px;
     }
 
     .brand-mark {
-        width: 24px;
-        height: 28px;
+        width: 23px;
+        height: 27px;
     }
 
     .brand-mark-line:nth-child(1) {
-        width: 20px;
+        width: 22px;
+        height: 4px;
     }
 
     .brand-mark-line:nth-child(2) {
-        width: 15px;
+        width: 17px;
+        height: 4px;
+
+        top: 10px;
     }
 
     .brand-mark-line:nth-child(3) {
         width: 12px;
+        height: 4px;
+
+        top: 19px;
     }
 
     .brand-name {
         font-size: 18px;
-        letter-spacing: .8px;
+        letter-spacing: .25px;
     }
 
     .brand-tagline {
-        font-size: 5px;
-        letter-spacing: 1.7px;
-    }
-
-    .dashboard-main {
-        width: calc(100% - 16px);
-        padding-top: 15px;
-    }
-
-    .header-icon-button,
-    .profile-button,
-    .dashboard-menu-button {
-        width: 36px;
-        height: 36px;
+        font-size: 4.5px;
+        letter-spacing: 1.55px;
     }
 
     .header-actions {
-        gap: 6px;
+        gap: 5px;
+    }
+
+    .header-icon-button,
+    .profile-button {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+    }
+
+    .dashboard-main {
+        width: calc(100% - 18px);
+
+        padding-top: 14px;
     }
 
     .welcome-section {
-        margin-bottom: 13px;
+        margin-bottom: 12px;
     }
 
     .welcome-section h1 {
-        font-size: 23px;
+        font-size: 22px;
     }
 
     .welcome-subtitle {
@@ -1217,11 +1551,16 @@ a {
     }
 
     .hero-banner {
-        min-height: 190px;
+        min-height: 185px;
 
-        padding: 20px 17px;
+        padding:
+            20px 17px;
 
         border-radius: 18px;
+    }
+
+    .hero-label {
+        font-size: 8px;
     }
 
     .hero-banner h2 {
@@ -1231,13 +1570,22 @@ a {
     }
 
     .hero-banner p {
-        max-width: 260px;
+        max-width: 265px;
 
         font-size: 10px;
     }
 
+    .hero-button {
+        min-height: 34px;
+
+        padding: 0 12px;
+
+        font-size: 8px;
+    }
+
     .hero-decoration {
         right: -135px;
+
         opacity: .42;
     }
 
@@ -1272,17 +1620,16 @@ a {
         grid-template-columns:
             repeat(3, 1fr);
 
-        gap: 6px;
+        gap: 7px;
     }
 
     .quick-action {
-        min-height: 76px;
+        min-height: 75px;
 
         padding: 8px;
 
         flex-direction: column;
 
-        align-items: center;
         justify-content: center;
 
         text-align: center;
@@ -1296,21 +1643,21 @@ a {
 
         flex-basis: 31px;
 
-        border-radius: 9px;
+        border-radius: 8px;
 
         font-size: 14px;
     }
 
     .quick-action-text {
-        width: 100%;
-
         align-items: center;
+
+        width: 100%;
     }
 
     .quick-action-text strong {
-        max-width: 100%;
-
         font-size: 8px;
+
+        max-width: 100%;
     }
 
     .quick-action-text span {
@@ -1325,9 +1672,9 @@ a {
     }
 
     .summary-card {
-        min-height: 77px;
+        min-height: 75px;
 
-        padding: 7px;
+        padding: 8px;
 
         flex-direction: column;
 
@@ -1356,45 +1703,56 @@ a {
     }
 
     .bottom-navigation {
-        width: calc(100% - 14px);
+        bottom: 8px;
 
-        height: 60px;
+        width: calc(100% - 16px);
 
-        bottom: 7px;
+        height: 61px;
 
         border-radius: 18px;
+    }
+
+    .bottom-nav-icon {
+        font-size: 17px;
+    }
+
+    .bottom-nav-label {
+        font-size: 7px;
+    }
+
+    .notification-panel {
+        top: 70px;
     }
 }
 
 
 /* =========================================================
    VERY SMALL PHONES
-   ========================================================= */
+========================================================= */
 
 @media (max-width: 360px) {
 
-    .header-inner {
-        width: calc(100% - 14px);
-    }
-
-    .dashboard-main {
-        width: calc(100% - 12px);
-    }
-
     .brand-tagline {
         display: none;
+    }
+
+    .dashboard-brand {
+        gap: 4px;
     }
 
     .brand-name {
         font-size: 17px;
     }
 
-    .hero-banner {
-        min-height: 180px;
+    .dashboard-menu-button {
+        width: 35px;
+        height: 35px;
     }
 
-    .hero-banner h2 {
-        font-size: 23px;
+    .header-icon-button,
+    .profile-button {
+        width: 34px;
+        height: 34px;
     }
 
     .quick-action {
@@ -1412,7 +1770,11 @@ a {
         font-size: 7px;
     }
 
-    .summary-card {
-        min-height: 72px;
+    .hero-banner {
+        min-height: 175px;
+    }
+
+    .hero-banner h2 {
+        font-size: 23px;
     }
 }
