@@ -1,10 +1,19 @@
 /* =========================================================
    FINORA DASHBOARD — PART ONE
-   DARK BACKGROUND / HEADER FOUNDATION
+   DARK PURPLE FINORA BACKGROUND
+   ========================================================= */
+
+
+/* =========================================================
+   ROOT COLORS
    ========================================================= */
 
 :root{
-    --finora-bg:#050409;
+    --finora-bg:#0B0612;
+
+    --finora-purple-dark:#08040D;
+    --finora-purple:#100719;
+    --finora-purple-light:#160A20;
 
     --finora-pink:#EA3CFF;
     --finora-pink-dark:#9E18BD;
@@ -33,9 +42,7 @@
 
 /* =========================================================
    PAGE
-   IMPORTANT:
-   NO PINK RADIAL GRADIENT
-   DARK FINORA INDEX-STYLE BACKGROUND
+   DARK PURPLE — NOT BLACK
    ========================================================= */
 
 html,
@@ -43,9 +50,19 @@ body{
     width:100%;
     min-height:100%;
 
-    background:#050409;
+    background:
+        linear-gradient(
+            135deg,
+            #0B0612 0%,
+            #12091A 48%,
+            #09050F 100%
+        );
 }
 
+
+/* =========================================================
+   BODY
+   ========================================================= */
 
 body{
     min-height:100vh;
@@ -68,14 +85,20 @@ body{
 
 /* =========================================================
    DASHBOARD SHELL
-   KEEPING THE BACKGROUND SOLID/DARK
+   DARK PURPLE BACKGROUND
    ========================================================= */
 
 .dashboard-shell{
     width:100%;
     min-height:100vh;
 
-    background:#050409;
+    background:
+        linear-gradient(
+            135deg,
+            #0B0612 0%,
+            #12091A 48%,
+            #09050F 100%
+        );
 
     overflow-x:hidden;
 }
@@ -103,7 +126,8 @@ body{
 .dashboard-header{
     width:100%;
 
-    background:#050409;
+    background:
+        rgba(8,4,13,.94);
 
     border-bottom:1px solid rgba(255,255,255,.08);
 
@@ -326,7 +350,7 @@ body{
 
     line-height:1;
 
-    border:2px solid #050409;
+    border:2px solid #08040D;
 }
 
 
@@ -361,6 +385,10 @@ body{
 }
 
 
+/* =========================================================
+   PROFILE HOVER
+   ========================================================= */
+
 .profile-button:hover{
     transform:translateY(-1px);
 
@@ -389,14 +417,19 @@ body{
 
 /* =========================================================
    MAIN
-   IMPORTANT:
-   TRANSPARENT — INHERITS THE DARK SHELL
+   INHERITS THE DARK PURPLE VISUAL SYSTEM
    ========================================================= */
 
 main{
     width:100%;
 
-    background:transparent;
+    background:
+        linear-gradient(
+            135deg,
+            #0B0612 0%,
+            #12091A 48%,
+            #09050F 100%
+        );
 
     color:#ffffff;
 }
