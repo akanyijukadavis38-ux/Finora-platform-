@@ -1,19 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#07050A">
-<meta name="description" content="FINORA Dashboard — Invest • Grow • Earn">
-<title>FINORA | Dashboard</title>
 
-<link rel="stylesheet" href="dashboard.css">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="theme-color"
+        content="#07050A">
+
+    <meta
+        name="description"
+        content="FINORA Dashboard — Invest • Grow • Earn">
+
+    <title>FINORA | Dashboard</title>
+
+    <!-- MAIN DASHBOARD CSS -->
+    <link
+        rel="stylesheet"
+        href="dashboard.css">
 
 </head>
+
 
 <body>
 
 <div class="dashboard-shell">
+
 
 <!-- =========================================================
      HEADER
@@ -25,10 +42,18 @@
 
         <div class="top-header">
 
-            <!-- FINORA LOGO -->
-            <a href="dashboard.html"
-               class="finora-brand"
-               aria-label="FINORA Home">
+
+            <!-- =================================================
+                 FINORA BRAND
+                 ================================================= -->
+
+            <a
+                href="dashboard.html"
+                class="finora-brand"
+                aria-label="FINORA Home">
+
+
+                <!-- FINORA F LOGO -->
 
                 <svg
                     class="finora-logo-mark"
@@ -47,13 +72,28 @@
                             y2="105"
                             gradientUnits="userSpaceOnUse">
 
-                            <stop offset="0" stop-color="#FFF0A8"/>
-                            <stop offset=".22" stop-color="#FFD35A"/>
-                            <stop offset=".55" stop-color="#F2B52F"/>
-                            <stop offset=".82" stop-color="#D88A12"/>
-                            <stop offset="1" stop-color="#A95E05"/>
+                            <stop
+                                offset="0"
+                                stop-color="#FFF0A8"/>
+
+                            <stop
+                                offset=".22"
+                                stop-color="#FFD35A"/>
+
+                            <stop
+                                offset=".55"
+                                stop-color="#F2B52F"/>
+
+                            <stop
+                                offset=".82"
+                                stop-color="#D88A12"/>
+
+                            <stop
+                                offset="1"
+                                stop-color="#A95E05"/>
 
                         </linearGradient>
+
 
                         <linearGradient
                             id="finoraShine"
@@ -63,13 +103,22 @@
                             y2="70"
                             gradientUnits="userSpaceOnUse">
 
-                            <stop offset="0" stop-color="#FFF8D0"/>
-                            <stop offset=".45" stop-color="#FFE27A"/>
-                            <stop offset="1" stop-color="#E9A51E"/>
+                            <stop
+                                offset="0"
+                                stop-color="#FFF8D0"/>
+
+                            <stop
+                                offset=".45"
+                                stop-color="#FFE27A"/>
+
+                            <stop
+                                offset="1"
+                                stop-color="#E9A51E"/>
 
                         </linearGradient>
 
                     </defs>
+
 
                     <path
                         fill="url(#finoraGold)"
@@ -105,8 +154,7 @@
                         C34 18 27 21 21 27
                         L16 32
                         Z
-                        "
-                    />
+                        " />
 
                     <path
                         fill="url(#finoraShine)"
@@ -121,16 +169,27 @@
                         L24 10
                         C24 8 25 7 27 7
                         Z
-                        "
-                    />
+                        " />
 
                 </svg>
+
+
+                <!-- FINORA WORDMARK -->
 
                 <div class="finora-brand-text">
 
                     <div class="finora-name">
-    <span class="finora-fin">FIN</span><span class="finora-ora">ORA</span>
-</div>
+
+                        <span class="finora-fin">
+                            FIN
+                        </span>
+
+                        <span class="finora-ora">
+                            ORA
+                        </span>
+
+                    </div>
+
 
                     <div class="finora-tagline">
                         INVEST • GROW • EARN
@@ -141,10 +200,15 @@
             </a>
 
 
-            <!-- HEADER RIGHT -->
+            <!-- =================================================
+                 HEADER ACTIONS
+                 ================================================= -->
+
             <div class="header-actions">
 
+
                 <!-- NOTIFICATION -->
+
                 <button
                     class="notification-button"
                     id="notificationButton"
@@ -172,6 +236,11 @@
 
                     </svg>
 
+
+                    <!-- Notification count.
+                         CSS will position this small indicator
+                         above the notification icon. -->
+
                     <span
                         class="notification-count"
                         id="notificationCount">
@@ -182,6 +251,7 @@
 
 
                 <!-- PROFILE -->
+
                 <a
                     href="mine.html"
                     class="profile-button"
@@ -216,8 +286,9 @@
 </header>
 
 
+
 <!-- =========================================================
-     MAIN
+     MAIN CONTENT
      ========================================================= -->
 
 <main>
@@ -226,7 +297,7 @@
 
 
 <!-- =========================================================
-     WELCOME
+     WELCOME SECTION
      ========================================================= -->
 
 <section class="welcome-section">
@@ -236,8 +307,13 @@
     </div>
 
     <h1>
+
         Welcome back,
-        <span id="userName">Investor</span>
+
+        <span id="userName">
+            Investor
+        </span>
+
     </h1>
 
     <p>
@@ -247,13 +323,15 @@
 </section>
 
 
+
 <!-- =========================================================
-     FOUR BANNER CAROUSEL
+     FEATURED BANNER CAROUSEL
      ========================================================= -->
 
 <section
     class="banner-section"
     aria-label="FINORA featured investments">
+
 
     <div
         class="banner-track"
@@ -264,7 +342,9 @@
              BANNER 1 — INVEST
              ================================================= -->
 
-        <article class="dashboard-banner banner-invest">
+        <article
+            class="dashboard-banner banner-invest">
+
 
             <div class="banner-content">
 
@@ -273,8 +353,13 @@
                 </div>
 
                 <h2>
+
                     Invest Smart.<br>
-                    <span>Grow Daily.</span>
+
+                    <span>
+                        Grow Daily.
+                    </span>
+
                 </h2>
 
                 <div class="banner-subtitle">
@@ -292,7 +377,9 @@
 
                     EXPLORE INVESTMENTS
 
-                    <span>→</span>
+                    <span>
+                        →
+                    </span>
 
                 </a>
 
@@ -300,7 +387,9 @@
 
 
             <!-- INVESTMENT ARTWORK -->
-            <div class="banner-artwork investment-artwork">
+
+            <div
+                class="banner-artwork investment-artwork">
 
                 <svg
                     viewBox="0 0 420 270"
@@ -308,7 +397,9 @@
                     aria-label="Investment artwork"
                     role="img">
 
-                    <!-- Safe -->
+
+                    <!-- SAFE -->
+
                     <rect
                         x="185"
                         y="35"
@@ -319,6 +410,7 @@
                         stroke="#D69A2D"
                         stroke-width="4"/>
 
+
                     <circle
                         cx="265"
                         cy="125"
@@ -326,6 +418,7 @@
                         fill="#201B20"
                         stroke="#D69A2D"
                         stroke-width="5"/>
+
 
                     <circle
                         cx="265"
@@ -335,50 +428,118 @@
                         stroke="#F4C44F"
                         stroke-width="4"/>
 
+
                     <circle
                         cx="265"
                         cy="125"
                         r="8"
                         fill="#F7D66B"/>
 
-                    <!-- Coins -->
-                    <g fill="#D99A20" stroke="#FFD86B" stroke-width="2">
 
-                        <ellipse cx="95" cy="200" rx="48" ry="11"/>
-                        <rect x="47" y="188" width="96" height="12"/>
+                    <!-- COINS -->
 
-                        <ellipse cx="95" cy="188" rx="48" ry="11"/>
-                        <rect x="47" y="176" width="96" height="12"/>
+                    <g
+                        fill="#D99A20"
+                        stroke="#FFD86B"
+                        stroke-width="2">
 
-                        <ellipse cx="95" cy="176" rx="48" ry="11"/>
+                        <ellipse
+                            cx="95"
+                            cy="200"
+                            rx="48"
+                            ry="11"/>
+
+                        <rect
+                            x="47"
+                            y="188"
+                            width="96"
+                            height="12"/>
+
+                        <ellipse
+                            cx="95"
+                            cy="188"
+                            rx="48"
+                            ry="11"/>
+
+                        <rect
+                            x="47"
+                            y="176"
+                            width="96"
+                            height="12"/>
+
+                        <ellipse
+                            cx="95"
+                            cy="176"
+                            rx="48"
+                            ry="11"/>
 
                     </g>
 
-                    <!-- Shield -->
+
+                    <!-- SECURITY SHIELD -->
+
                     <path
-                        d="M115 68 L155 82 V118 C155 145 137 163 115 174 C93 163 75 145 75 118 V82 Z"
+                        d="
+                        M115 68
+                        L155 82
+                        V118
+                        C155 145 137 163 115 174
+                        C93 163 75 145 75 118
+                        V82
+                        Z"
                         fill="#6E4911"
                         stroke="#E8B73E"
                         stroke-width="4"/>
 
+
                     <path
-                        d="M95 119 L108 132 L137 99"
+                        d="
+                        M95 119
+                        L108 132
+                        L137 99"
                         fill="none"
                         stroke="#FFF0A5"
                         stroke-width="7"
                         stroke-linecap="round"
                         stroke-linejoin="round"/>
 
-                    <!-- Coin stacks -->
-                    <g fill="#C98615" stroke="#FFD86B" stroke-width="2">
 
-                        <ellipse cx="365" cy="208" rx="35" ry="9"/>
-                        <rect x="330" y="197" width="70" height="11"/>
+                    <!-- COIN STACK -->
 
-                        <ellipse cx="365" cy="197" rx="35" ry="9"/>
-                        <rect x="330" y="186" width="70" height="11"/>
+                    <g
+                        fill="#C98615"
+                        stroke="#FFD86B"
+                        stroke-width="2">
 
-                        <ellipse cx="365" cy="186" rx="35" ry="9"/>
+                        <ellipse
+                            cx="365"
+                            cy="208"
+                            rx="35"
+                            ry="9"/>
+
+                        <rect
+                            x="330"
+                            y="197"
+                            width="70"
+                            height="11"/>
+
+                        <ellipse
+                            cx="365"
+                            cy="197"
+                            rx="35"
+                            ry="9"/>
+
+                        <rect
+                            x="330"
+                            y="186"
+                            width="70"
+                            height="11"/>
+
+                        <ellipse
+                            cx="365"
+                            cy="186"
+                            rx="35"
+                            ry="9"/>
 
                     </g>
 
@@ -389,11 +550,14 @@
         </article>
 
 
+
         <!-- =================================================
              BANNER 2 — WEALTH
              ================================================= -->
 
-        <article class="dashboard-banner banner-wealth">
+        <article
+            class="dashboard-banner banner-wealth">
+
 
             <div class="banner-content">
 
@@ -402,8 +566,13 @@
                 </div>
 
                 <h2>
+
                     Grow Your<br>
-                    <span>Wealth.</span>
+
+                    <span>
+                        Wealth.
+                    </span>
+
                 </h2>
 
                 <div class="banner-subtitle">
@@ -422,7 +591,9 @@
 
                     START INVESTING
 
-                    <span>→</span>
+                    <span>
+                        →
+                    </span>
 
                 </a>
 
@@ -430,7 +601,9 @@
 
 
             <!-- WEALTH ARTWORK -->
-            <div class="banner-artwork wealth-artwork">
+
+            <div
+                class="banner-artwork wealth-artwork">
 
                 <svg
                     viewBox="0 0 420 270"
@@ -438,7 +611,8 @@
                     aria-label="Wealth growth artwork"
                     role="img">
 
-                    <!-- Growth bars -->
+
+                    <!-- GROWTH BARS -->
 
                     <rect
                         x="80"
@@ -472,31 +646,56 @@
                         rx="6"
                         fill="#C15BEA"/>
 
-                    <!-- Arrow -->
+
+                    <!-- RISING ARROW -->
+
                     <path
-                        d="M65 175 C130 145 165 130 210 105 C255 80 285 55 350 25"
+                        d="
+                        M65 175
+                        C130 145 165 130 210 105
+                        C255 80 285 55 350 25"
                         fill="none"
                         stroke="#F4C44F"
                         stroke-width="9"
                         stroke-linecap="round"/>
 
+
                     <path
-                        d="M324 25 L350 25 L344 51"
+                        d="
+                        M324 25
+                        L350 25
+                        L344 51"
                         fill="none"
                         stroke="#F4C44F"
                         stroke-width="9"
                         stroke-linecap="round"
                         stroke-linejoin="round"/>
 
-                    <!-- Coins -->
+
+                    <!-- COINS -->
+
                     <g
                         fill="#D99A20"
                         stroke="#FFD86B"
                         stroke-width="2">
 
-                        <ellipse cx="335" cy="218" rx="35" ry="9"/>
-                        <ellipse cx="335" cy="207" rx="35" ry="9"/>
-                        <ellipse cx="335" cy="196" rx="35" ry="9"/>
+                        <ellipse
+                            cx="335"
+                            cy="218"
+                            rx="35"
+                            ry="9"/>
+
+                        <ellipse
+                            cx="335"
+                            cy="207"
+                            rx="35"
+                            ry="9"/>
+
+                        <ellipse
+                            cx="335"
+                            cy="196"
+                            rx="35"
+                            ry="9"/>
 
                     </g>
 
@@ -507,11 +706,14 @@
         </article>
 
 
+
         <!-- =================================================
-             BANNER 3 — PLANS
+             BANNER 3 — INVESTMENT PLANS
              ================================================= -->
 
-        <article class="dashboard-banner banner-plans">
+        <article
+            class="dashboard-banner banner-plans">
+
 
             <div class="banner-content">
 
@@ -520,8 +722,13 @@
                 </div>
 
                 <h2>
+
                     Choose Your<br>
-                    <span>Investment Plan.</span>
+
+                    <span>
+                        Investment Plan.
+                    </span>
+
                 </h2>
 
                 <div class="banner-subtitle">
@@ -540,7 +747,9 @@
 
                     VIEW PLANS
 
-                    <span>→</span>
+                    <span>
+                        →
+                    </span>
 
                 </a>
 
@@ -548,7 +757,9 @@
 
 
             <!-- PLANS ARTWORK -->
-            <div class="banner-artwork plans-artwork">
+
+            <div
+                class="banner-artwork plans-artwork">
 
                 <svg
                     viewBox="0 0 420 270"
@@ -556,7 +767,8 @@
                     aria-label="Investment plans artwork"
                     role="img">
 
-                    <!-- Three plan cards -->
+
+                    <!-- PLAN CARD 1 -->
 
                     <rect
                         x="55"
@@ -568,6 +780,9 @@
                         stroke="#B82BE1"
                         stroke-width="3"/>
 
+
+                    <!-- PLAN CARD 2 -->
+
                     <rect
                         x="165"
                         y="35"
@@ -577,6 +792,9 @@
                         fill="#29152F"
                         stroke="#D69A2D"
                         stroke-width="4"/>
+
+
+                    <!-- PLAN CARD 3 -->
 
                     <rect
                         x="275"
@@ -588,7 +806,8 @@
                         stroke="#B82BE1"
                         stroke-width="3"/>
 
-                    <!-- Plan circles -->
+
+                    <!-- PLAN CIRCLES -->
 
                     <circle
                         cx="100"
@@ -608,7 +827,8 @@
                         r="23"
                         fill="#B544E2"/>
 
-                    <!-- Plan lines -->
+
+                    <!-- PLAN LINES -->
 
                     <rect
                         x="75"
@@ -637,6 +857,7 @@
                         fill="#FFFFFF"
                         opacity=".75"/>
 
+
                     <rect
                         x="75"
                         y="148"
@@ -661,17 +882,24 @@
                         rx="3"
                         fill="#9C7AA8"/>
 
-                    <!-- Rising arrow -->
+
+                    <!-- RISING ARROW -->
 
                     <path
-                        d="M55 230 C140 215 205 185 365 15"
+                        d="
+                        M55 230
+                        C140 215 205 185 365 15"
                         fill="none"
                         stroke="#F4C44F"
                         stroke-width="8"
                         stroke-linecap="round"/>
 
+
                     <path
-                        d="M337 18 H365 V46"
+                        d="
+                        M337 18
+                        H365
+                        V46"
                         fill="none"
                         stroke="#F4C44F"
                         stroke-width="8"
@@ -685,11 +913,14 @@
         </article>
 
 
+
         <!-- =================================================
-             BANNER 4 — FUTURE
+             BANNER 4 — FINANCIAL FUTURE
              ================================================= -->
 
-        <article class="dashboard-banner banner-future">
+        <article
+            class="dashboard-banner banner-future">
+
 
             <div class="banner-content">
 
@@ -698,8 +929,13 @@
                 </div>
 
                 <h2>
+
                     Build Your<br>
-                    <span>Financial Future.</span>
+
+                    <span>
+                        Financial Future.
+                    </span>
+
                 </h2>
 
                 <div class="banner-subtitle">
@@ -717,7 +953,9 @@
 
                     GET STARTED
 
-                    <span>→</span>
+                    <span>
+                        →
+                    </span>
 
                 </a>
 
@@ -725,7 +963,9 @@
 
 
             <!-- FUTURE ARTWORK -->
-            <div class="banner-artwork future-artwork">
+
+            <div
+                class="banner-artwork future-artwork">
 
                 <svg
                     viewBox="0 0 420 270"
@@ -733,14 +973,16 @@
                     aria-label="Financial future artwork"
                     role="img">
 
-                    <!-- Horizon -->
+
+                    <!-- HORIZON -->
 
                     <path
                         d="M30 220 H390"
                         stroke="#6D496F"
                         stroke-width="2"/>
 
-                    <!-- Building / future growth -->
+
+                    <!-- BUILDING 1 -->
 
                     <rect
                         x="75"
@@ -750,6 +992,9 @@
                         rx="5"
                         fill="#30143D"/>
 
+
+                    <!-- BUILDING 2 -->
+
                     <rect
                         x="165"
                         y="85"
@@ -757,6 +1002,9 @@
                         height="135"
                         rx="5"
                         fill="#451655"/>
+
+
+                    <!-- BUILDING 3 -->
 
                     <rect
                         x="255"
@@ -766,54 +1014,164 @@
                         rx="5"
                         fill="#5A1D70"/>
 
-                    <!-- Windows -->
+
+                    <!-- WINDOWS -->
 
                     <g fill="#F0C657">
 
-                        <rect x="91" y="138" width="12" height="12"/>
-                        <rect x="115" y="138" width="12" height="12"/>
-                        <rect x="91" y="163" width="12" height="12"/>
-                        <rect x="115" y="163" width="12" height="12"/>
-                        <rect x="91" y="188" width="12" height="12"/>
-                        <rect x="115" y="188" width="12" height="12"/>
+                        <rect
+                            x="91"
+                            y="138"
+                            width="12"
+                            height="12"/>
 
-                        <rect x="181" y="105" width="12" height="12"/>
-                        <rect x="205" y="105" width="12" height="12"/>
-                        <rect x="181" y="130" width="12" height="12"/>
-                        <rect x="205" y="130" width="12" height="12"/>
-                        <rect x="181" y="155" width="12" height="12"/>
-                        <rect x="205" y="155" width="12" height="12"/>
+                        <rect
+                            x="115"
+                            y="138"
+                            width="12"
+                            height="12"/>
 
-                        <rect x="271" y="65" width="12" height="12"/>
-                        <rect x="295" y="65" width="12" height="12"/>
-                        <rect x="271" y="90" width="12" height="12"/>
-                        <rect x="295" y="90" width="12" height="12"/>
-                        <rect x="271" y="115" width="12" height="12"/>
-                        <rect x="295" y="115" width="12" height="12"/>
+                        <rect
+                            x="91"
+                            y="163"
+                            width="12"
+                            height="12"/>
+
+                        <rect
+                            x="115"
+                            y="163"
+                            width="12"
+                            height="12"/>
+
+                        <rect
+                            x="91"
+                            y="188"
+                            width="12"
+                            height="12"/>
+
+                        <rect
+                            x="115"
+                            y="188"
+                            width="12"
+                            height="12"/>
+
+
+                        <rect
+                            x="181"
+                            y="105"
+                            width="12"
+                            height="12"/>
+
+                        <rect
+                            x="205"
+                            y="105"
+                            width="12"
+                            height="12"/>
+
+                        <rect
+                            x="181"
+                            y="130"
+                            width="12"
+                            height="12"/>
+
+                        <rect
+                            x="205"
+                            y="130"
+                            width="12"
+                            height="12"/>
+
+                        <rect
+                            x="181"
+                            y="155"
+                            width="12"
+                            height="12"/>
+
+                        <rect
+                            x="205"
+                            y="155"
+                            width="12"
+                            height="12"/>
+
+
+                        <rect
+                            x="271"
+                            y="65"
+                            width="12"
+                            height="12"/>
+
+                        <rect
+                            x="295"
+                            y="65"
+                            width="12"
+                            height="12"/>
+
+                        <rect
+                            x="271"
+                            y="90"
+                            width="12"
+                            height="12"/>
+
+                        <rect
+                            x="295"
+                            y="90"
+                            width="12"
+                            height="12"/>
+
+                        <rect
+                            x="271"
+                            y="115"
+                            width="12"
+                            height="12"/>
+
+                        <rect
+                            x="295"
+                            y="115"
+                            width="12"
+                            height="12"/>
 
                     </g>
 
-                    <!-- Rising path -->
+
+                    <!-- RISING FINANCIAL PATH -->
 
                     <path
-                        d="M45 190 C105 175 145 160 185 135 C235 105 270 80 360 25"
+                        d="
+                        M45 190
+                        C105 175 145 160 185 135
+                        C235 105 270 80 360 25"
                         fill="none"
                         stroke="#F4C44F"
                         stroke-width="8"
                         stroke-linecap="round"/>
 
+
                     <path
-                        d="M330 25 H360 V55"
+                        d="
+                        M330 25
+                        H360
+                        V55"
                         fill="none"
                         stroke="#F4C44F"
                         stroke-width="8"
                         stroke-linecap="round"
                         stroke-linejoin="round"/>
 
-                    <!-- Star -->
+
+                    <!-- STAR -->
 
                     <path
-                        d="M365 100 L371 115 L387 116 L375 126 L379 142 L365 133 L351 142 L355 126 L343 116 L359 115 Z"
+                        d="
+                        M365 100
+                        L371 115
+                        L387 116
+                        L375 126
+                        L379 142
+                        L365 133
+                        L351 142
+                        L355 126
+                        L343 116
+                        L359 115
+                        Z"
                         fill="#F4C44F"/>
 
                 </svg>
@@ -825,38 +1183,51 @@
     </div>
 
 
-    <!-- CAROUSEL INDICATORS -->
 
-    <div class="banner-indicators"
-         id="bannerIndicators">
+    <!-- =====================================================
+         BANNER INDICATORS
+         ===================================================== -->
+
+    <div
+        class="banner-indicators"
+        id="bannerIndicators">
+
 
         <button
             type="button"
             class="banner-dot active"
             data-slide="0"
-            aria-label="Investment banner"></button>
+            aria-label="Investment banner">
+        </button>
+
 
         <button
             type="button"
             class="banner-dot"
             data-slide="1"
-            aria-label="Wealth banner"></button>
+            aria-label="Wealth banner">
+        </button>
+
 
         <button
             type="button"
             class="banner-dot"
             data-slide="2"
-            aria-label="Investment plans banner"></button>
+            aria-label="Investment plans banner">
+        </button>
+
 
         <button
             type="button"
             class="banner-dot"
             data-slide="3"
-            aria-label="Financial future banner"></button>
+            aria-label="Financial future banner">
+        </button>
 
     </div>
 
 </section>
+
 
 
 <!-- =========================================================
@@ -865,11 +1236,15 @@
 
 <section class="financial-overview">
 
+
+    <!-- WALLET -->
+
     <article class="wallet-card">
 
         <div class="wallet-header">
 
             <div>
+
                 <div class="small-label">
                     AVAILABLE WALLET BALANCE
                 </div>
@@ -881,7 +1256,9 @@
                 <p>
                     Available balance
                 </p>
+
             </div>
+
 
             <div class="wallet-icon">
 
@@ -891,7 +1268,16 @@
                     xmlns="http://www.w3.org/2000/svg">
 
                     <path
-                        d="M3 7.5C3 6.119 4.119 5 5.5 5H19C20.105 5 21 5.895 21 7V19C21 20.105 20.105 21 19 21H5C3.895 21 3 20.105 3 19V7.5Z"
+                        d="
+                        M3 7.5
+                        C3 6.119 4.119 5 5.5 5
+                        H19
+                        C20.105 5 21 5.895 21 7
+                        V19
+                        C21 20.105 20.105 21 19 21
+                        H5
+                        C3.895 21 3 20.105 3 19
+                        V7.5Z"
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
@@ -917,6 +1303,7 @@
 
         </div>
 
+
         <div class="wallet-actions">
 
             <a
@@ -926,6 +1313,7 @@
                 DEPOSIT
 
             </a>
+
 
             <a
                 href="withdraw.html"
@@ -940,7 +1328,13 @@
     </article>
 
 
+
+    <!-- FINANCIAL SUMMARY -->
+
     <div class="financial-summary">
+
+
+        <!-- TOTAL EARNINGS -->
 
         <article class="summary-card">
 
@@ -952,7 +1346,11 @@
                     xmlns="http://www.w3.org/2000/svg">
 
                     <path
-                        d="M4 18L10 12L14 15L21 7"
+                        d="
+                        M4 18
+                        L10 12
+                        L14 15
+                        L21 7"
                         stroke="currentColor"
                         stroke-width="2"
                         stroke-linecap="round"
@@ -969,7 +1367,9 @@
 
             </div>
 
+
             <div>
+
                 <div class="summary-label">
                     TOTAL EARNINGS
                 </div>
@@ -981,10 +1381,14 @@
                 <small>
                     All time earnings
                 </small>
+
             </div>
 
         </article>
 
+
+
+        <!-- TODAY'S EARNINGS -->
 
         <article class="summary-card">
 
@@ -1021,13 +1425,28 @@
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
-                    <circle cx="8" cy="14" r="1" fill="currentColor"/>
-                    <circle cx="12" cy="14" r="1" fill="currentColor"/>
-                    <circle cx="16" cy="14" r="1" fill="currentColor"/>
+                    <circle
+                        cx="8"
+                        cy="14"
+                        r="1"
+                        fill="currentColor"/>
+
+                    <circle
+                        cx="12"
+                        cy="14"
+                        r="1"
+                        fill="currentColor"/>
+
+                    <circle
+                        cx="16"
+                        cy="14"
+                        r="1"
+                        fill="currentColor"/>
 
                 </svg>
 
             </div>
+
 
             <div>
 
@@ -1047,6 +1466,9 @@
 
         </article>
 
+
+
+        <!-- TOTAL INVESTED -->
 
         <article class="summary-card">
 
@@ -1079,6 +1501,7 @@
 
             </div>
 
+
             <div>
 
                 <div class="summary-label">
@@ -1098,6 +1521,9 @@
         </article>
 
 
+
+        <!-- REFERRAL BONUS -->
+
         <article class="summary-card">
 
             <div class="summary-icon">
@@ -1107,22 +1533,34 @@
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg">
 
-                    <circle cx="9" cy="8" r="3"
+                    <circle
+                        cx="9"
+                        cy="8"
+                        r="3"
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
-                    <circle cx="17" cy="9" r="2.5"
+                    <circle
+                        cx="17"
+                        cy="9"
+                        r="2.5"
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
                     <path
-                        d="M3 20C3 16.686 5.686 14 9 14C12.314 14 15 16.686 15 20"
+                        d="
+                        M3 20
+                        C3 16.686 5.686 14 9 14
+                        C12.314 14 15 16.686 15 20"
                         stroke="currentColor"
                         stroke-width="1.8"
                         stroke-linecap="round"/>
 
                     <path
-                        d="M14 14.5C15 13.6 16.2 13 17.5 13C19.985 13 22 15.015 22 17.5"
+                        d="
+                        M14 14.5
+                        C15 13.6 16.2 13 17.5 13
+                        C19.985 13 22 15.015 22 17.5"
                         stroke="currentColor"
                         stroke-width="1.8"
                         stroke-linecap="round"/>
@@ -1130,6 +1568,7 @@
                 </svg>
 
             </div>
+
 
             <div>
 
@@ -1154,11 +1593,13 @@
 </section>
 
 
+
 <!-- =========================================================
      QUICK ACTIONS
      ========================================================= -->
 
 <section class="quick-actions-section">
+
 
     <div class="section-row">
 
@@ -1174,6 +1615,7 @@
 
         </div>
 
+
         <span class="section-helper">
             Tap to open
         </span>
@@ -1181,50 +1623,88 @@
     </div>
 
 
+
     <div class="quick-actions">
 
-        <a href="deposit.html" class="quick-action">
+
+        <!-- DEPOSIT -->
+
+        <a
+            href="deposit.html"
+            class="quick-action">
 
             <div class="quick-action-icon">
 
-                <svg viewBox="0 0 24 24" fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
 
                     <path
-                        d="M3 7.5C3 6.119 4.119 5 5.5 5H19C20.105 5 21 5.895 21 7V19C21 20.105 20.105 21 19 21H5C3.895 21 3 20.105 3 19V7.5Z"
+                        d="
+                        M3 7.5
+                        C3 6.119 4.119 5 5.5 5
+                        H19
+                        C20.105 5 21 5.895 21 7
+                        V19
+                        C21 20.105 20.105 21 19 21
+                        H5
+                        C3.895 21 3 20.105 3 19
+                        V7.5Z"
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
-                    <path d="M3 8H19"
+                    <path
+                        d="M3 8H19"
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
-                    <path d="M16 13H21"
+                    <path
+                        d="M16 13H21"
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
-                    <circle cx="16" cy="13" r="1.5"
+                    <circle
+                        cx="16"
+                        cy="13"
+                        r="1.5"
                         fill="currentColor"/>
 
                 </svg>
 
             </div>
 
-            <strong>Deposit</strong>
-            <small>Fund wallet</small>
+            <strong>
+                Deposit
+            </strong>
+
+            <small>
+                Fund wallet
+            </small>
 
         </a>
 
 
-        <a href="investment.html" class="quick-action">
+
+        <!-- INVEST -->
+
+        <a
+            href="investment.html"
+            class="quick-action">
 
             <div class="quick-action-icon">
 
-                <svg viewBox="0 0 24 24" fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
 
                     <path
-                        d="M4 18L10 12L14 15L21 7"
+                        d="
+                        M4 18
+                        L10 12
+                        L14 15
+                        L21 7"
                         stroke="currentColor"
                         stroke-width="2"
                         stroke-linecap="round"
@@ -1241,20 +1721,33 @@
 
             </div>
 
-            <strong>Invest</strong>
-            <small>Start investing</small>
+            <strong>
+                Invest
+            </strong>
+
+            <small>
+                Start investing
+            </small>
 
         </a>
 
 
-        <a href="withdraw.html" class="quick-action">
+
+        <!-- WITHDRAW -->
+
+        <a
+            href="withdraw.html"
+            class="quick-action">
 
             <div class="quick-action-icon">
 
-                <svg viewBox="0 0 24 24" fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
 
-                    <path d="M12 16V4"
+                    <path
+                        d="M12 16V4"
                         stroke="currentColor"
                         stroke-width="2"
                         stroke-linecap="round"/>
@@ -1267,7 +1760,12 @@
                         stroke-linejoin="round"/>
 
                     <path
-                        d="M5 14V19C5 20.105 5.895 21 7 21H17C18.105 21 19 20.105 19 19V14"
+                        d="
+                        M5 14V19
+                        C5 20.105 5.895 21 7 21
+                        H17
+                        C18.105 21 19 20.105 19 19
+                        V14"
                         stroke="currentColor"
                         stroke-width="1.8"
                         stroke-linecap="round"/>
@@ -1276,18 +1774,30 @@
 
             </div>
 
-            <strong>Withdraw</strong>
-            <small>To MoMo</small>
+            <strong>
+                Withdraw
+            </strong>
+
+            <small>
+                To MoMo
+            </small>
 
         </a>
 
 
-        <a href="my-investments.html" class="quick-action">
+
+        <!-- MY INVESTMENTS -->
+
+        <a
+            href="my-investments.html"
+            class="quick-action">
 
             <div class="quick-action-icon">
 
-                <svg viewBox="0 0 24 24" fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
 
                     <rect
                         x="4"
@@ -1299,11 +1809,17 @@
                         stroke-width="1.8"/>
 
                     <path
-                        d="M8 7V5C8 3.895 8.895 3 10 3H14C15.105 3 16 3.895 16 5V7"
+                        d="
+                        M8 7V5
+                        C8 3.895 8.895 3 10 3
+                        H14
+                        C15.105 3 16 3.895 16 5
+                        V7"
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
-                    <path d="M4 12H20"
+                    <path
+                        d="M4 12H20"
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
@@ -1316,35 +1832,59 @@
 
             </div>
 
-            <strong>My Investments</strong>
-            <small>Active plans</small>
+            <strong>
+                My Investments
+            </strong>
+
+            <small>
+                Active plans
+            </small>
 
         </a>
 
 
-        <a href="team.html" class="quick-action">
+
+        <!-- TEAM -->
+
+        <a
+            href="team.html"
+            class="quick-action">
 
             <div class="quick-action-icon">
 
-                <svg viewBox="0 0 24 24" fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
 
-                    <circle cx="9" cy="8" r="3"
+                    <circle
+                        cx="9"
+                        cy="8"
+                        r="3"
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
-                    <circle cx="17" cy="9" r="2.5"
+                    <circle
+                        cx="17"
+                        cy="9"
+                        r="2.5"
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
                     <path
-                        d="M3 20C3 16.686 5.686 14 9 14C12.314 14 15 16.686 15 20"
+                        d="
+                        M3 20
+                        C3 16.686 5.686 14 9 14
+                        C12.314 14 15 16.686 15 20"
                         stroke="currentColor"
                         stroke-width="1.8"
                         stroke-linecap="round"/>
 
                     <path
-                        d="M14 14.5C15 13.6 16.2 13 17.5 13C19.985 13 22 15.015 22 17.5"
+                        d="
+                        M14 14.5
+                        C15 13.6 16.2 13 17.5 13
+                        C19.985 13 22 15.015 22 17.5"
                         stroke="currentColor"
                         stroke-width="1.8"
                         stroke-linecap="round"/>
@@ -1353,18 +1893,30 @@
 
             </div>
 
-            <strong>Team</strong>
-            <small>Referrals</small>
+            <strong>
+                Team
+            </strong>
+
+            <small>
+                Referrals
+            </small>
 
         </a>
 
 
-        <a href="transaction-history.html" class="quick-action">
+
+        <!-- RECORDS -->
+
+        <a
+            href="transaction-history.html"
+            class="quick-action">
 
             <div class="quick-action-icon">
 
-                <svg viewBox="0 0 24 24" fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
 
                     <rect
                         x="5"
@@ -1375,17 +1927,20 @@
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
-                    <path d="M9 8H15"
+                    <path
+                        d="M9 8H15"
                         stroke="currentColor"
                         stroke-width="1.8"
                         stroke-linecap="round"/>
 
-                    <path d="M9 12H15"
+                    <path
+                        d="M9 12H15"
                         stroke="currentColor"
                         stroke-width="1.8"
                         stroke-linecap="round"/>
 
-                    <path d="M9 16H13"
+                    <path
+                        d="M9 16H13"
                         stroke="currentColor"
                         stroke-width="1.8"
                         stroke-linecap="round"/>
@@ -1394,8 +1949,13 @@
 
             </div>
 
-            <strong>Records</strong>
-            <small>Transactions</small>
+            <strong>
+                Records
+            </strong>
+
+            <small>
+                Transactions
+            </small>
 
         </a>
 
@@ -1404,13 +1964,16 @@
 </section>
 
 
+
 <!-- =========================================================
-     PREMIUM INVESTMENT PLAN
+     PREMIUM INVESTMENT BANNER
      ========================================================= -->
 
 <section class="premium-section">
 
+
     <article class="premium-banner">
+
 
         <div class="premium-content">
 
@@ -1419,8 +1982,15 @@
             </div>
 
             <h2>
-                <span>10% DAILY RETURNS</span><br>
+
+                <span>
+                    10% DAILY RETURNS
+                </span>
+
+                <br>
+
                 FOR 20 DAYS
+
             </h2>
 
             <p>
@@ -1433,12 +2003,16 @@
 
                 VIEW PLAN DETAILS
 
-                <span>→</span>
+                <span>
+                    →
+                </span>
 
             </a>
 
         </div>
 
+
+        <!-- PREMIUM ARTWORK -->
 
         <div class="premium-artwork">
 
@@ -1448,20 +2022,34 @@
                 aria-label="Premium investment artwork"
                 role="img">
 
+
+                <!-- GROWTH LINE -->
+
                 <path
-                    d="M25 185 C100 180 135 150 190 140 C245 130 280 80 340 65 C380 55 410 35 435 15"
+                    d="
+                    M25 185
+                    C100 180 135 150 190 140
+                    C245 130 280 80 340 65
+                    C380 55 410 35 435 15"
                     fill="none"
                     stroke="#F1BD3D"
                     stroke-width="9"
                     stroke-linecap="round"/>
 
+
                 <path
-                    d="M410 16H435V41"
+                    d="
+                    M410 16
+                    H435
+                    V41"
                     fill="none"
                     stroke="#F1BD3D"
                     stroke-width="9"
                     stroke-linecap="round"
                     stroke-linejoin="round"/>
+
+
+                <!-- BARS -->
 
                 <rect
                     x="220"
@@ -1487,6 +2075,9 @@
                     rx="6"
                     fill="#B647E6"/>
 
+
+                <!-- 10% -->
+
                 <text
                     x="255"
                     y="205"
@@ -1494,20 +2085,49 @@
                     font-size="76"
                     font-weight="900"
                     font-family="Arial, sans-serif">
+
                     10%
+
                 </text>
+
+
+                <!-- COINS -->
 
                 <g
                     fill="#C88716"
                     stroke="#FFD76A"
                     stroke-width="2">
 
-                    <ellipse cx="170" cy="220" rx="30" ry="8"/>
-                    <ellipse cx="170" cy="210" rx="30" ry="8"/>
-                    <ellipse cx="170" cy="200" rx="30" ry="8"/>
+                    <ellipse
+                        cx="170"
+                        cy="220"
+                        rx="30"
+                        ry="8"/>
 
-                    <ellipse cx="410" cy="220" rx="28" ry="8"/>
-                    <ellipse cx="410" cy="210" rx="28" ry="8"/>
+                    <ellipse
+                        cx="170"
+                        cy="210"
+                        rx="30"
+                        ry="8"/>
+
+                    <ellipse
+                        cx="170"
+                        cy="200"
+                        rx="30"
+                        ry="8"/>
+
+
+                    <ellipse
+                        cx="410"
+                        cy="220"
+                        rx="28"
+                        ry="8"/>
+
+                    <ellipse
+                        cx="410"
+                        cy="210"
+                        rx="28"
+                        ry="8"/>
 
                 </g>
 
@@ -1520,13 +2140,16 @@
 </section>
 
 
+
 <!-- =========================================================
      REFERRAL PROGRAM
      ========================================================= -->
 
 <section class="referral-section">
 
+
     <article class="referral-card">
+
 
         <div class="referral-icon">
 
@@ -1535,26 +2158,37 @@
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg">
 
-                <circle cx="9" cy="8" r="3"
+                <circle
+                    cx="9"
+                    cy="8"
+                    r="3"
                     stroke="currentColor"
                     stroke-width="1.8"/>
 
                 <path
-                    d="M3 20C3 16.686 5.686 14 9 14C12.314 14 15 16.686 15 20"
+                    d="
+                    M3 20
+                    C3 16.686 5.686 14 9 14
+                    C12.314 14 15 16.686 15 20"
                     stroke="currentColor"
                     stroke-width="1.8"
                     stroke-linecap="round"/>
 
-                <circle cx="18" cy="17" r="3"
+                <circle
+                    cx="18"
+                    cy="17"
+                    r="3"
                     stroke="currentColor"
                     stroke-width="1.8"/>
 
-                <path d="M18 15V19"
+                <path
+                    d="M18 15V19"
                     stroke="currentColor"
                     stroke-width="1.5"
                     stroke-linecap="round"/>
 
-                <path d="M16 17H20"
+                <path
+                    d="M16 17H20"
                     stroke="currentColor"
                     stroke-width="1.5"
                     stroke-linecap="round"/>
@@ -1583,19 +2217,43 @@
 
             <div class="referral-levels">
 
-                <div class="referral-level">
-                    <span>LEVEL 1</span>
-                    <strong id="levelOneRate">15%</strong>
-                </div>
 
                 <div class="referral-level">
-                    <span>LEVEL 2</span>
-                    <strong id="levelTwoRate">5%</strong>
+
+                    <span>
+                        LEVEL 1
+                    </span>
+
+                    <strong id="levelOneRate">
+                        15%
+                    </strong>
+
                 </div>
 
+
                 <div class="referral-level">
-                    <span>LEVEL 3</span>
-                    <strong id="levelThreeRate">2%</strong>
+
+                    <span>
+                        LEVEL 2
+                    </span>
+
+                    <strong id="levelTwoRate">
+                        5%
+                    </strong>
+
+                </div>
+
+
+                <div class="referral-level">
+
+                    <span>
+                        LEVEL 3
+                    </span>
+
+                    <strong id="levelThreeRate">
+                        2%
+                    </strong>
+
                 </div>
 
             </div>
@@ -1608,6 +2266,7 @@
                     id="referralLink"
                     readonly
                     value="">
+
 
                 <button
                     type="button"
@@ -1629,7 +2288,14 @@
                             stroke-width="1.8"/>
 
                         <path
-                            d="M16 8V6C16 4.895 15.105 4 14 4H6C4.895 4 4 4.895 4 6V14C4 15.105 4.895 16 6 16H8"
+                            d="
+                            M16 8V6
+                            C16 4.895 15.105 4 14 4
+                            H6
+                            C4.895 4 4 4.895 4 6
+                            V14
+                            C4 15.105 4.895 16 6 16
+                            H8"
                             stroke="currentColor"
                             stroke-width="1.8"/>
 
@@ -1662,7 +2328,14 @@
                     stroke-width="1.8"/>
 
                 <path
-                    d="M16 8V6C16 4.895 15.105 4 14 4H6C4.895 4 4 4.895 4 6V14C4 15.105 4 16 6 16H8"
+                    d="
+                    M16 8V6
+                    C16 4.895 15.105 4 14 4
+                    H6
+                    C4.895 4 4 4.895 4 6
+                    V14
+                    C4 15.105 4.895 16 6 16
+                    H8"
                     stroke="currentColor"
                     stroke-width="1.8"/>
 
@@ -1679,11 +2352,13 @@
 </section>
 
 
+
 <!-- =========================================================
      INVESTMENT OVERVIEW
      ========================================================= -->
 
 <section class="investment-overview-section">
+
 
     <div class="section-row">
 
@@ -1702,7 +2377,11 @@
     </div>
 
 
+
     <div class="overview-grid">
+
+
+        <!-- ACTIVE INVESTMENTS -->
 
         <article class="overview-card">
 
@@ -1735,6 +2414,7 @@
 
             </div>
 
+
             <div>
 
                 <div class="overview-label">
@@ -1754,6 +2434,9 @@
         </article>
 
 
+
+        <!-- DAILY INCOME -->
+
         <article class="overview-card">
 
             <div class="overview-icon">
@@ -1764,7 +2447,11 @@
                     xmlns="http://www.w3.org/2000/svg">
 
                     <path
-                        d="M4 18L10 12L14 15L21 7"
+                        d="
+                        M4 18
+                        L10 12
+                        L14 15
+                        L21 7"
                         stroke="currentColor"
                         stroke-width="2"
                         stroke-linecap="round"
@@ -1780,6 +2467,7 @@
                 </svg>
 
             </div>
+
 
             <div>
 
@@ -1800,6 +2488,9 @@
         </article>
 
 
+
+        <!-- TOTAL EARNINGS -->
+
         <article class="overview-card">
 
             <div class="overview-icon">
@@ -1817,7 +2508,14 @@
                         stroke-width="1.8"/>
 
                     <path
-                        d="M15 9.5C14.4 8.8 13.5 8.4 12.4 8.4C10.8 8.4 9.7 9.2 9.7 10.3C9.7 11.5 10.7 12 12.2 12.3C13.8 12.6 14.7 13.1 14.7 14.3C14.7 15.5 13.6 16.3 12 16.3C10.8 16.3 9.7 15.8 9 15"
+                        d="
+                        M15 9.5
+                        C14.4 8.8 13.5 8.4 12.4 8.4
+                        C10.8 8.4 9.7 9.2 9.7 10.3
+                        C9.7 11.5 10.7 12 12.2 12.3
+                        C13.8 12.6 14.7 13.1 14.7 14.3
+                        C14.7 15.5 13.6 16.3 12 16.3
+                        C10.8 16.3 9.7 15.8 9 15"
                         stroke="currentColor"
                         stroke-width="1.6"
                         stroke-linecap="round"/>
@@ -1831,6 +2529,7 @@
                 </svg>
 
             </div>
+
 
             <div>
 
@@ -1855,11 +2554,13 @@
 </section>
 
 
+
 <!-- =========================================================
      INVITE & EARN
      ========================================================= -->
 
 <section class="invite-section">
+
 
     <div class="section-row">
 
@@ -1880,6 +2581,7 @@
 
     <article class="invite-card">
 
+
         <div class="invite-icon">
 
             <svg
@@ -1887,26 +2589,37 @@
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg">
 
-                <circle cx="9" cy="8" r="3"
+                <circle
+                    cx="9"
+                    cy="8"
+                    r="3"
                     stroke="currentColor"
                     stroke-width="1.8"/>
 
                 <path
-                    d="M3 20C3 16.686 5.686 14 9 14C12.314 14 15 16.686 15 20"
+                    d="
+                    M3 20
+                    C3 16.686 5.686 14 9 14
+                    C12.314 14 15 16.686 15 20"
                     stroke="currentColor"
                     stroke-width="1.8"
                     stroke-linecap="round"/>
 
-                <circle cx="18" cy="17" r="3"
+                <circle
+                    cx="18"
+                    cy="17"
+                    r="3"
                     stroke="currentColor"
                     stroke-width="1.8"/>
 
-                <path d="M18 15V19"
+                <path
+                    d="M18 15V19"
                     stroke="currentColor"
                     stroke-width="1.5"
                     stroke-linecap="round"/>
 
-                <path d="M16 17H20"
+                <path
+                    d="M16 17H20"
                     stroke="currentColor"
                     stroke-width="1.5"
                     stroke-linecap="round"/>
@@ -1914,6 +2627,7 @@
             </svg>
 
         </div>
+
 
         <div>
 
@@ -1937,7 +2651,9 @@
 
                 VIEW TEAM
 
-                <span>→</span>
+                <span>
+                    →
+                </span>
 
             </a>
 
@@ -1948,11 +2664,13 @@
 </section>
 
 
+
 <!-- =========================================================
      COMMUNITY / SUPPORT
      ========================================================= -->
 
 <section class="community-section">
+
 
     <div class="section-row">
 
@@ -1971,7 +2689,11 @@
     </div>
 
 
+
     <div class="community-grid">
+
+
+        <!-- COMMUNITY -->
 
         <a
             href="#"
@@ -1998,6 +2720,7 @@
 
             </div>
 
+
             <div>
 
                 <div class="community-label">
@@ -2014,12 +2737,16 @@
 
             </div>
 
+
             <span class="community-arrow">
                 →
             </span>
 
         </a>
 
+
+
+        <!-- SUPPORT -->
 
         <a
             href="#"
@@ -2034,7 +2761,11 @@
                     xmlns="http://www.w3.org/2000/svg">
 
                     <path
-                        d="M4 13V11C4 6.582 7.582 3 12 3C16.418 3 20 6.582 20 11V13"
+                        d="
+                        M4 13V11
+                        C4 6.582 7.582 3 12 3
+                        C16.418 3 20 6.582 20 11
+                        V13"
                         stroke="currentColor"
                         stroke-width="1.8"/>
 
@@ -2057,7 +2788,9 @@
                         stroke-width="1.8"/>
 
                     <path
-                        d="M17 19C16 21 14.5 22 12 22"
+                        d="
+                        M17 19
+                        C16 21 14.5 22 12 22"
                         stroke="currentColor"
                         stroke-width="1.8"
                         stroke-linecap="round"/>
@@ -2065,6 +2798,7 @@
                 </svg>
 
             </div>
+
 
             <div>
 
@@ -2082,6 +2816,7 @@
 
             </div>
 
+
             <span class="community-arrow">
                 →
             </span>
@@ -2093,11 +2828,13 @@
 </section>
 
 
+
 <!-- =========================================================
      RECENT TRANSACTIONS
      ========================================================= -->
 
 <section class="activity-section">
+
 
     <div class="section-row">
 
@@ -2113,6 +2850,7 @@
 
         </div>
 
+
         <a
             href="transaction-history.html"
             class="view-all">
@@ -2124,7 +2862,9 @@
     </div>
 
 
+
     <article class="activity-card">
+
 
         <div class="activity-header">
 
@@ -2134,11 +2874,14 @@
 
         </div>
 
+
         <div
             class="transaction-list"
             id="recentTransactions">
 
+
             <div class="empty-transactions">
+
 
                 <svg
                     viewBox="0 0 24 24"
@@ -2174,6 +2917,7 @@
 
                 </svg>
 
+
                 <p>
                     No recent transactions
                 </p>
@@ -2192,6 +2936,7 @@
 </main>
 
 
+
 <!-- =========================================================
      FOOTER
      ========================================================= -->
@@ -2201,18 +2946,33 @@
     <div class="dashboard-container">
 
         <p>
+
             FINORA 2026
-            <span>•</span>
+
+            <span>
+                •
+            </span>
+
             Invest
-            <span>•</span>
+
+            <span>
+                •
+            </span>
+
             Grow
-            <span>•</span>
+
+            <span>
+                •
+            </span>
+
             Earn
+
         </p>
 
     </div>
 
 </footer>
+
 
 
 <!-- =========================================================
@@ -2222,6 +2982,9 @@
 <nav
     class="bottom-navigation"
     aria-label="Main navigation">
+
+
+    <!-- HOME -->
 
     <a
         href="dashboard.html"
@@ -2233,7 +2996,15 @@
             xmlns="http://www.w3.org/2000/svg">
 
             <path
-                d="M3 11L12 3L21 11V20C21 20.552 20.552 21 20 21H4C3.448 21 3 20.552 3 20V11Z"
+                d="
+                M3 11
+                L12 3
+                L21 11
+                V20
+                C21 20.552 20.552 21 20 21
+                H4
+                C3.448 21 3 20.552 3 20
+                V11Z"
                 fill="currentColor"/>
 
             <path
@@ -2249,6 +3020,9 @@
     </a>
 
 
+
+    <!-- INVEST -->
+
     <a
         href="investment.html"
         class="bottom-nav-item">
@@ -2259,7 +3033,11 @@
             xmlns="http://www.w3.org/2000/svg">
 
             <path
-                d="M4 18L10 12L14 15L21 7"
+                d="
+                M4 18
+                L10 12
+                L14 15
+                L21 7"
                 stroke="currentColor"
                 stroke-width="2"
                 stroke-linecap="round"
@@ -2280,6 +3058,9 @@
 
     </a>
 
+
+
+    <!-- TEAM -->
 
     <a
         href="team.html"
@@ -2305,13 +3086,19 @@
                 stroke-width="1.8"/>
 
             <path
-                d="M3 20C3 16.686 5.686 14 9 14C12.314 14 15 16.686 15 20"
+                d="
+                M3 20
+                C3 16.686 5.686 14 9 14
+                C12.314 14 15 16.686 15 20"
                 stroke="currentColor"
                 stroke-width="1.8"
                 stroke-linecap="round"/>
 
             <path
-                d="M14 14.5C15 13.6 16.2 13 17.5 13C19.985 13 22 15.015 22 17.5"
+                d="
+                M14 14.5
+                C15 13.6 16.2 13 17.5 13
+                C19.985 13 22 15.015 22 17.5"
                 stroke="currentColor"
                 stroke-width="1.8"
                 stroke-linecap="round"/>
@@ -2324,6 +3111,9 @@
 
     </a>
 
+
+
+    <!-- RECORDS -->
 
     <a
         href="transaction-history.html"
@@ -2370,6 +3160,9 @@
     </a>
 
 
+
+    <!-- MINE -->
+
     <a
         href="mine.html"
         class="bottom-nav-item">
@@ -2387,7 +3180,10 @@
                 stroke-width="1.8"/>
 
             <path
-                d="M4 21C4 16.582 7.582 13 12 13C16.418 13 20 16.582 20 21"
+                d="
+                M4 21
+                C4 16.582 7.582 13 12 13
+                C16.418 13 20 16.582 20 21"
                 stroke="currentColor"
                 stroke-width="1.8"
                 stroke-linecap="round"/>
@@ -2403,302 +3199,20 @@
 </nav>
 
 
+
 <!-- =========================================================
-     DASHBOARD SCRIPT
+     JAVASCRIPT IS INTENTIONALLY NOT INSIDE THIS FILE.
+     
+     It will be connected separately as:
+     
+     <script src="dashboard.js"></script>
+     
+     We will add that separately when we reach the JS step.
      ========================================================= -->
 
-<script>
-
-/* =========================================================
-   USER DATA
-   ========================================================= */
-
-document.addEventListener("DOMContentLoaded", function(){
-
-    const storedUser =
-        localStorage.getItem("cashnovaUserData");
-
-    if(storedUser){
-
-        try{
-
-            const user =
-                JSON.parse(storedUser);
-
-            const nameElement =
-                document.getElementById("userName");
-
-            if(nameElement){
-
-                nameElement.textContent =
-                    user.fullName ||
-                    user.username ||
-                    "Investor";
-
-            }
-
-        }catch(error){
-
-            console.log(
-                "FINORA user data could not be read."
-            );
-
-        }
-
-    }
-
-
-    /* =====================================================
-       BANNER CAROUSEL
-       ===================================================== */
-
-    const bannerTrack =
-        document.getElementById("bannerTrack");
-
-    const bannerDots =
-        document.querySelectorAll(".banner-dot");
-
-    if(bannerTrack && bannerDots.length){
-
-        bannerDots.forEach(function(dot){
-
-            dot.addEventListener(
-                "click",
-                function(){
-
-                    const slide =
-                        Number(
-                            this.dataset.slide
-                        );
-
-                    const width =
-                        bannerTrack.clientWidth;
-
-                    bannerTrack.scrollTo({
-
-                        left:
-                            width * slide,
-
-                        behavior:
-                            "smooth"
-
-                    });
-
-                }
-            );
-
-        });
-
-
-        bannerTrack.addEventListener(
-            "scroll",
-            function(){
-
-                const index =
-                    Math.round(
-                        bannerTrack.scrollLeft /
-                        bannerTrack.clientWidth
-                    );
-
-                bannerDots.forEach(
-                    function(dot, i){
-
-                        dot.classList.toggle(
-                            "active",
-                            i === index
-                        );
-
-                    }
-                );
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       REFERRAL LINK
-       ===================================================== */
-
-    const referralInput =
-        document.getElementById("referralLink");
-
-    const referralButton =
-        document.getElementById("copyReferralButton");
-
-    const referralMainButton =
-        document.getElementById("copyReferralMain");
-
-
-    function getReferralLink(){
-
-        const currentUser =
-            localStorage.getItem(
-                "cashnovaCurrentUser"
-            );
-
-        const storedData =
-            localStorage.getItem(
-                "cashnovaUserData"
-            );
-
-        let referralCode =
-            currentUser || "";
-
-        if(storedData){
-
-            try{
-
-                const user =
-                    JSON.parse(storedData);
-
-                referralCode =
-                    user.myReferralCode ||
-                    user.referralCode ||
-                    referralCode;
-
-            }catch(error){}
-
-        }
-
-        return (
-            window.location.origin +
-            "/register.html?ref=" +
-            encodeURIComponent(
-                referralCode
-            )
-        );
-
-    }
-
-
-    if(referralInput){
-
-        referralInput.value =
-            getReferralLink();
-
-    }
-
-
-    async function copyReferral(){
-
-        const link =
-            getReferralLink();
-
-        try{
-
-            await navigator.clipboard.writeText(
-                link
-            );
-
-            if(referralButton){
-
-                referralButton.classList.add(
-                    "copied"
-                );
-
-            }
-
-            if(referralMainButton){
-
-                referralMainButton.classList.add(
-                    "copied"
-                );
-
-            }
-
-            setTimeout(function(){
-
-                if(referralButton){
-
-                    referralButton.classList.remove(
-                        "copied"
-                    );
-
-                }
-
-                if(referralMainButton){
-
-                    referralMainButton.classList.remove(
-                        "copied"
-                    );
-
-                }
-
-            },1500);
-
-        }catch(error){
-
-            if(referralInput){
-
-                referralInput.select();
-
-                document.execCommand(
-                    "copy"
-                );
-
-            }
-
-        }
-
-    }
-
-
-    if(referralButton){
-
-        referralButton.addEventListener(
-            "click",
-            copyReferral
-        );
-
-    }
-
-
-    if(referralMainButton){
-
-        referralMainButton.addEventListener(
-            "click",
-            copyReferral
-        );
-
-    }
-
-});
-
-
-/* =========================================================
-   PREVENT EMPTY COMMUNITY / SUPPORT LINKS FROM JUMPING
-   ========================================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function(){
-
-        const links =
-            document.querySelectorAll(
-                'a[href="#"]'
-            );
-
-        links.forEach(function(link){
-
-            link.addEventListener(
-                "click",
-                function(event){
-
-                    event.preventDefault();
-
-                }
-            );
-
-        });
-
-    }
-);
-
-</script>
 
 </div>
 
 </body>
+
 </html>
