@@ -4,8 +4,7 @@
    ========================================================= */
 
 :root{
-    /* FINORA BLUEPRINT BACKGROUND — BLUSH PINK */
-    --finora-bg:#F8EEF3;
+    --finora-bg:#F3DCE7;
 
     --finora-pink:#e83f8f;
     --finora-pink-dark:#c72f75;
@@ -39,7 +38,7 @@ body{
     width:100%;
     min-height:100%;
 
-    background:#F8EEF3;
+    background:var(--finora-bg);
 }
 
 
@@ -68,7 +67,7 @@ body{
     width:100%;
     min-height:100vh;
 
-    background:#F8EEF3;
+    background:var(--finora-bg);
 
     overflow-x:hidden;
 }
@@ -96,7 +95,7 @@ body{
 .dashboard-header{
     width:100%;
 
-    background:#F8EEF3;
+    background:var(--finora-bg);
 
     border-bottom:1px solid rgba(232,63,143,.12);
 
@@ -107,7 +106,7 @@ body{
 
 /* =========================================================
    TOP HEADER
-   FINORA BRAND IS CENTERED
+   FINORA CENTERED
    ========================================================= */
 
 .top-header{
@@ -142,7 +141,7 @@ body{
 
 
 /* =========================================================
-   F LOGO
+   FINORA F LOGO
    SLIGHTLY LARGER
    ========================================================= */
 
@@ -157,7 +156,7 @@ body{
 
 
 /* =========================================================
-   WORDMARK
+   FINORA WORDMARK
    ========================================================= */
 
 .finora-brand-text{
@@ -173,7 +172,7 @@ body{
 
 
 /* =========================================================
-   FINORA WORD
+   FINORA NAME
    SLIGHTLY LARGER
    ========================================================= */
 
@@ -233,8 +232,6 @@ body{
 
 /* =========================================================
    HEADER ACTIONS
-   IMPORTANT:
-   NOTIFICATION + PROFILE ARE LEFT UNCHANGED
    ========================================================= */
 
 .header-actions{
@@ -255,7 +252,7 @@ body{
 
 /* =========================================================
    NOTIFICATION
-   KEEPING THE WORKING VERSION
+   KEEPING WORKING VERSION
    ========================================================= */
 
 .notification-button{
@@ -316,13 +313,13 @@ body{
 
     line-height:1;
 
-    border:2px solid #F8EEF3;
+    border:2px solid var(--finora-bg);
 }
 
 
 /* =========================================================
    PROFILE
-   KEEPING THE WORKING VERSION
+   KEEPING WORKING VERSION
    ========================================================= */
 
 .profile-button{
@@ -375,13 +372,13 @@ body{
 
 
 /* =========================================================
-   MAIN BACKGROUND
+   MAIN
    ========================================================= */
 
 main{
     width:100%;
 
-    background:#F8EEF3;
+    background:var(--finora-bg);
 }
 
 
