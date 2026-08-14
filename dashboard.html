@@ -15,10 +15,10 @@
 
     <meta
         name="description"
-        content="FINORA — Invest • Grow • Earn"
+        content="FINORA 2026 — Invest • Grow • Earn"
     >
 
-    <title>FINORA | Dashboard</title>
+    <title>FINORA 2026 | Dashboard</title>
 
     <link
         rel="stylesheet"
@@ -41,16 +41,15 @@
             <!-- FINORA BRAND -->
             <a href="dashboard.html" class="dashboard-brand">
 
-                <!-- F LOGO MARK -->
-                <span class="brand-mark" aria-label="FINORA">
-
+                <span
+                    class="brand-mark"
+                    aria-hidden="true"
+                >
                     <span class="brand-mark-line"></span>
                     <span class="brand-mark-line"></span>
                     <span class="brand-mark-line"></span>
-
                 </span>
 
-                <!-- WORDMARK -->
                 <span class="brand-text">
 
                     <span class="brand-name">
@@ -58,7 +57,7 @@
                     </span>
 
                     <span class="brand-tagline">
-                        INVEST • GROW • EARN
+                        2026 • INVEST • GROW • EARN
                     </span>
 
                 </span>
@@ -69,7 +68,7 @@
             <!-- HEADER ACTIONS -->
             <div class="header-actions">
 
-                <!-- NOTIFICATION -->
+                <!-- NOTIFICATIONS -->
                 <button
                     type="button"
                     class="header-icon-button notification-button"
@@ -77,11 +76,9 @@
                     aria-label="Notifications"
                 >
                     <span
-                        class="notification-icon"
+                        class="ui-icon icon-notification"
                         aria-hidden="true"
-                    >
-                        ♢
-                    </span>
+                    ></span>
 
                     <span
                         class="notification-dot"
@@ -98,11 +95,9 @@
                     aria-label="Profile"
                 >
                     <span
-                        class="profile-icon"
+                        class="ui-icon icon-profile"
                         aria-hidden="true"
-                    >
-                        ●
-                    </span>
+                    ></span>
                 </button>
 
             </div>
@@ -142,65 +137,382 @@
 
 
         <!-- =================================================
-             MAIN PROMOTIONAL BANNER
-             INVEST SMART • DAILY
+             TOP PROMOTIONAL BANNER CAROUSEL
+             ONLY THIS BANNER IS A CAROUSEL
         ================================================== -->
 
-        <section class="hero-banner">
+        <section
+            class="hero-banner-section"
+            aria-label="FINORA promotional offers"
+        >
 
-            <div class="hero-content">
+            <div
+                class="hero-banner-carousel"
+                id="heroBannerCarousel"
+            >
 
-                <p class="hero-label">
-                    FINORA INVESTMENT
-                </p>
-
-                <h2>
-                    Invest Smart.
-                    <br>
-                    Grow Daily.
-                </h2>
-
-                <p class="hero-highlight">
-                    STABLE RETURNS • REAL GROWTH
-                </p>
-
-                <p>
-                    Put your money to work with carefully
-                    structured investment opportunities.
-                </p>
-
-                <a
-                    href="investment.html"
-                    class="hero-button"
+                <div
+                    class="hero-banner-track"
+                    id="heroBannerTrack"
                 >
-                    EXPLORE INVESTMENTS
-                    <span>→</span>
-                </a>
+
+
+                    <!-- =====================================
+                         BANNER 1
+                    ====================================== -->
+
+                    <article
+                        class="hero-banner hero-banner-one"
+                        data-slide="0"
+                    >
+
+                        <div class="hero-content">
+
+                            <p class="hero-label">
+                                FINORA INVESTMENT
+                            </p>
+
+                            <h2>
+                                Invest Smart.
+                                <br>
+                                Grow Daily.
+                            </h2>
+
+                            <p class="hero-highlight">
+                                SMART INVESTING • REAL GROWTH
+                            </p>
+
+                            <p class="hero-description">
+                                Put your money to work with
+                                carefully structured investment
+                                opportunities.
+                            </p>
+
+                            <a
+                                href="investment.html"
+                                class="hero-button"
+                            >
+                                EXPLORE INVESTMENTS
+
+                                <span
+                                    class="button-icon icon-arrow"
+                                    aria-hidden="true"
+                                ></span>
+
+                            </a>
+
+                        </div>
+
+
+                        <!-- BANNER 1 ARTWORK -->
+                        <div
+                            class="hero-visual hero-visual-one"
+                            aria-hidden="true"
+                        >
+
+                            <div class="hero-f-logo">
+
+                                <span class="hero-f-line"></span>
+                                <span class="hero-f-line"></span>
+                                <span class="hero-f-line"></span>
+
+                            </div>
+
+                            <div class="hero-financial-image">
+                                <div class="financial-chart"></div>
+                                <div class="financial-growth"></div>
+                            </div>
+
+                            <span class="hero-light hero-light-one"></span>
+                            <span class="hero-light hero-light-two"></span>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- =====================================
+                         BANNER 2
+                    ====================================== -->
+
+                    <article
+                        class="hero-banner hero-banner-two"
+                        data-slide="1"
+                    >
+
+                        <div class="hero-content">
+
+                            <p class="hero-label">
+                                FINORA WEALTH
+                            </p>
+
+                            <h2>
+                                Grow Your
+                                <br>
+                                Wealth.
+                            </h2>
+
+                            <p class="hero-highlight">
+                                PLAN • INVEST • GROW
+                            </p>
+
+                            <p class="hero-description">
+                                Build your financial future with
+                                investment opportunities designed
+                                around your goals.
+                            </p>
+
+                            <a
+                                href="investment.html"
+                                class="hero-button"
+                            >
+                                START INVESTING
+
+                                <span
+                                    class="button-icon icon-arrow"
+                                    aria-hidden="true"
+                                ></span>
+
+                            </a>
+
+                        </div>
+
+
+                        <!-- BANNER 2 ARTWORK -->
+                        <div
+                            class="hero-visual hero-visual-two"
+                            aria-hidden="true"
+                        >
+
+                            <div class="hero-investment-visual">
+
+                                <div class="investment-chart">
+
+                                    <span class="chart-point"></span>
+                                    <span class="chart-point"></span>
+                                    <span class="chart-point"></span>
+                                    <span class="chart-point"></span>
+
+                                </div>
+
+                                <div class="growth-indicator">
+
+                                    <span class="growth-indicator-line"></span>
+
+                                    <span
+                                        class="ui-icon icon-growth"
+                                    ></span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="hero-f-logo small">
+
+                                <span class="hero-f-line"></span>
+                                <span class="hero-f-line"></span>
+                                <span class="hero-f-line"></span>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- =====================================
+                         BANNER 3
+                    ====================================== -->
+
+                    <article
+                        class="hero-banner hero-banner-three"
+                        data-slide="2"
+                    >
+
+                        <div class="hero-content">
+
+                            <p class="hero-label">
+                                FINORA INVESTMENT PLANS
+                            </p>
+
+                            <h2>
+                                Choose Your
+                                <br>
+                                Investment Plan.
+                            </h2>
+
+                            <p class="hero-highlight">
+                                FLEXIBLE PLANS • SMART CHOICES
+                            </p>
+
+                            <p class="hero-description">
+                                Explore FINORA investment plans
+                                and choose an opportunity that
+                                matches your goals.
+                            </p>
+
+                            <a
+                                href="investment.html"
+                                class="hero-button"
+                            >
+                                VIEW PLANS
+
+                                <span
+                                    class="button-icon icon-arrow"
+                                    aria-hidden="true"
+                                ></span>
+
+                            </a>
+
+                        </div>
+
+
+                        <!-- BANNER 3 ARTWORK -->
+                        <div
+                            class="hero-visual hero-visual-three"
+                            aria-hidden="true"
+                        >
+
+                            <div class="hero-plan-visual">
+
+                                <div class="plan-visual-card">
+
+                                    <span class="plan-visual-brand">
+                                        FINORA
+                                    </span>
+
+                                    <strong>
+                                        INVEST
+                                    </strong>
+
+                                    <span class="plan-visual-line"></span>
+                                    <span class="plan-visual-line"></span>
+                                    <span class="plan-visual-line"></span>
+
+                                </div>
+
+                                <span class="plan-visual-glow"></span>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- =====================================
+                         BANNER 4
+                    ====================================== -->
+
+                    <article
+                        class="hero-banner hero-banner-four"
+                        data-slide="3"
+                    >
+
+                        <div class="hero-content">
+
+                            <p class="hero-label">
+                                FINORA FUTURE
+                            </p>
+
+                            <h2>
+                                Build Your
+                                <br>
+                                Financial Future.
+                            </h2>
+
+                            <p class="hero-highlight">
+                                INVEST TODAY • GROW TOMORROW
+                            </p>
+
+                            <p class="hero-description">
+                                Take the next step toward your
+                                financial goals with FINORA.
+                            </p>
+
+                            <a
+                                href="investment.html"
+                                class="hero-button"
+                            >
+                                GET STARTED
+
+                                <span
+                                    class="button-icon icon-arrow"
+                                    aria-hidden="true"
+                                ></span>
+
+                            </a>
+
+                        </div>
+
+
+                        <!-- BANNER 4 ARTWORK -->
+                        <div
+                            class="hero-visual hero-visual-four"
+                            aria-hidden="true"
+                        >
+
+                            <div class="hero-future-visual">
+
+                                <div class="future-ring future-ring-one"></div>
+                                <div class="future-ring future-ring-two"></div>
+
+                                <div class="hero-f-logo">
+
+                                    <span class="hero-f-line"></span>
+                                    <span class="hero-f-line"></span>
+                                    <span class="hero-f-line"></span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                </div>
 
             </div>
 
 
-            <!-- BANNER ARTWORK STRUCTURE -->
+            <!-- CAROUSEL INDICATORS -->
+
             <div
-                class="hero-decoration"
-                aria-hidden="true"
+                class="hero-carousel-dots"
+                id="heroCarouselDots"
+                aria-label="Promotional banner navigation"
             >
 
-                <span class="hero-glow"></span>
+                <button
+                    type="button"
+                    class="hero-carousel-dot active"
+                    data-slide="0"
+                    aria-label="Banner 1"
+                    aria-current="true"
+                ></button>
 
-                <span class="hero-circle hero-circle-one"></span>
+                <button
+                    type="button"
+                    class="hero-carousel-dot"
+                    data-slide="1"
+                    aria-label="Banner 2"
+                ></button>
 
-                <span class="hero-circle hero-circle-two"></span>
+                <button
+                    type="button"
+                    class="hero-carousel-dot"
+                    data-slide="2"
+                    aria-label="Banner 3"
+                ></button>
 
-                <span class="hero-chart-line"></span>
-
-                <span class="hero-chart-line hero-chart-line-two"></span>
-
-                <span class="hero-coin hero-coin-one">₵</span>
-
-                <span class="hero-coin hero-coin-two">₵</span>
-
-                <span class="hero-coin hero-coin-three">₵</span>
+                <button
+                    type="button"
+                    class="hero-carousel-dot"
+                    data-slide="3"
+                    aria-label="Banner 4"
+                ></button>
 
             </div>
 
@@ -233,7 +545,7 @@
                         class="wallet-icon"
                         aria-hidden="true"
                     >
-                        ◇
+                        <span class="ui-icon icon-wallet"></span>
                     </div>
 
                 </div>
@@ -275,7 +587,6 @@
 
         <!-- =================================================
              QUICK ACTIONS
-             HORIZONTAL
         ================================================== -->
 
         <section class="quick-actions-section">
@@ -301,6 +612,7 @@
 
 
                 <!-- DEPOSIT -->
+
                 <a
                     href="deposit.html"
                     class="quick-action"
@@ -310,7 +622,7 @@
                         class="quick-action-icon deposit-icon"
                         aria-hidden="true"
                     >
-                        ↓
+                        <span class="ui-icon icon-deposit"></span>
                     </span>
 
                     <span class="quick-action-text">
@@ -329,6 +641,7 @@
 
 
                 <!-- WITHDRAW -->
+
                 <a
                     href="withdraw.html"
                     class="quick-action"
@@ -338,7 +651,7 @@
                         class="quick-action-icon withdraw-icon"
                         aria-hidden="true"
                     >
-                        ↑
+                        <span class="ui-icon icon-withdraw"></span>
                     </span>
 
                     <span class="quick-action-text">
@@ -357,6 +670,7 @@
 
 
                 <!-- INVEST -->
+
                 <a
                     href="investment.html"
                     class="quick-action"
@@ -366,7 +680,7 @@
                         class="quick-action-icon invest-icon"
                         aria-hidden="true"
                     >
-                        ↗
+                        <span class="ui-icon icon-invest"></span>
                     </span>
 
                     <span class="quick-action-text">
@@ -385,6 +699,7 @@
 
 
                 <!-- MY INVESTMENTS -->
+
                 <a
                     href="my-investments.html"
                     class="quick-action"
@@ -394,7 +709,7 @@
                         class="quick-action-icon investment-icon"
                         aria-hidden="true"
                     >
-                        ◫
+                        <span class="ui-icon icon-portfolio"></span>
                     </span>
 
                     <span class="quick-action-text">
@@ -413,6 +728,7 @@
 
 
                 <!-- TEAM -->
+
                 <a
                     href="team.html"
                     class="quick-action"
@@ -422,7 +738,7 @@
                         class="quick-action-icon team-icon"
                         aria-hidden="true"
                     >
-                        ♧
+                        <span class="ui-icon icon-team"></span>
                     </span>
 
                     <span class="quick-action-text">
@@ -441,6 +757,7 @@
 
 
                 <!-- RECORDS -->
+
                 <a
                     href="transaction-history.html"
                     class="quick-action"
@@ -450,7 +767,7 @@
                         class="quick-action-icon records-icon"
                         aria-hidden="true"
                     >
-                        ≡
+                        <span class="ui-icon icon-records"></span>
                     </span>
 
                     <span class="quick-action-text">
@@ -474,7 +791,7 @@
 
         <!-- =================================================
              PREMIUM PLAN BANNER
-             10% DAILY • 20 DAYS
+             THIS IS SEPARATE FROM THE TOP CAROUSEL
         ================================================== -->
 
         <section class="premium-banner">
@@ -498,39 +815,37 @@
                     class="premium-button"
                 >
                     INVEST NOW
-                    <span>→</span>
+
+                    <span
+                        class="button-icon icon-arrow"
+                        aria-hidden="true"
+                    ></span>
+
                 </a>
 
             </div>
 
 
-            <!-- PREMIUM VISUAL -->
             <div
                 class="premium-visual"
                 aria-hidden="true"
             >
 
-                <span class="premium-glow"></span>
+                <div class="premium-investment-art">
 
-                <span class="premium-ring premium-ring-one"></span>
+                    <span class="premium-growth-line"></span>
 
-                <span class="premium-ring premium-ring-two"></span>
+                    <span class="premium-growth-point"></span>
 
-                <span class="coin coin-one">
-                    ₵
-                </span>
+                    <span class="premium-f-logo">
 
-                <span class="coin coin-two">
-                    ₵
-                </span>
+                        <span class="premium-f-line"></span>
+                        <span class="premium-f-line"></span>
+                        <span class="premium-f-line"></span>
 
-                <span class="coin coin-three">
-                    ₵
-                </span>
+                    </span>
 
-                <span class="growth-arrow">
-                    ↗
-                </span>
+                </div>
 
             </div>
 
@@ -569,7 +884,7 @@
                         class="summary-card-icon"
                         aria-hidden="true"
                     >
-                        ◈
+                        <span class="ui-icon icon-active-investments"></span>
                     </div>
 
                     <div>
@@ -593,7 +908,7 @@
                         class="summary-card-icon"
                         aria-hidden="true"
                     >
-                        ↗
+                        <span class="ui-icon icon-income"></span>
                     </div>
 
                     <div>
@@ -617,7 +932,7 @@
                         class="summary-card-icon"
                         aria-hidden="true"
                     >
-                        ✓
+                        <span class="ui-icon icon-earnings"></span>
                     </div>
 
                     <div>
@@ -681,7 +996,6 @@
                     </p>
 
 
-                    <!-- THREE LEVELS -->
                     <div class="referral-levels">
 
                         <span>
@@ -699,7 +1013,6 @@
                     </div>
 
 
-                    <!-- REFERRAL LINK -->
                     <div class="referral-link-box">
 
                         <input
@@ -723,27 +1036,34 @@
                 </div>
 
 
-                <!-- REFERRAL ARTWORK -->
                 <div
                     class="referral-visual"
                     aria-hidden="true"
                 >
 
-                    <span class="referral-person person-one">
-                        ●
-                    </span>
+                    <div class="referral-network">
 
-                    <span class="referral-person person-two">
-                        ●
-                    </span>
+                        <span class="referral-node referral-node-main">
+                            <span class="ui-icon icon-user"></span>
+                        </span>
 
-                    <span class="referral-person person-three">
-                        ●
-                    </span>
+                        <span class="referral-node referral-node-one">
+                            <span class="ui-icon icon-user"></span>
+                        </span>
 
-                    <span class="referral-connect connect-one"></span>
+                        <span class="referral-node referral-node-two">
+                            <span class="ui-icon icon-user"></span>
+                        </span>
 
-                    <span class="referral-connect connect-two"></span>
+                        <span class="referral-node referral-node-three">
+                            <span class="ui-icon icon-user"></span>
+                        </span>
+
+                        <span class="referral-connection referral-connection-one"></span>
+                        <span class="referral-connection referral-connection-two"></span>
+                        <span class="referral-connection referral-connection-three"></span>
+
+                    </div>
 
                 </div>
 
@@ -779,6 +1099,7 @@
 
 
                 <!-- TELEGRAM -->
+
                 <a
                     href="#"
                     class="community-item"
@@ -789,7 +1110,7 @@
                         class="community-icon telegram-icon"
                         aria-hidden="true"
                     >
-                        ✈
+                        <span class="ui-icon icon-telegram"></span>
                     </span>
 
                     <span class="community-text">
@@ -808,13 +1129,14 @@
                         class="community-arrow"
                         aria-hidden="true"
                     >
-                        →
+                        <span class="ui-icon icon-arrow"></span>
                     </span>
 
                 </a>
 
 
                 <!-- SUPPORT -->
+
                 <a
                     href="#"
                     class="community-item"
@@ -825,7 +1147,7 @@
                         class="community-icon support-icon"
                         aria-hidden="true"
                     >
-                        ?
+                        <span class="ui-icon icon-support"></span>
                     </span>
 
                     <span class="community-text">
@@ -844,7 +1166,7 @@
                         class="community-arrow"
                         aria-hidden="true"
                     >
-                        →
+                        <span class="ui-icon icon-arrow"></span>
                     </span>
 
                 </a>
@@ -895,7 +1217,7 @@
                         class="activity-empty-icon"
                         aria-hidden="true"
                     >
-                        ◷
+                        <span class="ui-icon icon-history"></span>
                     </div>
 
                     <p>
@@ -952,7 +1274,7 @@
                 id="closeNotifications"
                 aria-label="Close notifications"
             >
-                ×
+                <span class="ui-icon icon-close"></span>
             </button>
 
         </div>
@@ -962,9 +1284,7 @@
 
             <div class="notification-empty">
 
-                <span aria-hidden="true">
-                    ♢
-                </span>
+                <span class="ui-icon icon-notification"></span>
 
                 <p>
                     No new notifications
@@ -987,6 +1307,7 @@
     >
 
         <!-- HOME -->
+
         <a
             href="dashboard.html"
             class="bottom-nav-item active"
@@ -996,7 +1317,7 @@
                 class="bottom-nav-icon"
                 aria-hidden="true"
             >
-                ⌂
+                <span class="ui-icon icon-home"></span>
             </span>
 
             <span class="bottom-nav-label">
@@ -1007,6 +1328,7 @@
 
 
         <!-- INVESTMENTS -->
+
         <a
             href="my-investments.html"
             class="bottom-nav-item"
@@ -1016,7 +1338,7 @@
                 class="bottom-nav-icon"
                 aria-hidden="true"
             >
-                ◈
+                <span class="ui-icon icon-portfolio"></span>
             </span>
 
             <span class="bottom-nav-label">
@@ -1027,6 +1349,7 @@
 
 
         <!-- TEAM -->
+
         <a
             href="team.html"
             class="bottom-nav-item"
@@ -1036,7 +1359,7 @@
                 class="bottom-nav-icon"
                 aria-hidden="true"
             >
-                ♧
+                <span class="ui-icon icon-team"></span>
             </span>
 
             <span class="bottom-nav-label">
@@ -1047,6 +1370,7 @@
 
 
         <!-- MINE -->
+
         <a
             href="mine.html"
             class="bottom-nav-item"
@@ -1056,7 +1380,7 @@
                 class="bottom-nav-icon"
                 aria-hidden="true"
             >
-                ●
+                <span class="ui-icon icon-profile"></span>
             </span>
 
             <span class="bottom-nav-label">
@@ -1072,7 +1396,6 @@
 
 <!-- =========================================================
      DASHBOARD JAVASCRIPT
-     We will connect this later.
 ========================================================= -->
 
 <script src="dashboard.js"></script>
