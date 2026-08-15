@@ -4,110 +4,202 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const bcrypt = require("bcryptjs");
+const session = require("express-session");
 const pool = require("./database");
 
 const app = express();
+
 
 /* =========================================
    MIDDLEWARE
 ========================================= */
 
-app.use(cors());
+app.use(
+    cors({
+        origin: true,
+        credentials: true
+    })
+);
 
 app.use(express.json());
 
-app.use(express.urlencoded({
-    extended: true
-}));
+app.use(
+    express.urlencoded({
+        extended: true
+    })
+);
+
+
+/* =========================================
+   SESSION
+========================================= */
+
+app.set("trust proxy", 1);
+
+app.use(
+    session({
+        secret:
+            process.env.SESSION_SECRET ||
+            "FINORA_CHANGE_THIS_SESSION_SECRET",
+
+        resave: false,
+
+        saveUninitialized: false,
+
+        cookie: {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            maxAge:
+                1000 *
+                60 *
+                60 *
+                24 *
+                7
+        }
+    })
+);
 
 
 /* =========================================
    FRONTEND
 ========================================= */
 
-app.use(express.static(__dirname));
+app.use(
+    express.static(__dirname)
+);
 
 
 /* =========================================
    HOME
 ========================================= */
 
-app.get("/", function (req, res) {
+app.get(
+    "/",
+    function (req, res) {
 
-    res.sendFile(
-        path.join(__dirname, "index.html")
-    );
+        res.sendFile(
+            path.join(
+                __dirname,
+                "index.html"
+            )
+        );
 
-});
+    }
+);
 
 
 /* =========================================
    API STATUS
 ========================================= */
 
-app.get("/api/status", function (req, res) {
+app.get(
+    "/api/status",
+    function (req, res) {
 
-    res.json({
-        success: true,
-        platform: "FINORA",
-        message: "FINORA backend is running",
-        status: "online"
-    });
+        res.json({
 
-});
+            success: true,
+
+            platform: "FINORA",
+
+            message:
+                "FINORA backend is running",
+
+            status: "online"
+
+        });
+
+    }
+);
 
 
 /* =========================================
    REGISTER TEST
 ========================================= */
 
-app.get("/api/register-test", function (req, res) {
+app.get(
+    "/api/register-test",
+    function (req, res) {
 
-    res.json({
-        success: true,
-        service: "FINORA Registration API",
-        message: "Registration server connection is working",
-        status: "online"
-    });
+        res.json({
 
-});
+            success: true,
+
+            service:
+                "FINORA Registration API",
+
+            message:
+                "Registration server connection is working",
+
+            status: "online"
+
+        });
+
+    }
+);
 
 
 /* =========================================
    DATABASE HEALTH
 ========================================= */
 
-app.get("/api/health", async function (req, res) {
+app.get(
+    "/api/health",
+    async function (req, res) {
 
-    try {
+        try {
 
-        await pool.query("SELECT 1");
+            await pool.query(
+                "SELECT 1"
+            );
 
-        res.json({
-            success: true,
-            service: "FINORA API",
-            database: "connected",
-            status: "healthy"
-        });
+            res.json({
 
-    } catch (error) {
+                success: true,
 
-        console.error(
-            "DATABASE HEALTH ERROR:",
-            error.message
-        );
+                service:
+                    "FINORA API",
 
-        res.status(500).json({
-            success: false,
-            service: "FINORA API",
-            database: "disconnected",
-            status: "unhealthy",
-            message: error.message
-        });
+                database:
+                    "connected",
+
+                status:
+                    "healthy"
+
+            });
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "DATABASE HEALTH ERROR:",
+                error.message
+            );
+
+            res.status(500).json({
+
+                success: false,
+
+                service:
+                    "FINORA API",
+
+                database:
+                    "disconnected",
+
+                status:
+                    "unhealthy",
+
+                message:
+                    error.message
+
+            });
+
+        }
 
     }
-
-});
+);
 
 
 /* =========================================
@@ -153,7 +245,9 @@ async function createUsersTable() {
 
     `);
 
-    console.log("FINORA: users table is ready.");
+    console.log(
+        "FINORA: users table is ready."
+    );
 
 }
 
@@ -203,16 +297,8 @@ app.post(
 
         try {
 
-            /* =================================
-               MAKE SURE DATABASE TABLE EXISTS
-            ================================= */
-
             await createUsersTable();
 
-
-            /* =================================
-               READ REQUEST
-            ================================= */
 
             const {
                 fullName,
@@ -223,9 +309,9 @@ app.post(
             } = req.body || {};
 
 
-            /* =================================
+            /* ==============================
                REQUIRED FIELDS
-            ================================= */
+            ============================== */
 
             if (
                 !fullName ||
@@ -233,10 +319,6 @@ app.post(
                 !email ||
                 !password
             ) {
-
-                console.log(
-                    "FINORA: Missing registration fields."
-                );
 
                 return res.status(400).json({
 
@@ -250,9 +332,9 @@ app.post(
             }
 
 
-            /* =================================
+            /* ==============================
                CLEAN DATA
-            ================================= */
+            ============================== */
 
             const cleanName =
                 String(fullName).trim();
@@ -267,15 +349,19 @@ app.post(
 
             const cleanReferral =
                 referralCode
-                    ? String(referralCode).trim()
+                    ? String(
+                        referralCode
+                    ).trim()
                     : null;
 
 
-            /* =================================
+            /* ==============================
                NAME VALIDATION
-            ================================= */
+            ============================== */
 
-            if (cleanName.length < 2) {
+            if (
+                cleanName.length < 2
+            ) {
 
                 return res.status(400).json({
 
@@ -289,9 +375,9 @@ app.post(
             }
 
 
-            /* =================================
+            /* ==============================
                PHONE VALIDATION
-            ================================= */
+            ============================== */
 
             if (
                 !/^07[0-9]{8}$/.test(
@@ -311,9 +397,9 @@ app.post(
             }
 
 
-            /* =================================
+            /* ==============================
                EMAIL VALIDATION
-            ================================= */
+            ============================== */
 
             if (
                 !/^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -332,11 +418,13 @@ app.post(
             }
 
 
-            /* =================================
+            /* ==============================
                PASSWORD VALIDATION
-            ================================= */
+            ============================== */
 
-            if (password.length < 6) {
+            if (
+                password.length < 6
+            ) {
 
                 return res.status(400).json({
 
@@ -350,14 +438,9 @@ app.post(
             }
 
 
-            /* =================================
+            /* ==============================
                CHECK EXISTING ACCOUNT
-            ================================= */
-
-            console.log(
-                "FINORA: Checking existing user..."
-            );
-
+            ============================== */
 
             const existing =
                 await pool.query(
@@ -378,11 +461,9 @@ app.post(
                 );
 
 
-            if (existing.rows.length > 0) {
-
-                console.log(
-                    "FINORA: Existing account found."
-                );
+            if (
+                existing.rows.length > 0
+            ) {
 
                 return res.status(409).json({
 
@@ -396,14 +477,9 @@ app.post(
             }
 
 
-            /* =================================
+            /* ==============================
                HASH PASSWORD
-            ================================= */
-
-            console.log(
-                "FINORA: Hashing password..."
-            );
-
+            ============================== */
 
             const passwordHash =
                 await bcrypt.hash(
@@ -412,11 +488,12 @@ app.post(
                 );
 
 
-            /* =================================
+            /* ==============================
                CREATE UNIQUE REFERRAL CODE
-            ================================= */
+            ============================== */
 
-            let newReferralCode = null;
+            let newReferralCode =
+                null;
 
             let codeExists = true;
 
@@ -425,6 +502,7 @@ app.post(
 
                 newReferralCode =
                     generateReferralCode();
+
 
                 const check =
                     await pool.query(
@@ -439,20 +517,16 @@ app.post(
                         ]
                     );
 
+
                 codeExists =
                     check.rows.length > 0;
 
             }
 
 
-            /* =================================
+            /* ==============================
                INSERT USER
-            ================================= */
-
-            console.log(
-                "FINORA: Creating user in database..."
-            );
-
+            ============================== */
 
             const result =
                 await pool.query(
@@ -506,18 +580,10 @@ app.post(
                 );
 
 
-            /* =================================
-               VERIFY INSERT
-            ================================= */
-
             if (
                 !result.rows ||
                 result.rows.length === 0
             ) {
-
-                console.error(
-                    "FINORA: User INSERT returned no user."
-                );
 
                 return res.status(500).json({
 
@@ -536,10 +602,6 @@ app.post(
 
 
             console.log(
-                "================================="
-            );
-
-            console.log(
                 "FINORA: ACCOUNT CREATED"
             );
 
@@ -548,24 +610,6 @@ app.post(
                 user.id
             );
 
-            console.log(
-                "Phone:",
-                user.phone
-            );
-
-            console.log(
-                "Email:",
-                user.email
-            );
-
-            console.log(
-                "================================="
-            );
-
-
-            /* =================================
-               SUCCESS RESPONSE
-            ================================= */
 
             return res.status(201).json({
 
@@ -578,28 +622,15 @@ app.post(
 
             });
 
-        } catch (error) {
+        }
+
+        catch (error) {
 
             console.error(
-                "================================="
-            );
-
-            console.error(
-                "FINORA REGISTRATION ERROR"
-            );
-
-            console.error(
+                "FINORA REGISTRATION ERROR:",
                 error
             );
 
-            console.error(
-                "================================="
-            );
-
-
-            /* =================================
-               DUPLICATE DATABASE ERROR
-            ================================= */
 
             if (
                 error.code === "23505"
@@ -617,10 +648,6 @@ app.post(
             }
 
 
-            /* =================================
-               DATABASE ERROR
-            ================================= */
-
             return res.status(500).json({
 
                 success: false,
@@ -629,7 +656,8 @@ app.post(
                     "Unable to create account. Please try again.",
 
                 error:
-                    process.env.NODE_ENV === "production"
+                    process.env.NODE_ENV ===
+                    "production"
                         ? undefined
                         : error.message
 
@@ -639,6 +667,8 @@ app.post(
 
     }
 );
+
+
 /* =========================================
    LOGIN USER
 ========================================= */
@@ -651,12 +681,13 @@ app.post(
             "FINORA: Login request received."
         );
 
+
         try {
 
             const {
                 identifier,
                 password
-            } = req.body;
+            } = req.body || {};
 
 
             /* ==============================
@@ -680,17 +711,12 @@ app.post(
             }
 
 
-            /* ==============================
-               CLEAN DATA
-            ============================== */
-
             const cleanIdentifier =
                 String(identifier).trim();
 
 
             /* ==============================
                FIND USER
-               PHONE OR EMAIL
             ============================== */
 
             const result =
@@ -710,7 +736,8 @@ app.post(
                         created_at
                     FROM users
                     WHERE phone = $1
-                       OR LOWER(email) = LOWER($1)
+                       OR LOWER(email) =
+                          LOWER($1)
                     LIMIT 1
                     `,
                     [
@@ -718,10 +745,6 @@ app.post(
                     ]
                 );
 
-
-            /* ==============================
-               USER NOT FOUND
-            ============================== */
 
             if (
                 result.rows.length === 0
@@ -744,7 +767,7 @@ app.post(
 
 
             /* ==============================
-               CHECK ACCOUNT STATUS
+               ACCOUNT STATUS
             ============================== */
 
             if (
@@ -790,15 +813,19 @@ app.post(
 
 
             /* ==============================
+               CREATE LOGIN SESSION
+            ============================== */
+
+            req.session.userId =
+                user.id;
+
+
+            /* ==============================
                REMOVE PASSWORD HASH
             ============================== */
 
             delete user.password_hash;
 
-
-            /* ==============================
-               LOGIN SUCCESS
-            ============================== */
 
             console.log(
                 "FINORA: User logged in:",
@@ -806,16 +833,45 @@ app.post(
             );
 
 
-            return res.status(200).json({
+            /* ==============================
+               SAVE SESSION
+            ============================== */
 
-                success: true,
+            req.session.save(
+                function (sessionError) {
 
-                message:
-                    "Login successful.",
+                    if (sessionError) {
 
-                user: user
+                        console.error(
+                            "FINORA SESSION SAVE ERROR:",
+                            sessionError
+                        );
 
-            });
+                        return res.status(500).json({
+
+                            success: false,
+
+                            message:
+                                "Login session could not be created."
+
+                        });
+
+                    }
+
+
+                    return res.status(200).json({
+
+                        success: true,
+
+                        message:
+                            "Login successful.",
+
+                        user: user
+
+                    });
+
+                }
+            );
 
         }
 
@@ -841,6 +897,167 @@ app.post(
     }
 );
 
+
+/* =========================================
+   CURRENT LOGGED-IN USER
+========================================= */
+
+app.get(
+    "/api/me",
+    async function (req, res) {
+
+        try {
+
+            if (
+                !req.session ||
+                !req.session.userId
+            ) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    message:
+                        "User is not logged in."
+
+                });
+
+            }
+
+
+            const result =
+                await pool.query(
+                    `
+                    SELECT
+                        id,
+                        full_name,
+                        phone,
+                        email,
+                        referral_code,
+                        referred_by,
+                        wallet_balance,
+                        cumulative_income,
+                        account_status,
+                        created_at
+                    FROM users
+                    WHERE id = $1
+                    LIMIT 1
+                    `,
+                    [
+                        req.session.userId
+                    ]
+                );
+
+
+            if (
+                result.rows.length === 0
+            ) {
+
+                req.session.destroy(
+                    function () {}
+                );
+
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "User account was not found."
+
+                });
+
+            }
+
+
+            const user =
+                result.rows[0];
+
+
+            return res.status(200).json({
+
+                success: true,
+
+                user: user
+
+            });
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "FINORA CURRENT USER ERROR:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Unable to load user information."
+
+            });
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+app.post(
+    "/api/logout",
+    function (req, res) {
+
+        req.session.destroy(
+            function (error) {
+
+                if (error) {
+
+                    console.error(
+                        "FINORA LOGOUT ERROR:",
+                        error
+                    );
+
+                    return res.status(500).json({
+
+                        success: false,
+
+                        message:
+                            "Unable to logout."
+
+                    });
+
+                }
+
+
+                res.clearCookie(
+                    "connect.sid"
+                );
+
+
+                return res.status(200).json({
+
+                    success: true,
+
+                    message:
+                        "Logged out successfully."
+
+                });
+
+            }
+        );
+
+    }
+);
+
+
 /* =========================================
    START SERVER
 ========================================= */
@@ -858,16 +1075,8 @@ async function startServer() {
         );
 
 
-        /* =================================
-           CREATE DATABASE TABLE FIRST
-        ================================= */
-
         await createUsersTable();
 
-
-        /* =================================
-           START EXPRESS
-        ================================= */
 
         app.listen(
             PORT,
@@ -893,7 +1102,9 @@ async function startServer() {
             }
         );
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(
             "FINORA SERVER START ERROR:",
