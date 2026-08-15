@@ -255,6 +255,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 /* =================================
                    SEND LOGIN TO FINORA SERVER
+
+                   IMPORTANT:
+                   credentials: "include"
+                   allows the browser to keep
+                   and send the FINORA session
+                   cookie created by server.js.
                 ================================= */
 
                 const response =
@@ -275,6 +281,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                     "application/json"
 
                             },
+
+                            credentials:
+                                "include",
 
                             body:
                                 JSON.stringify({
@@ -370,6 +379,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 console.log(
                     "FINORA: LOGIN SUCCESS"
+                );
+
+
+                console.log(
+                    "FINORA: Session created successfully."
                 );
 
 
