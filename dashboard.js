@@ -1,6 +1,8 @@
 /* =========================================================
    FINORA DASHBOARD
    dashboard.js
+   ONLINE / BACKEND VERSION
+   NO LOCAL STORAGE
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -9,7 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
        FINORA CONFIGURATION
        ===================================================== */
 
-    const FINORA_API = "https://finora-backend-l949.onrender.com";
+    const FINORA_API =
+        "https://finora-backend-l949.onrender.com";
 
     const REFERRAL_LEVELS = {
         levelOne: 15,
@@ -25,22 +28,39 @@ document.addEventListener("DOMContentLoaded", () => {
        BASIC HELPERS
        ===================================================== */
 
-    function formatUGX(value) {
-
-        const amount = Number(value) || 0;
-
-        return "UGX " + amount.toLocaleString("en-UG");
-    }
-
-
     function getElement(id) {
         return document.getElementById(id);
     }
 
 
     function safeNumber(value) {
+
         const number = Number(value);
-        return Number.isFinite(number) ? number : 0;
+
+        return Number.isFinite(number)
+            ? number
+            : 0;
+    }
+
+
+    function formatUGX(value) {
+
+        const amount =
+            safeNumber(value);
+
+        return "UGX " +
+            amount.toLocaleString("en-UG");
+    }
+
+
+    function escapeHTML(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
     }
 
 
@@ -51,31 +71,87 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentUser = null;
 
 
-    /*
-       The FINORA login page should store the returned user
-       object after successful login.
+    /* =====================================================
+       LOAD AUTHENTICATED USER FROM BACKEND
+       ===================================================== */
 
-       Expected storage:
-
-       finoraUser
-    */
-
-    function getStoredUser() {
+    async function loadCurrentUser() {
 
         try {
 
-            const stored = localStorage.getItem("finoraUser");
+            const response =
+                await fetch(
+                    `${FINORA_API}/api/users/me`,
+                    {
+                        method: "GET",
 
-            if (!stored) {
+                        credentials: "include",
+
+                        headers: {
+                            "Accept":
+                                "application/json"
+                        }
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                console.warn(
+                    "FINORA: Unable to load authenticated user.",
+                    response.status
+                );
+
                 return null;
             }
 
-            return JSON.parse(stored);
+
+            const data =
+                await response.json();
+
+
+            const user =
+                data.user ||
+                data.data ||
+                data;
+
+
+            if (
+                !user ||
+                typeof user !== "object"
+            ) {
+
+                console.warn(
+                    "FINORA: Backend returned invalid user data."
+                );
+
+                return null;
+            }
+
+
+            currentUser = user;
+
+
+            updateDashboardUser(
+                currentUser
+            );
+
+
+            updateFinancialData(
+                currentUser
+            );
+
+
+            setupReferralProgram();
+
+
+            return currentUser;
+
 
         } catch (error) {
 
             console.error(
-                "FINORA: Unable to read stored user.",
+                "FINORA: User request failed.",
                 error
             );
 
@@ -84,150 +160,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    function saveUser(user) {
-
-        try {
-
-            localStorage.setItem(
-                "finoraUser",
-                JSON.stringify(user)
-            );
-
-        } catch (error) {
-
-            console.error(
-                "FINORA: Unable to save user.",
-                error
-            );
-        }
-    }
-
-
     /* =====================================================
-       LOAD USER FROM FINORA BACKEND
+       UPDATE USER FULL NAME
        ===================================================== */
 
-    async function loadCurrentUser() {
+    function updateDashboardUser(user) {
 
-        currentUser = getStoredUser();
-
-
-        /*
-           If the login page already supplied the complete
-           user object, display it immediately.
-        */
-
-        if (currentUser) {
-
-            updateDashboardUser(currentUser);
-
-        }
+        const userName =
+            getElement("userName");
 
 
-        /*
-           The stored user must contain an ID for the
-           dashboard to request fresh account information.
-        */
-
-        if (!currentUser || !currentUser.id) {
-
-            console.warn(
-                "FINORA: No authenticated FINORA user was found."
-            );
-
+        if (!userName || !user) {
             return;
         }
 
 
-        try {
+        /*
+           FINORA registration uses FULL NAME.
 
-            /*
-               This endpoint assumes the backend provides
-               GET /api/users/:id for the authenticated user.
-            */
+           No username is expected here.
+        */
 
-            const response = await fetch(
-                `${FINORA_API}/api/users/${encodeURIComponent(currentUser.id)}`,
-                {
-                    method: "GET",
-                    headers: {
-                        "Accept": "application/json"
-                    }
-                }
-            );
+        const name =
+            user.fullName ||
+            user.full_name ||
+            user.name ||
+            "Investor";
 
 
-            if (!response.ok) {
-
-                console.warn(
-                    "FINORA: Could not refresh user data.",
-                    response.status
-                );
-
-                return;
-            }
-
-
-            const data = await response.json();
-
-
-            /*
-               Some APIs return:
-
-               { user: {...} }
-
-               while others return the user directly.
-            */
-
-            const freshUser = data.user || data;
-
-
-            if (
-                freshUser &&
-                typeof freshUser === "object"
-            ) {
-
-                currentUser = {
-                    ...currentUser,
-                    ...freshUser
-                };
-
-                saveUser(currentUser);
-
-                updateDashboardUser(currentUser);
-            }
-
-
-        } catch (error) {
-
-            console.error(
-                "FINORA: User data request failed.",
-                error
-            );
-        }
+        userName.textContent =
+            name;
     }
 
-/* =====================================================
-   UPDATE USER NAME
-   ===================================================== */
-
-function updateDashboardUser(user) {
-
-    const userName = getElement("userName");
-
-    if (!userName || !user) {
-        return;
-    }
-
-    const name =
-        user.fullName ||
-        user.full_name ||
-        user.name ||
-        user.phone ||
-        "Investor";
-
-    userName.textContent = name;
-}
 
     /* =====================================================
        WALLET / FINANCIAL INFORMATION
@@ -242,111 +206,144 @@ function updateDashboardUser(user) {
 
         const walletBalance =
             safeNumber(
-                user.wallet_balance ??
                 user.walletBalance ??
+                user.wallet_balance ??
                 user.balance
             );
 
 
         const totalEarnings =
             safeNumber(
-                user.total_earnings ??
                 user.totalEarnings ??
-                user.cumulative_income ??
-                user.cumulativeIncome
+                user.total_earnings ??
+                user.cumulativeIncome ??
+                user.cumulative_income
             );
 
 
         const todayEarnings =
             safeNumber(
-                user.today_earnings ??
                 user.todayEarnings ??
-                user.daily_income ??
-                user.dailyIncome
+                user.today_earnings ??
+                user.dailyIncome ??
+                user.daily_income
             );
 
 
         const totalInvested =
             safeNumber(
-                user.total_invested ??
                 user.totalInvested ??
-                user.total_deposits ??
-                user.totalDeposits
+                user.total_invested ??
+                user.totalDeposits ??
+                user.total_deposits
             );
 
 
         const referralBonus =
             safeNumber(
-                user.referral_bonus ??
-                user.referralBonus ??
+                user.referralIncome ??
                 user.referral_income ??
-                user.referralIncome
+                user.referralBonus ??
+                user.referral_bonus
             );
 
 
         const activeInvestments =
             safeNumber(
-                user.active_investments ??
                 user.activeInvestments ??
-                user.investment_count ??
-                user.investmentCount
+                user.active_investments ??
+                user.investmentCount ??
+                user.investment_count
             );
 
 
-        const walletElement = getElement("walletBalance");
-        const totalEarningsElement = getElement("totalEarnings");
-        const todayEarningsElement = getElement("todayEarnings");
-        const totalInvestedElement = getElement("totalInvested");
-        const referralBonusElement = getElement("referralBonus");
-        const activeInvestmentsElement = getElement("activeInvestments");
-        const dailyIncomeElement = getElement("dailyIncome");
+        const walletElement =
+            getElement("walletBalance");
+
+
+        const totalEarningsElement =
+            getElement("totalEarnings");
+
+
+        const todayEarningsElement =
+            getElement("todayEarnings");
+
+
+        const totalInvestedElement =
+            getElement("totalInvested");
+
+
+        const referralBonusElement =
+            getElement("referralBonus");
+
+
+        const activeInvestmentsElement =
+            getElement("activeInvestments");
+
+
+        const dailyIncomeElement =
+            getElement("dailyIncome");
+
+
         const overviewTotalEarningsElement =
-            getElement("overviewTotalEarnings");
+            getElement(
+                "overviewTotalEarnings"
+            );
 
 
         if (walletElement) {
+
             walletElement.textContent =
                 formatUGX(walletBalance);
         }
 
 
         if (totalEarningsElement) {
+
             totalEarningsElement.textContent =
                 formatUGX(totalEarnings);
         }
 
 
         if (todayEarningsElement) {
+
             todayEarningsElement.textContent =
                 formatUGX(todayEarnings);
         }
 
 
         if (totalInvestedElement) {
+
             totalInvestedElement.textContent =
                 formatUGX(totalInvested);
         }
 
 
         if (referralBonusElement) {
+
             referralBonusElement.textContent =
                 formatUGX(referralBonus);
         }
 
 
         if (activeInvestmentsElement) {
+
             activeInvestmentsElement.textContent =
-                activeInvestments.toLocaleString("en-UG");
+                activeInvestments.toLocaleString(
+                    "en-UG"
+                );
         }
 
 
         if (dailyIncomeElement) {
+
             dailyIncomeElement.textContent =
                 formatUGX(todayEarnings);
         }
 
 
         if (overviewTotalEarningsElement) {
+
             overviewTotalEarningsElement.textContent =
                 formatUGX(totalEarnings);
         }
@@ -362,26 +359,31 @@ function updateDashboardUser(user) {
         const levelOneRate =
             getElement("levelOneRate");
 
+
         const levelTwoRate =
             getElement("levelTwoRate");
+
 
         const levelThreeRate =
             getElement("levelThreeRate");
 
 
         if (levelOneRate) {
+
             levelOneRate.textContent =
                 REFERRAL_LEVELS.levelOne + "%";
         }
 
 
         if (levelTwoRate) {
+
             levelTwoRate.textContent =
                 REFERRAL_LEVELS.levelTwo + "%";
         }
 
 
         if (levelThreeRate) {
+
             levelThreeRate.textContent =
                 REFERRAL_LEVELS.levelThree + "%";
         }
@@ -396,18 +398,20 @@ function updateDashboardUser(user) {
         }
 
 
-        let referralCode = "";
+        if (!currentUser) {
 
+            referralLink.value = "";
 
-        if (currentUser) {
-
-            referralCode =
-                currentUser.referral_code ||
-                currentUser.referralCode ||
-                currentUser.my_referral_code ||
-                currentUser.myReferralCode ||
-                "";
+            return;
         }
+
+
+        const referralCode =
+            currentUser.referralCode ||
+            currentUser.referral_code ||
+            currentUser.myReferralCode ||
+            currentUser.my_referral_code ||
+            "";
 
 
         if (!referralCode) {
@@ -421,13 +425,18 @@ function updateDashboardUser(user) {
         const baseURL =
             window.location.origin +
             window.location.pathname
-                .replace("dashboard.html", "");
+                .replace(
+                    "dashboard.html",
+                    ""
+                );
 
 
         referralLink.value =
             baseURL +
             "register.html?ref=" +
-            encodeURIComponent(referralCode);
+            encodeURIComponent(
+                referralCode
+            );
     }
 
 
@@ -465,21 +474,22 @@ function updateDashboardUser(user) {
 
         } catch (error) {
 
-            /*
-               Fallback for browsers where Clipboard API
-               is unavailable.
-            */
-
             input.focus();
+
             input.select();
+
 
             try {
 
-                document.execCommand("copy");
+                document.execCommand(
+                    "copy"
+                );
+
 
                 showTemporaryMessage(
                     "Referral link copied."
                 );
+
 
             } catch (copyError) {
 
@@ -492,11 +502,15 @@ function updateDashboardUser(user) {
 
 
     const copyReferralButton =
-        getElement("copyReferralButton");
+        getElement(
+            "copyReferralButton"
+        );
 
 
     const copyReferralMain =
-        getElement("copyReferralMain");
+        getElement(
+            "copyReferralMain"
+        );
 
 
     if (copyReferralButton) {
@@ -524,7 +538,7 @@ function updateDashboardUser(user) {
     function showTemporaryMessage(message) {
 
         let messageBox =
-            document.getElementById(
+            getElement(
                 "finoraMessageBox"
             );
 
@@ -532,7 +546,10 @@ function updateDashboardUser(user) {
         if (!messageBox) {
 
             messageBox =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
+
 
             messageBox.id =
                 "finoraMessageBox";
@@ -541,38 +558,50 @@ function updateDashboardUser(user) {
             messageBox.style.position =
                 "fixed";
 
+
             messageBox.style.left =
                 "50%";
+
 
             messageBox.style.bottom =
                 "95px";
 
+
             messageBox.style.transform =
                 "translateX(-50%)";
+
 
             messageBox.style.zIndex =
                 "99999";
 
+
             messageBox.style.padding =
                 "11px 18px";
+
 
             messageBox.style.borderRadius =
                 "999px";
 
+
             messageBox.style.background =
                 "#171017";
+
 
             messageBox.style.color =
                 "#FFFFFF";
 
+
             messageBox.style.fontSize =
                 "13px";
+
 
             messageBox.style.fontWeight =
                 "600";
 
+
             messageBox.style.boxShadow =
                 "0 10px 30px rgba(0,0,0,.25)";
+
 
             messageBox.style.pointerEvents =
                 "none";
@@ -616,7 +645,9 @@ function updateDashboardUser(user) {
 
 
     const bannerIndicators =
-        getElement("bannerIndicators");
+        getElement(
+            "bannerIndicators"
+        );
 
 
     if (bannerTrack) {
@@ -630,9 +661,10 @@ function updateDashboardUser(user) {
         const dots =
             bannerIndicators
                 ? Array.from(
-                    bannerIndicators.querySelectorAll(
-                        ".banner-dot"
-                    )
+                    bannerIndicators
+                        .querySelectorAll(
+                            ".banner-dot"
+                        )
                 )
                 : [];
 
@@ -643,7 +675,8 @@ function updateDashboardUser(user) {
 
         let resumeTimer = null;
 
-        let manualInteraction = false;
+        let manualInteraction =
+            false;
 
 
         function showSlide(
@@ -661,40 +694,36 @@ function updateDashboardUser(user) {
                 banners.length;
 
 
-            if (!animate) {
-
-                bannerTrack.style.transition =
-                    "none";
-
-            } else {
-
-                bannerTrack.style.transition =
-                    "";
-            }
+            bannerTrack.style.transition =
+                animate
+                    ? ""
+                    : "none";
 
 
             bannerTrack.style.transform =
                 `translate3d(-${currentSlide * 100}%, 0, 0)`;
 
 
-            dots.forEach((dot, dotIndex) => {
+            dots.forEach(
+                (dot, dotIndex) => {
 
-                dot.classList.toggle(
-                    "active",
-                    dotIndex === currentSlide
-                );
-
-            });
+                    dot.classList.toggle(
+                        "active",
+                        dotIndex === currentSlide
+                    );
+                }
+            );
 
 
             if (!animate) {
 
-                requestAnimationFrame(() => {
+                requestAnimationFrame(
+                    () => {
 
-                    bannerTrack.style.transition =
-                        "";
-
-                });
+                        bannerTrack.style.transition =
+                            "";
+                    }
+                );
             }
         }
 
@@ -709,11 +738,14 @@ function updateDashboardUser(user) {
 
         function stopAutoSlide() {
 
-            clearInterval(
-                autoSlideTimer
-            );
+            if (autoSlideTimer) {
 
-            autoSlideTimer = null;
+                clearInterval(
+                    autoSlideTimer
+                );
+
+                autoSlideTimer = null;
+            }
         }
 
 
@@ -732,9 +764,12 @@ function updateDashboardUser(user) {
 
         function temporarilyPauseAutoSlide() {
 
-            manualInteraction = true;
+            manualInteraction =
+                true;
+
 
             stopAutoSlide();
+
 
             clearTimeout(
                 resumeTimer
@@ -742,14 +777,17 @@ function updateDashboardUser(user) {
 
 
             resumeTimer =
-                setTimeout(() => {
+                setTimeout(
+                    () => {
 
-                    manualInteraction =
-                        false;
+                        manualInteraction =
+                            false;
 
-                    startAutoSlide();
+                        startAutoSlide();
 
-                }, RESUME_DELAY);
+                    },
+                    RESUME_DELAY
+                );
         }
 
 
@@ -761,36 +799,38 @@ function updateDashboardUser(user) {
         }
 
 
-        /*
-           Indicator buttons
-        */
+        dots.forEach(
+            (dot) => {
 
-        dots.forEach((dot) => {
+                dot.addEventListener(
+                    "click",
+                    () => {
 
-            dot.addEventListener(
-                "click",
-                () => {
-
-                    const slide =
-                        Number(
-                            dot.dataset.slide
-                        );
+                        const slide =
+                            Number(
+                                dot.dataset.slide
+                            );
 
 
-                    if (
-                        Number.isInteger(slide)
-                    ) {
+                        if (
+                            Number.isInteger(
+                                slide
+                            )
+                        ) {
 
-                        manualSlide(slide);
+                            manualSlide(
+                                slide
+                            );
+                        }
                     }
-                }
-            );
-        });
+                );
+            }
+        );
 
 
-        /*
-           Touch/swipe support
-        */
+        /* =================================================
+           TOUCH SWIPE
+           ================================================= */
 
         let touchStartX = 0;
 
@@ -803,7 +843,9 @@ function updateDashboardUser(user) {
             "touchstart",
             (event) => {
 
-                if (!event.touches.length) {
+                if (
+                    !event.touches.length
+                ) {
                     return;
                 }
 
@@ -811,15 +853,20 @@ function updateDashboardUser(user) {
                 touchStartX =
                     event.touches[0].clientX;
 
+
                 touchStartY =
                     event.touches[0].clientY;
 
+
                 touchMoved = false;
+
 
                 temporarilyPauseAutoSlide();
 
             },
-            { passive: true }
+            {
+                passive: true
+            }
         );
 
 
@@ -827,7 +874,9 @@ function updateDashboardUser(user) {
             "touchmove",
             (event) => {
 
-                if (!event.touches.length) {
+                if (
+                    !event.touches.length
+                ) {
                     return;
                 }
 
@@ -835,15 +884,19 @@ function updateDashboardUser(user) {
                 const currentX =
                     event.touches[0].clientX;
 
+
                 const currentY =
                     event.touches[0].clientY;
 
 
                 const deltaX =
-                    currentX - touchStartX;
+                    currentX -
+                    touchStartX;
+
 
                 const deltaY =
-                    currentY - touchStartY;
+                    currentY -
+                    touchStartY;
 
 
                 if (
@@ -855,7 +908,9 @@ function updateDashboardUser(user) {
                 }
 
             },
-            { passive: true }
+            {
+                passive: true
+            }
         );
 
 
@@ -872,21 +927,19 @@ function updateDashboardUser(user) {
                     event.changedTouches[0];
 
 
-                const endX =
-                    touch.clientX;
+                if (!touch) {
+                    return;
+                }
 
 
                 const difference =
-                    endX - touchStartX;
-
-
-                const minimumSwipe =
-                    45;
+                    touch.clientX -
+                    touchStartX;
 
 
                 if (
                     Math.abs(difference) >=
-                    minimumSwipe
+                    45
                 ) {
 
                     if (difference < 0) {
@@ -904,13 +957,15 @@ function updateDashboardUser(user) {
                 }
 
             },
-            { passive: true }
+            {
+                passive: true
+            }
         );
 
 
-        /*
-           Desktop mouse dragging
-        */
+        /* =================================================
+           DESKTOP DRAG
+           ================================================= */
 
         let mouseDown = false;
 
@@ -931,7 +986,6 @@ function updateDashboardUser(user) {
                     event.clientX;
 
                 temporarilyPauseAutoSlide();
-
             }
         );
 
@@ -984,7 +1038,8 @@ function updateDashboardUser(user) {
 
 
                 if (
-                    Math.abs(difference) >= 45
+                    Math.abs(difference) >=
+                    45
                 ) {
 
                     if (difference < 0) {
@@ -1004,18 +1059,15 @@ function updateDashboardUser(user) {
         );
 
 
-        /*
-           Pause when pointer is over the banner.
-           This gives the user complete control while
-           reading the banner.
-        */
+        /* =================================================
+           POINTER HOVER
+           ================================================= */
 
         bannerTrack.addEventListener(
             "mouseenter",
             () => {
 
                 stopAutoSlide();
-
             }
         );
 
@@ -1032,24 +1084,22 @@ function updateDashboardUser(user) {
         );
 
 
-        /*
-           If the user focuses/interacts with the banner,
-           don't fight their interaction.
-        */
+        /* =================================================
+           FOCUS
+           ================================================= */
 
         bannerTrack.addEventListener(
             "focusin",
             () => {
 
                 temporarilyPauseAutoSlide();
-
             }
         );
 
 
-        /*
-           Start automatically.
-        */
+        /* =================================================
+           START CAROUSEL
+           ================================================= */
 
         showSlide(
             0,
@@ -1066,11 +1116,15 @@ function updateDashboardUser(user) {
        ===================================================== */
 
     const notificationButton =
-        getElement("notificationButton");
+        getElement(
+            "notificationButton"
+        );
 
 
     const notificationCount =
-        getElement("notificationCount");
+        getElement(
+            "notificationCount"
+        );
 
 
     if (notificationButton) {
@@ -1079,14 +1133,8 @@ function updateDashboardUser(user) {
             "click",
             () => {
 
-                /*
-                   Notification page/panel can be connected
-                   when the FINORA notification destination
-                   exists.
-                */
-
                 showTemporaryMessage(
-                    "No new notification details available."
+                    "No new notifications."
                 );
 
 
@@ -1101,11 +1149,13 @@ function updateDashboardUser(user) {
 
 
     /* =====================================================
-       COMMUNITY LINK
+       COMMUNITY
        ===================================================== */
 
     const communityLink =
-        getElement("communityLink");
+        getElement(
+            "communityLink"
+        );
 
 
     if (communityLink) {
@@ -1114,28 +1164,32 @@ function updateDashboardUser(user) {
             "click",
             (event) => {
 
-                event.preventDefault();
+                if (
+                    !communityLink.href ||
+                    communityLink.getAttribute(
+                        "href"
+                    ) === "#"
+                ) {
 
+                    event.preventDefault();
 
-                /*
-                   Replace the URL when the official FINORA
-                   Telegram community URL is configured.
-                */
-
-                showTemporaryMessage(
-                    "FINORA community link is not configured yet."
-                );
+                    showTemporaryMessage(
+                        "FINORA community link is not configured yet."
+                    );
+                }
             }
         );
     }
 
 
     /* =====================================================
-       SUPPORT LINK
+       SUPPORT
        ===================================================== */
 
     const supportLink =
-        getElement("supportLink");
+        getElement(
+            "supportLink"
+        );
 
 
     if (supportLink) {
@@ -1144,17 +1198,19 @@ function updateDashboardUser(user) {
             "click",
             (event) => {
 
-                event.preventDefault();
+                if (
+                    !supportLink.href ||
+                    supportLink.getAttribute(
+                        "href"
+                    ) === "#"
+                ) {
 
+                    event.preventDefault();
 
-                /*
-                   Replace with the actual FINORA support
-                   destination when it exists.
-                */
-
-                showTemporaryMessage(
-                    "FINORA support link is not configured yet."
-                );
+                    showTemporaryMessage(
+                        "FINORA support link is not configured yet."
+                    );
+                }
             }
         );
     }
@@ -1169,7 +1225,9 @@ function updateDashboardUser(user) {
     ) {
 
         const container =
-            getElement("recentTransactions");
+            getElement(
+                "recentTransactions"
+            );
 
 
         if (!container) {
@@ -1178,7 +1236,9 @@ function updateDashboardUser(user) {
 
 
         if (
-            !Array.isArray(transactions) ||
+            !Array.isArray(
+                transactions
+            ) ||
             transactions.length === 0
         ) {
 
@@ -1235,133 +1295,141 @@ function updateDashboardUser(user) {
         const recent =
             transactions
                 .slice()
-                .sort((a, b) => {
+                .sort(
+                    (a, b) => {
 
-                    const dateA =
-                        new Date(
-                            a.created_at ||
-                            a.createdAt ||
-                            a.date ||
-                            0
-                        );
-
-                    const dateB =
-                        new Date(
-                            b.created_at ||
-                            b.createdAt ||
-                            b.date ||
-                            0
-                        );
+                        const dateA =
+                            new Date(
+                                a.createdAt ||
+                                a.created_at ||
+                                a.date ||
+                                0
+                            );
 
 
-                    return dateB - dateA;
+                        const dateB =
+                            new Date(
+                                b.createdAt ||
+                                b.created_at ||
+                                b.date ||
+                                0
+                            );
 
-                })
+
+                        return dateB - dateA;
+                    }
+                )
                 .slice(0, 5);
 
 
         container.innerHTML = "";
 
 
-        recent.forEach((transaction) => {
+        recent.forEach(
+            (transaction) => {
 
-            const item =
-                document.createElement("div");
-
-
-            item.className =
-                "transaction-item";
-
-
-            const type =
-                transaction.type ||
-                transaction.category ||
-                "Transaction";
+                const item =
+                    document.createElement(
+                        "div"
+                    );
 
 
-            const amount =
-                safeNumber(
-                    transaction.amount
-                );
+                item.className =
+                    "transaction-item";
 
 
-            const date =
-                transaction.created_at ||
-                transaction.createdAt ||
-                transaction.date;
+                const type =
+                    transaction.type ||
+                    transaction.category ||
+                    "Transaction";
 
 
-            const formattedDate =
-                date
-                    ? new Date(date)
-                        .toLocaleDateString(
-                            "en-UG",
-                            {
-                                day: "2-digit",
-                                month: "short",
-                                year: "numeric"
-                            }
-                        )
-                    : "";
+                const amount =
+                    safeNumber(
+                        transaction.amount
+                    );
 
 
-            item.innerHTML = `
+                const date =
+                    transaction.createdAt ||
+                    transaction.created_at ||
+                    transaction.date;
 
-                <div class="transaction-info">
 
-                    <strong>
-                        ${escapeHTML(type)}
+                const formattedDate =
+                    date
+                        ? new Date(date)
+                            .toLocaleDateString(
+                                "en-UG",
+                                {
+                                    day: "2-digit",
+                                    month: "short",
+                                    year: "numeric"
+                                }
+                            )
+                        : "";
+
+
+                item.innerHTML = `
+
+                    <div class="transaction-info">
+
+                        <strong>
+                            ${escapeHTML(type)}
+                        </strong>
+
+                        <small>
+                            ${escapeHTML(
+                                formattedDate
+                            )}
+                        </small>
+
+                    </div>
+
+                    <strong class="transaction-amount">
+                        ${formatUGX(amount)}
                     </strong>
 
-                    <small>
-                        ${escapeHTML(formattedDate)}
-                    </small>
-
-                </div>
-
-                <strong class="transaction-amount">
-                    ${formatUGX(amount)}
-                </strong>
-
-            `;
+                `;
 
 
-            container.appendChild(item);
-        });
-    }
-
-
-    function escapeHTML(value) {
-
-        return String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+                container.appendChild(
+                    item
+                );
+            }
+        );
     }
 
 
     /* =====================================================
-       LOAD TRANSACTIONS
+       LOAD TRANSACTIONS FROM BACKEND
        ===================================================== */
 
     async function loadRecentTransactions() {
 
-        if (!currentUser || !currentUser.id) {
+        if (!currentUser) {
             return;
         }
 
+
+        /*
+           The backend should identify the logged-in user
+           through the authenticated session/cookie.
+        */
 
         try {
 
             const response =
                 await fetch(
-                    `${FINORA_API}/api/transactions/user/${encodeURIComponent(currentUser.id)}`,
+                    `${FINORA_API}/api/transactions/user`,
                     {
                         method: "GET",
+
+                        credentials: "include",
+
                         headers: {
-                            "Accept": "application/json"
+                            "Accept":
+                                "application/json"
                         }
                     }
                 );
@@ -1388,6 +1456,7 @@ function updateDashboardUser(user) {
                     : (
                         data.transactions ||
                         data.records ||
+                        data.data ||
                         []
                     );
 
@@ -1408,60 +1477,72 @@ function updateDashboardUser(user) {
 
 
     /* =====================================================
-       PREVENT EMPTY # LINKS FROM JUMPING
+       EMPTY HASH LINKS
        ===================================================== */
 
     document
-        .querySelectorAll('a[href="#"]')
-        .forEach((link) => {
+        .querySelectorAll(
+            'a[href="#"]'
+        )
+        .forEach(
+            (link) => {
 
-            link.addEventListener(
-                "click",
-                (event) => {
+                link.addEventListener(
+                    "click",
+                    (event) => {
 
-                    event.preventDefault();
-                }
-            );
-        });
+                        event.preventDefault();
+                    }
+                );
+            }
+        );
 
 
     /* =====================================================
-       INITIALIZE DASHBOARD
+       DASHBOARD INITIALIZATION
        ===================================================== */
 
     setupReferralProgram();
 
 
-    if (currentUser) {
-
-        updateDashboardUser(
-            currentUser
-        );
-
-        updateFinancialData(
-            currentUser
-        );
-    }
-
-
     loadCurrentUser()
-        .then(() => {
+        .then(
+            async (user) => {
 
-            setupReferralProgram();
+                if (!user) {
 
-            updateFinancialData(
-                currentUser
-            );
+                    console.warn(
+                        "FINORA: Dashboard has no authenticated user."
+                    );
 
-            return loadRecentTransactions();
+                    return;
+                }
 
-        })
-        .catch((error) => {
 
-            console.error(
-                "FINORA: Dashboard initialization error.",
-                error
-            );
-        });
+                updateDashboardUser(
+                    user
+                );
+
+
+                updateFinancialData(
+                    user
+                );
+
+
+                setupReferralProgram();
+
+
+                await loadRecentTransactions();
+            }
+        )
+        .catch(
+            (error) => {
+
+                console.error(
+                    "FINORA: Dashboard initialization error.",
+                    error
+                );
+            }
+        );
 
 });
