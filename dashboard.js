@@ -207,32 +207,27 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+/* =====================================================
+   UPDATE USER NAME
+   ===================================================== */
 
-    /* =====================================================
-       UPDATE USER NAME
-       ===================================================== */
+function updateDashboardUser(user) {
 
-    function updateDashboardUser(user) {
+    const userName = getElement("userName");
 
-        const userName = getElement("userName");
-
-        if (!userName || !user) {
-            return;
-        }
-
-
-        const name =
-            user.full_name ||
-            user.fullName ||
-            user.name ||
-            user.username ||
-            user.phone ||
-            "Investor";
-
-
-        userName.textContent = name;
+    if (!userName || !user) {
+        return;
     }
 
+    const name =
+        user.fullName ||
+        user.full_name ||
+        user.name ||
+        user.phone ||
+        "Investor";
+
+    userName.textContent = name;
+}
 
     /* =====================================================
        WALLET / FINANCIAL INFORMATION
