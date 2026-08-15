@@ -2,6 +2,7 @@
    FINORA DASHBOARD
    dashboard.js
    ONLINE / BACKEND VERSION
+   SESSION AUTHENTICATION
    NO LOCAL STORAGE
    ========================================================= */
 
@@ -9,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        FINORA CONFIGURATION
-       ===================================================== */
+    ===================================================== */
 
     const FINORA_API =
         "https://finora-backend-l949.onrender.com";
@@ -26,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        BASIC HELPERS
-       ===================================================== */
+    ===================================================== */
 
     function getElement(id) {
         return document.getElementById(id);
@@ -66,14 +67,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        CURRENT USER
-       ===================================================== */
+    ===================================================== */
 
     let currentUser = null;
 
 
     /* =====================================================
-       LOAD AUTHENTICATED USER FROM BACKEND
-       ===================================================== */
+       LOAD AUTHENTICATED USER
+       
+       IMPORTANT:
+       server.js provides:
+       
+       GET /api/me
+       
+       NOT:
+       
+       /api/users/me
+    ===================================================== */
 
     async function loadCurrentUser() {
 
@@ -81,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const response =
                 await fetch(
-                    `${FINORA_API}/api/users/me`,
+                    `${FINORA_API}/api/me`,
                     {
                         method: "GET",
 
@@ -95,12 +105,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
 
+            console.log(
+                "FINORA USER STATUS:",
+                response.status
+            );
+
+
             if (!response.ok) {
 
-                console.warn(
-                    "FINORA: Unable to load authenticated user.",
-                    response.status
-                );
+                if (
+                    response.status === 401
+                ) {
+
+                    console.warn(
+                        "FINORA: No authenticated session found."
+                    );
+
+                } else {
+
+                    console.warn(
+                        "FINORA: Unable to load authenticated user.",
+                        response.status
+                    );
+                }
 
                 return null;
             }
@@ -108,6 +135,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const data =
                 await response.json();
+
+
+            console.log(
+                "FINORA USER RESPONSE:",
+                data
+            );
 
 
             const user =
@@ -131,6 +164,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             currentUser = user;
 
+
+            /* =============================================
+               UPDATE DASHBOARD
+            ============================================= */
 
             updateDashboardUser(
                 currentUser
@@ -162,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        UPDATE USER FULL NAME
-       ===================================================== */
+    ===================================================== */
 
     function updateDashboardUser(user) {
 
@@ -170,32 +207,60 @@ document.addEventListener("DOMContentLoaded", () => {
             getElement("userName");
 
 
-        if (!userName || !user) {
+        if (!userName) {
+            return;
+        }
+
+
+        if (!user) {
+
+            userName.textContent =
+                "Unable to load name";
+
             return;
         }
 
 
         /*
-           FINORA registration uses FULL NAME.
+           PostgreSQL server returns:
 
-           No username is expected here.
+           full_name
+
+           We also support fullName/name
+           in case the backend response changes.
         */
 
         const name =
-            user.fullName ||
             user.full_name ||
-            user.name ||
-            "Investor";
+            user.fullName ||
+            user.name;
 
 
-        userName.textContent =
-            name;
+        if (
+            name &&
+            String(name).trim()
+        ) {
+
+            userName.textContent =
+                String(name).trim();
+
+        } else {
+
+            /*
+               DO NOT SHOW "Investor".
+               The actual registered name
+               must come from the backend.
+            */
+
+            userName.textContent =
+                "Unable to load name";
+        }
     }
 
 
     /* =====================================================
        WALLET / FINANCIAL INFORMATION
-       ===================================================== */
+    ===================================================== */
 
     function updateFinancialData(user) {
 
@@ -204,6 +269,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
+        /* =============================================
+           WALLET BALANCE
+        ============================================= */
+
         const walletBalance =
             safeNumber(
                 user.walletBalance ??
@@ -211,6 +280,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 user.balance
             );
 
+
+        /* =============================================
+           TOTAL EARNINGS
+        ============================================= */
 
         const totalEarnings =
             safeNumber(
@@ -221,6 +294,10 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
+        /* =============================================
+           TODAY EARNINGS
+        ============================================= */
+
         const todayEarnings =
             safeNumber(
                 user.todayEarnings ??
@@ -229,6 +306,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 user.daily_income
             );
 
+
+        /* =============================================
+           TOTAL INVESTED
+        ============================================= */
 
         const totalInvested =
             safeNumber(
@@ -239,6 +320,10 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
+        /* =============================================
+           REFERRAL BONUS
+        ============================================= */
+
         const referralBonus =
             safeNumber(
                 user.referralIncome ??
@@ -248,6 +333,10 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
+        /* =============================================
+           ACTIVE INVESTMENTS
+        ============================================= */
+
         const activeInvestments =
             safeNumber(
                 user.activeInvestments ??
@@ -256,6 +345,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 user.investment_count
             );
 
+
+        /* =============================================
+           ELEMENTS
+        ============================================= */
 
         const walletElement =
             getElement("walletBalance");
@@ -290,6 +383,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 "overviewTotalEarnings"
             );
 
+
+        /* =============================================
+           DISPLAY VALUES
+        ============================================= */
 
         if (walletElement) {
 
@@ -352,7 +449,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        REFERRAL PROGRAM
-       ===================================================== */
+    ===================================================== */
 
     function setupReferralProgram() {
 
@@ -407,8 +504,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         const referralCode =
-            currentUser.referralCode ||
             currentUser.referral_code ||
+            currentUser.referralCode ||
             currentUser.myReferralCode ||
             currentUser.my_referral_code ||
             "";
@@ -442,7 +539,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        COPY REFERRAL LINK
-       ===================================================== */
+    ===================================================== */
 
     async function copyReferralLink() {
 
@@ -533,7 +630,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        TEMPORARY MESSAGE
-       ===================================================== */
+    ===================================================== */
 
     function showTemporaryMessage(message) {
 
@@ -638,7 +735,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        BANNER CAROUSEL
-       ===================================================== */
+    ===================================================== */
 
     const bannerTrack =
         getElement("bannerTrack");
@@ -830,7 +927,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         /* =================================================
            TOUCH SWIPE
-           ================================================= */
+        ================================================= */
 
         let touchStartX = 0;
 
@@ -965,7 +1062,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         /* =================================================
            DESKTOP DRAG
-           ================================================= */
+        ================================================= */
 
         let mouseDown = false;
 
@@ -1061,7 +1158,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         /* =================================================
            POINTER HOVER
-           ================================================= */
+        ================================================= */
 
         bannerTrack.addEventListener(
             "mouseenter",
@@ -1086,7 +1183,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         /* =================================================
            FOCUS
-           ================================================= */
+        ================================================= */
 
         bannerTrack.addEventListener(
             "focusin",
@@ -1099,7 +1196,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         /* =================================================
            START CAROUSEL
-           ================================================= */
+        ================================================= */
 
         showSlide(
             0,
@@ -1113,7 +1210,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        NOTIFICATIONS
-       ===================================================== */
+    ===================================================== */
 
     const notificationButton =
         getElement(
@@ -1150,7 +1247,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        COMMUNITY
-       ===================================================== */
+    ===================================================== */
 
     const communityLink =
         getElement(
@@ -1184,7 +1281,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        SUPPORT
-       ===================================================== */
+    ===================================================== */
 
     const supportLink =
         getElement(
@@ -1218,7 +1315,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        RECENT TRANSACTIONS
-       ===================================================== */
+    ===================================================== */
 
     function updateRecentTransactions(
         transactions
@@ -1403,7 +1500,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        LOAD TRANSACTIONS FROM BACKEND
-       ===================================================== */
+    ===================================================== */
 
     async function loadRecentTransactions() {
 
@@ -1411,11 +1508,6 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-
-        /*
-           The backend should identify the logged-in user
-           through the authenticated session/cookie.
-        */
 
         try {
 
@@ -1478,7 +1570,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        EMPTY HASH LINKS
-       ===================================================== */
+    ===================================================== */
 
     document
         .querySelectorAll(
@@ -1500,7 +1592,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        DASHBOARD INITIALIZATION
-       ===================================================== */
+    ===================================================== */
 
     setupReferralProgram();
 
