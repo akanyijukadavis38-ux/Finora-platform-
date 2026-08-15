@@ -1,6 +1,6 @@
 /* =========================================================
-   FINORA DASHBOARD — PART ONE
-   DARK PURPLE BACKGROUND
+   FINORA DASHBOARD — COMPLETE CSS
+   MATCHES THE CURRENT dashboard.html
    ========================================================= */
 
 
@@ -25,6 +25,12 @@
     --finora-gold-dark:#C97908;
 
     --white:#ffffff;
+
+    --card-bg:rgba(42,20,56,.82);
+    --card-border:rgba(245,166,35,.18);
+
+    --muted:#C9B5D1;
+    --muted-light:#E3D4E8;
 }
 
 
@@ -39,17 +45,15 @@
 }
 
 
-/* =========================================================
-   PAGE
-   DARK PURPLE — NOT BLACK
-   ========================================================= */
-
 html{
     width:100%;
     min-height:100%;
 
     background:#1A0B26 !important;
+
+    scroll-behavior:smooth;
 }
+
 
 body{
     width:100%;
@@ -76,6 +80,22 @@ body{
     text-rendering:optimizeLegibility;
 
     overflow-x:hidden;
+}
+
+
+img{
+    max-width:100%;
+}
+
+
+a{
+    color:inherit;
+}
+
+
+button,
+input{
+    font:inherit;
 }
 
 
@@ -116,7 +136,6 @@ body{
 
 /* =========================================================
    HEADER
-   DEEP PURPLE — NOT BLACK
    ========================================================= */
 
 .dashboard-header{
@@ -131,10 +150,6 @@ body{
     z-index:100;
 }
 
-
-/* =========================================================
-   TOP HEADER
-   ========================================================= */
 
 .top-header{
     width:100%;
@@ -167,10 +182,6 @@ body{
 }
 
 
-/* =========================================================
-   FINORA F LOGO
-   ========================================================= */
-
 .finora-logo-mark{
     width:48px;
     height:53px;
@@ -180,10 +191,6 @@ body{
     flex-shrink:0;
 }
 
-
-/* =========================================================
-   FINORA WORDMARK
-   ========================================================= */
 
 .finora-brand-text{
     display:flex;
@@ -196,10 +203,6 @@ body{
     text-align:left;
 }
 
-
-/* =========================================================
-   FINORA NAME
-   ========================================================= */
 
 .finora-name{
     display:flex;
@@ -216,27 +219,15 @@ body{
 }
 
 
-/* =========================================================
-   FIN — GOLD
-   ========================================================= */
-
 .finora-fin{
     color:var(--finora-gold);
 }
 
 
-/* =========================================================
-   ORA — PINK
-   ========================================================= */
-
 .finora-ora{
     color:var(--finora-pink);
 }
 
-
-/* =========================================================
-   TAGLINE
-   ========================================================= */
 
 .finora-tagline{
     margin-top:5px;
@@ -275,10 +266,6 @@ body{
 }
 
 
-/* =========================================================
-   NOTIFICATION BUTTON
-   ========================================================= */
-
 .notification-button{
     position:relative;
 
@@ -301,10 +288,6 @@ body{
 }
 
 
-/* =========================================================
-   HEADER ICON
-   ========================================================= */
-
 .header-icon{
     width:22px;
     height:22px;
@@ -314,10 +297,6 @@ body{
     color:#ffffff;
 }
 
-
-/* =========================================================
-   NOTIFICATION COUNT
-   ========================================================= */
 
 .notification-count{
     position:absolute;
@@ -349,10 +328,6 @@ body{
 }
 
 
-/* =========================================================
-   PROFILE BUTTON
-   ========================================================= */
-
 .profile-button{
     width:42px;
     height:42px;
@@ -380,10 +355,6 @@ body{
 }
 
 
-/* =========================================================
-   PROFILE HOVER
-   ========================================================= */
-
 .profile-button:hover{
     transform:translateY(-1px);
 
@@ -395,10 +366,6 @@ body{
         0 6px 16px rgba(234,60,255,.30);
 }
 
-
-/* =========================================================
-   PROFILE ICON
-   ========================================================= */
 
 .profile-icon{
     width:21px;
@@ -412,7 +379,6 @@ body{
 
 /* =========================================================
    MAIN
-   DARK PURPLE — NOT BLACK
    ========================================================= */
 
 main{
@@ -427,127 +393,9 @@ main{
         ) !important;
 
     color:#ffffff;
+
+    padding-bottom:40px;
 }
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media (max-width:600px){
-
-    .dashboard-container{
-        padding-left:15px;
-        padding-right:15px;
-    }
-
-    .top-header{
-        min-height:78px;
-    }
-
-    .finora-brand{
-        gap:9px;
-    }
-
-    .finora-logo-mark{
-        width:45px;
-        height:50px;
-    }
-
-    .finora-name{
-        font-size:33px;
-        letter-spacing:-1.6px;
-    }
-
-    .finora-tagline{
-        font-size:7px;
-        letter-spacing:1.6px;
-        margin-top:4px;
-    }
-
-    .header-actions{
-        right:15px;
-        gap:7px;
-    }
-
-    .notification-button,
-    .profile-button{
-        width:39px;
-        height:39px;
-    }
-
-    .header-icon{
-        width:21px;
-        height:21px;
-    }
-
-    .profile-icon{
-        width:20px;
-        height:20px;
-    }
-}
-
-
-/* =========================================================
-   VERY SMALL PHONES
-   ========================================================= */
-
-@media (max-width:380px){
-
-    .dashboard-container{
-        padding-left:12px;
-        padding-right:12px;
-    }
-
-    .top-header{
-        min-height:74px;
-    }
-
-    .finora-brand{
-        gap:7px;
-    }
-
-    .finora-logo-mark{
-        width:40px;
-        height:44px;
-    }
-
-    .finora-name{
-        font-size:30px;
-        letter-spacing:-1.4px;
-    }
-
-    .finora-tagline{
-        font-size:6px;
-        letter-spacing:1.3px;
-    }
-
-    .header-actions{
-        right:12px;
-        gap:3px;
-    }
-
-    .notification-button,
-    .profile-button{
-        width:36px;
-        height:36px;
-    }
-
-    .header-icon{
-        width:20px;
-        height:20px;
-    }
-
-    .profile-icon{
-        width:19px;
-        height:19px;
-    }
-}
-/* =========================================================
-   FINORA DASHBOARD — PART TWO
-   WELCOME + FEATURED BANNER
-   MATCHES THE CURRENT dashboard.html
-   ========================================================= */
 
 
 /* =========================================================
@@ -560,83 +408,59 @@ main{
     padding:
         26px
         0
-        18px;
+        4px;
 
     position:relative;
-
-    z-index:1;
 }
 
 
 .welcome-kicker{
-    display:flex;
-
+    display:inline-flex;
     align-items:center;
 
-    gap:8px;
+    color:var(--finora-gold);
 
-    margin-bottom:7px;
-
-    color:var(--finora-gold-light);
-
-    font-size:9px;
-
+    font-size:10px;
     font-weight:900;
 
     letter-spacing:1.8px;
 
     line-height:1.2;
-}
 
-
-.welcome-kicker::before{
-    content:"";
-
-    width:22px;
-
-    height:2px;
-
-    border-radius:10px;
-
-    background:
-        linear-gradient(
-            90deg,
-            var(--finora-gold),
-            var(--finora-pink)
-        );
+    margin-bottom:7px;
 }
 
 
 .welcome-section h1{
     margin:0;
 
-    color:#FFFFFF;
+    color:#ffffff;
 
-    font-size:28px;
+    font-size:34px;
 
-    font-weight:850;
+    font-weight:900;
 
-    line-height:1.12;
+    line-height:1.05;
 
-    letter-spacing:-.7px;
+    letter-spacing:-1.1px;
 }
 
 
 .welcome-section h1 span{
-    color:var(--finora-gold-light);
+    color:var(--finora-pink);
 }
 
 
 .welcome-section p{
-    margin-top:7px;
+    margin-top:8px;
 
-    color:rgba(255,255,255,.65);
+    color:#CDBBD4;
 
     font-size:11px;
 
-    font-weight:400;
+    font-weight:500;
 
-    line-height:1.45;
+    line-height:1.5;
 }
 
 
@@ -649,7 +473,7 @@ main{
 
     margin:0;
 
-    padding:0 0 2px;
+    padding:18px 0 0;
 
     overflow:hidden;
 
@@ -665,8 +489,6 @@ main{
     width:100%;
 
     display:flex;
-
-    transform:translateX(0);
 
     transition:
         transform .55s cubic-bezier(.22,.61,.36,1);
@@ -688,37 +510,32 @@ main{
 
     width:100%;
 
-    height:245px;
+    min-width:100%;
 
-    min-height:245px;
+    min-height:250px;
+    height:250px;
 
     overflow:hidden;
 
     display:flex;
-
     align-items:center;
 
-    padding:
-        27px
-        28px
-        27px
-        28px;
+    padding:28px 30px;
 
-    border-radius:20px;
+    border-radius:22px;
 
-    border:
-        1px solid rgba(245,166,35,.24);
+    border:1px solid rgba(245,166,35,.22);
 
     background:
         linear-gradient(
-            115deg,
+            110deg,
             #24102F 0%,
-            #351348 52%,
-            #4A165E 100%
+            #321344 48%,
+            #45165A 100%
         );
 
     box-shadow:
-        0 14px 35px rgba(0,0,0,.22);
+        0 16px 38px rgba(0,0,0,.20);
 
     isolation:isolate;
 }
@@ -731,9 +548,9 @@ main{
 .banner-content{
     position:relative;
 
-    z-index:10;
+    z-index:5;
 
-    width:53%;
+    width:52%;
 
     max-width:500px;
 
@@ -747,93 +564,74 @@ main{
 }
 
 
-/* =========================================================
-   BANNER LABEL
-   ========================================================= */
-
 .banner-label{
-    margin:0 0 8px;
+    display:inline-flex;
 
-    color:var(--finora-gold-light);
+    align-items:center;
 
-    font-size:9px;
+    margin-bottom:8px;
 
-    font-weight:900;
+    color:#F5C54E;
 
-    letter-spacing:1.55px;
+    font-size:10px;
+
+    font-weight:800;
+
+    letter-spacing:1.6px;
 
     line-height:1.2;
 }
 
-
-/* =========================================================
-   BANNER HEADING
-   ========================================================= */
 
 .banner-content h2{
     margin:0;
 
     color:#FFFFFF;
 
-    font-size:30px;
+    font-size:31px;
 
     font-weight:900;
 
-    line-height:1.03;
+    line-height:1.04;
 
     letter-spacing:-.8px;
 }
 
 
 .banner-content h2 span{
-    color:var(--finora-gold-light);
+    color:#F5C54E;
 }
 
 
-/* =========================================================
-   BANNER SUBTITLE
-   ========================================================= */
-
 .banner-subtitle{
-    margin-top:9px;
+    margin-top:10px;
 
-    color:#E6C9EF;
+    color:#E6C7EF;
 
-    font-size:8px;
+    font-size:9px;
 
-    font-weight:850;
+    font-weight:800;
 
-    letter-spacing:1.05px;
+    letter-spacing:1.15px;
 
     line-height:1.3;
 }
 
 
-/* =========================================================
-   BANNER DESCRIPTION
-   ========================================================= */
-
 .banner-content p{
-    margin:
-        8px
-        0
-        0;
+    margin:9px 0 0;
 
-    max-width:370px;
+    max-width:385px;
 
-    color:rgba(255,255,255,.75);
+    color:rgba(255,255,255,.78);
 
-    font-size:10px;
+    font-size:11px;
 
     font-weight:400;
 
-    line-height:1.45;
+    line-height:1.5;
 }
 
-
-/* =========================================================
-   BANNER BUTTON
-   ========================================================= */
 
 .banner-button{
     display:inline-flex;
@@ -842,40 +640,38 @@ main{
 
     justify-content:center;
 
-    gap:8px;
+    gap:9px;
 
-    margin-top:13px;
+    margin-top:15px;
 
-    min-height:36px;
+    min-height:38px;
 
-    padding:
-        0
-        14px;
+    padding:0 16px;
 
-    border-radius:9px;
+    border-radius:10px;
 
     background:
         linear-gradient(
             135deg,
-            var(--finora-gold-light),
-            var(--finora-gold),
-            var(--finora-gold-dark)
+            #FFD76A 0%,
+            #F5A623 55%,
+            #C97908 100%
         );
 
-    color:#24102F;
+    color:#21102E;
 
     text-decoration:none;
 
-    font-size:9px;
+    font-size:10px;
 
     font-weight:900;
 
-    letter-spacing:.5px;
+    letter-spacing:.55px;
 
     white-space:nowrap;
 
     box-shadow:
-        0 7px 18px rgba(0,0,0,.22);
+        0 8px 20px rgba(0,0,0,.18);
 
     transition:
         transform .2s ease,
@@ -884,7 +680,7 @@ main{
 
 
 .banner-button span{
-    font-size:15px;
+    font-size:16px;
 
     line-height:1;
 }
@@ -894,7 +690,7 @@ main{
     transform:translateY(-1px);
 
     box-shadow:
-        0 9px 22px rgba(0,0,0,.28);
+        0 10px 24px rgba(0,0,0,.25);
 }
 
 
@@ -904,27 +700,24 @@ main{
 
 
 /* =========================================================
-   BANNER IMAGE AREA
+   DOWNLOADED BANNER IMAGE SPACE
    ========================================================= */
 
 .banner-artwork{
     position:absolute;
 
     top:0;
-
     right:0;
 
-    width:48%;
-
+    width:49%;
     height:100%;
-
-    overflow:hidden;
 
     display:flex;
 
     align-items:center;
-
     justify-content:center;
+
+    overflow:hidden;
 
     z-index:2;
 
@@ -932,71 +725,65 @@ main{
 }
 
 
-/* =========================================================
-   DOWNLOADED IMAGES
-   ========================================================= */
-
-.banner-image{
+.banner-artwork .banner-image{
     display:block;
 
-    width:100%;
+    position:relative;
 
+    z-index:0;
+
+    width:100%;
     height:100%;
 
     max-width:none;
-
-    margin:0;
-
-    padding:0;
-
-    border:0;
 
     object-fit:cover;
 
     object-position:center;
 
-    position:relative;
+    border:0;
 
-    z-index:0;
+    margin:0;
+    padding:0;
 }
 
 
 /* =========================================================
-   IMAGE BLEND
+   IMAGE READABILITY OVERLAY
    ========================================================= */
 
-.banner-artwork::after{
+.banner-artwork::before{
     content:"";
 
     position:absolute;
 
     inset:0;
 
-    z-index:2;
-
-    pointer-events:none;
+    z-index:1;
 
     background:
         linear-gradient(
             90deg,
-            #24102F 0%,
-            rgba(36,16,47,.78) 12%,
-            rgba(36,16,47,.25) 45%,
-            rgba(36,16,47,0) 75%
+            rgba(36,16,47,.88) 0%,
+            rgba(36,16,47,.46) 38%,
+            rgba(36,16,47,.12) 65%,
+            rgba(36,16,47,0) 100%
         );
+
+    pointer-events:none;
 }
 
 
 /* =========================================================
-   INDIVIDUAL BANNER BACKGROUNDS
+   BANNER VARIANTS
    ========================================================= */
 
 .banner-invest{
     background:
         linear-gradient(
-            115deg,
+            110deg,
             #24102F 0%,
-            #321342 52%,
+            #321343 48%,
             #48165B 100%
         );
 }
@@ -1005,10 +792,10 @@ main{
 .banner-wealth{
     background:
         linear-gradient(
-            115deg,
+            110deg,
             #24102F 0%,
-            #361348 52%,
-            #511667 100%
+            #351348 48%,
+            #501665 100%
         );
 }
 
@@ -1016,10 +803,10 @@ main{
 .banner-plans{
     background:
         linear-gradient(
-            115deg,
+            110deg,
             #25102F 0%,
-            #391342 52%,
-            #54165E 100%
+            #391342 48%,
+            #53165C 100%
         );
 }
 
@@ -1027,10 +814,10 @@ main{
 .banner-future{
     background:
         linear-gradient(
-            115deg,
+            110deg,
             #24102F 0%,
-            #351345 52%,
-            #4F165D 100%
+            #351345 48%,
+            #4D165B 100%
         );
 }
 
@@ -1050,13 +837,12 @@ main{
 
     gap:7px;
 
-    margin-top:10px;
+    margin-top:11px;
 }
 
 
 .banner-dot{
     width:7px;
-
     height:7px;
 
     padding:0;
@@ -1065,23 +851,1592 @@ main{
 
     border-radius:50%;
 
-    background:
-        rgba(255,255,255,.28);
+    background:rgba(255,255,255,.28);
 
     cursor:pointer;
 
     transition:
         width .25s ease,
-        background .25s ease;
+        background .25s ease,
+        transform .25s ease;
 }
 
 
 .banner-dot.active{
-    width:21px;
+    width:22px;
 
     border-radius:20px;
 
-    background:var(--finora-gold-light);
+    background:#F5C54E;
+
+    transform:scale(1.02);
+}
+
+
+/* =========================================================
+   FINANCIAL OVERVIEW
+   ========================================================= */
+
+.financial-overview{
+    width:100%;
+
+    display:grid;
+
+    grid-template-columns:
+        minmax(0,1.45fr)
+        minmax(0,2fr);
+
+    gap:16px;
+
+    margin-top:25px;
+}
+
+
+/* =========================================================
+   WALLET CARD
+   ========================================================= */
+
+.wallet-card{
+    min-width:0;
+
+    padding:22px;
+
+    border-radius:20px;
+
+    border:1px solid rgba(245,166,35,.22);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(54,23,70,.95),
+            rgba(30,12,41,.96)
+        );
+
+    box-shadow:
+        0 12px 30px rgba(0,0,0,.18);
+}
+
+
+.wallet-header{
+    display:flex;
+
+    align-items:flex-start;
+    justify-content:space-between;
+
+    gap:15px;
+}
+
+
+.small-label{
+    color:#D8C5DE;
+
+    font-size:9px;
+
+    font-weight:800;
+
+    letter-spacing:1.2px;
+
+    line-height:1.3;
+}
+
+
+.wallet-card h2{
+    margin-top:8px;
+
+    color:#ffffff;
+
+    font-size:28px;
+
+    font-weight:900;
+
+    line-height:1.05;
+
+    letter-spacing:-.8px;
+}
+
+
+.wallet-card p{
+    margin-top:6px;
+
+    color:#BFAEC7;
+
+    font-size:9px;
+}
+
+
+.wallet-icon{
+    width:45px;
+    height:45px;
+
+    flex:0 0 45px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:13px;
+
+    background:
+        rgba(245,166,35,.13);
+
+    color:var(--finora-gold);
+
+    border:1px solid rgba(245,166,35,.22);
+}
+
+
+.wallet-icon svg{
+    width:23px;
+    height:23px;
+}
+
+
+.wallet-actions{
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:9px;
+
+    margin-top:20px;
+}
+
+
+.wallet-deposit-button,
+.wallet-withdraw-button{
+    min-height:38px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:9px;
+
+    text-decoration:none;
+
+    font-size:9px;
+
+    font-weight:900;
+
+    letter-spacing:.7px;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+
+.wallet-deposit-button{
+    background:
+        linear-gradient(
+            135deg,
+            #FFD76A,
+            #F5A623
+        );
+
+    color:#21102E;
+
+    box-shadow:
+        0 7px 18px rgba(245,166,35,.15);
+}
+
+
+.wallet-withdraw-button{
+    background:
+        rgba(234,60,255,.10);
+
+    color:#ffffff;
+
+    border:1px solid rgba(234,60,255,.35);
+}
+
+
+.wallet-deposit-button:hover,
+.wallet-withdraw-button:hover{
+    transform:translateY(-1px);
+}
+
+
+/* =========================================================
+   FINANCIAL SUMMARY
+   ========================================================= */
+
+.financial-summary{
+    min-width:0;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:12px;
+}
+
+
+.summary-card{
+    min-width:0;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:16px;
+
+    border-radius:16px;
+
+    background:
+        rgba(42,20,56,.78);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+        0 9px 25px rgba(0,0,0,.12);
+}
+
+
+.summary-icon{
+    width:40px;
+    height:40px;
+
+    flex:0 0 40px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:12px;
+
+    color:var(--finora-gold);
+
+    background:
+        rgba(245,166,35,.10);
+
+    border:1px solid rgba(245,166,35,.16);
+}
+
+
+.summary-icon svg{
+    width:21px;
+    height:21px;
+}
+
+
+.summary-label{
+    color:#C9B7D0;
+
+    font-size:8px;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+
+    line-height:1.25;
+}
+
+
+.summary-card strong{
+    display:block;
+
+    margin-top:5px;
+
+    color:#ffffff;
+
+    font-size:15px;
+
+    font-weight:900;
+
+    line-height:1.1;
+
+    word-break:break-word;
+}
+
+
+.summary-card small{
+    display:block;
+
+    margin-top:4px;
+
+    color:#AFA0B6;
+
+    font-size:8px;
+
+    line-height:1.3;
+}
+
+
+/* =========================================================
+   SECTION ROWS
+   ========================================================= */
+
+.section-row{
+    width:100%;
+
+    display:flex;
+
+    align-items:flex-end;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+    margin-bottom:14px;
+}
+
+
+.section-kicker{
+    color:var(--finora-gold);
+
+    font-size:9px;
+
+    font-weight:900;
+
+    letter-spacing:1.6px;
+
+    line-height:1.2;
+}
+
+
+.section-row h2{
+    margin-top:5px;
+
+    color:#ffffff;
+
+    font-size:22px;
+
+    font-weight:900;
+
+    line-height:1.1;
+
+    letter-spacing:-.45px;
+}
+
+
+.section-helper{
+    color:#AFA0B6;
+
+    font-size:9px;
+
+    white-space:nowrap;
+}
+
+
+/* =========================================================
+   QUICK ACTIONS
+   ========================================================= */
+
+.quick-actions-section{
+    width:100%;
+
+    margin-top:30px;
+}
+
+
+.quick-actions{
+    display:grid;
+
+    grid-template-columns:
+        repeat(6,minmax(0,1fr));
+
+    gap:10px;
+}
+
+
+.quick-action{
+    min-width:0;
+
+    min-height:116px;
+
+    padding:14px 10px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+
+    text-decoration:none;
+
+    border-radius:16px;
+
+    background:
+        rgba(42,20,56,.78);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+        0 9px 22px rgba(0,0,0,.12);
+
+    transition:
+        transform .2s ease,
+        border-color .2s ease,
+        background .2s ease;
+}
+
+
+.quick-action:hover{
+    transform:translateY(-2px);
+
+    border-color:
+        rgba(245,166,35,.28);
+
+    background:
+        rgba(51,23,67,.90);
+}
+
+
+.quick-action-icon{
+    width:43px;
+    height:43px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:13px;
+
+    color:var(--finora-gold);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(245,166,35,.15),
+            rgba(234,60,255,.08)
+        );
+
+    border:1px solid rgba(245,166,35,.16);
+
+    margin-bottom:9px;
+}
+
+
+.quick-action-icon svg{
+    width:22px;
+    height:22px;
+}
+
+
+.quick-action strong{
+    color:#ffffff;
+
+    font-size:10px;
+
+    font-weight:900;
+
+    line-height:1.15;
+}
+
+
+.quick-action small{
+    margin-top:4px;
+
+    color:#AFA0B6;
+
+    font-size:8px;
+
+    line-height:1.2;
+}
+
+
+/* =========================================================
+   PREMIUM INVESTMENT SECTION
+   ========================================================= */
+
+.premium-section{
+    width:100%;
+
+    margin-top:30px;
+}
+
+
+.premium-banner{
+    position:relative;
+
+    min-height:215px;
+
+    width:100%;
+
+    overflow:hidden;
+
+    display:flex;
+
+    align-items:center;
+
+    border-radius:20px;
+
+    border:1px solid rgba(245,166,35,.24);
+
+    background:
+        linear-gradient(
+            110deg,
+            #29102F 0%,
+            #421342 52%,
+            #5B1760 100%
+        );
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,.20);
+
+    isolation:isolate;
+}
+
+
+.premium-content{
+    position:relative;
+
+    z-index:5;
+
+    width:55%;
+
+    padding:25px 30px;
+}
+
+
+.premium-badge{
+    display:inline-flex;
+
+    align-items:center;
+
+    min-height:24px;
+
+    padding:0 9px;
+
+    border-radius:50px;
+
+    background:
+        rgba(245,166,35,.14);
+
+    color:#FFD76A;
+
+    border:1px solid rgba(245,166,35,.24);
+
+    font-size:8px;
+
+    font-weight:900;
+
+    letter-spacing:1.1px;
+}
+
+
+.premium-content h2{
+    margin-top:10px;
+
+    color:#ffffff;
+
+    font-size:27px;
+
+    font-weight:900;
+
+    line-height:1.05;
+
+    letter-spacing:-.6px;
+}
+
+
+.premium-content h2 span{
+    color:#F5C54E;
+}
+
+
+.premium-content p{
+    margin-top:8px;
+
+    color:#D4C0DB;
+
+    font-size:10px;
+
+    line-height:1.45;
+}
+
+
+.premium-button{
+    display:inline-flex;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:8px;
+
+    margin-top:14px;
+
+    min-height:36px;
+
+    padding:0 14px;
+
+    border-radius:9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #FFD76A,
+            #F5A623,
+            #C97908
+        );
+
+    color:#21102E;
+
+    text-decoration:none;
+
+    font-size:8px;
+
+    font-weight:900;
+
+    letter-spacing:.65px;
+}
+
+
+.premium-button span{
+    font-size:15px;
+}
+
+
+.premium-artwork{
+    position:absolute;
+
+    right:0;
+    top:0;
+
+    width:48%;
+    height:100%;
+
+    overflow:hidden;
+
+    z-index:2;
+}
+
+
+.premium-artwork::before{
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:1;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(41,16,47,.95) 0%,
+            rgba(41,16,47,.52) 38%,
+            rgba(41,16,47,.08) 78%,
+            rgba(41,16,47,0) 100%
+        );
+}
+
+
+.premium-banner-image{
+    position:relative;
+
+    z-index:0;
+
+    display:block;
+
+    width:100%;
+    height:100%;
+
+    max-width:none;
+
+    object-fit:cover;
+
+    object-position:center;
+}
+
+
+/* =========================================================
+   REFERRAL PROGRAM
+   ========================================================= */
+
+.referral-section{
+    width:100%;
+
+    margin-top:30px;
+}
+
+
+.referral-card{
+    position:relative;
+
+    width:100%;
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:18px;
+
+    padding:24px;
+
+    border-radius:20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(51,21,66,.95),
+            rgba(29,11,40,.96)
+        );
+
+    border:1px solid rgba(234,60,255,.18);
+
+    box-shadow:
+        0 12px 30px rgba(0,0,0,.16);
+}
+
+
+.referral-icon{
+    width:48px;
+    height:48px;
+
+    flex:0 0 48px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:14px;
+
+    color:var(--finora-pink);
+
+    background:
+        rgba(234,60,255,.10);
+
+    border:1px solid rgba(234,60,255,.20);
+}
+
+
+.referral-icon svg{
+    width:25px;
+    height:25px;
+}
+
+
+.referral-content{
+    min-width:0;
+
+    flex:1;
+}
+
+
+.referral-content h2{
+    margin-top:5px;
+
+    color:#ffffff;
+
+    font-size:22px;
+
+    font-weight:900;
+
+    line-height:1.1;
+}
+
+
+.referral-content p{
+    max-width:650px;
+
+    margin-top:7px;
+
+    color:#BFAEC7;
+
+    font-size:10px;
+
+    line-height:1.5;
+}
+
+
+.referral-levels{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:8px;
+
+    margin-top:15px;
+}
+
+
+.referral-level{
+    min-width:82px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    padding:8px 10px;
+
+    border-radius:9px;
+
+    background:
+        rgba(255,255,255,.045);
+
+    border:1px solid rgba(255,255,255,.07);
+}
+
+
+.referral-level span{
+    color:#AFA0B6;
+
+    font-size:7px;
+
+    font-weight:900;
+
+    letter-spacing:.7px;
+}
+
+
+.referral-level strong{
+    color:#F5C54E;
+
+    font-size:11px;
+
+    font-weight:900;
+}
+
+
+.referral-link-row{
+    display:flex;
+
+    align-items:center;
+
+    width:100%;
+
+    max-width:620px;
+
+    margin-top:15px;
+
+    overflow:hidden;
+
+    border-radius:9px;
+
+    border:1px solid rgba(255,255,255,.10);
+
+    background:rgba(0,0,0,.18);
+}
+
+
+.referral-link-row input{
+    min-width:0;
+
+    flex:1;
+
+    height:38px;
+
+    padding:0 11px;
+
+    border:0;
+
+    outline:0;
+
+    background:transparent;
+
+    color:#DCCDE2;
+
+    font-size:9px;
+}
+
+
+.referral-link-row button{
+    width:40px;
+    height:38px;
+
+    flex:0 0 40px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border:0;
+
+    background:
+        rgba(234,60,255,.15);
+
+    color:#ffffff;
+
+    cursor:pointer;
+}
+
+
+.referral-link-row svg{
+    width:18px;
+    height:18px;
+}
+
+
+.copy-referral-button{
+    min-width:90px;
+
+    min-height:38px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:7px;
+
+    margin-left:auto;
+
+    align-self:flex-end;
+
+    border:0;
+
+    border-radius:9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #FFD76A,
+            #F5A623
+        );
+
+    color:#21102E;
+
+    cursor:pointer;
+
+    font-size:8px;
+
+    font-weight:900;
+
+    letter-spacing:.7px;
+}
+
+
+.copy-referral-button svg{
+    width:16px;
+    height:16px;
+}
+
+
+/* =========================================================
+   INVESTMENT OVERVIEW
+   ========================================================= */
+
+.investment-overview-section{
+    width:100%;
+
+    margin-top:30px;
+}
+
+
+.overview-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,minmax(0,1fr));
+
+    gap:12px;
+}
+
+
+.overview-card{
+    min-width:0;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:13px;
+
+    padding:18px;
+
+    border-radius:16px;
+
+    background:
+        rgba(42,20,56,.80);
+
+    border:1px solid rgba(255,255,255,.08);
+}
+
+
+.overview-icon{
+    width:43px;
+    height:43px;
+
+    flex:0 0 43px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:12px;
+
+    color:var(--finora-gold);
+
+    background:
+        rgba(245,166,35,.10);
+
+    border:1px solid rgba(245,166,35,.15);
+}
+
+
+.overview-icon svg{
+    width:22px;
+    height:22px;
+}
+
+
+.overview-label{
+    color:#AFA0B6;
+
+    font-size:7px;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+}
+
+
+.overview-title{
+    margin-top:3px;
+
+    color:#DCCDE2;
+
+    font-size:8px;
+
+    font-weight:800;
+
+    line-height:1.2;
+}
+
+
+.overview-card strong{
+    display:block;
+
+    margin-top:6px;
+
+    color:#ffffff;
+
+    font-size:18px;
+
+    font-weight:900;
+
+    line-height:1.05;
+}
+
+
+/* =========================================================
+   INVITE SECTION
+   ========================================================= */
+
+.invite-section{
+    width:100%;
+
+    margin-top:30px;
+}
+
+
+.invite-card{
+    width:100%;
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:17px;
+
+    padding:22px;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(45,18,59,.92),
+            rgba(28,10,39,.95)
+        );
+
+    border:1px solid rgba(234,60,255,.14);
+}
+
+
+.invite-icon{
+    width:46px;
+    height:46px;
+
+    flex:0 0 46px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:13px;
+
+    color:var(--finora-pink);
+
+    background:
+        rgba(234,60,255,.10);
+
+    border:1px solid rgba(234,60,255,.18);
+}
+
+
+.invite-icon svg{
+    width:24px;
+    height:24px;
+}
+
+
+.invite-label{
+    color:var(--finora-gold);
+
+    font-size:8px;
+
+    font-weight:900;
+
+    letter-spacing:1.4px;
+}
+
+
+.invite-card h2{
+    margin-top:5px;
+
+    color:#ffffff;
+
+    font-size:20px;
+
+    font-weight:900;
+
+    line-height:1.1;
+}
+
+
+.invite-card p{
+    max-width:620px;
+
+    margin-top:7px;
+
+    color:#BFAEC7;
+
+    font-size:10px;
+
+    line-height:1.5;
+}
+
+
+.invite-button{
+    display:inline-flex;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:8px;
+
+    margin-top:13px;
+
+    min-height:35px;
+
+    padding:0 13px;
+
+    border-radius:9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #FFD76A,
+            #F5A623
+        );
+
+    color:#21102E;
+
+    text-decoration:none;
+
+    font-size:8px;
+
+    font-weight:900;
+
+    letter-spacing:.6px;
+}
+
+
+.invite-button span{
+    font-size:14px;
+}
+
+
+/* =========================================================
+   COMMUNITY / SUPPORT
+   ========================================================= */
+
+.community-section{
+    width:100%;
+
+    margin-top:30px;
+}
+
+
+.community-grid{
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:12px;
+}
+
+
+.community-card{
+    min-width:0;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:13px;
+
+    padding:17px;
+
+    border-radius:16px;
+
+    text-decoration:none;
+
+    background:
+        rgba(42,20,56,.78);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    transition:
+        transform .2s ease,
+        border-color .2s ease;
+}
+
+
+.community-card:hover{
+    transform:translateY(-2px);
+
+    border-color:
+        rgba(245,166,35,.25);
+}
+
+
+.community-icon{
+    width:43px;
+    height:43px;
+
+    flex:0 0 43px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:12px;
+
+    color:var(--finora-gold);
+
+    background:
+        rgba(245,166,35,.10);
+
+    border:1px solid rgba(245,166,35,.15);
+}
+
+
+.community-icon svg{
+    width:22px;
+    height:22px;
+}
+
+
+.community-card > div:nth-child(2){
+    min-width:0;
+
+    flex:1;
+}
+
+
+.community-label{
+    color:#AFA0B6;
+
+    font-size:7px;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+}
+
+
+.community-card strong{
+    display:block;
+
+    margin-top:4px;
+
+    color:#ffffff;
+
+    font-size:11px;
+
+    font-weight:900;
+
+    line-height:1.2;
+}
+
+
+.community-card small{
+    display:block;
+
+    margin-top:4px;
+
+    color:#AFA0B6;
+
+    font-size:8px;
+
+    line-height:1.3;
+}
+
+
+.community-arrow{
+    color:var(--finora-gold);
+
+    font-size:20px;
+
+    line-height:1;
+}
+
+
+/* =========================================================
+   RECENT TRANSACTIONS
+   ========================================================= */
+
+.activity-section{
+    width:100%;
+
+    margin-top:30px;
+
+    padding-bottom:25px;
+}
+
+
+.view-all{
+    color:var(--finora-gold);
+
+    text-decoration:none;
+
+    font-size:8px;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+}
+
+
+.activity-card{
+    width:100%;
+
+    overflow:hidden;
+
+    border-radius:17px;
+
+    background:
+        rgba(42,20,56,.80);
+
+    border:1px solid rgba(255,255,255,.08);
+}
+
+
+.activity-header{
+    min-height:42px;
+
+    display:flex;
+
+    align-items:center;
+
+    padding:0 17px;
+
+    border-bottom:1px solid rgba(255,255,255,.07);
+
+    color:#AFA0B6;
+
+    font-size:8px;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+}
+
+
+.transaction-list{
+    width:100%;
+}
+
+
+.empty-transactions{
+    min-height:150px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:10px;
+
+    color:#7F6E88;
+
+    text-align:center;
+}
+
+
+.empty-transactions svg{
+    width:36px;
+    height:36px;
+}
+
+
+.empty-transactions p{
+    color:#AFA0B6;
+
+    font-size:9px;
+
+    font-weight:600;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.dashboard-footer{
+    width:100%;
+
+    padding:
+        25px
+        0
+        105px;
+
+    background:
+        rgba(18,8,26,.72);
+
+    border-top:1px solid rgba(255,255,255,.06);
+
+    text-align:center;
+}
+
+
+.dashboard-footer p{
+    color:#8F7E97;
+
+    font-size:8px;
+
+    font-weight:700;
+
+    letter-spacing:.8px;
+}
+
+
+.dashboard-footer span{
+    color:var(--finora-gold);
+
+    padding:0 4px;
+}
+
+
+/* =========================================================
+   BOTTOM NAVIGATION
+   ========================================================= */
+
+.bottom-navigation{
+    position:fixed;
+
+    left:0;
+    right:0;
+    bottom:0;
+
+    z-index:200;
+
+    width:100%;
+
+    min-height:72px;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(5,1fr);
+
+    align-items:stretch;
+
+    padding:
+        7px
+        max(10px, env(safe-area-inset-right))
+        calc(7px + env(safe-area-inset-bottom))
+        max(10px, env(safe-area-inset-left));
+
+    background:
+        rgba(18,8,26,.97);
+
+    border-top:1px solid rgba(255,255,255,.10);
+
+    box-shadow:
+        0 -10px 30px rgba(0,0,0,.25);
+
+    backdrop-filter:blur(14px);
+
+    -webkit-backdrop-filter:blur(14px);
+}
+
+
+.bottom-nav-item{
+    min-width:0;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:4px;
+
+    color:#8F7E97;
+
+    text-decoration:none;
+
+    border-radius:11px;
+
+    transition:
+        color .2s ease,
+        background .2s ease;
+}
+
+
+.bottom-nav-item svg{
+    width:21px;
+    height:21px;
+
+    flex-shrink:0;
+}
+
+
+.bottom-nav-item span{
+    font-size:7px;
+
+    font-weight:800;
+
+    line-height:1.1;
+}
+
+
+.bottom-nav-item.active{
+    color:var(--finora-gold);
+
+    background:
+        rgba(245,166,35,.07);
+}
+
+
+.bottom-nav-item:hover{
+    color:#F5C54E;
 }
 
 
@@ -1091,24 +2446,50 @@ main{
 
 @media (max-width:900px){
 
-    .welcome-section{
-        padding-top:24px;
+    .dashboard-container{
+        max-width:100%;
+
+        padding-left:18px;
+        padding-right:18px;
     }
 
 
-    .welcome-section h1{
-        font-size:27px;
+    .financial-overview{
+        grid-template-columns:1fr;
+    }
+
+
+    .quick-actions{
+        grid-template-columns:
+            repeat(3,minmax(0,1fr));
+    }
+
+
+    .overview-grid{
+        grid-template-columns:
+            repeat(3,minmax(0,1fr));
+    }
+
+
+    .premium-content{
+        width:57%;
+    }
+
+
+    .premium-artwork{
+        width:48%;
     }
 
 
     .dashboard-banner{
-        height:240px;
-
         min-height:240px;
+        height:240px;
 
         padding:
             25px
-            24px;
+            25px
+            25px
+            26px;
     }
 
 
@@ -1120,12 +2501,6 @@ main{
     .banner-content h2{
         font-size:28px;
     }
-
-
-    .banner-artwork{
-        width:50%;
-    }
-
 }
 
 
@@ -1135,59 +2510,121 @@ main{
 
 @media (max-width:700px){
 
+    .dashboard-container{
+        padding-left:15px;
+        padding-right:15px;
+    }
+
+
+    .top-header{
+        min-height:78px;
+    }
+
+
+    .finora-brand{
+        gap:9px;
+    }
+
+
+    .finora-logo-mark{
+        width:45px;
+        height:50px;
+    }
+
+
+    .finora-name{
+        font-size:33px;
+        letter-spacing:-1.6px;
+    }
+
+
+    .finora-tagline{
+        font-size:7px;
+        letter-spacing:1.6px;
+        margin-top:4px;
+    }
+
+
+    .header-actions{
+        right:15px;
+        gap:7px;
+    }
+
+
+    .notification-button,
+    .profile-button{
+        width:39px;
+        height:39px;
+    }
+
+
+    .header-icon{
+        width:21px;
+        height:21px;
+    }
+
+
+    .profile-icon{
+        width:20px;
+        height:20px;
+    }
+
+
+    /* WELCOME */
+
     .welcome-section{
         padding:
             20px
             0
-            14px;
+            2px;
     }
 
 
     .welcome-kicker{
-        margin-bottom:6px;
-
         font-size:8px;
 
-        letter-spacing:1.45px;
-    }
-
-
-    .welcome-kicker::before{
-        width:18px;
+        letter-spacing:1.4px;
     }
 
 
     .welcome-section h1{
-        font-size:24px;
+        font-size:27px;
 
-        letter-spacing:-.45px;
+        letter-spacing:-.7px;
     }
 
 
     .welcome-section p{
         margin-top:6px;
 
-        font-size:10px;
+        font-size:9px;
+    }
+
+
+    /* BANNERS */
+
+    .banner-section{
+        padding-top:15px;
     }
 
 
     .dashboard-banner{
-        height:225px;
+        min-height:230px;
 
-        min-height:225px;
+        height:230px;
 
         padding:
-            21px
+            22px
             17px
-            21px
-            19px;
+            22px
+            20px;
 
-        border-radius:18px;
+        border-radius:19px;
     }
 
 
     .banner-content{
-        width:59%;
+        width:58%;
 
         max-width:none;
     }
@@ -1196,34 +2633,746 @@ main{
     .banner-label{
         margin-bottom:7px;
 
-        font-size:7px;
+        font-size:8px;
 
-        letter-spacing:1.1px;
+        letter-spacing:1.2px;
     }
 
 
     .banner-content h2{
-        font-size:23px;
+        font-size:24px;
 
         line-height:1.04;
 
-        letter-spacing:-.45px;
+        letter-spacing:-.5px;
     }
 
 
     .banner-subtitle{
+        margin-top:8px;
+
+        font-size:7.5px;
+
+        letter-spacing:.8px;
+    }
+
+
+    .banner-content p{
+        max-width:205px;
+
         margin-top:7px;
 
+        font-size:9px;
+
+        line-height:1.42;
+    }
+
+
+    .banner-button{
+        min-height:34px;
+
+        margin-top:11px;
+
+        padding:0 12px;
+
+        gap:7px;
+
+        border-radius:9px;
+
+        font-size:8px;
+    }
+
+
+    .banner-button span{
+        font-size:14px;
+    }
+
+
+    .banner-artwork{
+        width:49%;
+
+        right:0;
+    }
+
+
+    .banner-artwork::before{
+        background:
+            linear-gradient(
+                90deg,
+                rgba(36,16,47,.92) 0%,
+                rgba(36,16,47,.50) 35%,
+                rgba(36,16,47,0) 78%
+            );
+    }
+
+
+    /* FINANCIAL */
+
+    .financial-overview{
+        display:block;
+
+        margin-top:22px;
+    }
+
+
+    .wallet-card{
+        padding:18px;
+
+        border-radius:17px;
+    }
+
+
+    .wallet-card h2{
+        font-size:25px;
+    }
+
+
+    .financial-summary{
+        margin-top:10px;
+
+        grid-template-columns:1fr 1fr;
+
+        gap:9px;
+    }
+
+
+    .summary-card{
+        padding:12px;
+
+        gap:9px;
+
+        border-radius:13px;
+    }
+
+
+    .summary-icon{
+        width:34px;
+        height:34px;
+
+        flex:0 0 34px;
+
+        border-radius:10px;
+    }
+
+
+    .summary-icon svg{
+        width:18px;
+        height:18px;
+    }
+
+
+    .summary-label{
         font-size:6.8px;
 
         letter-spacing:.7px;
     }
 
 
-    .banner-content p{
-        max-width:190px;
+    .summary-card strong{
+        font-size:12px;
+    }
 
-        margin-top:6px;
+
+    .summary-card small{
+        font-size:7px;
+    }
+
+
+    /* SECTION HEADERS */
+
+    .section-row{
+        margin-bottom:11px;
+    }
+
+
+    .section-kicker{
+        font-size:7.5px;
+
+        letter-spacing:1.3px;
+    }
+
+
+    .section-row h2{
+        font-size:19px;
+    }
+
+
+    .section-helper{
+        font-size:7px;
+    }
+
+
+    /* QUICK ACTIONS */
+
+    .quick-actions-section{
+        margin-top:25px;
+    }
+
+
+    .quick-actions{
+        grid-template-columns:
+            repeat(3,minmax(0,1fr));
+
+        gap:8px;
+    }
+
+
+    .quick-action{
+        min-height:105px;
+
+        padding:11px 7px;
+
+        border-radius:13px;
+    }
+
+
+    .quick-action-icon{
+        width:38px;
+        height:38px;
+
+        margin-bottom:7px;
+
+        border-radius:11px;
+    }
+
+
+    .quick-action-icon svg{
+        width:20px;
+        height:20px;
+    }
+
+
+    .quick-action strong{
+        font-size:8px;
+    }
+
+
+    .quick-action small{
+        font-size:6.5px;
+    }
+
+
+    /* PREMIUM */
+
+    .premium-section{
+        margin-top:25px;
+    }
+
+
+    .premium-banner{
+        min-height:205px;
+
+        border-radius:17px;
+    }
+
+
+    .premium-content{
+        width:61%;
+
+        padding:
+            20px
+            18px;
+    }
+
+
+    .premium-badge{
+        min-height:21px;
+
+        padding:0 7px;
+
+        font-size:6.5px;
+    }
+
+
+    .premium-content h2{
+        font-size:21px;
+    }
+
+
+    .premium-content p{
+        font-size:8px;
+    }
+
+
+    .premium-button{
+        min-height:32px;
+
+        margin-top:10px;
+
+        padding:0 10px;
+
+        font-size:7px;
+    }
+
+
+    .premium-button span{
+        font-size:13px;
+    }
+
+
+    .premium-artwork{
+        width:48%;
+    }
+
+
+    /* REFERRAL */
+
+    .referral-section{
+        margin-top:25px;
+    }
+
+
+    .referral-card{
+        padding:17px;
+
+        gap:11px;
+
+        border-radius:16px;
+    }
+
+
+    .referral-icon{
+        width:39px;
+        height:39px;
+
+        flex:0 0 39px;
+
+        border-radius:11px;
+    }
+
+
+    .referral-icon svg{
+        width:21px;
+        height:21px;
+    }
+
+
+    .referral-content h2{
+        font-size:18px;
+    }
+
+
+    .referral-content p{
+        font-size:8px;
+    }
+
+
+    .referral-levels{
+        gap:6px;
+
+        margin-top:11px;
+    }
+
+
+    .referral-level{
+        min-width:68px;
+
+        padding:6px 7px;
+    }
+
+
+    .referral-level span{
+        font-size:6px;
+    }
+
+
+    .referral-level strong{
+        font-size:9px;
+    }
+
+
+    .referral-link-row{
+        margin-top:11px;
+    }
+
+
+    .referral-link-row input{
+        height:34px;
+
+        font-size:7px;
+    }
+
+
+    .referral-link-row button{
+        width:35px;
+        height:34px;
+
+        flex-basis:35px;
+    }
+
+
+    .copy-referral-button{
+        min-width:65px;
+
+        min-height:34px;
+
+        padding:0 7px;
+
+        margin-left:8px;
+
+        font-size:6px;
+    }
+
+
+    .copy-referral-button svg{
+        width:13px;
+        height:13px;
+    }
+
+
+    /* OVERVIEW */
+
+    .investment-overview-section{
+        margin-top:25px;
+    }
+
+
+    .overview-grid{
+        grid-template-columns:1fr;
+
+        gap:8px;
+    }
+
+
+    .overview-card{
+        padding:14px;
+
+        border-radius:13px;
+    }
+
+
+    .overview-icon{
+        width:38px;
+        height:38px;
+
+        flex-basis:38px;
+    }
+
+
+    .overview-icon svg{
+        width:20px;
+        height:20px;
+    }
+
+
+    .overview-card strong{
+        font-size:16px;
+    }
+
+
+    /* INVITE */
+
+    .invite-section{
+        margin-top:25px;
+    }
+
+
+    .invite-card{
+        padding:16px;
+
+        gap:11px;
+
+        border-radius:14px;
+    }
+
+
+    .invite-icon{
+        width:39px;
+        height:39px;
+
+        flex-basis:39px;
+    }
+
+
+    .invite-icon svg{
+        width:20px;
+        height:20px;
+    }
+
+
+    .invite-label{
+        font-size:6.5px;
+
+        letter-spacing:1px;
+    }
+
+
+    .invite-card h2{
+        font-size:17px;
+    }
+
+
+    .invite-card p{
+        font-size:8px;
+    }
+
+
+    .invite-button{
+        min-height:32px;
+
+        margin-top:10px;
+
+        padding:0 10px;
+
+        font-size:7px;
+    }
+
+
+    /* COMMUNITY */
+
+    .community-section{
+        margin-top:25px;
+    }
+
+
+    .community-grid{
+        grid-template-columns:1fr;
+
+        gap:8px;
+    }
+
+
+    .community-card{
+        padding:13px;
+
+        gap:10px;
+
+        border-radius:13px;
+    }
+
+
+    .community-icon{
+        width:37px;
+        height:37px;
+
+        flex-basis:37px;
+    }
+
+
+    .community-icon svg{
+        width:19px;
+        height:19px;
+    }
+
+
+    .community-card strong{
+        font-size:9px;
+    }
+
+
+    .community-card small{
+        font-size:7px;
+    }
+
+
+    .community-arrow{
+        font-size:17px;
+    }
+
+
+    /* ACTIVITY */
+
+    .activity-section{
+        margin-top:25px;
+
+        padding-bottom:15px;
+    }
+
+
+    .view-all{
+        font-size:7px;
+    }
+
+
+    .activity-header{
+        min-height:38px;
+
+        padding:0 13px;
+
+        font-size:7px;
+    }
+
+
+    .empty-transactions{
+        min-height:125px;
+    }
+
+
+    .empty-transactions svg{
+        width:31px;
+        height:31px;
+    }
+
+
+    .empty-transactions p{
+        font-size:8px;
+    }
+
+
+    /* FOOTER */
+
+    .dashboard-footer{
+        padding:
+            20px
+            0
+            100px;
+    }
+
+
+    .dashboard-footer p{
+        font-size:7px;
+    }
+
+
+    /* BOTTOM NAV */
+
+    .bottom-navigation{
+        min-height:66px;
+    }
+
+
+    .bottom-nav-item svg{
+        width:19px;
+        height:19px;
+    }
+
+
+    .bottom-nav-item span{
+        font-size:6.5px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width:380px){
+
+    .dashboard-container{
+        padding-left:12px;
+        padding-right:12px;
+    }
+
+
+    .top-header{
+        min-height:74px;
+    }
+
+
+    .finora-brand{
+        gap:7px;
+    }
+
+
+    .finora-logo-mark{
+        width:40px;
+        height:44px;
+    }
+
+
+    .finora-name{
+        font-size:30px;
+        letter-spacing:-1.4px;
+    }
+
+
+    .finora-tagline{
+        font-size:6px;
+        letter-spacing:1.3px;
+    }
+
+
+    .header-actions{
+        right:12px;
+        gap:3px;
+    }
+
+
+    .notification-button,
+    .profile-button{
+        width:36px;
+        height:36px;
+    }
+
+
+    .header-icon{
+        width:20px;
+        height:20px;
+    }
+
+
+    .profile-icon{
+        width:19px;
+        height:19px;
+    }
+
+
+    /* WELCOME */
+
+    .welcome-section{
+        padding-top:17px;
+    }
+
+
+    .welcome-section h1{
+        font-size:24px;
+    }
+
+
+    .welcome-section p{
+        font-size:8px;
+    }
+
+
+    /* BANNERS */
+
+    .banner-section{
+        padding-top:13px;
+    }
+
+
+    .dashboard-banner{
+        min-height:220px;
+
+        height:220px;
+
+        padding-left:17px;
+
+        padding-right:13px;
+
+        border-radius:17px;
+    }
+
+
+    .banner-content{
+        width:60%;
+    }
+
+
+    .banner-content h2{
+        font-size:21px;
+
+        line-height:1.05;
+    }
+
+
+    .banner-label{
+        font-size:7px;
+
+        letter-spacing:1px;
+    }
+
+
+    .banner-subtitle{
+        font-size:6.5px;
+
+        letter-spacing:.65px;
+    }
+
+
+    .banner-content p{
+        max-width:175px;
 
         font-size:8px;
 
@@ -1234,13 +3383,9 @@ main{
     .banner-button{
         min-height:32px;
 
+        padding:0 10px;
+
         margin-top:9px;
-
-        padding:
-            0
-            10px;
-
-        gap:6px;
 
         font-size:7px;
     }
@@ -1252,88 +3397,275 @@ main{
 
 
     .banner-artwork{
-        width:47%;
+        width:46%;
 
         right:0;
     }
 
 
-    .banner-artwork::after{
-        background:
-            linear-gradient(
-                90deg,
-                #24102F 0%,
-                rgba(36,16,47,.82) 15%,
-                rgba(36,16,47,.30) 50%,
-                rgba(36,16,47,0) 85%
-            );
-    }
+    /* WALLET */
 
-}
-
-
-/* =========================================================
-   VERY SMALL PHONES
-   ========================================================= */
-
-@media (max-width:380px){
-
-    .welcome-section{
-        padding-top:18px;
+    .wallet-card{
+        padding:15px;
     }
 
 
-    .welcome-section h1{
+    .wallet-card h2{
         font-size:22px;
     }
 
 
-    .welcome-section p{
-        font-size:9px;
+    .wallet-actions{
+        gap:7px;
     }
 
 
-    .dashboard-banner{
-        height:215px;
+    .wallet-deposit-button,
+    .wallet-withdraw-button{
+        min-height:34px;
 
-        min-height:215px;
-
-        padding-left:16px;
-
-        padding-right:12px;
+        font-size:7px;
     }
 
 
-    .banner-content{
-        width:61%;
+    /* SUMMARY */
+
+    .financial-summary{
+        gap:7px;
     }
 
 
-    .banner-content h2{
-        font-size:20px;
+    .summary-card{
+        padding:10px;
+
+        gap:7px;
     }
 
 
-    .banner-content p{
-        max-width:170px;
+    .summary-icon{
+        width:30px;
+        height:30px;
 
-        font-size:7.5px;
+        flex-basis:30px;
     }
 
 
-    .banner-artwork{
-        width:45%;
+    .summary-icon svg{
+        width:16px;
+        height:16px;
     }
 
 
-    .banner-button{
-        min-height:30px;
+    .summary-label{
+        font-size:6px;
+    }
 
-        padding:0 9px;
 
+    .summary-card strong{
+        font-size:10px;
+    }
+
+
+    .summary-card small{
+        font-size:6px;
+    }
+
+
+    /* QUICK ACTIONS */
+
+    .quick-actions{
+        gap:6px;
+    }
+
+
+    .quick-action{
+        min-height:96px;
+
+        padding:9px 5px;
+    }
+
+
+    .quick-action-icon{
+        width:34px;
+        height:34px;
+
+        margin-bottom:6px;
+    }
+
+
+    .quick-action-icon svg{
+        width:18px;
+        height:18px;
+    }
+
+
+    .quick-action strong{
+        font-size:7px;
+    }
+
+
+    .quick-action small{
+        font-size:6px;
+    }
+
+
+    /* PREMIUM */
+
+    .premium-banner{
+        min-height:190px;
+    }
+
+
+    .premium-content{
+        width:63%;
+
+        padding:
+            17px
+            14px;
+    }
+
+
+    .premium-content h2{
+        font-size:18px;
+    }
+
+
+    .premium-content p{
+        font-size:7px;
+    }
+
+
+    .premium-artwork{
+        width:47%;
+    }
+
+
+    /* REFERRAL */
+
+    .referral-card{
+        padding:14px;
+
+        gap:8px;
+    }
+
+
+    .referral-icon{
+        width:35px;
+        height:35px;
+
+        flex-basis:35px;
+    }
+
+
+    .referral-content h2{
+        font-size:15px;
+    }
+
+
+    .referral-content p{
+        font-size:7px;
+    }
+
+
+    .referral-level{
+        min-width:61px;
+
+        padding:5px 6px;
+    }
+
+
+    .referral-level span{
+        font-size:5.5px;
+    }
+
+
+    .referral-level strong{
+        font-size:8px;
+    }
+
+
+    .copy-referral-button{
+        min-width:58px;
+
+        font-size:5.5px;
+    }
+
+
+    /* OVERVIEW */
+
+    .overview-card{
+        padding:12px;
+    }
+
+
+    .overview-icon{
+        width:34px;
+        height:34px;
+
+        flex-basis:34px;
+    }
+
+
+    .overview-card strong{
+        font-size:14px;
+    }
+
+
+    /* INVITE */
+
+    .invite-card{
+        padding:13px;
+    }
+
+
+    .invite-icon{
+        width:35px;
+        height:35px;
+
+        flex-basis:35px;
+    }
+
+
+    .invite-card h2{
+        font-size:15px;
+    }
+
+
+    /* COMMUNITY */
+
+    .community-card{
+        padding:11px;
+    }
+
+
+    .community-icon{
+        width:34px;
+        height:34px;
+
+        flex-basis:34px;
+    }
+
+
+    .community-card strong{
+        font-size:8px;
+    }
+
+
+    .community-card small{
         font-size:6.5px;
     }
+}
 
+
+/* =========================================================
+   IMAGE PROTECTION
+   ========================================================= */
+
+.banner-artwork img,
+.premium-artwork img{
+    max-width:none;
+
+    vertical-align:middle;
 }
 
 
@@ -1342,10 +3674,35 @@ main{
    ========================================================= */
 
 .banner-button:focus-visible,
-.banner-dot:focus-visible{
-    outline:
-        2px solid
-        var(--finora-gold-light);
+.banner-dot:focus-visible,
+.wallet-deposit-button:focus-visible,
+.wallet-withdraw-button:focus-visible,
+.quick-action:focus-visible,
+.invite-button:focus-visible,
+.community-card:focus-visible,
+.bottom-nav-item:focus-visible,
+.copy-referral-button:focus-visible,
+.referral-link-row button:focus-visible{
+    outline:2px solid #FFD76A;
 
     outline-offset:3px;
+}
+
+
+/* =========================================================
+   REDUCE MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion:reduce){
+
+    html{
+        scroll-behavior:auto;
+    }
+
+    *,
+    *::before,
+    *::after{
+        transition:none !important;
+        animation:none !important;
+    }
 }
