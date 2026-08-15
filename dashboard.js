@@ -1,2255 +1,1472 @@
 /* =========================================================
-   FINORA DASHBOARD JAVASCRIPT
-   ========================================================= */
-
-"use strict";
-
-
-/* =========================================================
-   FINORA CONFIGURATION
-   ========================================================= */
-
-const FINORA_CONFIG = {
-
-    /* Backend base URL.
-       If your frontend and backend are on the same server,
-       /api is enough.
-
-       If your backend is hosted separately, set:
-       window.FINORA_API_BASE = "https://your-backend-url/api";
-       before this script loads.
-    */
-
-    API_BASE:
-        window.FINORA_API_BASE ||
-        "/api",
-
-
-    /* Referral percentages shown on the dashboard */
-
-    referralRates: {
-        level1: 15,
-        level2: 5,
-        level3: 2
-    },
-
-
-    /* Banner settings */
-
-    bannerInterval: 5000,
-
-
-    /* Number of recent transactions */
-
-    recentTransactionLimit: 5,
-
-
-    /* Community/support links.
-       Replace these with your real FINORA links. */
-
-    telegramLink: "#",
-
-    supportLink: "#"
-
-};
-
-
-/* =========================================================
-   FINORA STORAGE
-   ========================================================= */
-
-const FINORA_STORAGE = {
-
-    currentUser:
-        "finoraCurrentUser",
-
-    userId:
-        "finoraUserId",
-
-    userData:
-        "finoraUserData",
-
-    transactions:
-        "finoraTransactions",
-
-    investments:
-        "finoraInvestments",
-
-    walletBalance:
-        "finoraWalletBalance",
-
-    totalEarnings:
-        "finoraTotalEarnings",
-
-    todayEarnings:
-        "finoraTodayEarnings",
-
-    referralBonus:
-        "finoraReferralBonus",
-
-    announcements:
-        "finoraAnnouncements"
-
-};
-
-
-/* =========================================================
-   GLOBAL FINORA STATE
-   ========================================================= */
-
-const FINORA_STATE = {
-
-    user: null,
-
-    transactions: [],
-
-    investments: [],
-
-    currentBanner: 0,
-
-    bannerTimer: null
-
-};
-
-
-/* =========================================================
-   DOM READY
+   FINORA DASHBOARD
+   dashboard.js
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    initializeFINORA();
+    /* =====================================================
+       FINORA CONFIGURATION
+       ===================================================== */
 
-});
+    const FINORA_API = "https://finora-backend-l949.onrender.com";
+
+    const REFERRAL_LEVELS = {
+        levelOne: 15,
+        levelTwo: 5,
+        levelThree: 2
+    };
+
+    const AUTO_SLIDE_DELAY = 5000;
+    const RESUME_DELAY = 4500;
 
 
-/* =========================================================
-   INITIALIZE DASHBOARD
-   ========================================================= */
+    /* =====================================================
+       BASIC HELPERS
+       ===================================================== */
 
-async function initializeFINORA() {
+    function formatUGX(value) {
 
-    try {
+        const amount = Number(value) || 0;
 
-        loadStoredFINORAData();
-
-        initializeBannerCarousel();
-
-        initializeReferralRates();
-
-        initializeReferralSystem();
-
-        initializeCommunityLinks();
-
-        initializeNotificationButton();
-
-        initializeNavigation();
-
-        renderUserInformation();
-
-        renderFinancialInformation();
-
-        renderInvestmentInformation();
-
-        renderRecentTransactions();
-
-        await synchronizeUserWithBackend();
-
-    } catch (error) {
-
-        console.error(
-            "FINORA dashboard initialization error:",
-            error
-        );
-
+        return "UGX " + amount.toLocaleString("en-UG");
     }
 
-}
+
+    function getElement(id) {
+        return document.getElementById(id);
+    }
 
 
-/* =========================================================
-   LOAD STORED FINORA DATA
-   ========================================================= */
+    function safeNumber(value) {
+        const number = Number(value);
+        return Number.isFinite(number) ? number : 0;
+    }
 
-function loadStoredFINORAData() {
 
-    /* Current user */
+    /* =====================================================
+       CURRENT USER
+       ===================================================== */
 
-    const storedUser =
-        localStorage.getItem(
-            FINORA_STORAGE.userData
-        );
+    let currentUser = null;
 
-    if (storedUser) {
+
+    /*
+       The FINORA login page should store the returned user
+       object after successful login.
+
+       Expected storage:
+
+       finoraUser
+    */
+
+    function getStoredUser() {
 
         try {
 
-            FINORA_STATE.user =
-                JSON.parse(storedUser);
+            const stored = localStorage.getItem("finoraUser");
+
+            if (!stored) {
+                return null;
+            }
+
+            return JSON.parse(stored);
 
         } catch (error) {
 
-            FINORA_STATE.user = null;
+            console.error(
+                "FINORA: Unable to read stored user.",
+                error
+            );
 
+            return null;
         }
-
     }
 
 
-    /* Transactions */
-
-    const storedTransactions =
-        localStorage.getItem(
-            FINORA_STORAGE.transactions
-        );
-
-    if (storedTransactions) {
+    function saveUser(user) {
 
         try {
 
-            FINORA_STATE.transactions =
-                JSON.parse(storedTransactions);
-
-            if (!Array.isArray(
-                FINORA_STATE.transactions
-            )) {
-
-                FINORA_STATE.transactions = [];
-
-            }
+            localStorage.setItem(
+                "finoraUser",
+                JSON.stringify(user)
+            );
 
         } catch (error) {
 
-            FINORA_STATE.transactions = [];
-
+            console.error(
+                "FINORA: Unable to save user.",
+                error
+            );
         }
-
     }
 
 
-    /* Investments */
+    /* =====================================================
+       LOAD USER FROM FINORA BACKEND
+       ===================================================== */
 
-    const storedInvestments =
-        localStorage.getItem(
-            FINORA_STORAGE.investments
-        );
+    async function loadCurrentUser() {
 
-    if (storedInvestments) {
+        currentUser = getStoredUser();
+
+
+        /*
+           If the login page already supplied the complete
+           user object, display it immediately.
+        */
+
+        if (currentUser) {
+
+            updateDashboardUser(currentUser);
+
+        }
+
+
+        /*
+           The stored user must contain an ID for the
+           dashboard to request fresh account information.
+        */
+
+        if (!currentUser || !currentUser.id) {
+
+            console.warn(
+                "FINORA: No authenticated FINORA user was found."
+            );
+
+            return;
+        }
+
 
         try {
 
-            FINORA_STATE.investments =
-                JSON.parse(storedInvestments);
-
-            if (!Array.isArray(
-                FINORA_STATE.investments
-            )) {
-
-                FINORA_STATE.investments = [];
-
-            }
-
-        } catch (error) {
-
-            FINORA_STATE.investments = [];
-
-        }
-
-    }
-
-}
-
-
-/* =========================================================
-   SAVE FINORA USER
-   ========================================================= */
-
-function saveFINORAUser(user) {
-
-    if (!user) return;
-
-    FINORA_STATE.user = user;
-
-    localStorage.setItem(
-        FINORA_STORAGE.userData,
-        JSON.stringify(user)
-    );
-
-}
-
-
-/* =========================================================
-   FORMAT UGX
-   ========================================================= */
-
-function formatUGX(amount) {
-
-    const value =
-        Number(amount) || 0;
-
-    return (
-        "UGX " +
-        value.toLocaleString(
-            "en-US",
-            {
-                maximumFractionDigits: 0
-            }
-        )
-    );
-
-}
-
-
-/* =========================================================
-   FORMAT NUMBER
-   ========================================================= */
-
-function formatNumber(number) {
-
-    return (
-        Number(number) || 0
-    ).toLocaleString(
-        "en-US",
-        {
-            maximumFractionDigits: 0
-        }
-    );
-
-}
-
-
-/* =========================================================
-   USER INFORMATION
-   ========================================================= */
-
-function renderUserInformation() {
-
-    const userName =
-        document.getElementById(
-            "userName"
-        );
-
-    if (!userName) return;
-
-
-    const user =
-        FINORA_STATE.user;
-
-    if (!user) {
-
-        userName.textContent =
-            "Investor";
-
-        return;
-
-    }
-
-
-    const name =
-        user.fullName ||
-        user.name ||
-        user.username ||
-        user.userName ||
-        "Investor";
-
-
-    userName.textContent =
-        getFirstName(name);
-
-}
-
-
-/* =========================================================
-   GET FIRST NAME
-   ========================================================= */
-
-function getFirstName(name) {
-
-    if (!name) return "Investor";
-
-    return String(name)
-        .trim()
-        .split(/\s+/)[0];
-
-}
-
-
-/* =========================================================
-   FINANCIAL INFORMATION
-   ========================================================= */
-
-function renderFinancialInformation() {
-
-    const user =
-        FINORA_STATE.user || {};
-
-
-    const wallet =
-        getFirstAvailableValue(
-            user.walletBalance,
-            user.balance,
-            localStorage.getItem(
-                FINORA_STORAGE.walletBalance
-            ),
-            0
-        );
-
-
-    const totalEarnings =
-        getFirstAvailableValue(
-            user.totalEarnings,
-            user.cumulativeIncome,
-            user.earnings,
-            localStorage.getItem(
-                FINORA_STORAGE.totalEarnings
-            ),
-            0
-        );
-
-
-    const todayEarnings =
-        getFirstAvailableValue(
-            user.todayEarnings,
-            user.dailyIncome,
-            localStorage.getItem(
-                FINORA_STORAGE.todayEarnings
-            ),
-            calculateTodayEarnings(),
-            0
-        );
-
-
-    const totalInvested =
-        getFirstAvailableValue(
-            user.totalInvested,
-            user.totalDeposits,
-            user.investedAmount,
-            calculateTotalInvested(),
-            0
-        );
-
-
-    const referralBonus =
-        getFirstAvailableValue(
-            user.referralBonus,
-            user.referralIncome,
-            0
-        );
-
-
-    setElementText(
-        "walletBalance",
-        formatUGX(wallet)
-    );
-
-
-    setElementText(
-        "totalEarnings",
-        formatUGX(totalEarnings)
-    );
-
-
-    setElementText(
-        "todayEarnings",
-        formatUGX(todayEarnings)
-    );
-
-
-    setElementText(
-        "totalInvested",
-        formatUGX(totalInvested)
-    );
-
-
-    setElementText(
-        "referralBonus",
-        formatUGX(referralBonus)
-    );
-
-
-    setElementText(
-        "overviewTotalEarnings",
-        formatUGX(totalEarnings)
-    );
-
-}
-
-
-/* =========================================================
-   SAFE VALUE SELECTION
-   ========================================================= */
-
-function getFirstAvailableValue(...values) {
-
-    for (const value of values) {
-
-        if (
-            value !== null &&
-            value !== undefined &&
-            value !== "" &&
-            !Number.isNaN(Number(value))
-        ) {
-
-            return Number(value);
-
-        }
-
-    }
-
-    return 0;
-
-}
-
-
-/* =========================================================
-   SET ELEMENT TEXT
-   ========================================================= */
-
-function setElementText(
-    id,
-    value
-) {
-
-    const element =
-        document.getElementById(id);
-
-    if (!element) return;
-
-    element.textContent = value;
-
-}
-
-
-/* =========================================================
-   CALCULATE TOTAL INVESTED
-   ========================================================= */
-
-function calculateTotalInvested() {
-
-    if (
-        !Array.isArray(
-            FINORA_STATE.investments
-        )
-    ) {
-
-        return 0;
-
-    }
-
-
-    return FINORA_STATE.investments
-        .filter(
-            investment =>
-                investment.active !== false
-        )
-        .reduce(
-            (total, investment) => {
-
-                return total +
-                    Number(
-                        investment.amount ||
-                        investment.investmentAmount ||
-                        investment.depositAmount ||
-                        0
-                    );
-
-            },
-            0
-        );
-
-}
-
-
-/* =========================================================
-   COUNT ACTIVE INVESTMENTS
-   ========================================================= */
-
-function renderInvestmentInformation() {
-
-    const activeInvestments =
-        FINORA_STATE.investments.filter(
-            investment =>
-                investment.active !== false
-        );
-
-
-    setElementText(
-        "activeInvestments",
-        activeInvestments.length
-    );
-
-
-    const dailyIncome =
-        calculateDailyInvestmentIncome();
-
-
-    setElementText(
-        "dailyIncome",
-        formatUGX(dailyIncome)
-    );
-
-}
-
-
-/* =========================================================
-   CALCULATE DAILY INVESTMENT INCOME
-   ========================================================= */
-
-function calculateDailyInvestmentIncome() {
-
-    return FINORA_STATE.investments
-        .filter(
-            investment =>
-                investment.active !== false
-        )
-        .reduce(
-            (total, investment) => {
-
-                const dailyIncome =
-                    Number(
-                        investment.dailyIncome ||
-                        investment.dailyEarning ||
-                        0
-                    );
-
-                return total + dailyIncome;
-
-            },
-            0
-        );
-
-}
-
-
-/* =========================================================
-   CALCULATE TODAY'S EARNINGS
-   ========================================================= */
-
-function calculateTodayEarnings() {
-
-    const today =
-        new Date();
-
-    const year =
-        today.getFullYear();
-
-    const month =
-        today.getMonth();
-
-    const date =
-        today.getDate();
-
-
-    return FINORA_STATE.transactions
-        .filter(transaction => {
-
-            const type =
-                String(
-                    transaction.type ||
-                    transaction.category ||
-                    ""
-                ).toLowerCase();
-
-
-            if (
-                type !== "daily income" &&
-                type !== "daily_income" &&
-                type !== "income"
-            ) {
-
-                return false;
-
-            }
-
-
-            const transactionDate =
-                new Date(
-                    transaction.date ||
-                    transaction.createdAt ||
-                    transaction.timestamp
-                );
-
-
-            if (
-                Number.isNaN(
-                    transactionDate.getTime()
-                )
-            ) {
-
-                return false;
-
-            }
-
-
-            return (
-                transactionDate.getFullYear()
-                === year
-            ) &&
-            (
-                transactionDate.getMonth()
-                === month
-            ) &&
-            (
-                transactionDate.getDate()
-                === date
-            );
-
-        })
-        .reduce(
-            (total, transaction) => {
-
-                return total +
-                    Number(
-                        transaction.amount || 0
-                    );
-
-            },
-            0
-        );
-
-}
-
-
-/* =========================================================
-   BANNER CAROUSEL
-   ========================================================= */
-
-function initializeBannerCarousel() {
-
-    const track =
-        document.getElementById(
-            "bannerTrack"
-        );
-
-    const indicators =
-        document.querySelectorAll(
-            ".banner-dot"
-        );
-
-
-    if (!track) return;
-
-    const banners =
-        track.querySelectorAll(
-            ".dashboard-banner"
-        );
-
-
-    if (!banners.length) return;
-
-
-    function showBanner(index) {
-
-        if (
-            index < 0 ||
-            index >= banners.length
-        ) {
-
-            index = 0;
-
-        }
-
-
-        FINORA_STATE.currentBanner =
-            index;
-
-
-        track.style.transform =
-            `translateX(-${index * 100}%)`;
-
-
-        indicators.forEach(
-            (dot, dotIndex) => {
-
-                dot.classList.toggle(
-                    "active",
-                    dotIndex === index
-                );
-
-            }
-        );
-
-    }
-
-
-    indicators.forEach(
-        dot => {
-
-            dot.addEventListener(
-                "click",
-                () => {
-
-                    const index =
-                        Number(
-                            dot.dataset.slide
-                        );
-
-                    showBanner(index);
-
-                    restartBannerTimer();
-
-                }
-            );
-
-        }
-    );
-
-
-    function nextBanner() {
-
-        const next =
-            (
-                FINORA_STATE.currentBanner + 1
-            ) %
-            banners.length;
-
-        showBanner(next);
-
-    }
-
-
-    function restartBannerTimer() {
-
-        clearInterval(
-            FINORA_STATE.bannerTimer
-        );
-
-        FINORA_STATE.bannerTimer =
-            setInterval(
-                nextBanner,
-                FINORA_CONFIG.bannerInterval
-            );
-
-    }
-
-
-    showBanner(0);
-
-    restartBannerTimer();
-
-
-    /* Pause while user touches the banner */
-
-    track.addEventListener(
-        "mouseenter",
-        () => {
-
-            clearInterval(
-                FINORA_STATE.bannerTimer
-            );
-
-        }
-    );
-
-
-    track.addEventListener(
-        "mouseleave",
-        () => {
-
-            restartBannerTimer();
-
-        }
-    );
-
-
-    track.addEventListener(
-        "touchstart",
-        () => {
-
-            clearInterval(
-                FINORA_STATE.bannerTimer
-            );
-
-        },
-        {
-            passive: true
-        }
-    );
-
-
-    track.addEventListener(
-        "touchend",
-        () => {
-
-            restartBannerTimer();
-
-        },
-        {
-            passive: true
-        }
-    );
-
-}
-
-
-/* =========================================================
-   REFERRAL RATES
-   ========================================================= */
-
-function initializeReferralRates() {
-
-    setElementText(
-        "levelOneRate",
-        FINORA_CONFIG.referralRates.level1 + "%"
-    );
-
-
-    setElementText(
-        "levelTwoRate",
-        FINORA_CONFIG.referralRates.level2 + "%"
-    );
-
-
-    setElementText(
-        "levelThreeRate",
-        FINORA_CONFIG.referralRates.level3 + "%"
-    );
-
-}
-
-
-/* =========================================================
-   REFERRAL SYSTEM
-   ========================================================= */
-
-function initializeReferralSystem() {
-
-    const user =
-        FINORA_STATE.user || {};
-
-
-    const referralCode =
-        user.referralCode ||
-        user.myReferralCode ||
-        user.code ||
-        "";
-
-
-    if (!referralCode) {
-
-        setElementValue(
-            "referralLink",
-            ""
-        );
-
-        return;
-
-    }
-
-
-    const referralLink =
-        buildReferralLink(
-            referralCode
-        );
-
-
-    setElementValue(
-        "referralLink",
-        referralLink
-    );
-
-
-    const copyButton =
-        document.getElementById(
-            "copyReferralButton"
-        );
-
-
-    const mainCopyButton =
-        document.getElementById(
-            "copyReferralMain"
-        );
-
-
-    if (copyButton) {
-
-        copyButton.addEventListener(
-            "click",
-            () => {
-
-                copyReferralLink(
-                    referralLink,
-                    copyButton
-                );
-
-            }
-        );
-
-    }
-
-
-    if (mainCopyButton) {
-
-        mainCopyButton.addEventListener(
-            "click",
-            () => {
-
-                copyReferralLink(
-                    referralLink,
-                    mainCopyButton
-                );
-
-            }
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   BUILD REFERRAL LINK
-   ========================================================= */
-
-function buildReferralLink(
-    referralCode
-) {
-
-    const currentURL =
-        window.location.href
-            .split("?")[0]
-            .split("#")[0];
-
-
-    const basePath =
-        currentURL.substring(
-            0,
-            currentURL.lastIndexOf("/") + 1
-        );
-
-
-    return (
-        basePath +
-        "register.html?ref=" +
-        encodeURIComponent(
-            referralCode
-        )
-    );
-
-}
-
-
-/* =========================================================
-   SET INPUT VALUE
-   ========================================================= */
-
-function setElementValue(
-    id,
-    value
-) {
-
-    const element =
-        document.getElementById(id);
-
-    if (!element) return;
-
-    element.value = value;
-
-}
-
-
-/* =========================================================
-   COPY REFERRAL LINK
-   ========================================================= */
-
-async function copyReferralLink(
-    link,
-    button
-) {
-
-    if (!link) {
-
-        showButtonMessage(
-            button,
-            "NO LINK"
-        );
-
-        return;
-
-    }
-
-
-    try {
-
-        await navigator.clipboard.writeText(
-            link
-        );
-
-        showButtonMessage(
-            button,
-            "COPIED"
-        );
-
-    } catch (error) {
-
-        /* Fallback for older browsers */
-
-        const input =
-            document.getElementById(
-                "referralLink"
-            );
-
-
-        if (input) {
-
-            input.focus();
-
-            input.select();
-
-            input.setSelectionRange(
-                0,
-                input.value.length
-            );
-
-
-            try {
-
-                document.execCommand(
-                    "copy"
-                );
-
-                showButtonMessage(
-                    button,
-                    "COPIED"
-                );
-
-                return;
-
-            } catch (copyError) {
-
-                console.error(
-                    "FINORA copy failed:",
-                    copyError
-                );
-
-            }
-
-        }
-
-
-        showButtonMessage(
-            button,
-            "COPY FAILED"
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   BUTTON MESSAGE
-   ========================================================= */
-
-function showButtonMessage(
-    button,
-    message
-) {
-
-    if (!button) return;
-
-
-    const originalHTML =
-        button.innerHTML;
-
-
-    button.innerHTML =
-        `<span>${message}</span>`;
-
-
-    setTimeout(
-        () => {
-
-            button.innerHTML =
-                originalHTML;
-
-        },
-        1500
-    );
-
-}
-
-
-/* =========================================================
-   COMMUNITY LINKS
-   ========================================================= */
-
-function initializeCommunityLinks() {
-
-    const communityLink =
-        document.getElementById(
-            "communityLink"
-        );
-
-
-    const supportLink =
-        document.getElementById(
-            "supportLink"
-        );
-
-
-    if (communityLink) {
-
-        communityLink.href =
-            FINORA_CONFIG.telegramLink;
-
-    }
-
-
-    if (supportLink) {
-
-        supportLink.href =
-            FINORA_CONFIG.supportLink;
-
-    }
-
-}
-
-
-/* =========================================================
-   NOTIFICATIONS
-   ========================================================= */
-
-function initializeNotificationButton() {
-
-    const button =
-        document.getElementById(
-            "notificationButton"
-        );
-
-
-    const count =
-        document.getElementById(
-            "notificationCount"
-        );
-
-
-    if (!button) return;
-
-
-    button.addEventListener(
-        "click",
-        () => {
-
-            showFINORANotifications();
-
-        }
-    );
-
-
-    updateNotificationCount(
-        count
-    );
-
-}
-
-
-/* =========================================================
-   NOTIFICATION COUNT
-   ========================================================= */
-
-function updateNotificationCount(
-    element
-) {
-
-    if (!element) return;
-
-
-    const announcements =
-        getFINORAAnnouncements();
-
-
-    const unreadCount =
-        announcements.filter(
-            announcement =>
-                announcement.read !== true
-        ).length;
-
-
-    if (unreadCount > 0) {
-
-        element.textContent =
-            unreadCount > 99
-                ? "99+"
-                : String(unreadCount);
-
-        element.style.display =
-            "flex";
-
-    } else {
-
-        element.textContent =
-            "";
-
-        element.style.display =
-            "none";
-
-    }
-
-}
-
-
-/* =========================================================
-   GET ANNOUNCEMENTS
-   ========================================================= */
-
-function getFINORAAnnouncements() {
-
-    const stored =
-        localStorage.getItem(
-            FINORA_STORAGE.announcements
-        );
-
-
-    if (!stored) return [];
-
-
-    try {
-
-        const announcements =
-            JSON.parse(stored);
-
-
-        return Array.isArray(
-            announcements
-        )
-            ? announcements
-            : [];
-
-    } catch (error) {
-
-        return [];
-
-    }
-
-}
-
-
-/* =========================================================
-   SHOW NOTIFICATIONS
-   ========================================================= */
-
-function showFINORANotifications() {
-
-    const announcements =
-        getFINORAAnnouncements();
-
-
-    if (!announcements.length) {
-
-        showFINORAToast(
-            "No new notifications."
-        );
-
-        return;
-
-    }
-
-
-    const unread =
-        announcements.filter(
-            announcement =>
-                announcement.read !== true
-        );
-
-
-    if (!unread.length) {
-
-        showFINORAToast(
-            "You have no new notifications."
-        );
-
-        return;
-
-    }
-
-
-    const latest =
-        unread[0];
-
-
-    const title =
-        latest.title ||
-        "FINORA Announcement";
-
-
-    const message =
-        latest.message ||
-        "You have a new FINORA update.";
-
-
-    showFINORAToast(
-        title + ": " + message
-    );
-
-
-    /* Mark notifications as read */
-
-    const updated =
-        announcements.map(
-            announcement => ({
-                ...announcement,
-                read: true
-            })
-        );
-
-
-    localStorage.setItem(
-        FINORA_STORAGE.announcements,
-        JSON.stringify(updated)
-    );
-
-
-    updateNotificationCount(
-        document.getElementById(
-            "notificationCount"
-        )
-    );
-
-}
-
-
-/* =========================================================
-   FINORA TOAST
-   ========================================================= */
-
-function showFINORAToast(
-    message
-) {
-
-    const existing =
-        document.querySelector(
-            ".finora-toast"
-        );
-
-
-    if (existing) {
-
-        existing.remove();
-
-    }
-
-
-    const toast =
-        document.createElement(
-            "div"
-        );
-
-
-    toast.className =
-        "finora-toast";
-
-
-    toast.textContent =
-        message;
-
-
-    Object.assign(
-        toast.style,
-        {
-            position: "fixed",
-            left: "50%",
-            bottom: "90px",
-            transform: "translateX(-50%)",
-            zIndex: "99999",
-            maxWidth: "90%",
-            padding: "12px 18px",
-            borderRadius: "12px",
-            background: "#171019",
-            color: "#ffffff",
-            border: "1px solid rgba(255,255,255,.12)",
-            boxShadow: "0 12px 35px rgba(0,0,0,.35)",
-            fontSize: "13px",
-            lineHeight: "1.45",
-            textAlign: "center"
-        }
-    );
-
-
-    document.body.appendChild(
-        toast
-    );
-
-
-    setTimeout(
-        () => {
-
-            toast.remove();
-
-        },
-        3500
-    );
-
-}
-
-
-/* =========================================================
-   RECENT TRANSACTIONS
-   ========================================================= */
-
-function renderRecentTransactions() {
-
-    const container =
-        document.getElementById(
-            "recentTransactions"
-        );
-
-
-    if (!container) return;
-
-
-    const transactions =
-        [...FINORA_STATE.transactions]
-            .sort(
-                (a, b) => {
-
-                    return (
-                        getTransactionTime(b) -
-                        getTransactionTime(a)
-                    );
-
-                }
-            )
-            .slice(
-                0,
-                FINORA_CONFIG.recentTransactionLimit
-            );
-
-
-    if (!transactions.length) {
-
-        renderEmptyTransactions(
-            container
-        );
-
-        return;
-
-    }
-
-
-    container.innerHTML =
-        "";
-
-
-    transactions.forEach(
-        transaction => {
-
-            container.appendChild(
-                createTransactionElement(
-                    transaction
-                )
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   TRANSACTION TIME
-   ========================================================= */
-
-function getTransactionTime(
-    transaction
-) {
-
-    const value =
-        transaction.createdAt ||
-        transaction.date ||
-        transaction.timestamp ||
-        0;
-
-
-    const time =
-        new Date(value).getTime();
-
-
-    return Number.isNaN(time)
-        ? 0
-        : time;
-
-}
-
-
-/* =========================================================
-   EMPTY TRANSACTIONS
-   ========================================================= */
-
-function renderEmptyTransactions(
-    container
-) {
-
-    container.innerHTML = `
-
-        <div class="empty-transactions">
-
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-
-                <rect
-                    x="5"
-                    y="3"
-                    width="14"
-                    height="18"
-                    rx="2"
-                    stroke="currentColor"
-                    stroke-width="1.7"/>
-
-                <path
-                    d="M9 8H15"
-                    stroke="currentColor"
-                    stroke-width="1.7"
-                    stroke-linecap="round"/>
-
-                <path
-                    d="M9 12H15"
-                    stroke="currentColor"
-                    stroke-width="1.7"
-                    stroke-linecap="round"/>
-
-                <path
-                    d="M9 16H13"
-                    stroke="currentColor"
-                    stroke-width="1.7"
-                    stroke-linecap="round"/>
-
-            </svg>
-
-            <p>
-                No recent transactions
-            </p>
-
-        </div>
-
-    `;
-
-}
-
-
-/* =========================================================
-   CREATE TRANSACTION ELEMENT
-   ========================================================= */
-
-function createTransactionElement(
-    transaction
-) {
-
-    const item =
-        document.createElement(
-            "div"
-        );
-
-
-    item.className =
-        "transaction-item";
-
-
-    const type =
-        transaction.type ||
-        transaction.category ||
-        "Transaction";
-
-
-    const amount =
-        Number(
-            transaction.amount || 0
-        );
-
-
-    const positive =
-        isPositiveTransaction(
-            type
-        );
-
-
-    const sign =
-        positive
-            ? "+"
-            : "-";
-
-
-    const formattedAmount =
-        sign +
-        " " +
-        formatUGX(
-            Math.abs(amount)
-        );
-
-
-    const date =
-        formatTransactionDate(
-            transaction
-        );
-
-
-    item.innerHTML = `
-
-        <div class="transaction-main">
-
-            <div class="transaction-icon">
-
-                ${getTransactionIcon(type)}
-
-            </div>
-
-            <div class="transaction-details">
-
-                <strong>
-                    ${escapeHTML(
-                        formatTransactionType(type)
-                    )}
-                </strong>
-
-                <small>
-                    ${escapeHTML(date)}
-                </small>
-
-            </div>
-
-        </div>
-
-        <div
-            class="transaction-amount
-            ${positive
-                ? "transaction-positive"
-                : "transaction-negative"}">
-
-            ${escapeHTML(
-                formattedAmount
-            )}
-
-        </div>
-
-    `;
-
-
-    return item;
-
-}
-
-
-/* =========================================================
-   POSITIVE TRANSACTION TYPES
-   ========================================================= */
-
-function isPositiveTransaction(
-    type
-) {
-
-    const normalized =
-        String(type)
-            .toLowerCase()
-            .replace(/[_-]/g, " ");
-
-
-    return (
-        normalized.includes("deposit") ||
-        normalized.includes("income") ||
-        normalized.includes("bonus") ||
-        normalized.includes("referral") ||
-        normalized.includes("earning")
-    );
-
-}
-
-
-/* =========================================================
-   TRANSACTION TYPE
-   ========================================================= */
-
-function formatTransactionType(
-    type
-) {
-
-    return String(type)
-        .replace(/[_-]/g, " ")
-        .replace(/\b\w/g, letter =>
-            letter.toUpperCase()
-        );
-
-}
-
-
-/* =========================================================
-   TRANSACTION DATE
-   ========================================================= */
-
-function formatTransactionDate(
-    transaction
-) {
-
-    const raw =
-        transaction.createdAt ||
-        transaction.date ||
-        transaction.timestamp;
-
-
-    if (!raw) {
-
-        return "Recent";
-
-    }
-
-
-    const date =
-        new Date(raw);
-
-
-    if (
-        Number.isNaN(
-            date.getTime()
-        )
-    ) {
-
-        return "Recent";
-
-    }
-
-
-    return date.toLocaleString(
-        "en-UG",
-        {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit"
-        }
-    );
-
-}
-
-
-/* =========================================================
-   TRANSACTION ICON
-   ========================================================= */
-
-function getTransactionIcon(
-    type
-) {
-
-    const normalized =
-        String(type)
-            .toLowerCase();
-
-
-    if (
-        normalized.includes(
-            "deposit"
-        )
-    ) {
-
-        return "↓";
-
-    }
-
-
-    if (
-        normalized.includes(
-            "withdraw"
-        )
-    ) {
-
-        return "↑";
-
-    }
-
-
-    if (
-        normalized.includes(
-            "referral"
-        )
-    ) {
-
-        return "👥";
-
-    }
-
-
-    if (
-        normalized.includes(
-            "income"
-        ) ||
-        normalized.includes(
-            "earning"
-        )
-    ) {
-
-        return "↗";
-
-    }
-
-
-    if (
-        normalized.includes(
-            "bonus"
-        )
-    ) {
-
-        return "★";
-
-    }
-
-
-    return "•";
-
-}
-
-
-/* =========================================================
-   ESCAPE HTML
-   ========================================================= */
-
-function escapeHTML(
-    value
-) {
-
-    return String(value)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
-}
-
-
-/* =========================================================
-   NAVIGATION
-   ========================================================= */
-
-function initializeNavigation() {
-
-    const currentPage =
-        window.location.pathname
-            .split("/")
-            .pop()
-            .toLowerCase();
-
-
-    document
-        .querySelectorAll(
-            ".bottom-nav-item"
-        )
-        .forEach(
-            item => {
-
-                const href =
-                    item.getAttribute(
-                        "href"
-                    );
-
-
-                if (!href) return;
-
-
-                const target =
-                    href
-                        .split("/")
-                        .pop()
-                        .toLowerCase();
-
-
-                item.classList.toggle(
-                    "active",
-                    target === currentPage
-                );
-
-            }
-        );
-
-}
-
-
-/* =========================================================
-   BACKEND SYNCHRONIZATION
-   ========================================================= */
-
-async function synchronizeUserWithBackend() {
-
-    const userId =
-        localStorage.getItem(
-            FINORA_STORAGE.userId
-        );
-
-
-    if (!userId) {
-
-        return;
-
-    }
-
-
-    try {
-
-        const response =
-            await fetch(
-                FINORA_CONFIG.API_BASE +
-                "/users/" +
-                encodeURIComponent(
-                    userId
-                ),
+            /*
+               This endpoint assumes the backend provides
+               GET /api/users/:id for the authenticated user.
+            */
+
+            const response = await fetch(
+                `${FINORA_API}/api/users/${encodeURIComponent(currentUser.id)}`,
                 {
                     method: "GET",
                     headers: {
-                        "Accept":
-                            "application/json"
+                        "Accept": "application/json"
                     }
                 }
             );
 
 
-        if (!response.ok) {
+            if (!response.ok) {
 
-            console.warn(
-                "FINORA user synchronization returned:",
-                response.status
+                console.warn(
+                    "FINORA: Could not refresh user data.",
+                    response.status
+                );
+
+                return;
+            }
+
+
+            const data = await response.json();
+
+
+            /*
+               Some APIs return:
+
+               { user: {...} }
+
+               while others return the user directly.
+            */
+
+            const freshUser = data.user || data;
+
+
+            if (
+                freshUser &&
+                typeof freshUser === "object"
+            ) {
+
+                currentUser = {
+                    ...currentUser,
+                    ...freshUser
+                };
+
+                saveUser(currentUser);
+
+                updateDashboardUser(currentUser);
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "FINORA: User data request failed.",
+                error
+            );
+        }
+    }
+
+
+    /* =====================================================
+       UPDATE USER NAME
+       ===================================================== */
+
+    function updateDashboardUser(user) {
+
+        const userName = getElement("userName");
+
+        if (!userName || !user) {
+            return;
+        }
+
+
+        const name =
+            user.full_name ||
+            user.fullName ||
+            user.name ||
+            user.username ||
+            user.phone ||
+            "Investor";
+
+
+        userName.textContent = name;
+    }
+
+
+    /* =====================================================
+       WALLET / FINANCIAL INFORMATION
+       ===================================================== */
+
+    function updateFinancialData(user) {
+
+        if (!user) {
+            return;
+        }
+
+
+        const walletBalance =
+            safeNumber(
+                user.wallet_balance ??
+                user.walletBalance ??
+                user.balance
+            );
+
+
+        const totalEarnings =
+            safeNumber(
+                user.total_earnings ??
+                user.totalEarnings ??
+                user.cumulative_income ??
+                user.cumulativeIncome
+            );
+
+
+        const todayEarnings =
+            safeNumber(
+                user.today_earnings ??
+                user.todayEarnings ??
+                user.daily_income ??
+                user.dailyIncome
+            );
+
+
+        const totalInvested =
+            safeNumber(
+                user.total_invested ??
+                user.totalInvested ??
+                user.total_deposits ??
+                user.totalDeposits
+            );
+
+
+        const referralBonus =
+            safeNumber(
+                user.referral_bonus ??
+                user.referralBonus ??
+                user.referral_income ??
+                user.referralIncome
+            );
+
+
+        const activeInvestments =
+            safeNumber(
+                user.active_investments ??
+                user.activeInvestments ??
+                user.investment_count ??
+                user.investmentCount
+            );
+
+
+        const walletElement = getElement("walletBalance");
+        const totalEarningsElement = getElement("totalEarnings");
+        const todayEarningsElement = getElement("todayEarnings");
+        const totalInvestedElement = getElement("totalInvested");
+        const referralBonusElement = getElement("referralBonus");
+        const activeInvestmentsElement = getElement("activeInvestments");
+        const dailyIncomeElement = getElement("dailyIncome");
+        const overviewTotalEarningsElement =
+            getElement("overviewTotalEarnings");
+
+
+        if (walletElement) {
+            walletElement.textContent =
+                formatUGX(walletBalance);
+        }
+
+
+        if (totalEarningsElement) {
+            totalEarningsElement.textContent =
+                formatUGX(totalEarnings);
+        }
+
+
+        if (todayEarningsElement) {
+            todayEarningsElement.textContent =
+                formatUGX(todayEarnings);
+        }
+
+
+        if (totalInvestedElement) {
+            totalInvestedElement.textContent =
+                formatUGX(totalInvested);
+        }
+
+
+        if (referralBonusElement) {
+            referralBonusElement.textContent =
+                formatUGX(referralBonus);
+        }
+
+
+        if (activeInvestmentsElement) {
+            activeInvestmentsElement.textContent =
+                activeInvestments.toLocaleString("en-UG");
+        }
+
+
+        if (dailyIncomeElement) {
+            dailyIncomeElement.textContent =
+                formatUGX(todayEarnings);
+        }
+
+
+        if (overviewTotalEarningsElement) {
+            overviewTotalEarningsElement.textContent =
+                formatUGX(totalEarnings);
+        }
+    }
+
+
+    /* =====================================================
+       REFERRAL PROGRAM
+       ===================================================== */
+
+    function setupReferralProgram() {
+
+        const levelOneRate =
+            getElement("levelOneRate");
+
+        const levelTwoRate =
+            getElement("levelTwoRate");
+
+        const levelThreeRate =
+            getElement("levelThreeRate");
+
+
+        if (levelOneRate) {
+            levelOneRate.textContent =
+                REFERRAL_LEVELS.levelOne + "%";
+        }
+
+
+        if (levelTwoRate) {
+            levelTwoRate.textContent =
+                REFERRAL_LEVELS.levelTwo + "%";
+        }
+
+
+        if (levelThreeRate) {
+            levelThreeRate.textContent =
+                REFERRAL_LEVELS.levelThree + "%";
+        }
+
+
+        const referralLink =
+            getElement("referralLink");
+
+
+        if (!referralLink) {
+            return;
+        }
+
+
+        let referralCode = "";
+
+
+        if (currentUser) {
+
+            referralCode =
+                currentUser.referral_code ||
+                currentUser.referralCode ||
+                currentUser.my_referral_code ||
+                currentUser.myReferralCode ||
+                "";
+        }
+
+
+        if (!referralCode) {
+
+            referralLink.value = "";
+
+            return;
+        }
+
+
+        const baseURL =
+            window.location.origin +
+            window.location.pathname
+                .replace("dashboard.html", "");
+
+
+        referralLink.value =
+            baseURL +
+            "register.html?ref=" +
+            encodeURIComponent(referralCode);
+    }
+
+
+    /* =====================================================
+       COPY REFERRAL LINK
+       ===================================================== */
+
+    async function copyReferralLink() {
+
+        const input =
+            getElement("referralLink");
+
+
+        if (!input || !input.value) {
+
+            showTemporaryMessage(
+                "Referral link is not available yet."
             );
 
             return;
-
         }
 
 
-        const user =
-            await response.json();
+        try {
+
+            await navigator.clipboard.writeText(
+                input.value
+            );
 
 
-        const serverUser =
-            user.user ||
-            user.data ||
-            user;
+            showTemporaryMessage(
+                "Referral link copied."
+            );
 
 
-        if (!serverUser) return;
+        } catch (error) {
+
+            /*
+               Fallback for browsers where Clipboard API
+               is unavailable.
+            */
+
+            input.focus();
+            input.select();
+
+            try {
+
+                document.execCommand("copy");
+
+                showTemporaryMessage(
+                    "Referral link copied."
+                );
+
+            } catch (copyError) {
+
+                showTemporaryMessage(
+                    "Unable to copy referral link."
+                );
+            }
+        }
+    }
 
 
-        saveFINORAUser(
-            serverUser
+    const copyReferralButton =
+        getElement("copyReferralButton");
+
+
+    const copyReferralMain =
+        getElement("copyReferralMain");
+
+
+    if (copyReferralButton) {
+
+        copyReferralButton.addEventListener(
+            "click",
+            copyReferralLink
+        );
+    }
+
+
+    if (copyReferralMain) {
+
+        copyReferralMain.addEventListener(
+            "click",
+            copyReferralLink
+        );
+    }
+
+
+    /* =====================================================
+       TEMPORARY MESSAGE
+       ===================================================== */
+
+    function showTemporaryMessage(message) {
+
+        let messageBox =
+            document.getElementById(
+                "finoraMessageBox"
+            );
+
+
+        if (!messageBox) {
+
+            messageBox =
+                document.createElement("div");
+
+            messageBox.id =
+                "finoraMessageBox";
+
+
+            messageBox.style.position =
+                "fixed";
+
+            messageBox.style.left =
+                "50%";
+
+            messageBox.style.bottom =
+                "95px";
+
+            messageBox.style.transform =
+                "translateX(-50%)";
+
+            messageBox.style.zIndex =
+                "99999";
+
+            messageBox.style.padding =
+                "11px 18px";
+
+            messageBox.style.borderRadius =
+                "999px";
+
+            messageBox.style.background =
+                "#171017";
+
+            messageBox.style.color =
+                "#FFFFFF";
+
+            messageBox.style.fontSize =
+                "13px";
+
+            messageBox.style.fontWeight =
+                "600";
+
+            messageBox.style.boxShadow =
+                "0 10px 30px rgba(0,0,0,.25)";
+
+            messageBox.style.pointerEvents =
+                "none";
+
+
+            document.body.appendChild(
+                messageBox
+            );
+        }
+
+
+        messageBox.textContent =
+            message;
+
+
+        messageBox.style.opacity =
+            "1";
+
+
+        clearTimeout(
+            messageBox._timer
         );
 
 
-        synchronizeInvestmentsFromUser(
-            serverUser
-        );
+        messageBox._timer =
+            setTimeout(() => {
+
+                messageBox.style.opacity =
+                    "0";
+
+            }, 2500);
+    }
 
 
-        renderUserInformation();
+    /* =====================================================
+       BANNER CAROUSEL
+       ===================================================== */
 
-        renderFinancialInformation();
-
-        renderInvestmentInformation();
-
-        initializeReferralSystem();
+    const bannerTrack =
+        getElement("bannerTrack");
 
 
-    } catch (error) {
+    const bannerIndicators =
+        getElement("bannerIndicators");
+
+
+    if (bannerTrack) {
+
+        const banners =
+            Array.from(
+                bannerTrack.children
+            );
+
+
+        const dots =
+            bannerIndicators
+                ? Array.from(
+                    bannerIndicators.querySelectorAll(
+                        ".banner-dot"
+                    )
+                )
+                : [];
+
+
+        let currentSlide = 0;
+
+        let autoSlideTimer = null;
+
+        let resumeTimer = null;
+
+        let manualInteraction = false;
+
+
+        function showSlide(
+            index,
+            animate = true
+        ) {
+
+            if (!banners.length) {
+                return;
+            }
+
+
+            currentSlide =
+                (index + banners.length) %
+                banners.length;
+
+
+            if (!animate) {
+
+                bannerTrack.style.transition =
+                    "none";
+
+            } else {
+
+                bannerTrack.style.transition =
+                    "";
+            }
+
+
+            bannerTrack.style.transform =
+                `translate3d(-${currentSlide * 100}%, 0, 0)`;
+
+
+            dots.forEach((dot, dotIndex) => {
+
+                dot.classList.toggle(
+                    "active",
+                    dotIndex === currentSlide
+                );
+
+            });
+
+
+            if (!animate) {
+
+                requestAnimationFrame(() => {
+
+                    bannerTrack.style.transition =
+                        "";
+
+                });
+            }
+        }
+
+
+        function nextSlide() {
+
+            showSlide(
+                currentSlide + 1
+            );
+        }
+
+
+        function stopAutoSlide() {
+
+            clearInterval(
+                autoSlideTimer
+            );
+
+            autoSlideTimer = null;
+        }
+
+
+        function startAutoSlide() {
+
+            stopAutoSlide();
+
+
+            autoSlideTimer =
+                setInterval(
+                    nextSlide,
+                    AUTO_SLIDE_DELAY
+                );
+        }
+
+
+        function temporarilyPauseAutoSlide() {
+
+            manualInteraction = true;
+
+            stopAutoSlide();
+
+            clearTimeout(
+                resumeTimer
+            );
+
+
+            resumeTimer =
+                setTimeout(() => {
+
+                    manualInteraction =
+                        false;
+
+                    startAutoSlide();
+
+                }, RESUME_DELAY);
+        }
+
+
+        function manualSlide(index) {
+
+            temporarilyPauseAutoSlide();
+
+            showSlide(index);
+        }
+
 
         /*
-         Backend unavailable:
-         the dashboard continues using locally
-         stored FINORA information.
+           Indicator buttons
         */
 
-        console.warn(
-            "FINORA backend unavailable. Using stored dashboard data."
+        dots.forEach((dot) => {
+
+            dot.addEventListener(
+                "click",
+                () => {
+
+                    const slide =
+                        Number(
+                            dot.dataset.slide
+                        );
+
+
+                    if (
+                        Number.isInteger(slide)
+                    ) {
+
+                        manualSlide(slide);
+                    }
+                }
+            );
+        });
+
+
+        /*
+           Touch/swipe support
+        */
+
+        let touchStartX = 0;
+
+        let touchStartY = 0;
+
+        let touchMoved = false;
+
+
+        bannerTrack.addEventListener(
+            "touchstart",
+            (event) => {
+
+                if (!event.touches.length) {
+                    return;
+                }
+
+
+                touchStartX =
+                    event.touches[0].clientX;
+
+                touchStartY =
+                    event.touches[0].clientY;
+
+                touchMoved = false;
+
+                temporarilyPauseAutoSlide();
+
+            },
+            { passive: true }
         );
 
+
+        bannerTrack.addEventListener(
+            "touchmove",
+            (event) => {
+
+                if (!event.touches.length) {
+                    return;
+                }
+
+
+                const currentX =
+                    event.touches[0].clientX;
+
+                const currentY =
+                    event.touches[0].clientY;
+
+
+                const deltaX =
+                    currentX - touchStartX;
+
+                const deltaY =
+                    currentY - touchStartY;
+
+
+                if (
+                    Math.abs(deltaX) >
+                    Math.abs(deltaY)
+                ) {
+
+                    touchMoved = true;
+                }
+
+            },
+            { passive: true }
+        );
+
+
+        bannerTrack.addEventListener(
+            "touchend",
+            (event) => {
+
+                if (!touchMoved) {
+                    return;
+                }
+
+
+                const touch =
+                    event.changedTouches[0];
+
+
+                const endX =
+                    touch.clientX;
+
+
+                const difference =
+                    endX - touchStartX;
+
+
+                const minimumSwipe =
+                    45;
+
+
+                if (
+                    Math.abs(difference) >=
+                    minimumSwipe
+                ) {
+
+                    if (difference < 0) {
+
+                        showSlide(
+                            currentSlide + 1
+                        );
+
+                    } else {
+
+                        showSlide(
+                            currentSlide - 1
+                        );
+                    }
+                }
+
+            },
+            { passive: true }
+        );
+
+
+        /*
+           Desktop mouse dragging
+        */
+
+        let mouseDown = false;
+
+        let mouseStartX = 0;
+
+        let mouseMoved = false;
+
+
+        bannerTrack.addEventListener(
+            "mousedown",
+            (event) => {
+
+                mouseDown = true;
+
+                mouseMoved = false;
+
+                mouseStartX =
+                    event.clientX;
+
+                temporarilyPauseAutoSlide();
+
+            }
+        );
+
+
+        window.addEventListener(
+            "mousemove",
+            (event) => {
+
+                if (!mouseDown) {
+                    return;
+                }
+
+
+                const difference =
+                    event.clientX -
+                    mouseStartX;
+
+
+                if (
+                    Math.abs(difference) >
+                    10
+                ) {
+
+                    mouseMoved = true;
+                }
+            }
+        );
+
+
+        window.addEventListener(
+            "mouseup",
+            (event) => {
+
+                if (!mouseDown) {
+                    return;
+                }
+
+
+                mouseDown = false;
+
+
+                if (!mouseMoved) {
+                    return;
+                }
+
+
+                const difference =
+                    event.clientX -
+                    mouseStartX;
+
+
+                if (
+                    Math.abs(difference) >= 45
+                ) {
+
+                    if (difference < 0) {
+
+                        showSlide(
+                            currentSlide + 1
+                        );
+
+                    } else {
+
+                        showSlide(
+                            currentSlide - 1
+                        );
+                    }
+                }
+            }
+        );
+
+
+        /*
+           Pause when pointer is over the banner.
+           This gives the user complete control while
+           reading the banner.
+        */
+
+        bannerTrack.addEventListener(
+            "mouseenter",
+            () => {
+
+                stopAutoSlide();
+
+            }
+        );
+
+
+        bannerTrack.addEventListener(
+            "mouseleave",
+            () => {
+
+                if (!manualInteraction) {
+
+                    startAutoSlide();
+                }
+            }
+        );
+
+
+        /*
+           If the user focuses/interacts with the banner,
+           don't fight their interaction.
+        */
+
+        bannerTrack.addEventListener(
+            "focusin",
+            () => {
+
+                temporarilyPauseAutoSlide();
+
+            }
+        );
+
+
+        /*
+           Start automatically.
+        */
+
+        showSlide(
+            0,
+            false
+        );
+
+
+        startAutoSlide();
     }
 
-}
+
+    /* =====================================================
+       NOTIFICATIONS
+       ===================================================== */
+
+    const notificationButton =
+        getElement("notificationButton");
 
 
-/* =========================================================
-   SYNCHRONIZE INVESTMENTS
-   ========================================================= */
+    const notificationCount =
+        getElement("notificationCount");
 
-function synchronizeInvestmentsFromUser(
-    user
-) {
 
-    if (
-        !Array.isArray(
-            user.purchasedProducts
-        )
-    ) {
+    if (notificationButton) {
 
-        return;
+        notificationButton.addEventListener(
+            "click",
+            () => {
 
+                /*
+                   Notification page/panel can be connected
+                   when the FINORA notification destination
+                   exists.
+                */
+
+                showTemporaryMessage(
+                    "No new notification details available."
+                );
+
+
+                if (notificationCount) {
+
+                    notificationCount.style.display =
+                        "none";
+                }
+            }
+        );
     }
 
 
-    FINORA_STATE.investments =
-        user.purchasedProducts;
+    /* =====================================================
+       COMMUNITY LINK
+       ===================================================== */
+
+    const communityLink =
+        getElement("communityLink");
 
 
-    localStorage.setItem(
-        FINORA_STORAGE.investments,
-        JSON.stringify(
-            FINORA_STATE.investments
-        )
-    );
+    if (communityLink) {
 
-}
+        communityLink.addEventListener(
+            "click",
+            (event) => {
 
-
-/* =========================================================
-   PUBLIC FINORA DATA FUNCTIONS
-   ========================================================= */
-
-/*
-   These functions can also be used by other FINORA
-   JavaScript files when they need to update dashboard data.
-*/
+                event.preventDefault();
 
 
-window.FINORA = {
+                /*
+                   Replace the URL when the official FINORA
+                   Telegram community URL is configured.
+                */
 
-    getUser() {
-
-        return FINORA_STATE.user;
-
-    },
-
-
-    setUser(user) {
-
-        saveFINORAUser(user);
-
-        renderUserInformation();
-
-        renderFinancialInformation();
-
-        initializeReferralSystem();
-
-    },
+                showTemporaryMessage(
+                    "FINORA community link is not configured yet."
+                );
+            }
+        );
+    }
 
 
-    getTransactions() {
+    /* =====================================================
+       SUPPORT LINK
+       ===================================================== */
 
-        return FINORA_STATE.transactions;
+    const supportLink =
+        getElement("supportLink");
 
-    },
+
+    if (supportLink) {
+
+        supportLink.addEventListener(
+            "click",
+            (event) => {
+
+                event.preventDefault();
 
 
-    setTransactions(
+                /*
+                   Replace with the actual FINORA support
+                   destination when it exists.
+                */
+
+                showTemporaryMessage(
+                    "FINORA support link is not configured yet."
+                );
+            }
+        );
+    }
+
+
+    /* =====================================================
+       RECENT TRANSACTIONS
+       ===================================================== */
+
+    function updateRecentTransactions(
         transactions
     ) {
 
-        if (
-            !Array.isArray(
-                transactions
-            )
-        ) {
+        const container =
+            getElement("recentTransactions");
 
+
+        if (!container) {
             return;
-
         }
 
 
-        FINORA_STATE.transactions =
-            transactions;
-
-
-        localStorage.setItem(
-            FINORA_STORAGE.transactions,
-            JSON.stringify(
-                transactions
-            )
-        );
-
-
-        renderRecentTransactions();
-
-        renderFinancialInformation();
-
-    },
-
-
-    getInvestments() {
-
-        return FINORA_STATE.investments;
-
-    },
-
-
-    setInvestments(
-        investments
-    ) {
-
         if (
-            !Array.isArray(
-                investments
-            )
+            !Array.isArray(transactions) ||
+            transactions.length === 0
         ) {
 
-            return;
+            container.innerHTML = `
 
+                <div class="empty-transactions">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+
+                        <rect
+                            x="5"
+                            y="3"
+                            width="14"
+                            height="18"
+                            rx="2"
+                            stroke="currentColor"
+                            stroke-width="1.7"/>
+
+                        <path
+                            d="M9 8H15"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"/>
+
+                        <path
+                            d="M9 12H15"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"/>
+
+                        <path
+                            d="M9 16H13"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"/>
+
+                    </svg>
+
+                    <p>
+                        No recent transactions
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
         }
 
 
-        FINORA_STATE.investments =
-            investments;
+        const recent =
+            transactions
+                .slice()
+                .sort((a, b) => {
+
+                    const dateA =
+                        new Date(
+                            a.created_at ||
+                            a.createdAt ||
+                            a.date ||
+                            0
+                        );
+
+                    const dateB =
+                        new Date(
+                            b.created_at ||
+                            b.createdAt ||
+                            b.date ||
+                            0
+                        );
 
 
-        localStorage.setItem(
-            FINORA_STORAGE.investments,
-            JSON.stringify(
-                investments
-            )
-        );
+                    return dateB - dateA;
+
+                })
+                .slice(0, 5);
 
 
-        renderInvestmentInformation();
-
-        renderFinancialInformation();
-
-    },
+        container.innerHTML = "";
 
 
-    refresh() {
+        recent.forEach((transaction) => {
 
-        loadStoredFINORAData();
+            const item =
+                document.createElement("div");
 
-        renderUserInformation();
 
-        renderFinancialInformation();
+            item.className =
+                "transaction-item";
 
-        renderInvestmentInformation();
 
-        renderRecentTransactions();
+            const type =
+                transaction.type ||
+                transaction.category ||
+                "Transaction";
 
-        initializeReferralSystem();
 
-        synchronizeUserWithBackend();
+            const amount =
+                safeNumber(
+                    transaction.amount
+                );
 
+
+            const date =
+                transaction.created_at ||
+                transaction.createdAt ||
+                transaction.date;
+
+
+            const formattedDate =
+                date
+                    ? new Date(date)
+                        .toLocaleDateString(
+                            "en-UG",
+                            {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric"
+                            }
+                        )
+                    : "";
+
+
+            item.innerHTML = `
+
+                <div class="transaction-info">
+
+                    <strong>
+                        ${escapeHTML(type)}
+                    </strong>
+
+                    <small>
+                        ${escapeHTML(formattedDate)}
+                    </small>
+
+                </div>
+
+                <strong class="transaction-amount">
+                    ${formatUGX(amount)}
+                </strong>
+
+            `;
+
+
+            container.appendChild(item);
+        });
     }
 
-};
+
+    function escapeHTML(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
 
 
-/* =========================================================
-   FINORA DASHBOARD READY
-   ========================================================= */
+    /* =====================================================
+       LOAD TRANSACTIONS
+       ===================================================== */
 
-console.log(
-    "FINORA Dashboard JavaScript loaded successfully."
-);
+    async function loadRecentTransactions() {
+
+        if (!currentUser || !currentUser.id) {
+            return;
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `${FINORA_API}/api/transactions/user/${encodeURIComponent(currentUser.id)}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Accept": "application/json"
+                        }
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                console.warn(
+                    "FINORA: Transaction request failed.",
+                    response.status
+                );
+
+                return;
+            }
+
+
+            const data =
+                await response.json();
+
+
+            const transactions =
+                Array.isArray(data)
+                    ? data
+                    : (
+                        data.transactions ||
+                        data.records ||
+                        []
+                    );
+
+
+            updateRecentTransactions(
+                transactions
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "FINORA: Unable to load transactions.",
+                error
+            );
+        }
+    }
+
+
+    /* =====================================================
+       PREVENT EMPTY # LINKS FROM JUMPING
+       ===================================================== */
+
+    document
+        .querySelectorAll('a[href="#"]')
+        .forEach((link) => {
+
+            link.addEventListener(
+                "click",
+                (event) => {
+
+                    event.preventDefault();
+                }
+            );
+        });
+
+
+    /* =====================================================
+       INITIALIZE DASHBOARD
+       ===================================================== */
+
+    setupReferralProgram();
+
+
+    if (currentUser) {
+
+        updateDashboardUser(
+            currentUser
+        );
+
+        updateFinancialData(
+            currentUser
+        );
+    }
+
+
+    loadCurrentUser()
+        .then(() => {
+
+            setupReferralProgram();
+
+            updateFinancialData(
+                currentUser
+            );
+
+            return loadRecentTransactions();
+
+        })
+        .catch((error) => {
+
+            console.error(
+                "FINORA: Dashboard initialization error.",
+                error
+            );
+        });
+
+});
