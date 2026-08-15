@@ -544,169 +544,259 @@ main{
     }
 }
 /* =========================================================
-   FINORA — PART 2
-   FEATURED BANNER
+   FINORA DASHBOARD — PART TWO
+   FEATURED BANNER CAROUSEL
+   MATCHES THE CURRENT dashboard.html EXACTLY
+   ========================================================= */
+
+
+/* =========================================================
+   BANNER SECTION
    ========================================================= */
 
 .banner-section{
     width:100%;
+
     margin:0;
-    padding:0;
+
+    padding:18px 0 0;
+
     overflow:hidden;
-}
 
-.banner-track{
-    display:flex;
-    width:100%;
-    transition:transform .55s cubic-bezier(.22,.61,.36,1);
-    will-change:transform;
-    touch-action:pan-y;
-}
-
-.dashboard-banner{
     position:relative;
-    flex:0 0 100%;
-    width:100%;
-    min-height:250px;
-    height:250px;
-    border-radius:22px;
-    overflow:hidden;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    padding:28px 28px 28px 30px;
-
-    background:
-        radial-gradient(
-            circle at 82% 45%,
-            rgba(133,45,177,.38),
-            transparent 34%
-        ),
-        linear-gradient(
-            110deg,
-            #2a1238 0%,
-            #351247 48%,
-            #4a185d 100%
-        );
-
-    border:1px solid rgba(235,190,73,.24);
-
-    box-shadow:
-        0 18px 45px rgba(20,5,29,.28);
-
-    box-sizing:border-box;
 }
 
 
 /* =========================================================
-   BANNER LEFT CONTENT
+   BANNER TRACK
+   ========================================================= */
+
+.banner-track{
+    width:100%;
+
+    display:flex;
+
+    transition:
+        transform .55s cubic-bezier(.22,.61,.36,1);
+
+    will-change:transform;
+
+    touch-action:pan-y;
+}
+
+
+/* =========================================================
+   INDIVIDUAL BANNER
+   ========================================================= */
+
+.dashboard-banner{
+    position:relative;
+
+    flex:0 0 100%;
+
+    width:100%;
+
+    min-height:250px;
+    height:250px;
+
+    overflow:hidden;
+
+    display:flex;
+    align-items:center;
+
+    padding:28px 30px;
+
+    border-radius:22px;
+
+    border:1px solid rgba(245,166,35,.22);
+
+    background:
+        linear-gradient(
+            110deg,
+            #24102F 0%,
+            #321344 48%,
+            #45165A 100%
+        );
+
+    box-shadow:
+        0 16px 38px rgba(0,0,0,.20);
+
+    isolation:isolate;
+}
+
+
+/* =========================================================
+   BANNER CONTENT
    ========================================================= */
 
 .banner-content{
     position:relative;
+
     z-index:5;
 
     width:52%;
-    max-width:520px;
+
+    max-width:500px;
 
     display:flex;
+
     flex-direction:column;
+
     align-items:flex-start;
 
     text-align:left;
 }
 
+
+/* =========================================================
+   BANNER LABEL
+   ========================================================= */
+
 .banner-label{
     display:inline-flex;
+
     align-items:center;
 
     margin-bottom:8px;
 
-    font-size:10px;
-    font-weight:800;
-    letter-spacing:1.7px;
+    color:#F5C54E;
 
-    color:#F4C44F;
+    font-size:10px;
+
+    font-weight:800;
+
+    letter-spacing:1.6px;
+
+    line-height:1.2;
 }
+
+
+/* =========================================================
+   BANNER HEADING
+   ========================================================= */
 
 .banner-content h2{
     margin:0;
 
+    color:#FFFFFF;
+
     font-size:31px;
-    line-height:1.02;
-    letter-spacing:-.8px;
 
     font-weight:900;
 
-    color:#FFFFFF;
+    line-height:1.04;
+
+    letter-spacing:-.8px;
 }
 
+
 .banner-content h2 span{
-    color:#F4C44F;
+    color:#F5C54E;
 }
+
+
+/* =========================================================
+   BANNER SUBTITLE
+   ========================================================= */
 
 .banner-subtitle{
     margin-top:10px;
 
-    font-size:9px;
-    font-weight:800;
-    letter-spacing:1.25px;
+    color:#E6C7EF;
 
-    color:#E8C6F1;
+    font-size:9px;
+
+    font-weight:800;
+
+    letter-spacing:1.15px;
+
+    line-height:1.3;
 }
+
+
+/* =========================================================
+   BANNER DESCRIPTION
+   ========================================================= */
 
 .banner-content p{
     margin:9px 0 0;
 
-    max-width:390px;
-
-    font-size:11px;
-    line-height:1.5;
+    max-width:385px;
 
     color:rgba(255,255,255,.78);
+
+    font-size:11px;
+
+    font-weight:400;
+
+    line-height:1.5;
 }
+
+
+/* =========================================================
+   BANNER BUTTON
+   ========================================================= */
 
 .banner-button{
     display:inline-flex;
+
     align-items:center;
+
     justify-content:center;
-    gap:10px;
+
+    gap:9px;
 
     margin-top:15px;
 
     min-height:38px;
+
     padding:0 16px;
 
     border-radius:10px;
 
-    background:linear-gradient(
-        135deg,
-        #F7D56A,
-        #D99720
-    );
+    background:
+        linear-gradient(
+            135deg,
+            #FFD76A 0%,
+            #F5A623 55%,
+            #C97908 100%
+        );
 
-    color:#241126;
+    color:#21102E;
 
     text-decoration:none;
 
     font-size:10px;
+
     font-weight:900;
-    letter-spacing:.6px;
+
+    letter-spacing:.55px;
+
+    white-space:nowrap;
 
     box-shadow:
-        0 8px 18px rgba(0,0,0,.18);
+        0 8px 20px rgba(0,0,0,.18);
 
     transition:
         transform .2s ease,
         box-shadow .2s ease;
 }
 
+
 .banner-button span{
     font-size:16px;
+
     line-height:1;
 }
+
+
+.banner-button:hover{
+    transform:translateY(-1px);
+
+    box-shadow:
+        0 10px 24px rgba(0,0,0,.25);
+}
+
 
 .banner-button:active{
     transform:scale(.97);
@@ -714,109 +804,162 @@ main{
 
 
 /* =========================================================
-   RIGHT-SIDE ARTWORK
+   IMAGE AREA
+   ---------------------------------------------------------
+   IMPORTANT:
+   The actual images already exist in:
+
+   assets/banners/
+
+   We are NOT creating replacement artwork here.
+   This area simply reserves the correct space.
    ========================================================= */
 
 .banner-artwork{
     position:absolute;
 
-    right:0;
     top:0;
 
+    right:0;
+
     width:49%;
+
     height:100%;
 
     display:flex;
+
     align-items:center;
+
     justify-content:center;
 
-    pointer-events:none;
+    overflow:hidden;
 
     z-index:2;
-}
 
-.banner-artwork svg{
-    width:100%;
-    height:100%;
-
-    max-width:440px;
-
-    display:block;
-
-    overflow:visible;
+    pointer-events:none;
 }
 
 
 /* =========================================================
-   DARK PURPLE ARTWORK AREA
+   DOWNLOADED BANNER IMAGES
    ========================================================= */
 
-.investment-artwork{
+.banner-image{
+    display:block;
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    object-position:center;
+
+    border:0;
+
+    margin:0;
+
+    padding:0;
+}
+
+
+/* =========================================================
+   IMAGE OVERLAY
+   ---------------------------------------------------------
+   Keeps text readable on the left while preserving
+   the downloaded image on the right.
+   ========================================================= */
+
+.banner-artwork::before{
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:1;
+
     background:
-        radial-gradient(
-            circle at 60% 48%,
-            rgba(190,72,224,.18),
-            transparent 45%
+        linear-gradient(
+            90deg,
+            rgba(36,16,47,.88) 0%,
+            rgba(36,16,47,.40) 42%,
+            rgba(36,16,47,0) 78%
+        );
+
+    pointer-events:none;
+}
+
+
+/* =========================================================
+   IMAGE ITSELF
+   ========================================================= */
+
+.banner-artwork .banner-image{
+    position:relative;
+
+    z-index:0;
+
+    object-fit:cover;
+}
+
+
+/* =========================================================
+   INVEST BANNER
+   ========================================================= */
+
+.banner-invest{
+    background:
+        linear-gradient(
+            110deg,
+            #24102F 0%,
+            #321343 48%,
+            #48165B 100%
         );
 }
 
 
 /* =========================================================
-   WEALTH
+   WEALTH BANNER
    ========================================================= */
 
 .banner-wealth{
     background:
-        radial-gradient(
-            circle at 82% 45%,
-            rgba(173,55,222,.34),
-            transparent 35%
-        ),
         linear-gradient(
             110deg,
-            #291033,
-            #42134F,
-            #57166B
+            #24102F 0%,
+            #351348 48%,
+            #501665 100%
         );
 }
 
 
 /* =========================================================
-   PLANS
+   PLANS BANNER
    ========================================================= */
 
 .banner-plans{
     background:
-        radial-gradient(
-            circle at 82% 42%,
-            rgba(198,69,229,.30),
-            transparent 37%
-        ),
         linear-gradient(
             110deg,
-            #28102F,
-            #401044,
-            #55165F
+            #25102F 0%,
+            #391342 48%,
+            #53165C 100%
         );
 }
 
 
 /* =========================================================
-   FUTURE
+   FUTURE BANNER
    ========================================================= */
 
 .banner-future{
     background:
-        radial-gradient(
-            circle at 82% 42%,
-            rgba(182,60,216,.32),
-            transparent 38%
-        ),
         linear-gradient(
             110deg,
-            #28102F,
-            #3D1248,
-            #51165E
+            #24102F 0%,
+            #351345 48%,
+            #4D165B 100%
         );
 }
 
@@ -826,8 +969,12 @@ main{
    ========================================================= */
 
 .banner-indicators{
+    width:100%;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
 
     gap:7px;
@@ -835,13 +982,16 @@ main{
     margin-top:11px;
 }
 
+
 .banner-dot{
     width:7px;
+
     height:7px;
 
     padding:0;
 
     border:0;
+
     border-radius:50%;
 
     background:rgba(255,255,255,.28);
@@ -854,81 +1004,165 @@ main{
         transform .25s ease;
 }
 
+
 .banner-dot.active{
     width:22px;
 
     border-radius:20px;
 
-    background:#F4C44F;
+    background:#F5C54E;
 
     transform:scale(1.02);
 }
 
 
 /* =========================================================
-   MOBILE SIZING
+   TABLET
    ========================================================= */
 
-@media(max-width:700px){
+@media (max-width:900px){
 
     .dashboard-banner{
-        min-height:235px;
-        height:235px;
+        min-height:240px;
+
+        height:240px;
 
         padding:
-            23px
+            25px
+            25px
+            25px
+            26px;
+    }
+
+
+    .banner-content{
+        width:55%;
+    }
+
+
+    .banner-content h2{
+        font-size:28px;
+    }
+
+
+    .banner-artwork{
+        width:50%;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width:700px){
+
+    .banner-section{
+        padding-top:15px;
+    }
+
+
+    .dashboard-banner{
+        min-height:230px;
+
+        height:230px;
+
+        padding:
+            22px
             17px
-            23px
+            22px
             20px;
 
         border-radius:19px;
     }
 
+
     .banner-content{
-        width:57%;
+        width:58%;
+
+        max-width:none;
     }
 
-    .banner-content h2{
-        font-size:25px;
-        line-height:1.04;
-    }
 
     .banner-label{
+        margin-bottom:7px;
+
         font-size:8px;
-        letter-spacing:1.3px;
+
+        letter-spacing:1.2px;
     }
+
+
+    .banner-content h2{
+        font-size:24px;
+
+        line-height:1.04;
+
+        letter-spacing:-.5px;
+    }
+
 
     .banner-subtitle{
-        font-size:7.5px;
-        letter-spacing:.9px;
         margin-top:8px;
+
+        font-size:7.5px;
+
+        letter-spacing:.8px;
     }
+
 
     .banner-content p{
-        font-size:9px;
-        line-height:1.42;
+        max-width:205px;
+
         margin-top:7px;
 
-        max-width:205px;
+        font-size:9px;
+
+        line-height:1.42;
     }
+
 
     .banner-button{
         min-height:34px;
 
+        margin-top:11px;
+
         padding:0 12px;
 
-        margin-top:11px;
+        gap:7px;
+
+        border-radius:9px;
 
         font-size:8px;
     }
+
 
     .banner-button span{
         font-size:14px;
     }
 
+
     .banner-artwork{
-        width:48%;
-        right:-2%;
+        width:49%;
+
+        right:0;
+    }
+
+
+    .banner-artwork::before{
+        background:
+            linear-gradient(
+                90deg,
+                rgba(36,16,47,.92) 0%,
+                rgba(36,16,47,.50) 35%,
+                rgba(36,16,47,0) 78%
+            );
+    }
+
+
+    .banner-image{
+        object-position:center;
     }
 
 }
@@ -938,31 +1172,104 @@ main{
    VERY SMALL PHONES
    ========================================================= */
 
-@media(max-width:380px){
+@media (max-width:380px){
+
+    .banner-section{
+        padding-top:13px;
+    }
+
 
     .dashboard-banner{
-        height:225px;
-        min-height:225px;
+        min-height:220px;
+
+        height:220px;
 
         padding-left:17px;
+
+        padding-right:13px;
+
+        border-radius:17px;
     }
+
 
     .banner-content{
-        width:59%;
+        width:60%;
     }
+
 
     .banner-content h2{
-        font-size:22px;
+        font-size:21px;
+
+        line-height:1.05;
     }
 
-    .banner-content p{
-        font-size:8px;
-        max-width:180px;
+
+    .banner-label{
+        font-size:7px;
+
+        letter-spacing:1px;
     }
+
+
+    .banner-subtitle{
+        font-size:6.5px;
+
+        letter-spacing:.65px;
+    }
+
+
+    .banner-content p{
+        max-width:175px;
+
+        font-size:8px;
+
+        line-height:1.4;
+    }
+
+
+    .banner-button{
+        min-height:32px;
+
+        padding:0 10px;
+
+        margin-top:9px;
+
+        font-size:7px;
+    }
+
+
+    .banner-button span{
+        font-size:13px;
+    }
+
 
     .banner-artwork{
         width:46%;
-        right:-4%;
+
+        right:0;
     }
 
+}
+
+
+/* =========================================================
+   PREVENT IMAGE DISTORTION
+   ========================================================= */
+
+.banner-artwork img{
+    max-width:none;
+
+    vertical-align:middle;
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+.banner-button:focus-visible,
+.banner-dot:focus-visible{
+    outline:2px solid #FFD76A;
+
+    outline-offset:3px;
 }
