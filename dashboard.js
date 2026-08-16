@@ -519,18 +519,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
+        /* =================================================
+           ONLY CHANGE:
+           CLEAN REFERRAL URL
+
+           NO register.html
+           NO index.html
+        ================================================= */
+
         const baseURL =
-            window.location.origin +
-            window.location.pathname
-                .replace(
-                    "dashboard.html",
-                    ""
-                );
+            window.location.origin + "/";
 
 
         referralLink.value =
             baseURL +
-            "register.html?ref=" +
+            "?ref=" +
             encodeURIComponent(
                 referralCode
             );
