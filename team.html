@@ -25,7 +25,6 @@
             padding: 0;
         }
 
-
         body {
             min-height: 100vh;
 
@@ -42,14 +41,11 @@
                 Arial,
                 Helvetica,
                 sans-serif;
-
-            padding-bottom: 25px;
         }
 
-
-        /* =====================================================
+        /* ================================
            HEADER
-        ===================================================== */
+        ================================= */
 
         .top-header {
 
@@ -77,7 +73,6 @@
             z-index: 100;
         }
 
-
         .header-title {
 
             font-size: 21px;
@@ -87,12 +82,9 @@
             letter-spacing: 0.3px;
         }
 
-
         .header-title span {
-
             color: #F5A623;
         }
-
 
         .back-button {
 
@@ -111,7 +103,7 @@
 
             color: #FFFFFF;
 
-            font-size: 20px;
+            font-size: 25px;
 
             display: flex;
 
@@ -122,10 +114,9 @@
             cursor: pointer;
         }
 
-
-        /* =====================================================
-           MAIN
-        ===================================================== */
+        /* ================================
+           PAGE
+        ================================= */
 
         .page {
 
@@ -135,19 +126,17 @@
 
             margin: 0 auto;
 
-            padding: 18px 15px 25px;
+            padding:
+                20px 15px 35px;
         }
 
-
-        /* =====================================================
+        /* ================================
            INTRO
-        ===================================================== */
+        ================================= */
 
         .intro {
-
             margin-bottom: 18px;
         }
-
 
         .intro h1 {
 
@@ -157,7 +146,6 @@
 
             margin-bottom: 6px;
         }
-
 
         .intro p {
 
@@ -169,10 +157,37 @@
             line-height: 1.5;
         }
 
+        /* ================================
+           ERROR
+        ================================= */
 
-        /* =====================================================
+        .error-state {
+
+            display: none;
+
+            padding: 14px;
+
+            margin-bottom: 15px;
+
+            border-radius: 14px;
+
+            background:
+                rgba(220,50,70,0.09);
+
+            border:
+                1px solid
+                rgba(220,50,70,0.20);
+
+            color: #FF9AA8;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+        /* ================================
            REFERRAL CARD
-        ===================================================== */
+        ================================= */
 
         .referral-card {
 
@@ -203,7 +218,6 @@
                 rgba(0,0,0,0.25);
         }
 
-
         .referral-card::before {
 
             content: "";
@@ -224,7 +238,6 @@
                 rgba(245,166,35,0.10);
         }
 
-
         .card-label {
 
             position: relative;
@@ -237,10 +250,9 @@
             margin-bottom: 8px;
         }
 
-
-        /* =====================================================
+        /* ================================
            REFERRAL CODE
-        ===================================================== */
+        ================================= */
 
         .referral-code-row {
 
@@ -252,7 +264,6 @@
 
             gap: 10px;
         }
-
 
         .referral-code {
 
@@ -270,7 +281,6 @@
 
             word-break: break-all;
         }
-
 
         .copy-button {
 
@@ -298,16 +308,9 @@
             cursor: pointer;
         }
 
-
-        .copy-button:active {
-
-            transform: scale(0.97);
-        }
-
-
-        /* =====================================================
+        /* ================================
            REFERRAL LINK
-        ===================================================== */
+        ================================= */
 
         .referral-link-section {
 
@@ -319,9 +322,18 @@
 
             border-top:
                 1px solid
-                rgba(255,255,255,0.07);
+                rgba(255,255,255,0.08);
         }
 
+        .link-label {
+
+            color:
+                rgba(255,255,255,0.55);
+
+            font-size: 11px;
+
+            margin-bottom: 7px;
+        }
 
         .referral-link-row {
 
@@ -329,9 +341,8 @@
 
             align-items: center;
 
-            gap: 10px;
+            gap: 8px;
         }
-
 
         .referral-link {
 
@@ -344,7 +355,7 @@
             border-radius: 10px;
 
             background:
-                rgba(255,255,255,0.045);
+                rgba(0,0,0,0.28);
 
             border:
                 1px solid
@@ -355,15 +366,40 @@
 
             font-size: 11px;
 
-            line-height: 1.4;
+            white-space: nowrap;
 
-            word-break: break-all;
+            overflow: hidden;
+
+            text-overflow: ellipsis;
         }
 
+        .copy-link-button {
 
-        /* =====================================================
+            flex-shrink: 0;
+
+            border:
+                1px solid
+                rgba(245,166,35,0.30);
+
+            border-radius: 10px;
+
+            padding: 10px 12px;
+
+            background:
+                rgba(245,166,35,0.08);
+
+            color: #F5A623;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        /* ================================
            SUMMARY
-        ===================================================== */
+        ================================= */
 
         .summary-grid {
 
@@ -376,7 +412,6 @@
 
             margin-bottom: 20px;
         }
-
 
         .summary-card {
 
@@ -392,7 +427,6 @@
                 rgba(255,255,255,0.07);
         }
 
-
         .summary-label {
 
             color:
@@ -403,26 +437,20 @@
             margin-bottom: 7px;
         }
 
-
         .summary-value {
 
             font-size: 19px;
 
             font-weight: 800;
-
-            color: #FFFFFF;
         }
 
-
         .income-value {
-
             color: #F5A623;
         }
 
-
-        /* =====================================================
+        /* ================================
            TEAM HEADER
-        ===================================================== */
+        ================================= */
 
         .section-header {
 
@@ -435,14 +463,12 @@
             margin-bottom: 11px;
         }
 
-
         .section-header h2 {
 
             font-size: 18px;
 
             font-weight: 800;
         }
-
 
         .team-count {
 
@@ -452,10 +478,9 @@
             font-size: 12px;
         }
 
-
-        /* =====================================================
+        /* ================================
            TEAM LIST
-        ===================================================== */
+        ================================= */
 
         .team-list {
 
@@ -465,7 +490,6 @@
 
             gap: 10px;
         }
-
 
         .team-member {
 
@@ -486,7 +510,6 @@
                 1px solid
                 rgba(255,255,255,0.065);
         }
-
 
         .member-avatar {
 
@@ -518,14 +541,10 @@
             font-weight: 800;
         }
 
-
         .member-info {
-
             flex: 1;
-
             min-width: 0;
         }
-
 
         .member-name {
 
@@ -542,21 +561,17 @@
             text-overflow: ellipsis;
         }
 
-
         .member-details {
 
             color:
                 rgba(255,255,255,0.48);
 
             font-size: 11px;
-
-            line-height: 1.5;
         }
 
-
-        /* =====================================================
-           EMPTY STATE
-        ===================================================== */
+        /* ================================
+           EMPTY
+        ================================= */
 
         .empty-state {
 
@@ -573,7 +588,6 @@
                 1px solid
                 rgba(255,255,255,0.06);
         }
-
 
         .empty-icon {
 
@@ -599,14 +613,12 @@
             font-size: 23px;
         }
 
-
         .empty-state h3 {
 
             font-size: 16px;
 
             margin-bottom: 6px;
         }
-
 
         .empty-state p {
 
@@ -618,10 +630,9 @@
             line-height: 1.5;
         }
 
-
-        /* =====================================================
+        /* ================================
            LOADING
-        ===================================================== */
+        ================================= */
 
         .loading-state {
 
@@ -635,77 +646,36 @@
             font-size: 13px;
         }
 
-
-        /* =====================================================
-           ERROR
-        ===================================================== */
-
-        .error-state {
-
-            display: none;
-
-            padding: 15px;
-
-            margin-bottom: 15px;
-
-            border-radius: 14px;
-
-            background:
-                rgba(220,50,70,0.09);
-
-            border:
-                1px solid
-                rgba(220,50,70,0.20);
-
-            color:
-                #FF9AA8;
-
-            font-size: 12px;
-
-            line-height: 1.5;
-        }
-
-
-        /* =====================================================
+        /* ================================
            MOBILE
-        ===================================================== */
+        ================================= */
 
         @media (max-width: 360px) {
 
             .page {
 
                 padding-left: 12px;
-
                 padding-right: 12px;
             }
 
-
             .referral-card {
-
                 padding: 18px;
             }
 
-
             .referral-code {
-
                 font-size: 19px;
             }
 
+            .referral-link-row {
 
-            .copy-button {
+                flex-direction: column;
 
-                padding:
-                    9px 11px;
+                align-items: stretch;
             }
 
-
-            .referral-link {
-
-                font-size: 10px;
-
-                padding: 10px;
+            .copy-link-button {
+                width: 100%;
             }
-
         }
 
     </style>
@@ -716,243 +686,213 @@
 <body>
 
 
-    <!-- =====================================================
-         HEADER
-    ====================================================== -->
+<header class="top-header">
 
-    <header class="top-header">
+    <button
+        class="back-button"
+        type="button"
+        onclick="history.back()"
+        aria-label="Go back"
+    >
+        ‹
+    </button>
 
-        <button
-            class="back-button"
-            type="button"
-            onclick="history.back()"
-            aria-label="Go back"
-        >
-            ‹
-        </button>
+    <div class="header-title">
+        FIN<span>ORA</span>
+    </div>
+
+    <div
+        style="
+            width:40px;
+            height:40px;
+        "
+    ></div>
+
+</header>
 
 
-        <div class="header-title">
+<main class="page">
 
-            FIN<span>ORA</span>
+
+    <section class="intro">
+
+        <h1>My Team</h1>
+
+        <p>
+            Invite others to FINORA and
+            earn referral income from your
+            growing team.
+        </p>
+
+    </section>
+
+
+    <div
+        class="error-state"
+        id="teamError"
+    ></div>
+
+
+    <section class="referral-card">
+
+
+        <div class="card-label">
+            Your Referral Code
+        </div>
+
+
+        <div class="referral-code-row">
+
+            <div
+                class="referral-code"
+                id="referralCode"
+            >
+                Loading...
+            </div>
+
+            <button
+                class="copy-button"
+                id="copyReferralButton"
+                type="button"
+            >
+                Copy
+            </button>
 
         </div>
 
 
-        <div
-            style="
-                width:40px;
-                height:40px;
-            "
-        ></div>
+        <div class="referral-link-section">
 
-    </header>
-
-
-    <!-- =====================================================
-         MAIN
-    ====================================================== -->
-
-    <main class="page">
-
-
-        <!-- INTRO -->
-
-        <section class="intro">
-
-            <h1>
-                My Team
-            </h1>
-
-            <p>
-                Invite others to FINORA and
-                earn referral income from your
-                growing team.
-            </p>
-
-        </section>
-
-
-        <!-- ERROR -->
-
-        <div
-            class="error-state"
-            id="teamError"
-        ></div>
-
-
-        <!-- REFERRAL -->
-
-        <section class="referral-card">
-
-            <div class="card-label">
-                Your Referral Code
+            <div class="link-label">
+                Your Referral Link
             </div>
 
 
-            <div class="referral-code-row">
+            <div class="referral-link-row">
 
                 <div
-                    class="referral-code"
-                    id="referralCode"
+                    class="referral-link"
+                    id="referralLink"
                 >
                     Loading...
                 </div>
 
 
                 <button
-                    class="copy-button"
-                    id="copyReferralButton"
+                    class="copy-link-button"
+                    id="copyReferralLinkButton"
                     type="button"
                 >
-                    Copy
+                    Copy Link
                 </button>
 
             </div>
 
+        </div>
 
-            <!-- REFERRAL LINK -->
-
-            <div class="referral-link-section">
-
-                <div class="card-label">
-                    Your Referral Link
-                </div>
+    </section>
 
 
-                <div class="referral-link-row">
-
-                    <div
-                        class="referral-link"
-                        id="referralLink"
-                    >
-                        Loading...
-                    </div>
+    <section class="summary-grid">
 
 
-                    <button
-                        class="copy-button"
-                        id="copyReferralLinkButton"
-                        type="button"
-                    >
-                        Copy
-                    </button>
+        <div class="summary-card">
 
-                </div>
-
+            <div class="summary-label">
+                Team Members
             </div>
-
-        </section>
-
-
-        <!-- SUMMARY -->
-
-        <section class="summary-grid">
-
-
-            <div class="summary-card">
-
-                <div class="summary-label">
-                    Team Members
-                </div>
-
-                <div
-                    class="summary-value"
-                    id="teamCount"
-                >
-                    0
-                </div>
-
-            </div>
-
-
-            <div class="summary-card">
-
-                <div class="summary-label">
-                    Referral Income
-                </div>
-
-                <div
-                    class="summary-value income-value"
-                    id="referralIncome"
-                >
-                    UGX 0
-                </div>
-
-            </div>
-
-
-        </section>
-
-
-        <!-- TEAM -->
-
-        <section>
-
-            <div class="section-header">
-
-                <h2>
-                    Team Members
-                </h2>
-
-                <span
-                    class="team-count"
-                    id="teamCountLabel"
-                >
-                    0 members
-                </span>
-
-            </div>
-
 
             <div
-                class="loading-state"
-                id="teamLoading"
+                class="summary-value"
+                id="teamCount"
             >
-                Loading your team...
+                0
             </div>
 
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+                Referral Income
+            </div>
 
             <div
-                class="team-list"
-                id="teamList"
-                style="display:none;"
-            ></div>
-
-
-            <div
-                class="empty-state"
-                id="teamEmpty"
-                style="display:none;"
+                class="summary-value income-value"
+                id="referralIncome"
             >
-
-                <div class="empty-icon">
-                    👥
-                </div>
-
-                <h3>
-                    No team members yet
-                </h3>
-
-                <p>
-                    Share your referral code with
-                    friends and invite them to join
-                    FINORA.
-                </p>
-
+                UGX 0
             </div>
 
-        </section>
+        </div>
 
 
-    </main>
+    </section>
 
 
-    <!-- =====================================================
-         JAVASCRIPT
-    ====================================================== -->
+    <section>
 
-    <script src="team.js"></script>
+        <div class="section-header">
+
+            <h2>
+                Team Members
+            </h2>
+
+            <span
+                class="team-count"
+                id="teamCountLabel"
+            >
+                0 members
+            </span>
+
+        </div>
+
+
+        <div
+            class="loading-state"
+            id="teamLoading"
+        >
+            Loading your team...
+        </div>
+
+
+        <div
+            class="team-list"
+            id="teamList"
+            style="display:none;"
+        ></div>
+
+
+        <div
+            class="empty-state"
+            id="teamEmpty"
+            style="display:none;"
+        >
+
+            <div class="empty-icon">
+                👥
+            </div>
+
+            <h3>
+                No team members yet
+            </h3>
+
+            <p>
+                Share your referral link with
+                friends and invite them to join
+                FINORA.
+            </p>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<script src="team.js"></script>
 
 </body>
 
