@@ -27,19 +27,6 @@ const REFERRAL_RATES = {
 
 /* =========================================================
    API CONFIGURATION
-=========================================================
-
-   If your FINORA frontend and backend are served from the
-   same Render service, leave this as "".
-
-   Example:
-       const API_BASE = "";
-
-   If FINORA uses a separate Render backend, put the
-   FINORA Render backend URL here.
-
-   IMPORTANT:
-   Do NOT put the old CashNova URL here.
 ========================================================= */
 
 const API_BASE = "";
@@ -638,8 +625,19 @@ function renderTeam(data) {
 
     if (!referralLink && referralCode) {
 
+        /*
+           ONLY CHANGE:
+           The referral link now points to the
+           FINORA first/root page.
+
+           It does NOT expose:
+           index.html
+           register.html
+           or any other HTML filename.
+        */
+
         referralLink =
-            `${window.location.origin}/register.html?ref=${encodeURIComponent(referralCode)}`;
+            `${window.location.origin}/?ref=${encodeURIComponent(referralCode)}`;
     }
 
 
