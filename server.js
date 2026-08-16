@@ -87,7 +87,38 @@ app.use(
 app.use(
     express.static(__dirname)
 );
+/* =========================================
+   FINORA PAGE ROUTES
+========================================= */
 
+app.get(
+    "/profile",
+    function (req, res) {
+
+        res.sendFile(
+            path.join(
+                __dirname,
+                "profile.html"
+            )
+        );
+
+    }
+);
+
+
+app.get(
+    "/profile.html",
+    function (req, res) {
+
+        res.sendFile(
+            path.join(
+                __dirname,
+                "profile.html"
+            )
+        );
+
+    }
+);
 
 /* =========================================================
    FRONTEND PAGE ROUTES
