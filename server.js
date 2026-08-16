@@ -2151,7 +2151,7 @@ async function processReferralCommissions(
 
 app.post(
     "/api/admin/deposits/:id/approve",
-    requireUser,
+    requireAdmin,
     async function (req, res) {
 
         const client =
@@ -2338,7 +2338,7 @@ app.post(
 
 app.post(
     "/api/admin/deposits/:id/reject",
-    requireUser,
+    requireAdmin,
     async function (req, res) {
 
         try {
