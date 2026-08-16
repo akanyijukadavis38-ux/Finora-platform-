@@ -1483,7 +1483,59 @@ async function getCurrentUser(
 
         const user =
             result.rows[0];
+let accountNumber =
+    user.account_number;
 
+
+if (!accountNumber) {
+
+    while (true) {
+
+        const newAccountNumber =
+            generateAccountNumber();
+
+        const check =
+            await pool.query(
+                `
+                SELECT id
+                FROM users
+                WHERE account_number = $1
+                LIMIT 1
+                `,
+                [
+                    newAccountNumber
+                ]
+            );
+
+        if (
+            check.rows.length === 0
+        ) {
+
+            accountNumber =
+                newAccountNumber;
+
+            break;
+
+        }
+
+    }
+
+
+    await pool.query(
+        `
+        UPDATE users
+        SET
+            account_number = $1,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = $2
+        `,
+        [
+            accountNumber,
+            user.id
+        ]
+    );
+
+}
 
         return res.status(200).json({
 
