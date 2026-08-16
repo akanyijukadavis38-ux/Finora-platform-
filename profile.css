@@ -1,1 +1,1381 @@
+/* =========================================================
+   FINORA PROFILE
+   profile.css
+   FINORA GLOBAL BRANDING
+   ONLINE / BACKEND VERSION
+   NO LOCAL STORAGE
+   ========================================================= */
 
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root {
+
+    --finora-bg: #08060A;
+    --finora-bg-soft: #0D0A10;
+    --finora-card: #121016;
+    --finora-card-2: #17131B;
+
+    --finora-pink: #EA2B83;
+    --finora-pink-light: #FF4A9B;
+    --finora-gold: #F5B83D;
+    --finora-gold-light: #FFD56A;
+
+    --finora-text: #FFFFFF;
+    --finora-text-soft: #C8C1CC;
+    --finora-text-muted: #8D8592;
+
+    --finora-border: rgba(255,255,255,0.08);
+    --finora-border-strong: rgba(255,255,255,0.12);
+
+    --finora-success: #38D39F;
+    --finora-danger: #FF5C7A;
+
+    --finora-shadow:
+        0 18px 45px rgba(0,0,0,0.28);
+
+    --finora-radius: 18px;
+    --finora-radius-small: 13px;
+
+    --nav-height: 72px;
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+
+}
+
+
+html {
+
+    width: 100%;
+    min-height: 100%;
+
+    background:
+        var(--finora-bg);
+
+}
+
+
+body {
+
+    width: 100%;
+    min-height: 100vh;
+
+    margin: 0;
+
+    background:
+        radial-gradient(
+            circle at 50% -10%,
+            rgba(234,43,131,0.08),
+            transparent 34%
+        ),
+        linear-gradient(
+            180deg,
+            #08060A 0%,
+            #09070B 100%
+        );
+
+    color:
+        var(--finora-text);
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+    -webkit-font-smoothing:
+        antialiased;
+
+    text-rendering:
+        optimizeLegibility;
+
+}
+
+
+button,
+input {
+
+    font:
+        inherit;
+
+}
+
+
+button {
+
+    border: 0;
+
+    cursor: pointer;
+
+}
+
+
+a {
+
+    color: inherit;
+
+    text-decoration: none;
+
+}
+
+
+svg {
+
+    display: block;
+
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.finora-page {
+
+    width: 100%;
+    min-height: 100vh;
+
+    position: relative;
+
+    overflow-x: hidden;
+
+    padding-bottom:
+        calc(var(--nav-height) + 18px);
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.profile-header {
+
+    width: 100%;
+
+    height: 64px;
+
+    display: grid;
+
+    grid-template-columns:
+        48px 1fr 48px;
+
+    align-items: center;
+
+    padding:
+        0 14px;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
+
+    background:
+        rgba(8,6,10,0.92);
+
+    border-bottom:
+        1px solid var(--finora-border);
+
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
+
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.header-back {
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background:
+        rgba(255,255,255,0.045);
+
+    color:
+        var(--finora-text);
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+
+}
+
+
+.header-back svg {
+
+    width: 21px;
+    height: 21px;
+
+}
+
+
+.header-back:active {
+
+    transform:
+        scale(0.94);
+
+    background:
+        rgba(234,43,131,0.12);
+
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.header-brand {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+}
+
+
+.brand-mark {
+
+    width: 29px;
+    height: 29px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            145deg,
+            var(--finora-pink),
+            var(--finora-gold)
+        );
+
+    box-shadow:
+        0 6px 18px rgba(234,43,131,0.18);
+
+}
+
+
+.brand-mark span {
+
+    color: #FFFFFF;
+
+    font-size: 17px;
+
+    font-weight: 900;
+
+    line-height: 1;
+
+}
+
+
+.brand-name {
+
+    font-size: 17px;
+
+    font-weight: 850;
+
+    letter-spacing: 1.3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--finora-pink),
+            var(--finora-gold)
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+
+}
+
+
+.header-space {
+
+    width: 40px;
+    height: 40px;
+
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.profile-main {
+
+    width: 100%;
+
+    max-width: 620px;
+
+    margin: 0 auto;
+
+    padding:
+        22px 16px 25px;
+
+}
+
+
+/* =========================================================
+   PAGE INTRODUCTION
+========================================================= */
+
+.profile-introduction {
+
+    margin-bottom: 20px;
+
+}
+
+
+.section-eyebrow {
+
+    display: inline-block;
+
+    margin-bottom: 6px;
+
+    color:
+        var(--finora-gold);
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.8px;
+
+}
+
+
+.profile-introduction h1 {
+
+    font-size: 27px;
+
+    line-height: 1.15;
+
+    font-weight: 800;
+
+    letter-spacing: -0.5px;
+
+}
+
+
+.profile-introduction p {
+
+    margin-top: 7px;
+
+    color:
+        var(--finora-text-muted);
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+}
+
+
+/* =========================================================
+   PROFILE CARD
+========================================================= */
+
+.profile-card {
+
+    width: 100%;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(23,19,27,0.98),
+            rgba(15,12,18,0.98)
+        );
+
+    border:
+        1px solid var(--finora-border);
+
+    border-radius:
+        var(--finora-radius);
+
+    box-shadow:
+        var(--finora-shadow);
+
+    overflow: hidden;
+
+}
+
+
+/* =========================================================
+   PROFILE IDENTITY
+========================================================= */
+
+.profile-identity {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding:
+        19px 17px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(234,43,131,0.09),
+            rgba(245,184,61,0.055)
+        );
+
+    border-bottom:
+        1px solid var(--finora-border);
+
+}
+
+
+.profile-avatar {
+
+    flex: 0 0 auto;
+
+    width: 55px;
+    height: 55px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 17px;
+
+    background:
+        linear-gradient(
+            145deg,
+            var(--finora-pink),
+            var(--finora-gold)
+        );
+
+    color: #FFFFFF;
+
+    font-size: 24px;
+
+    font-weight: 900;
+
+    box-shadow:
+        0 9px 25px rgba(234,43,131,0.2);
+
+}
+
+
+.profile-identity-info {
+
+    min-width: 0;
+
+    flex: 1;
+
+}
+
+
+.profile-identity-info h2 {
+
+    max-width: 100%;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    font-size: 16px;
+
+    font-weight: 750;
+
+    color:
+        var(--finora-text);
+
+}
+
+
+.profile-identity-info p {
+
+    margin-top: 4px;
+
+    max-width: 100%;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    color:
+        var(--finora-text-muted);
+
+    font-size: 11.5px;
+
+}
+
+
+/* =========================================================
+   ACCOUNT STATUS
+========================================================= */
+
+.account-status {
+
+    flex: 0 0 auto;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding:
+        6px 9px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(56,211,159,0.09);
+
+    border:
+        1px solid rgba(56,211,159,0.14);
+
+    color:
+        var(--finora-success);
+
+    font-size: 9.5px;
+
+    font-weight: 750;
+
+}
+
+
+.status-dot {
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background:
+        var(--finora-success);
+
+    box-shadow:
+        0 0 8px rgba(56,211,159,0.6);
+
+}
+
+
+/* =========================================================
+   PROFILE INFORMATION
+========================================================= */
+
+.profile-information {
+
+    padding:
+        3px 17px 7px;
+
+}
+
+
+.information-row {
+
+    min-height: 66px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    position: relative;
+
+    border-bottom:
+        1px solid var(--finora-border);
+
+}
+
+
+.information-row:last-child {
+
+    border-bottom: 0;
+
+}
+
+
+.information-icon {
+
+    flex: 0 0 auto;
+
+    width: 37px;
+    height: 37px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background:
+        rgba(234,43,131,0.075);
+
+    color:
+        var(--finora-pink);
+
+}
+
+
+.information-icon svg {
+
+    width: 19px;
+    height: 19px;
+
+}
+
+
+.information-content {
+
+    min-width: 0;
+
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+
+}
+
+
+.information-label {
+
+    color:
+        var(--finora-text-muted);
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+}
+
+
+.information-content strong {
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    color:
+        var(--finora-text);
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+}
+
+
+.information-content strong.financial-value {
+
+    color:
+        var(--finora-gold-light);
+
+    font-size: 13.5px;
+
+}
+
+
+/* =========================================================
+   COPY CODE BUTTON
+========================================================= */
+
+.copy-code-button {
+
+    flex: 0 0 auto;
+
+    padding:
+        7px 11px;
+
+    border-radius: 9px;
+
+    background:
+        rgba(245,184,61,0.09);
+
+    border:
+        1px solid rgba(245,184,61,0.18);
+
+    color:
+        var(--finora-gold-light);
+
+    font-size: 10px;
+
+    font-weight: 750;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+
+}
+
+
+.copy-code-button:active {
+
+    transform:
+        scale(0.94);
+
+    background:
+        rgba(245,184,61,0.16);
+
+}
+
+
+/* =========================================================
+   ACCOUNT ACTIONS
+========================================================= */
+
+.profile-actions {
+
+    margin-top: 18px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 9px;
+
+}
+
+
+.profile-action {
+
+    width: 100%;
+
+    min-height: 67px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding:
+        11px 13px;
+
+    text-align: left;
+
+    border-radius:
+        var(--finora-radius-small);
+
+    background:
+        var(--finora-card);
+
+    border:
+        1px solid var(--finora-border);
+
+    color:
+        var(--finora-text);
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+
+}
+
+
+.profile-action:active {
+
+    transform:
+        scale(0.985);
+
+    background:
+        var(--finora-card-2);
+
+    border-color:
+        rgba(234,43,131,0.22);
+
+}
+
+
+.action-icon {
+
+    flex: 0 0 auto;
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(234,43,131,0.11),
+            rgba(245,184,61,0.07)
+        );
+
+    color:
+        var(--finora-pink);
+
+}
+
+
+.action-icon svg {
+
+    width: 20px;
+    height: 20px;
+
+}
+
+
+.action-text {
+
+    min-width: 0;
+
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+}
+
+
+.action-text strong {
+
+    font-size: 12.5px;
+
+    font-weight: 720;
+
+    color:
+        var(--finora-text);
+
+}
+
+
+.action-text small {
+
+    color:
+        var(--finora-text-muted);
+
+    font-size: 10.5px;
+
+    line-height: 1.35;
+
+}
+
+
+.action-arrow {
+
+    flex: 0 0 auto;
+
+    color:
+        var(--finora-text-muted);
+
+    font-size: 18px;
+
+    font-weight: 400;
+
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+.logout-section {
+
+    margin-top: 18px;
+
+}
+
+
+.logout-button {
+
+    width: 100%;
+
+    min-height: 50px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    border-radius:
+        var(--finora-radius-small);
+
+    background:
+        rgba(255,92,122,0.055);
+
+    border:
+        1px solid rgba(255,92,122,0.12);
+
+    color:
+        var(--finora-danger);
+
+    font-size: 12px;
+
+    font-weight: 750;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+
+}
+
+
+.logout-button svg {
+
+    width: 18px;
+    height: 18px;
+
+}
+
+
+.logout-button:active {
+
+    transform:
+        scale(0.985);
+
+    background:
+        rgba(255,92,122,0.10);
+
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.profile-message {
+
+    width: fit-content;
+
+    max-width: calc(100% - 30px);
+
+    margin:
+        14px auto 0;
+
+    padding:
+        9px 14px;
+
+    border-radius:
+        999px;
+
+    background:
+        #171017;
+
+    border:
+        1px solid var(--finora-border);
+
+    color:
+        var(--finora-text);
+
+    font-size: 11px;
+
+    font-weight: 650;
+
+    text-align: center;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transform:
+        translateY(5px);
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.profile-message.show {
+
+    opacity: 1;
+
+    transform:
+        translateY(0);
+
+}
+
+
+/* =========================================================
+   BOTTOM NAVIGATION
+========================================================= */
+
+.bottom-navigation {
+
+    position: fixed;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: 200;
+
+    width: 100%;
+
+    height:
+        var(--nav-height);
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    align-items: center;
+
+    padding:
+        6px 8px
+        max(6px, env(safe-area-inset-bottom));
+
+    background:
+        rgba(12,9,14,0.96);
+
+    border-top:
+        1px solid var(--finora-border);
+
+    box-shadow:
+        0 -10px 35px rgba(0,0,0,0.24);
+
+    backdrop-filter:
+        blur(20px);
+
+    -webkit-backdrop-filter:
+        blur(20px);
+
+}
+
+
+.bottom-nav-item {
+
+    height: 58px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
+    border-radius: 13px;
+
+    color:
+        var(--finora-text-muted);
+
+    font-size: 9px;
+
+    font-weight: 650;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+
+}
+
+
+.bottom-nav-icon {
+
+    width: 26px;
+    height: 26px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+}
+
+
+.bottom-nav-icon svg {
+
+    width: 20px;
+    height: 20px;
+
+}
+
+
+.bottom-nav-item.active {
+
+    color:
+        var(--finora-pink);
+
+    background:
+        rgba(234,43,131,0.075);
+
+}
+
+
+.bottom-nav-item.active
+.bottom-nav-icon {
+
+    color:
+        var(--finora-pink);
+
+}
+
+
+.bottom-nav-item:active {
+
+    background:
+        rgba(234,43,131,0.10);
+
+}
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .profile-main {
+
+        padding-left: 12px;
+        padding-right: 12px;
+
+    }
+
+
+    .profile-header {
+
+        padding-left: 10px;
+        padding-right: 10px;
+
+    }
+
+
+    .profile-identity {
+
+        padding:
+            16px 13px;
+
+        gap: 10px;
+
+    }
+
+
+    .profile-avatar {
+
+        width: 50px;
+        height: 50px;
+
+        border-radius: 15px;
+
+        font-size: 21px;
+
+    }
+
+
+    .profile-identity-info h2 {
+
+        font-size: 14px;
+
+    }
+
+
+    .account-status {
+
+        padding:
+            5px 7px;
+
+        font-size: 8.5px;
+
+    }
+
+
+    .profile-information {
+
+        padding-left: 13px;
+        padding-right: 13px;
+
+    }
+
+
+    .information-row {
+
+        min-height: 62px;
+
+    }
+
+
+    .information-icon {
+
+        width: 34px;
+        height: 34px;
+
+    }
+
+
+    .information-content strong {
+
+        font-size: 12px;
+
+    }
+
+
+    .copy-code-button {
+
+        padding:
+            6px 9px;
+
+        font-size: 9px;
+
+    }
+
+}
+
+
+/* =========================================================
+   TABLETS / DESKTOP
+========================================================= */
+
+@media (min-width: 700px) {
+
+    .profile-header {
+
+        height: 70px;
+
+        padding:
+            0 24px;
+
+    }
+
+
+    .profile-main {
+
+        padding-top: 30px;
+
+    }
+
+
+    .profile-introduction h1 {
+
+        font-size: 31px;
+
+    }
+
+
+    .profile-card {
+
+        border-radius: 20px;
+
+    }
+
+
+    .profile-action:hover {
+
+        background:
+            var(--finora-card-2);
+
+        border-color:
+            rgba(234,43,131,0.18);
+
+    }
+
+
+    .bottom-navigation {
+
+        left: 50%;
+
+        right: auto;
+
+        width: min(
+            620px,
+            calc(100% - 30px)
+        );
+
+        transform:
+            translateX(-50%);
+
+        bottom: 12px;
+
+        border:
+            1px solid var(--finora-border);
+
+        border-radius: 18px;
+
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        scroll-behavior: auto !important;
+
+        transition-duration:
+            0.01ms !important;
+
+        animation-duration:
+            0.01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+    }
+
+}
