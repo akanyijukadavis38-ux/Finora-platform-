@@ -476,8 +476,6 @@
                         </div>
 
 
-                        <!-- PASSWORD MINIMUM HINT -->
-
                         <div
                             style="
                                 font-size: 12px;
@@ -560,7 +558,9 @@
                     </div>
 
 
-                    <!-- REFERRAL CODE -->
+                    <!-- =================================
+                         REFERRAL CODE
+                    ================================== -->
 
                     <div class="form-group">
 
@@ -702,11 +702,92 @@
 
 
 <!-- =========================================
+     AUTOMATIC REFERRAL CODE
+========================================== -->
+
+<script>
+
+(function () {
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const referralCode =
+        params.get("ref");
+
+    const referralInput =
+        document.getElementById(
+            "referralCode"
+        );
+
+    const referralStatus =
+        document.getElementById(
+            "referralStatus"
+        );
+
+
+    /*
+     * If somebody arrived through
+     * a FINORA referral link such as:
+     *
+     * index.html?ref=ABC123
+     *
+     * automatically put ABC123
+     * into the referral field.
+     */
+
+    if (
+        referralCode &&
+        referralInput
+    ) {
+
+        referralInput.value =
+            referralCode.trim();
+
+
+        /*
+         * Lock the referral code.
+         * The new user cannot accidentally
+         * replace the original referrer.
+         */
+
+        referralInput.readOnly = true;
+
+
+        /*
+         * Show referral confirmation.
+         */
+
+        if (referralStatus) {
+
+            referralStatus.textContent =
+                "Referral applied";
+
+            referralStatus.classList.add(
+                "active"
+            );
+
+        }
+
+    }
+
+})();
+
+</script>
+
+
+<!-- =========================================
      SHOW PAGE AFTER INITIAL LOAD
 ========================================== -->
 
 <script>
-    document.documentElement.classList.remove("page-loading");
+
+    document.documentElement.classList.remove(
+        "page-loading"
+    );
+
 </script>
 
 </body>
