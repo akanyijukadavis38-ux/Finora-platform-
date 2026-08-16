@@ -1,5 +1,7 @@
 /* =========================================================
-   FINORA TEAM PAGE
+   FINORA TEAM
+   SERVER-SESSION VERSION
+   NO LOCALSTORAGE
    ========================================================= */
 
 const API_BASE =
@@ -10,10 +12,10 @@ const API_BASE =
    ELEMENTS
    ========================================================= */
 
-const referralCodeElement =
+const referralCode =
     document.getElementById("referralCode");
 
-const referralLinkElement =
+const referralLink =
     document.getElementById("referralLink");
 
 const copyReferralButton =
@@ -22,13 +24,13 @@ const copyReferralButton =
 const copyReferralLinkButton =
     document.getElementById("copyReferralLinkButton");
 
-const teamCountElement =
+const teamCount =
     document.getElementById("teamCount");
 
 const teamCountLabel =
     document.getElementById("teamCountLabel");
 
-const referralIncomeElement =
+const referralIncome =
     document.getElementById("referralIncome");
 
 const teamLoading =
@@ -45,90 +47,83 @@ const teamError =
 
 
 /* =========================================================
-   USER ID
+   FORMAT MONEY
    ========================================================= */
 
-const userId =
-    localStorage.getItem("cashnovaUserId");
+function formatMoney(value) {
 
-
-/* =========================================================
-   HELPERS
-   ========================================================= */
-
-function formatMoney(amount) {
-
-    const number =
-        Number(amount) || 0;
+    const amount =
+        Number(value) || 0;
 
     return (
         "UGX " +
-        number.toLocaleString("en-UG")
+        amount.toLocaleString("en-UG")
     );
 }
 
 
+/* =========================================================
+   ERROR
+   ========================================================= */
+
 function showError(message) {
 
-    if (!teamError) return;
+    teamError.textContent =
+        message;
 
-    teamError.textContent = message;
-
-    teamError.style.display = "block";
-}
-
-
-function hideError() {
-
-    if (!teamError) return;
-
-    teamError.style.display = "none";
+    teamError.style.display =
+        "block";
 }
 
 
 /* =========================================================
-   COPY FUNCTION
+   COPY
    ========================================================= */
 
-async function copyText(text, button, defaultText) {
+async function copyValue(
+    value,
+    button,
+    originalText
+) {
 
-    if (!text) return;
+    if (!value) {
+        return;
+    }
 
     try {
 
-        await navigator.clipboard.writeText(text);
-
-        button.textContent = "Copied";
-
-        setTimeout(() => {
-
-            button.textContent = defaultText;
-
-        }, 1500);
+        await navigator.clipboard.writeText(value);
 
     } catch (error) {
 
         const textarea =
             document.createElement("textarea");
 
-        textarea.value = text;
+        textarea.value =
+            value;
 
-        document.body.appendChild(textarea);
+        document.body.appendChild(
+            textarea
+        );
 
         textarea.select();
 
         document.execCommand("copy");
 
         textarea.remove();
-
-        button.textContent = "Copied";
-
-        setTimeout(() => {
-
-            button.textContent = defaultText;
-
-        }, 1500);
     }
+
+
+    button.textContent =
+        "Copied";
+
+
+    setTimeout(() => {
+
+        button.textContent =
+            originalText;
+
+    }, 1500);
 }
 
 
@@ -140,19 +135,19 @@ copyReferralButton.addEventListener(
     "click",
     () => {
 
-        const code =
-            referralCodeElement.textContent.trim();
+        const value =
+            referralCode.textContent.trim();
 
         if (
-            !code ||
-            code === "Loading..." ||
-            code === "Unavailable"
+            !value ||
+            value === "Loading..." ||
+            value === "Unavailable"
         ) {
             return;
         }
 
-        copyText(
-            code,
+        copyValue(
+            value,
             copyReferralButton,
             "Copy"
         );
@@ -168,19 +163,19 @@ copyReferralLinkButton.addEventListener(
     "click",
     () => {
 
-        const link =
-            referralLinkElement.textContent.trim();
+        const value =
+            referralLink.textContent.trim();
 
         if (
-            !link ||
-            link === "Loading..." ||
-            link === "Unavailable"
+            !value ||
+            value === "Loading..." ||
+            value === "Unavailable"
         ) {
             return;
         }
 
-        copyText(
-            link,
+        copyValue(
+            value,
             copyReferralLinkButton,
             "Copy Link"
         );
@@ -189,254 +184,165 @@ copyReferralLinkButton.addEventListener(
 
 
 /* =========================================================
-   LOAD USER
+   LOAD CURRENT USER
    ========================================================= */
 
-async function loadTeamData() {
+async function loadCurrentUser() {
 
-    hideError();
+    const response =
+        await fetch(
+            `${API_BASE}/users/me`,
+            {
+                method: "GET",
 
+                credentials: "include",
 
-    if (!userId) {
-
-        showError(
-            "Your account session could not be found. Please log in again."
+                headers: {
+                    "Accept":
+                        "application/json"
+                }
+            }
         );
 
-        teamLoading.style.display = "none";
+
+    if (response.status === 401) {
+
+        throw new Error(
+            "Your FINORA session has expired. Please log in again."
+        );
+    }
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            "Unable to load your FINORA account."
+        );
+    }
+
+
+    return await response.json();
+}
+
+
+/* =========================================================
+   LOAD TEAM
+   ========================================================= */
+
+async function loadTeam(
+    user
+) {
+
+    const code =
+        user.myReferralCode ||
+        user.referralCode;
+
+
+    if (!code) {
+
+        referralCode.textContent =
+            "Unavailable";
+
+        referralLink.textContent =
+            "Unavailable";
+
+        renderTeam([]);
 
         return;
     }
 
 
-    try {
-
-        /*
-         * Load logged-in user
-         */
-
-        const userResponse =
-            await fetch(
-                `${API_BASE}/users/${userId}`
-            );
-
-
-        if (!userResponse.ok) {
-
-            throw new Error(
-                "Unable to load your account."
-            );
-        }
-
-
-        const user =
-            await userResponse.json();
-
-
-        /*
-         * Referral code
-         */
-
-        const referralCode =
-            user.myReferralCode ||
-            user.referralCode ||
-            "";
-
-
-        if (referralCode) {
-
-            referralCodeElement.textContent =
-                referralCode;
-
-        } else {
-
-            referralCodeElement.textContent =
-                "Unavailable";
-        }
-
-
-        /*
-         * Referral link
-         *
-         * The link points to register.html
-         * and passes the referral code.
-         */
-
-        if (referralCode) {
-
-            const registerUrl =
-                new URL(
-                    "register.html",
-                    window.location.href
-                );
-
-            registerUrl.searchParams.set(
-                "ref",
-                referralCode
-            );
-
-            referralLinkElement.textContent =
-                registerUrl.href;
-
-        } else {
-
-            referralLinkElement.textContent =
-                "Unavailable";
-        }
-
-
-        /*
-         * Referral income
-         */
-
-        const referralIncome =
-            Number(
-                user.referralIncome || 0
-            );
-
-        referralIncomeElement.textContent =
-            formatMoney(referralIncome);
-
-
-        /*
-         * Load team members
-         */
-
-        await loadTeamMembers(
-            referralCode
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Team page error:",
-            error
-        );
-
-        teamLoading.style.display =
-            "none";
-
-        showError(
-            error.message ||
-            "Something went wrong while loading your team."
-        );
-    }
-}
-
-
-/* =========================================================
-   LOAD TEAM MEMBERS
-   ========================================================= */
-
-async function loadTeamMembers(
-    referralCode
-) {
-
-    teamLoading.style.display =
-        "block";
-
-    teamList.style.display =
-        "none";
-
-    teamEmpty.style.display =
-        "none";
+    referralCode.textContent =
+        code;
 
 
     /*
-     * If the referral code does not exist,
-     * there cannot be a team to search.
+     * Referral link points to the real
+     * FINORA registration page.
      */
 
-    if (!referralCode) {
-
-        showEmptyTeam();
-
-        return;
-    }
-
-
-    try {
-
-        /*
-         * Ask backend for users referred
-         * by this user's referral code.
-         *
-         * This endpoint must exist in userRoutes:
-         *
-         * GET /api/users/referrals/:referralCode
-         */
-
-        const response =
-            await fetch(
-                `${API_BASE}/users/referrals/${encodeURIComponent(referralCode)}`
-            );
+    const registrationUrl =
+        new URL(
+            "register.html",
+            window.location.href
+        );
 
 
-        if (!response.ok) {
+    registrationUrl.searchParams.set(
+        "ref",
+        code
+    );
 
-            /*
-             * Do not show fake team members.
-             * If the endpoint is not yet available,
-             * show the empty state instead.
-             */
 
-            if (response.status === 404) {
+    referralLink.textContent =
+        registrationUrl.href;
 
-                showEmptyTeam();
 
-                return;
+    referralIncome.textContent =
+        formatMoney(
+            user.referralIncome
+        );
+
+
+    const response =
+        await fetch(
+            `${API_BASE}/users/referrals/${encodeURIComponent(code)}`,
+            {
+                method: "GET",
+
+                credentials: "include",
+
+                headers: {
+                    "Accept":
+                        "application/json"
+                }
             }
+        );
 
-            throw new Error(
-                "Unable to load team members."
-            );
+
+    if (!response.ok) {
+
+        if (response.status === 404) {
+
+            renderTeam([]);
+
+            return;
         }
 
 
-        const data =
-            await response.json();
-
-
-        const members =
-            Array.isArray(data)
-                ? data
-                : (
-                    Array.isArray(data.users)
-                        ? data.users
-                        : (
-                            Array.isArray(data.referrals)
-                                ? data.referrals
-                                : []
-                        )
-                );
-
-
-        renderTeamMembers(members);
-
-
-    } catch (error) {
-
-        console.error(
-            "Team members error:",
-            error
+        throw new Error(
+            "Unable to load your team members."
         );
-
-        /*
-         * Do not replace the whole page
-         * with an error for an empty team.
-         */
-
-        showEmptyTeam();
     }
+
+
+    const data =
+        await response.json();
+
+
+    const members =
+        Array.isArray(data)
+            ? data
+            : (
+                Array.isArray(data.users)
+                    ? data.users
+                    : (
+                        Array.isArray(data.referrals)
+                            ? data.referrals
+                            : []
+                    )
+            );
+
+
+    renderTeam(members);
 }
 
 
 /* =========================================================
-   RENDER TEAM MEMBERS
+   RENDER TEAM
    ========================================================= */
 
-function renderTeamMembers(
+function renderTeam(
     members
 ) {
 
@@ -448,7 +354,7 @@ function renderTeamMembers(
         members.length;
 
 
-    teamCountElement.textContent =
+    teamCount.textContent =
         count;
 
 
@@ -458,9 +364,17 @@ function renderTeamMembers(
             : `${count} members`;
 
 
+    teamList.innerHTML =
+        "";
+
+
     if (count === 0) {
 
-        showEmptyTeam();
+        teamList.style.display =
+            "none";
+
+        teamEmpty.style.display =
+            "block";
 
         return;
     }
@@ -473,22 +387,8 @@ function renderTeamMembers(
         "flex";
 
 
-    teamList.innerHTML = "";
-
-
     members.forEach(
-        (member) => {
-
-            const item =
-                document.createElement("div");
-
-            item.className =
-                "team-member";
-
-
-            /*
-             * Member name
-             */
+        member => {
 
             const name =
                 member.fullName ||
@@ -496,39 +396,37 @@ function renderTeamMembers(
                 "FINORA Member";
 
 
-            /*
-             * First letter avatar
-             */
-
             const firstLetter =
                 name
                     .trim()
                     .charAt(0)
-                    .toUpperCase() || "F";
+                    .toUpperCase();
 
 
-            /*
-             * Account activation
-             */
-
-            const activated =
+            const active =
                 member.accountActivated === true;
 
 
             const status =
-                activated
+                active
                     ? "Active"
                     : "Not activated";
 
 
-            /*
-             * Create member card
-             */
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "team-member";
+
 
             item.innerHTML = `
 
                 <div class="member-avatar">
-                    ${escapeHtml(firstLetter)}
+                    ${escapeHtml(firstLetter || "F")}
                 </div>
 
                 <div class="member-info">
@@ -546,48 +444,26 @@ function renderTeamMembers(
             `;
 
 
-            teamList.appendChild(item);
+            teamList.appendChild(
+                item
+            );
         }
     );
 }
 
 
 /* =========================================================
-   EMPTY TEAM
-   ========================================================= */
-
-function showEmptyTeam() {
-
-    teamLoading.style.display =
-        "none";
-
-    teamList.style.display =
-        "none";
-
-    teamEmpty.style.display =
-        "block";
-
-
-    teamCountElement.textContent =
-        "0";
-
-    teamCountLabel.textContent =
-        "0 members";
-}
-
-
-/* =========================================================
-   HTML ESCAPE
+   ESCAPE HTML
    ========================================================= */
 
 function escapeHtml(value) {
 
     return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 
@@ -595,11 +471,39 @@ function escapeHtml(value) {
    START
    ========================================================= */
 
+async function startTeamPage() {
+
+    try {
+
+        const user =
+            await loadCurrentUser();
+
+
+        await loadTeam(
+            user
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "FINORA Team Error:",
+            error
+        );
+
+
+        teamLoading.style.display =
+            "none";
+
+
+        showError(
+            error.message
+        );
+    }
+}
+
+
 document.addEventListener(
     "DOMContentLoaded",
-    () => {
-
-        loadTeamData();
-
-    }
+    startTeamPage
 );
