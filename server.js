@@ -23,7 +23,11 @@ const PORT =
     process.env.PORT || 10000;
 
 const FRONTEND_ORIGIN =
-    process.env.FRONTEND_ORIGIN || true;
+    process.env.FRONTEND_ORIGIN || null;
+
+const IS_PRODUCTION =
+    process.env.NODE_ENV === "production";
+
 
 /* =========================================================
    FINORA BUSINESS RULES
@@ -58,10 +62,14 @@ const LEVEL_3_RATE =
    TRUST PROXY
 ========================================================= */
 
-app.set(
-    "trust proxy",
-    1
-);
+if (IS_PRODUCTION) {
+
+    app.set(
+        "trust proxy",
+        1
+    );
+
+}
 
 
 /* =========================================================
@@ -72,7 +80,7 @@ app.use(
     cors({
 
         origin:
-            FRONTEND_ORIGIN,
+            FRONTEND_ORIGIN || true,
 
         credentials:
             true
@@ -119,10 +127,12 @@ app.use(
                 true,
 
             secure:
-                true,
+                IS_PRODUCTION,
 
             sameSite:
-                "none",
+                IS_PRODUCTION
+                    ? "none"
+                    : "lax",
 
             maxAge:
                 1000 *
@@ -742,6 +752,72 @@ function generateAccountNumber() {
         "FN" +
         random
     );
+
+}
+
+
+/* =========================================================
+   AUTHENTICATION HELPER
+========================================================= */
+
+function requireUser(
+    req,
+    res,
+    next
+) {
+
+    if (
+        !req.session ||
+        !req.session.userId
+    ) {
+
+        return res.status(401).json({
+
+            success:
+                false,
+
+            message:
+                "User is not logged in."
+
+        });
+
+    }
+
+
+    next();
+
+}
+
+
+/* =========================================================
+   ADMIN AUTHENTICATION
+========================================================= */
+
+function requireAdmin(
+    req,
+    res,
+    next
+) {
+
+    if (
+        !req.session ||
+        !req.session.adminId
+    ) {
+
+        return res.status(401).json({
+
+            success:
+                false,
+
+            message:
+                "Administrator authentication required."
+
+        });
+
+    }
+
+
+    next();
 
 }
 
@@ -1482,59 +1558,64 @@ async function getCurrentUser(
 
         const user =
             result.rows[0];
-let accountNumber =
-    user.account_number;
 
 
-if (!accountNumber) {
+        let accountNumber =
+            user.account_number;
 
-    while (true) {
 
-        const newAccountNumber =
-            generateAccountNumber();
+        if (!accountNumber) {
 
-        const check =
+            while (true) {
+
+                const newAccountNumber =
+                    generateAccountNumber();
+
+
+                const check =
+                    await pool.query(
+                        `
+                        SELECT id
+                        FROM users
+                        WHERE account_number = $1
+                        LIMIT 1
+                        `,
+                        [
+                            newAccountNumber
+                        ]
+                    );
+
+
+                if (
+                    check.rows.length === 0
+                ) {
+
+                    accountNumber =
+                        newAccountNumber;
+
+                    break;
+
+                }
+
+            }
+
+
             await pool.query(
                 `
-                SELECT id
-                FROM users
-                WHERE account_number = $1
-                LIMIT 1
+                UPDATE users
+                SET
+                    account_number = $1,
+                    updated_at = CURRENT_TIMESTAMP
+                WHERE id = $2
                 `,
                 [
-                    newAccountNumber
+                    accountNumber,
+                    user.id
                 ]
             );
 
-        if (
-            check.rows.length === 0
-        ) {
-
-            accountNumber =
-                newAccountNumber;
-
-            break;
-
         }
 
-    }
-
-
-    await pool.query(
-        `
-        UPDATE users
-        SET
-            account_number = $1,
-            updated_at = CURRENT_TIMESTAMP
-        WHERE id = $2
-        `,
-        [
-            accountNumber,
-            user.id
-        ]
-    );
-
-}
 
         return res.status(200).json({
 
@@ -1562,7 +1643,7 @@ if (!accountNumber) {
                     user.referred_by,
 
                 accountNumber:
-                    user.account_number,
+                    accountNumber,
 
                 walletBalance:
                     user.wallet_balance,
@@ -1617,10 +1698,6 @@ app.get(
 );
 
 
-/* =========================================================
-   PROFILE
-========================================================= */
-
 app.get(
     "/api/profile",
     getCurrentUser
@@ -1661,14 +1738,18 @@ app.post(
                 res.clearCookie(
                     "connect.sid",
                     {
+
                         httpOnly:
                             true,
 
                         secure:
-                            true,
+                            IS_PRODUCTION,
 
                         sameSite:
-                            "none"
+                            IS_PRODUCTION
+                                ? "none"
+                                : "lax"
+
                     }
                 );
 
@@ -1688,39 +1769,6 @@ app.post(
 
     }
 );
-
-
-/* =========================================================
-   AUTHENTICATION HELPER
-========================================================= */
-
-function requireUser(
-    req,
-    res,
-    next
-) {
-
-    if (
-        !req.session ||
-        !req.session.userId
-    ) {
-
-        return res.status(401).json({
-
-            success:
-                false,
-
-            message:
-                "User is not logged in."
-
-        });
-
-    }
-
-
-    next();
-
-}
 
 
 /* =========================================================
@@ -1900,8 +1948,7 @@ app.get(
             const result =
                 await pool.query(
                     `
-                    SELECT
-                        *
+                    SELECT *
                     FROM deposits
                     WHERE user_id = $1
                     ORDER BY created_at DESC
@@ -1988,18 +2035,22 @@ async function processReferralCommissions(
 
 
     const levels = [
+
         {
             level: 1,
             rate: LEVEL_1_RATE
         },
+
         {
             level: 2,
             rate: LEVEL_2_RATE
         },
+
         {
             level: 3,
             rate: LEVEL_3_RATE
         }
+
     ];
 
 
@@ -2231,11 +2282,13 @@ app.post(
                 UPDATE deposits
                 SET
                     status = 'approved',
+                    approved_by = $1,
                     approved_at = CURRENT_TIMESTAMP,
                     updated_at = CURRENT_TIMESTAMP
-                WHERE id = $1
+                WHERE id = $2
                 `,
                 [
+                    req.session.adminId,
                     deposit.id
                 ]
             );
@@ -2504,14 +2557,28 @@ app.post(
             }
 
 
+            /*
+             * START TRANSACTION
+             *
+             * The balance check and wallet deduction
+             * must happen inside the same transaction.
+             */
+
+            await client.query(
+                "BEGIN"
+            );
+
+
             const countResult =
                 await client.query(
                     `
-                    SELECT COUNT(*)::INTEGER AS count
+                    SELECT
+                        COUNT(*)::INTEGER AS count
                     FROM withdrawals
                     WHERE user_id = $1
                       AND created_at >= CURRENT_DATE
-                      AND created_at < CURRENT_DATE + INTERVAL '1 day'
+                      AND created_at <
+                          CURRENT_DATE + INTERVAL '1 day'
                     `,
                     [
                         req.session.userId
@@ -2525,6 +2592,10 @@ app.post(
                 ) >=
                 MAX_WITHDRAWALS_PER_DAY
             ) {
+
+                await client.query(
+                    "ROLLBACK"
+                );
 
                 return res.status(400).json({
 
@@ -2558,6 +2629,10 @@ app.post(
                 userResult.rows.length === 0
             ) {
 
+                await client.query(
+                    "ROLLBACK"
+                );
+
                 return res.status(404).json({
 
                     success:
@@ -2582,6 +2657,10 @@ app.post(
                 walletBalance <
                 withdrawalAmount
             ) {
+
+                await client.query(
+                    "ROLLBACK"
+                );
 
                 return res.status(400).json({
 
@@ -2733,9 +2812,22 @@ app.post(
 
         catch (error) {
 
-            await client.query(
-                "ROLLBACK"
-            );
+            try {
+
+                await client.query(
+                    "ROLLBACK"
+                );
+
+            }
+
+            catch (rollbackError) {
+
+                console.error(
+                    "FINORA WITHDRAWAL ROLLBACK ERROR:",
+                    rollbackError
+                );
+
+            }
 
 
             console.error(
@@ -2829,10 +2921,12 @@ app.get(
 
 /* =========================================================
    DAILY EARNINGS
+   ADMIN ONLY
 ========================================================= */
 
 app.post(
     "/api/earnings/process",
+    requireAdmin,
     async function (req, res) {
 
         const client =
@@ -2999,9 +3093,22 @@ app.post(
 
         catch (error) {
 
-            await client.query(
-                "ROLLBACK"
-            );
+            try {
+
+                await client.query(
+                    "ROLLBACK"
+                );
+
+            }
+
+            catch (rollbackError) {
+
+                console.error(
+                    "FINORA EARNINGS ROLLBACK ERROR:",
+                    rollbackError
+                );
+
+            }
 
 
             console.error(
@@ -3046,8 +3153,7 @@ app.get(
             const result =
                 await pool.query(
                     `
-                    SELECT
-                        *
+                    SELECT *
                     FROM earnings
                     WHERE user_id = $1
                     ORDER BY created_at DESC
@@ -3095,7 +3201,7 @@ app.get(
 
 
 /* =========================================================
-   INVESTMENTS / ACTIVE EARNING RECORDS
+   INVESTMENTS
 ========================================================= */
 
 app.get(
@@ -3113,10 +3219,12 @@ app.get(
                         d.amount,
                         d.status,
                         d.created_at,
+
                         COALESCE(
                             SUM(e.amount),
                             0
                         ) AS total_earned
+
                     FROM deposits d
 
                     LEFT JOIN earnings e
@@ -3174,6 +3282,7 @@ app.get(
     }
 );
 
+
 /* =========================================================
    TEAM / REFERRALS
 ========================================================= */
@@ -3184,10 +3293,6 @@ app.get(
     async function (req, res) {
 
         try {
-
-            /* =================================================
-               GET CURRENT USER
-            ================================================= */
 
             const userResult =
                 await pool.query(
@@ -3229,11 +3334,6 @@ app.get(
                 currentUser.referral_code;
 
 
-            /* =================================================
-               LEVEL 1 MEMBERS
-               Direct referrals
-            ================================================= */
-
             const level1Result =
                 await pool.query(
                     `
@@ -3247,8 +3347,7 @@ app.get(
 
                         COALESCE(
                             (
-                                SELECT
-                                    SUM(d.amount)
+                                SELECT SUM(d.amount)
                                 FROM deposits d
                                 WHERE d.user_id = u.id
                                   AND d.status = 'approved'
@@ -3269,14 +3368,6 @@ app.get(
                 );
 
 
-            const level1 =
-                level1Result.rows;
-
-
-            /* =================================================
-               LEVEL 2 MEMBERS
-            ================================================= */
-
             const level2Result =
                 await pool.query(
                     `
@@ -3290,8 +3381,7 @@ app.get(
 
                         COALESCE(
                             (
-                                SELECT
-                                    SUM(d.amount)
+                                SELECT SUM(d.amount)
                                 FROM deposits d
                                 WHERE d.user_id = u.id
                                   AND d.status = 'approved'
@@ -3316,14 +3406,6 @@ app.get(
                 );
 
 
-            const level2 =
-                level2Result.rows;
-
-
-            /* =================================================
-               LEVEL 3 MEMBERS
-            ================================================= */
-
             const level3Result =
                 await pool.query(
                     `
@@ -3337,8 +3419,7 @@ app.get(
 
                         COALESCE(
                             (
-                                SELECT
-                                    SUM(d.amount)
+                                SELECT SUM(d.amount)
                                 FROM deposits d
                                 WHERE d.user_id = u.id
                                   AND d.status = 'approved'
@@ -3367,18 +3448,21 @@ app.get(
                 );
 
 
+            const level1 =
+                level1Result.rows;
+
+            const level2 =
+                level2Result.rows;
+
             const level3 =
                 level3Result.rows;
 
-
-            /* =================================================
-               COMMISSION TOTALS
-            ================================================= */
 
             const commissionResult =
                 await pool.query(
                     `
                     SELECT
+
                         COALESCE(
                             SUM(
                                 CASE
@@ -3431,19 +3515,11 @@ app.get(
                 commissionResult.rows[0];
 
 
-            /* =================================================
-               TOTAL MEMBERS
-            ================================================= */
-
             const totalMembers =
                 level1.length +
                 level2.length +
                 level3.length;
 
-
-            /* =================================================
-               RESPONSE
-            ================================================= */
 
             return res.status(200).json({
 
@@ -3479,13 +3555,13 @@ app.get(
                 rates: {
 
                     level1:
-                        0.15,
+                        LEVEL_1_RATE,
 
                     level2:
-                        0.05,
+                        LEVEL_2_RATE,
 
                     level3:
-                        0.02
+                        LEVEL_3_RATE
 
                 },
 
@@ -3531,6 +3607,7 @@ app.get(
     }
 );
 
+
 /* =========================================================
    REFERRAL COMMISSIONS
 ========================================================= */
@@ -3545,8 +3622,7 @@ app.get(
             const result =
                 await pool.query(
                     `
-                    SELECT
-                        *
+                    SELECT *
                     FROM referral_commissions
                     WHERE user_id = $1
                     ORDER BY created_at DESC
@@ -3679,11 +3755,17 @@ app.get(
 
 
             const allowedTypes = [
+
                 "deposit",
+
                 "withdrawal",
+
                 "daily_income",
+
                 "referral",
+
                 "bonus"
+
             ];
 
 
@@ -3799,6 +3881,12 @@ app.post(
             }
 
 
+            const cleanUsername =
+                String(
+                    username
+                ).trim();
+
+
             const result =
                 await pool.query(
                     `
@@ -3808,9 +3896,7 @@ app.post(
                     LIMIT 1
                     `,
                     [
-                        String(
-                            username
-                        ).trim()
+                        cleanUsername
                     ]
                 );
 
@@ -3880,15 +3966,42 @@ app.post(
                 admin.id;
 
 
-            return res.status(200).json({
+            req.session.save(
+                function (sessionError) {
 
-                success:
-                    true,
+                    if (sessionError) {
 
-                message:
-                    "Admin login successful."
+                        console.error(
+                            "FINORA ADMIN SESSION SAVE ERROR:",
+                            sessionError
+                        );
 
-            });
+
+                        return res.status(500).json({
+
+                            success:
+                                false,
+
+                            message:
+                                "Admin session could not be created."
+
+                        });
+
+                    }
+
+
+                    return res.status(200).json({
+
+                        success:
+                            true,
+
+                        message:
+                            "Admin login successful."
+
+                    });
+
+                }
+            );
 
         }
 
@@ -3914,39 +4027,6 @@ app.post(
 
     }
 );
-
-
-/* =========================================================
-   ADMIN AUTHENTICATION
-========================================================= */
-
-function requireAdmin(
-    req,
-    res,
-    next
-) {
-
-    if (
-        !req.session ||
-        !req.session.adminId
-    ) {
-
-        return res.status(401).json({
-
-            success:
-                false,
-
-            message:
-                "Administrator authentication required."
-
-        });
-
-    }
-
-
-    next();
-
-}
 
 
 /* =========================================================
@@ -4219,9 +4299,22 @@ app.post(
 
         catch (error) {
 
-            await client.query(
-                "ROLLBACK"
-            );
+            try {
+
+                await client.query(
+                    "ROLLBACK"
+                );
+
+            }
+
+            catch (rollbackError) {
+
+                console.error(
+                    "FINORA APPROVE WITHDRAWAL ROLLBACK ERROR:",
+                    rollbackError
+                );
+
+            }
 
 
             console.error(
@@ -4411,9 +4504,22 @@ app.post(
 
         catch (error) {
 
-            await client.query(
-                "ROLLBACK"
-            );
+            try {
+
+                await client.query(
+                    "ROLLBACK"
+                );
+
+            }
+
+            catch (rollbackError) {
+
+                console.error(
+                    "FINORA REJECT WITHDRAWAL ROLLBACK ERROR:",
+                    rollbackError
+                );
+
+            }
 
 
             console.error(
@@ -4642,7 +4748,8 @@ app.get(
             const users =
                 await pool.query(
                     `
-                    SELECT COUNT(*)::INTEGER AS count
+                    SELECT
+                        COUNT(*)::INTEGER AS count
                     FROM users
                     `
                 );
@@ -4666,7 +4773,8 @@ app.get(
             const pendingDeposits =
                 await pool.query(
                     `
-                    SELECT COUNT(*)::INTEGER AS count
+                    SELECT
+                        COUNT(*)::INTEGER AS count
                     FROM deposits
                     WHERE status = 'pending'
                     `
@@ -4691,7 +4799,8 @@ app.get(
             const pendingWithdrawals =
                 await pool.query(
                     `
-                    SELECT COUNT(*)::INTEGER AS count
+                    SELECT
+                        COUNT(*)::INTEGER AS count
                     FROM withdrawals
                     WHERE status = 'pending'
                     `
@@ -4933,7 +5042,19 @@ async function startServer() {
                 );
 
                 console.log(
-                    "WITHDRAWAL FEE: 14%"
+                    "WITHDRAWAL FEE: 15%"
+                );
+
+                console.log(
+                    "LEVEL 1 REFERRAL: 15%"
+                );
+
+                console.log(
+                    "LEVEL 2 REFERRAL: 5%"
+                );
+
+                console.log(
+                    "LEVEL 3 REFERRAL: 2%"
                 );
 
                 console.log(
