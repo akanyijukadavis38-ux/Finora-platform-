@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#08060A"
+    >
+
+    <meta
+        name="description"
+        content="FINORA — Your Profile"
+    >
+
+    <title>
+        FINORA | Profile
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="profile.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- =====================================================
+         FINORA PAGE
+    ====================================================== -->
+
+    <div class="finora-page">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <header class="profile-header">
+
+            <button
+                type="button"
+                class="header-back"
+                id="backButton"
+                aria-label="Go back"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                >
+
+                    <path
+                        d="M15 18L9 12L15 6"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+
+                </svg>
+
+            </button>
+
+
+            <div class="header-brand">
+
+                <div class="brand-mark">
+
+                    <span>F</span>
+
+                </div>
+
+                <div class="brand-name">
+                    FINORA
+                </div>
+
+            </div>
+
+
+            <div class="header-space"></div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             MAIN CONTENT
+        ================================================== -->
+
+        <main class="profile-main">
+
+
+            <!-- =============================================
+                 PAGE TITLE
+            ============================================== -->
+
+            <section class="profile-introduction">
+
+                <span class="section-eyebrow">
+                    ACCOUNT
+                </span>
+
+                <h1>
+                    My Profile
+                </h1>
+
+                <p>
+                    Manage your FINORA account information.
+                </p>
+
+            </section>
+
+
+
+            <!-- =============================================
+                 PROFILE CARD
+            ============================================== -->
+
+            <section class="profile-card">
+
+
+                <!-- PROFILE IDENTITY -->
+
+                <div class="profile-identity">
+
+                    <div
+                        class="profile-avatar"
+                        id="profileAvatar"
+                    >
+                        F
+                    </div>
+
+
+                    <div class="profile-identity-info">
+
+                        <h2 id="profileName">
+                            Loading...
+                        </h2>
+
+                        <p id="profileEmail">
+                            Loading...
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="account-status"
+                        id="accountStatus"
+                    >
+
+                        <span class="status-dot"></span>
+
+                        <span>
+                            Active
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =========================================
+                     ACCOUNT INFORMATION
+                ========================================== -->
+
+                <div class="profile-information">
+
+
+                    <div class="information-row">
+
+                        <div class="information-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                aria-hidden="true"
+                            >
+
+                                <path
+                                    d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                />
+
+                                <circle
+                                    cx="12"
+                                    cy="7"
+                                    r="4"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                />
+
+                            </svg>
+
+                        </div>
+
+
+                        <div class="information-content">
+
+                            <span class="information-label">
+                                Full Name
+                            </span>
+
+                            <strong id="fullName">
+                                Loading...
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="information-row">
+
+                        <div class="information-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                aria-hidden="true"
+                            >
+
+                                <path
+                                    d="M5 4H9L11 9L8.5 10.5C9.5705 12.6714 11.3286 14.4295 13.5 15.5L15 13L20 15V19C20 20.1046 19.1046 21 18 21C10.268 21 4 14.732 4 7C4 5.89543 4.89543 5 6 5"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+
+                            </svg>
+
+                        </div>
+
+
+                        <div class="information-content">
+
+                            <span class="information-label">
+                                Phone Number
+                            </span>
+
+                            <strong id="profilePhone">
+                                Loading...
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="information-row">
+
+                        <div class="information-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                aria-hidden="true"
+                            >
+
+                                <rect
+                                    x="3"
+                                    y="5"
+                                    width="18"
+                                    height="14"
+                                    rx="2"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                />
+
+                                <path
+                                    d="M3 7L12 13L21 7"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    stroke-linejoin="round"
+                                />
+
+                            </svg>
+
+                        </div>
+
+
+                        <div class="information-content">
+
+                            <span class="information-label">
+                                Email Address
+                            </span>
+
+                            <strong id="profileEmailFull">
+                                Loading...
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="information-row">
+
+                        <div class="information-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                aria-hidden="true"
+                            >
+
+                                <path
+                                    d="M20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12Z"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                />
+
+                                <path
+                                    d="M8 12H16"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    stroke-linecap="round"
+                                />
+
+                                <path
+                                    d="M12 8V16"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    stroke-linecap="round"
+                                />
+
+                            </svg>
+
+                        </div>
+
+
+                        <div class="information-content">
+
+                            <span class="information-label">
+                                Account Number
+                            </span>
+
+                            <strong id="accountNumber">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="information-row">
+
+                        <div class="information-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                aria-hidden="true"
+                            >
+
+                                <path
+                                    d="M12 3V21"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    stroke-linecap="round"
+                                />
+
+                                <path
+                                    d="M17 7.5C17 5.567 14.7614 4 12 4C9.23858 4 7 5.567 7 7.5C7 9.433 9.23858 11 12 11C14.7614 11 17 12.567 17 14.5C17 16.433 14.7614 18 12 18C9.23858 18 7 16.433 7 14.5"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    stroke-linecap="round"
+                                />
+
+                            </svg>
+
+                        </div>
+
+
+                        <div class="information-content">
+
+                            <span class="information-label">
+                                Wallet Balance
+                            </span>
+
+                            <strong
+                                id="profileWalletBalance"
+                                class="financial-value"
+                            >
+                                UGX 0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="information-row">
+
+                        <div class="information-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                aria-hidden="true"
+                            >
+
+                                <path
+                                    d="M12 2L14.8 8.2L21.5 8.9L16.5 13.3L17.9 20L12 16.5L6.1 20L7.5 13.3L2.5 8.9L9.2 8.2L12 2Z"
+                                    stroke="currentColor"
+                                    stroke-width="1.6"
+                                    stroke-linejoin="round"
+                                />
+
+                            </svg>
+
+                        </div>
+
+
+                        <div class="information-content">
+
+                            <span class="information-label">
+                                Referral Code
+                            </span>
+
+                            <strong id="referralCode">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="copy-code-button"
+                            id="copyReferralCode"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =============================================
+                 ACCOUNT ACTIONS
+            ============================================== -->
+
+            <section class="profile-actions">
+
+
+                <button
+                    type="button"
+                    class="profile-action"
+                    id="transactionsButton"
+                >
+
+                    <span class="action-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            aria-hidden="true"
+                        >
+
+                            <rect
+                                x="4"
+                                y="3"
+                                width="16"
+                                height="18"
+                                rx="2"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                            />
+
+                            <path
+                                d="M8 8H16"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round"
+                            />
+
+                            <path
+                                d="M8 12H16"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round"
+                            />
+
+                            <path
+                                d="M8 16H13"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round"
+                            />
+
+                        </svg>
+
+                    </span>
+
+
+                    <span class="action-text">
+
+                        <strong>
+                            Transaction History
+                        </strong>
+
+                        <small>
+                            View your account activity
+                        </small>
+
+                    </span>
+
+
+                    <span class="action-arrow">
+                        →
+                    </span>
+
+                </button>
+
+
+
+                <button
+                    type="button"
+                    class="profile-action"
+                    id="teamButton"
+                >
+
+                    <span class="action-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            aria-hidden="true"
+                        >
+
+                            <circle
+                                cx="9"
+                                cy="8"
+                                r="3"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                            />
+
+                            <path
+                                d="M3 20C3 16.6863 5.68629 14 9 14C12.3137 14 15 16.6863 15 20"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round"
+                            />
+
+                            <path
+                                d="M16 11C18.2091 11 20 12.7909 20 15"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round"
+                            />
+
+                            <path
+                                d="M16 5C17.6569 5 19 6.34315 19 8"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round"
+                            />
+
+                        </svg>
+
+                    </span>
+
+
+                    <span class="action-text">
+
+                        <strong>
+                            My Team
+                        </strong>
+
+                        <small>
+                            Manage your referrals
+                        </small>
+
+                    </span>
+
+
+                    <span class="action-arrow">
+                        →
+                    </span>
+
+                </button>
+
+
+
+                <button
+                    type="button"
+                    class="profile-action"
+                    id="supportButton"
+                >
+
+                    <span class="action-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            aria-hidden="true"
+                        >
+
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="9"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                            />
+
+                            <path
+                                d="M9.5 9C9.5 7.61929 10.6193 6.5 12 6.5C13.3807 6.5 14.5 7.61929 14.5 9C14.5 10.5 12 10.5 12 13"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round"
+                            />
+
+                            <circle
+                                cx="12"
+                                cy="17"
+                                r="1"
+                                fill="currentColor"
+                            />
+
+                        </svg>
+
+                    </span>
+
+
+                    <span class="action-text">
+
+                        <strong>
+                            Help & Support
+                        </strong>
+
+                        <small>
+                            Get assistance from FINORA
+                        </small>
+
+                    </span>
+
+
+                    <span class="action-arrow">
+                        →
+                    </span>
+
+                </button>
+
+            </section>
+
+
+
+            <!-- =============================================
+                 LOGOUT
+            ============================================== -->
+
+            <section class="logout-section">
+
+                <button
+                    type="button"
+                    class="logout-button"
+                    id="logoutButton"
+                >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+
+                        <path
+                            d="M10 17L15 12L10 7"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+
+                        <path
+                            d="M15 12H3"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                        />
+
+                        <path
+                            d="M20 19V5C20 3.89543 19.1046 3 18 3H14"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                        />
+
+                    </svg>
+
+                    <span>
+                        Log Out
+                    </span>
+
+                </button>
+
+            </section>
+
+
+
+            <!-- =============================================
+                 MESSAGE
+            ============================================== -->
+
+            <div
+                id="profileMessage"
+                class="profile-message"
+                role="status"
+                aria-live="polite"
+            ></div>
+
+
+        </main>
+
+
+
+        <!-- =================================================
+             BOTTOM NAVIGATION
+        ================================================== -->
+
+        <nav
+            class="bottom-navigation"
+            aria-label="Main navigation"
+        >
+
+            <a
+                href="dashboard.html"
+                class="bottom-nav-item"
+            >
+
+                <span class="bottom-nav-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+
+                        <path
+                            d="M3 11.5L12 4L21 11.5"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+
+                        <path
+                            d="M5 10.5V20H19V10.5"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linejoin="round"
+                        />
+
+                    </svg>
+
+                </span>
+
+                <span>
+                    Home
+                </span>
+
+            </a>
+
+
+            <a
+                href="investments.html"
+                class="bottom-nav-item"
+            >
+
+                <span class="bottom-nav-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+
+                        <path
+                            d="M4 19V10"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"
+                        />
+
+                        <path
+                            d="M10 19V5"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"
+                        />
+
+                        <path
+                            d="M16 19V8"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"
+                        />
+
+                        <path
+                            d="M22 19V3"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"
+                        />
+
+                    </svg>
+
+                </span>
+
+                <span>
+                    Investments
+                </span>
+
+            </a>
+
+
+            <a
+                href="team.html"
+                class="bottom-nav-item"
+            >
+
+                <span class="bottom-nav-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+
+                        <circle
+                            cx="9"
+                            cy="8"
+                            r="3"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                        />
+
+                        <path
+                            d="M3 20C3 16.6863 5.68629 14 9 14C12.3137 14 15 16.6863 15 20"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"
+                        />
+
+                        <circle
+                            cx="17"
+                            cy="9"
+                            r="2"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                        />
+
+                    </svg>
+
+                </span>
+
+                <span>
+                    Team
+                </span>
+
+            </a>
+
+
+            <a
+                href="profile.html"
+                class="bottom-nav-item active"
+            >
+
+                <span class="bottom-nav-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+
+                        <circle
+                            cx="12"
+                            cy="8"
+                            r="3.5"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                        />
+
+                        <path
+                            d="M5 21C5 17.134 8.13401 14 12 14C15.866 14 19 17.134 19 21"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"
+                        />
+
+                    </svg>
+
+                </span>
+
+                <span>
+                    Mine
+                </span>
+
+            </a>
+
+        </nav>
+
+    </div>
+
+
+    <!-- =====================================================
+         PROFILE JAVASCRIPT
+    ====================================================== -->
+
+    <script src="profile.js"></script>
+
+</body>
+
+</html>
