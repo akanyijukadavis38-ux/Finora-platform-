@@ -25,22 +25,21 @@ const PORT =
 const FRONTEND_ORIGIN =
     process.env.FRONTEND_ORIGIN || true;
 
-
 /* =========================================================
    FINORA BUSINESS RULES
 ========================================================= */
 
 const MIN_DEPOSIT =
-    15000;
+    10000;
 
 const MIN_WITHDRAWAL =
-    5000;
+    4000;
 
 const DAILY_RATE =
     0.10;
 
 const WITHDRAWAL_FEE_RATE =
-    0.14;
+    0.15;
 
 const MAX_WITHDRAWALS_PER_DAY =
     2;
@@ -49,7 +48,7 @@ const LEVEL_1_RATE =
     0.15;
 
 const LEVEL_2_RATE =
-    0.03;
+    0.05;
 
 const LEVEL_3_RATE =
     0.02;
