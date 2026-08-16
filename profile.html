@@ -15,7 +15,7 @@
 
     <meta
         name="description"
-        content="FINORA My Profile">
+        content="FINORA — My Profile">
 
     <title>FINORA | My Profile</title>
 
@@ -43,7 +43,7 @@
             aria-label="FINORA Dashboard">
 
 
-            <!-- FINORA LOGO -->
+            <!-- FINORA F LOGO -->
 
             <svg
                 class="profile-logo"
@@ -164,10 +164,20 @@
             </svg>
 
 
+            <!-- FINORA WORDMARK -->
+
             <div class="profile-brand-text">
 
                 <div class="profile-finora-name">
-                    <span>FIN</span><span>ORA</span>
+
+                    <span class="profile-fin">
+                        FIN
+                    </span>
+
+                    <span class="profile-ora">
+                        ORA
+                    </span>
+
                 </div>
 
                 <div class="profile-tagline">
@@ -194,18 +204,19 @@
 
 
     <!-- =====================================================
-         MAIN
+         MAIN CONTENT
          ===================================================== -->
 
     <main class="profile-main">
 
+        <div class="profile-container">
 
-        <section class="profile-container">
 
+            <!-- =================================================
+                 PAGE HEADING
+                 ================================================= -->
 
-            <!-- PAGE TITLE -->
-
-            <div class="profile-heading">
+            <section class="profile-heading">
 
                 <div class="profile-kicker">
                     ACCOUNT
@@ -219,7 +230,7 @@
                     Manage your FINORA account information.
                 </p>
 
-            </div>
+            </section>
 
 
 
@@ -227,7 +238,7 @@
                  PROFILE SUMMARY
                  ================================================= -->
 
-            <article class="profile-summary">
+            <section class="profile-summary">
 
 
                 <div class="profile-avatar">
@@ -261,12 +272,14 @@
 
                 <div class="profile-user">
 
-                    <h2 id="profileName">
+                    <!-- ONLY FULL NAME -->
+
+                    <h2 id="profileFullName">
                         Investor
                     </h2>
 
                     <p id="profileEmail">
-                        akanyijukadavis38@gmail.com
+                        —
                     </p>
 
                 </div>
@@ -280,12 +293,12 @@
 
                 </span>
 
-            </article>
+            </section>
 
 
 
             <!-- =================================================
-                 BASIC ACCOUNT INFORMATION
+                 ACCOUNT INFORMATION
                  ================================================= -->
 
             <section class="account-information">
@@ -316,15 +329,15 @@
                             Full Name
                         </span>
 
-                        <strong id="profileFullName">
-                            Investor
+                        <strong id="accountFullName">
+                            —
                         </strong>
 
                     </div>
 
 
 
-                    <!-- PHONE -->
+                    <!-- PHONE NUMBER -->
 
                     <div class="information-row">
 
@@ -333,14 +346,14 @@
                         </span>
 
                         <strong id="profilePhone">
-                            0704784556
+                            —
                         </strong>
 
                     </div>
 
 
 
-                    <!-- EMAIL -->
+                    <!-- EMAIL ADDRESS -->
 
                     <div class="information-row">
 
@@ -349,7 +362,7 @@
                         </span>
 
                         <strong id="profileEmailAddress">
-                            akanyijukadavis38@gmail.com
+                            —
                         </strong>
 
                     </div>
@@ -376,7 +389,7 @@
             </section>
 
 
-        </section>
+        </div>
 
     </main>
 
@@ -389,13 +402,21 @@
     <footer class="profile-footer">
 
         <p>
+
             FINORA 2026
+
             <span>•</span>
+
             Invest
+
             <span>•</span>
+
             Grow
+
             <span>•</span>
+
             Earn
+
         </p>
 
     </footer>
@@ -403,6 +424,11 @@
 
 </div>
 
+
+
+<!-- =====================================================
+     PROFILE JAVASCRIPT
+     ===================================================== -->
 
 <script src="profile.js"></script>
 
