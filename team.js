@@ -1,462 +1,85 @@
 /* =========================================================
-   FINORA TEAM
-   SERVER-SESSION VERSION
-   NO LOCALSTORAGE
-   ========================================================= */
+   FINORA — TEAM / REFERRAL SYSTEM
+   Backend: Render
+   Referral Rates:
+   Level 1 = 15%
+   Level 2 = 5%
+   Level 3 = 2%
+========================================================= */
 
-const API_BASE =
-    "https://cashnova-backend-89lg.onrender.com/api";
-
-
-/* =========================================================
-   ELEMENTS
-   ========================================================= */
-
-const referralCode =
-    document.getElementById("referralCode");
-
-const referralLink =
-    document.getElementById("referralLink");
-
-const copyReferralButton =
-    document.getElementById("copyReferralButton");
-
-const copyReferralLinkButton =
-    document.getElementById("copyReferralLinkButton");
-
-const teamCount =
-    document.getElementById("teamCount");
-
-const teamCountLabel =
-    document.getElementById("teamCountLabel");
-
-const referralIncome =
-    document.getElementById("referralIncome");
-
-const teamLoading =
-    document.getElementById("teamLoading");
-
-const teamList =
-    document.getElementById("teamList");
-
-const teamEmpty =
-    document.getElementById("teamEmpty");
-
-const teamError =
-    document.getElementById("teamError");
+"use strict";
 
 
 /* =========================================================
-   FORMAT MONEY
-   ========================================================= */
+   CONFIGURATION
+========================================================= */
 
-function formatMoney(value) {
+const API_BASE_URL =
+    "https://cashnova-backend-89lg.onrender.com";
 
-    const amount =
-        Number(value) || 0;
+
+const LEVEL_1_RATE = 0.15;
+const LEVEL_2_RATE = 0.05;
+const LEVEL_3_RATE = 0.02;
+
+
+const RATES = {
+    level1: LEVEL_1_RATE,
+    level2: LEVEL_2_RATE,
+    level3: LEVEL_3_RATE
+};
+
+
+/* =========================================================
+   DOM HELPERS
+========================================================= */
+
+const $ = (id) => document.getElementById(id);
+
+
+/* =========================================================
+   USER
+========================================================= */
+
+function getCurrentUserId() {
+
+    const userId =
+        localStorage.getItem("cashnovaUserId");
+
+    if (!userId) {
+        return null;
+    }
+
+    return userId;
+}
+
+
+/* =========================================================
+   FORMAT UGX
+========================================================= */
+
+function formatUGX(amount) {
+
+    const value = Number(amount) || 0;
 
     return (
         "UGX " +
-        amount.toLocaleString("en-UG")
-    );
-}
-
-
-/* =========================================================
-   ERROR
-   ========================================================= */
-
-function showError(message) {
-
-    teamError.textContent =
-        message;
-
-    teamError.style.display =
-        "block";
-}
-
-
-/* =========================================================
-   COPY
-   ========================================================= */
-
-async function copyValue(
-    value,
-    button,
-    originalText
-) {
-
-    if (!value) {
-        return;
-    }
-
-    try {
-
-        await navigator.clipboard.writeText(value);
-
-    } catch (error) {
-
-        const textarea =
-            document.createElement("textarea");
-
-        textarea.value =
-            value;
-
-        document.body.appendChild(
-            textarea
-        );
-
-        textarea.select();
-
-        document.execCommand("copy");
-
-        textarea.remove();
-    }
-
-
-    button.textContent =
-        "Copied";
-
-
-    setTimeout(() => {
-
-        button.textContent =
-            originalText;
-
-    }, 1500);
-}
-
-
-/* =========================================================
-   COPY REFERRAL CODE
-   ========================================================= */
-
-copyReferralButton.addEventListener(
-    "click",
-    () => {
-
-        const value =
-            referralCode.textContent.trim();
-
-        if (
-            !value ||
-            value === "Loading..." ||
-            value === "Unavailable"
-        ) {
-            return;
-        }
-
-        copyValue(
-            value,
-            copyReferralButton,
-            "Copy"
-        );
-    }
-);
-
-
-/* =========================================================
-   COPY REFERRAL LINK
-   ========================================================= */
-
-copyReferralLinkButton.addEventListener(
-    "click",
-    () => {
-
-        const value =
-            referralLink.textContent.trim();
-
-        if (
-            !value ||
-            value === "Loading..." ||
-            value === "Unavailable"
-        ) {
-            return;
-        }
-
-        copyValue(
-            value,
-            copyReferralLinkButton,
-            "Copy Link"
-        );
-    }
-);
-
-
-/* =========================================================
-   LOAD CURRENT USER
-   ========================================================= */
-
-async function loadCurrentUser() {
-
-    const response =
-        await fetch(
-            `${API_BASE}/users/me`,
-            {
-                method: "GET",
-
-                credentials: "include",
-
-                headers: {
-                    "Accept":
-                        "application/json"
-                }
-            }
-        );
-
-
-    if (response.status === 401) {
-
-        throw new Error(
-            "Your FINORA session has expired. Please log in again."
-        );
-    }
-
-
-    if (!response.ok) {
-
-        throw new Error(
-            "Unable to load your FINORA account."
-        );
-    }
-
-
-    return await response.json();
-}
-
-
-/* =========================================================
-   LOAD TEAM
-   ========================================================= */
-
-async function loadTeam(
-    user
-) {
-
-    const code =
-        user.myReferralCode ||
-        user.referralCode;
-
-
-    if (!code) {
-
-        referralCode.textContent =
-            "Unavailable";
-
-        referralLink.textContent =
-            "Unavailable";
-
-        renderTeam([]);
-
-        return;
-    }
-
-
-    referralCode.textContent =
-        code;
-
-
-    /*
-     * Referral link points to the real
-     * FINORA registration page.
-     */
-
-    const registrationUrl =
-        new URL(
-            "register.html",
-            window.location.href
-        );
-
-
-    registrationUrl.searchParams.set(
-        "ref",
-        code
-    );
-
-
-    referralLink.textContent =
-        registrationUrl.href;
-
-
-    referralIncome.textContent =
-        formatMoney(
-            user.referralIncome
-        );
-
-
-    const response =
-        await fetch(
-            `${API_BASE}/users/referrals/${encodeURIComponent(code)}`,
-            {
-                method: "GET",
-
-                credentials: "include",
-
-                headers: {
-                    "Accept":
-                        "application/json"
-                }
-            }
-        );
-
-
-    if (!response.ok) {
-
-        if (response.status === 404) {
-
-            renderTeam([]);
-
-            return;
-        }
-
-
-        throw new Error(
-            "Unable to load your team members."
-        );
-    }
-
-
-    const data =
-        await response.json();
-
-
-    const members =
-        Array.isArray(data)
-            ? data
-            : (
-                Array.isArray(data.users)
-                    ? data.users
-                    : (
-                        Array.isArray(data.referrals)
-                            ? data.referrals
-                            : []
-                    )
-            );
-
-
-    renderTeam(members);
-}
-
-
-/* =========================================================
-   RENDER TEAM
-   ========================================================= */
-
-function renderTeam(
-    members
-) {
-
-    teamLoading.style.display =
-        "none";
-
-
-    const count =
-        members.length;
-
-
-    teamCount.textContent =
-        count;
-
-
-    teamCountLabel.textContent =
-        count === 1
-            ? "1 member"
-            : `${count} members`;
-
-
-    teamList.innerHTML =
-        "";
-
-
-    if (count === 0) {
-
-        teamList.style.display =
-            "none";
-
-        teamEmpty.style.display =
-            "block";
-
-        return;
-    }
-
-
-    teamEmpty.style.display =
-        "none";
-
-    teamList.style.display =
-        "flex";
-
-
-    members.forEach(
-        member => {
-
-            const name =
-                member.fullName ||
-                member.username ||
-                "FINORA Member";
-
-
-            const firstLetter =
-                name
-                    .trim()
-                    .charAt(0)
-                    .toUpperCase();
-
-
-            const active =
-                member.accountActivated === true;
-
-
-            const status =
-                active
-                    ? "Active"
-                    : "Not activated";
-
-
-            const item =
-                document.createElement(
-                    "div"
-                );
-
-
-            item.className =
-                "team-member";
-
-
-            item.innerHTML = `
-
-                <div class="member-avatar">
-                    ${escapeHtml(firstLetter || "F")}
-                </div>
-
-                <div class="member-info">
-
-                    <div class="member-name">
-                        ${escapeHtml(name)}
-                    </div>
-
-                    <div class="member-details">
-                        ${status}
-                    </div>
-
-                </div>
-
-            `;
-
-
-            teamList.appendChild(
-                item
-            );
-        }
+        value.toLocaleString("en-UG", {
+            maximumFractionDigits: 0
+        })
     );
 }
 
 
 /* =========================================================
    ESCAPE HTML
-   ========================================================= */
+========================================================= */
 
-function escapeHtml(value) {
+function escapeHTML(value) {
+
+    if (value === null || value === undefined) {
+        return "";
+    }
 
     return String(value)
         .replace(/&/g, "&amp;")
@@ -468,21 +91,894 @@ function escapeHtml(value) {
 
 
 /* =========================================================
-   START
-   ========================================================= */
+   ERROR
+========================================================= */
 
-async function startTeamPage() {
+function showError(message) {
+
+    const error = $("teamError");
+
+    if (!error) {
+        return;
+    }
+
+    error.textContent = message;
+
+    error.style.display = "block";
+}
+
+
+function hideError() {
+
+    const error = $("teamError");
+
+    if (!error) {
+        return;
+    }
+
+    error.textContent = "";
+
+    error.style.display = "none";
+}
+
+
+/* =========================================================
+   API REQUEST
+========================================================= */
+
+async function apiRequest(endpoint, options = {}) {
+
+    const response = await fetch(
+        API_BASE_URL + endpoint,
+        {
+            ...options,
+
+            headers: {
+                "Content-Type": "application/json",
+
+                ...(options.headers || {})
+            }
+        }
+    );
+
+
+    let data = null;
+
+    try {
+        data = await response.json();
+    } catch (error) {
+        data = null;
+    }
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            data?.message ||
+            data?.error ||
+            "Unable to load team information."
+        );
+    }
+
+
+    return data;
+}
+
+
+/* =========================================================
+   REFERRAL CODE
+========================================================= */
+
+function getReferralCode(user) {
+
+    return (
+        user?.myReferralCode ||
+        user?.referralCode ||
+        user?.referral_code ||
+        ""
+    );
+}
+
+
+/* =========================================================
+   REFERRAL LINK
+========================================================= */
+
+function buildReferralLink(code) {
+
+    if (!code) {
+        return "";
+    }
+
+
+    /*
+       The registration page is expected to read
+       ?ref=XXXXXXXX from the URL.
+    */
+
+    const baseURL =
+        window.location.origin +
+        window.location.pathname
+            .split("/")
+            .slice(0, -1)
+            .join("/");
+
+
+    return (
+        baseURL +
+        "/register.html?ref=" +
+        encodeURIComponent(code)
+    );
+}
+
+
+/* =========================================================
+   COPY TEXT
+========================================================= */
+
+async function copyText(text, button, originalText) {
+
+    if (!text) {
+        return;
+    }
+
 
     try {
 
-        const user =
-            await loadCurrentUser();
+        await navigator.clipboard.writeText(text);
+
+        if (button) {
+
+            button.textContent = "Copied";
+
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 1500);
+        }
+
+    } catch (error) {
+
+        /*
+           Fallback for browsers where clipboard API
+           is unavailable.
+        */
+
+        const textarea =
+            document.createElement("textarea");
+
+        textarea.value = text;
+
+        textarea.style.position = "fixed";
+        textarea.style.left = "-9999px";
+
+        document.body.appendChild(textarea);
+
+        textarea.select();
+
+        try {
+            document.execCommand("copy");
+        } catch (e) {}
+
+        textarea.remove();
 
 
-        await loadTeam(
-            user
+        if (button) {
+
+            button.textContent = "Copied";
+
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 1500);
+        }
+    }
+}
+
+
+/* =========================================================
+   SET REFERRAL INFORMATION
+========================================================= */
+
+function renderReferral(user) {
+
+    const code =
+        getReferralCode(user);
+
+
+    const codeElement =
+        $("referralCode");
+
+
+    const linkElement =
+        $("referralLink");
+
+
+    if (codeElement) {
+
+        codeElement.textContent =
+            code || "Not available";
+    }
+
+
+    const referralLink =
+        buildReferralLink(code);
+
+
+    if (linkElement) {
+
+        linkElement.textContent =
+            referralLink || "Referral link unavailable";
+    }
+
+
+    const copyCodeButton =
+        $("copyReferralButton");
+
+
+    if (copyCodeButton) {
+
+        copyCodeButton.onclick = () => {
+
+            copyText(
+                code,
+                copyCodeButton,
+                "Copy"
+            );
+        };
+    }
+
+
+    const copyLinkButton =
+        $("copyReferralLinkButton");
+
+
+    if (copyLinkButton) {
+
+        copyLinkButton.onclick = () => {
+
+            copyText(
+                referralLink,
+                copyLinkButton,
+                "Copy Link"
+            );
+        };
+    }
+}
+
+
+/* =========================================================
+   MEMBER NORMALIZATION
+========================================================= */
+
+function normalizeMember(member) {
+
+    return {
+
+        id:
+            member?._id ||
+            member?.id ||
+            member?.userId ||
+            "",
+
+
+        phone:
+            member?.phone ||
+            member?.username ||
+            member?.accountNumber ||
+            "Member",
+
+
+        deposit:
+            Number(
+                member?.totalDeposits ??
+                member?.totalDeposit ??
+                member?.deposit ??
+                member?.amount ??
+                0
+            ),
+
+
+        active:
+            Boolean(
+                member?.accountActivated ??
+                member?.active ??
+                member?.isActive ??
+                false
+            ),
+
+
+        commission:
+            Number(
+                member?.commission ??
+                member?.referralIncome ??
+                member?.referralCommission ??
+                0
+            )
+    };
+}
+
+
+/* =========================================================
+   COMMISSION CALCULATION
+========================================================= */
+
+function calculateCommission(deposit, level) {
+
+    const amount =
+        Number(deposit) || 0;
+
+
+    if (level === 1) {
+        return amount * RATES.level1;
+    }
+
+
+    if (level === 2) {
+        return amount * RATES.level2;
+    }
+
+
+    if (level === 3) {
+        return amount * RATES.level3;
+    }
+
+
+    return 0;
+}
+
+
+/* =========================================================
+   MEMBER ROW
+========================================================= */
+
+function createMemberRow(member, level) {
+
+    const normalized =
+        normalizeMember(member);
+
+
+    /*
+       If the backend already provides a commission,
+       use it.
+
+       Otherwise calculate it from the member deposit.
+    */
+
+    let commission =
+        normalized.commission;
+
+
+    if (!commission && normalized.deposit > 0) {
+
+        commission =
+            calculateCommission(
+                normalized.deposit,
+                level
+            );
+    }
+
+
+    const row =
+        document.createElement("div");
+
+
+    row.className =
+        "member-row";
+
+
+    row.innerHTML = `
+
+        <div class="member-phone">
+            ${escapeHTML(normalized.phone)}
+        </div>
+
+
+        <div class="member-deposit">
+            ${formatUGX(normalized.deposit)}
+        </div>
+
+
+        <div class="member-status ${
+            normalized.active
+                ? "active"
+                : "inactive"
+        }">
+            ${
+                normalized.active
+                    ? "Active"
+                    : "Inactive"
+            }
+        </div>
+
+
+        <div class="member-commission">
+            ${formatUGX(commission)}
+        </div>
+
+    `;
+
+
+    return row;
+}
+
+
+/* =========================================================
+   RENDER LEVEL
+========================================================= */
+
+function renderLevel(level, members) {
+
+    const list =
+        $(`level${level}List`);
+
+
+    if (!list) {
+        return;
+    }
+
+
+    list.innerHTML = "";
+
+
+    if (!Array.isArray(members) ||
+        members.length === 0) {
+
+        return;
+    }
+
+
+    members.forEach(member => {
+
+        list.appendChild(
+            createMemberRow(
+                member,
+                level
+            )
+        );
+    });
+}
+
+
+/* =========================================================
+   LEVEL STATISTICS
+========================================================= */
+
+function calculateLevelStats(members, level) {
+
+    const list =
+        Array.isArray(members)
+            ? members
+            : [];
+
+
+    let totalDeposit = 0;
+
+    let totalCommission = 0;
+
+
+    list.forEach(member => {
+
+        const normalized =
+            normalizeMember(member);
+
+
+        totalDeposit +=
+            normalized.deposit;
+
+
+        let commission =
+            normalized.commission;
+
+
+        if (!commission &&
+            normalized.deposit > 0) {
+
+            commission =
+                calculateCommission(
+                    normalized.deposit,
+                    level
+                );
+        }
+
+
+        totalCommission +=
+            commission;
+    });
+
+
+    return {
+
+        members: list.length,
+
+        deposit:
+            totalDeposit,
+
+        commission:
+            totalCommission
+    };
+}
+
+
+/* =========================================================
+   UPDATE LEVEL STATISTICS
+========================================================= */
+
+function updateLevelStatistics(level, members) {
+
+    const stats =
+        calculateLevelStats(
+            members,
+            level
         );
 
+
+    const membersElement =
+        $(`level${level}Members`);
+
+
+    const depositElement =
+        $(`level${level}Deposit`);
+
+
+    const commissionElement =
+        $(`level${level}Commission`);
+
+
+    if (membersElement) {
+
+        membersElement.textContent =
+            stats.members;
+    }
+
+
+    if (depositElement) {
+
+        depositElement.textContent =
+            formatUGX(stats.deposit);
+    }
+
+
+    if (commissionElement) {
+
+        commissionElement.textContent =
+            formatUGX(stats.commission);
+    }
+
+
+    return stats;
+}
+
+
+/* =========================================================
+   UPDATE SUMMARY
+========================================================= */
+
+function updateSummary(level1, level2, level3) {
+
+    const totalMembers =
+        level1.length +
+        level2.length +
+        level3.length;
+
+
+    const totalCommission =
+        calculateLevelStats(level1, 1).commission +
+        calculateLevelStats(level2, 2).commission +
+        calculateLevelStats(level3, 3).commission;
+
+
+    const membersElement =
+        $("totalMembers");
+
+
+    const incomeElement =
+        $("totalReferralIncome");
+
+
+    const memberLabel =
+        $("memberCountLabel");
+
+
+    if (membersElement) {
+
+        membersElement.textContent =
+            totalMembers;
+    }
+
+
+    if (incomeElement) {
+
+        incomeElement.textContent =
+            formatUGX(totalCommission);
+    }
+
+
+    if (memberLabel) {
+
+        memberLabel.textContent =
+            totalMembers +
+            (
+                totalMembers === 1
+                    ? " member"
+                    : " members"
+            );
+    }
+}
+
+
+/* =========================================================
+   SHOW TEAM
+========================================================= */
+
+function showTeamContainer() {
+
+    const loading =
+        $("teamLoading");
+
+
+    const empty =
+        $("teamEmpty");
+
+
+    const container =
+        $("teamMembersContainer");
+
+
+    if (loading) {
+        loading.style.display = "none";
+    }
+
+
+    if (container) {
+        container.style.display = "block";
+    }
+
+
+    if (empty) {
+        empty.style.display = "none";
+    }
+}
+
+
+/* =========================================================
+   SHOW EMPTY TEAM
+========================================================= */
+
+function showEmptyTeam() {
+
+    const loading =
+        $("teamLoading");
+
+
+    const empty =
+        $("teamEmpty");
+
+
+    const container =
+        $("teamMembersContainer");
+
+
+    if (loading) {
+        loading.style.display = "none";
+    }
+
+
+    if (container) {
+        container.style.display = "block";
+    }
+
+
+    if (empty) {
+        empty.style.display = "block";
+    }
+}
+
+
+/* =========================================================
+   LOAD USER
+========================================================= */
+
+async function loadCurrentUser(userId) {
+
+    return await apiRequest(
+        `/api/users/${encodeURIComponent(userId)}`
+    );
+}
+
+
+/* =========================================================
+   LOAD TEAM
+========================================================= */
+
+async function loadTeam(userId) {
+
+    /*
+       The Render backend should return the user's
+       three referral levels from this endpoint.
+    */
+
+    return await apiRequest(
+        `/api/users/${encodeURIComponent(userId)}/team`
+    );
+}
+
+
+/* =========================================================
+   EXTRACT TEAM DATA
+========================================================= */
+
+function extractTeamData(data) {
+
+    /*
+       Supports either:
+
+       {
+          level1: [],
+          level2: [],
+          level3: []
+       }
+
+       or:
+
+       {
+          team: {
+             level1: [],
+             level2: [],
+             level3: []
+          }
+       }
+    */
+
+    const source =
+        data?.team || data || {};
+
+
+    return {
+
+        level1:
+            Array.isArray(source.level1)
+                ? source.level1
+                : [],
+
+
+        level2:
+            Array.isArray(source.level2)
+                ? source.level2
+                : [],
+
+
+        level3:
+            Array.isArray(source.level3)
+                ? source.level3
+                : []
+    };
+}
+
+
+/* =========================================================
+   MAIN LOAD FUNCTION
+========================================================= */
+
+async function loadTeamPage() {
+
+    hideError();
+
+
+    const userId =
+        getCurrentUserId();
+
+
+    if (!userId) {
+
+        showError(
+            "Your account session could not be found. Please log in again."
+        );
+
+
+        const loading =
+            $("teamLoading");
+
+
+        if (loading) {
+            loading.style.display = "none";
+        }
+
+
+        return;
+    }
+
+
+    try {
+
+        /*
+           Load logged-in user.
+        */
+
+        const user =
+            await loadCurrentUser(userId);
+
+
+        renderReferral(user);
+
+
+        /*
+           Load actual team.
+        */
+
+        const teamResponse =
+            await loadTeam(userId);
+
+
+        const team =
+            extractTeamData(
+                teamResponse
+            );
+
+
+        /*
+           Render members.
+        */
+
+        renderLevel(
+            1,
+            team.level1
+        );
+
+
+        renderLevel(
+            2,
+            team.level2
+        );
+
+
+        renderLevel(
+            3,
+            team.level3
+        );
+
+
+        /*
+           Update statistics.
+        */
+
+        updateLevelStatistics(
+            1,
+            team.level1
+        );
+
+
+        updateLevelStatistics(
+            2,
+            team.level2
+        );
+
+
+        updateLevelStatistics(
+            3,
+            team.level3
+        );
+
+
+        updateSummary(
+            team.level1,
+            team.level2,
+            team.level3
+        );
+
+
+        const totalMembers =
+            team.level1.length +
+            team.level2.length +
+            team.level3.length;
+
+
+        if (totalMembers === 0) {
+
+            showEmptyTeam();
+
+        } else {
+
+            showTeamContainer();
+        }
 
     } catch (error) {
 
@@ -492,18 +988,32 @@ async function startTeamPage() {
         );
 
 
-        teamLoading.style.display =
-            "none";
-
-
         showError(
-            error.message
+            error.message ||
+            "Unable to load your team."
         );
+
+
+        const loading =
+            $("teamLoading");
+
+
+        if (loading) {
+            loading.style.display = "none";
+        }
     }
 }
 
 
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
 document.addEventListener(
     "DOMContentLoaded",
-    startTeamPage
+    () => {
+
+        loadTeamPage();
+
+    }
 );
