@@ -10,18 +10,33 @@ const pool = require("./database");
 const app = express();
 
 
-/* =========================================
+/* =========================================================
+   FINORA SERVER CONFIGURATION
+========================================================= */
+
+const PORT =
+    process.env.PORT || 10000;
+
+const FRONTEND_ORIGIN =
+    process.env.FRONTEND_ORIGIN || true;
+
+
+/* =========================================================
    MIDDLEWARE
-========================================= */
+========================================================= */
+
+app.set("trust proxy", 1);
 
 app.use(
     cors({
-        origin: true,
+        origin: FRONTEND_ORIGIN,
         credentials: true
     })
 );
 
-app.use(express.json());
+app.use(
+    express.json()
+);
 
 app.use(
     express.urlencoded({
@@ -30,14 +45,13 @@ app.use(
 );
 
 
-/* =========================================
+/* =========================================================
    SESSION
-========================================= */
-
-app.set("trust proxy", 1);
+========================================================= */
 
 app.use(
     session({
+
         secret:
             process.env.SESSION_SECRET ||
             "FINORA_CHANGE_THIS_SESSION_SECRET",
@@ -47,9 +61,13 @@ app.use(
         saveUninitialized: false,
 
         cookie: {
+
             httpOnly: true,
+
             secure: true,
+
             sameSite: "none",
+
             maxAge:
                 1000 *
                 60 *
@@ -57,22 +75,23 @@ app.use(
                 24 *
                 7
         }
+
     })
 );
 
 
-/* =========================================
-   FRONTEND
-========================================= */
+/* =========================================================
+   FINORA FRONTEND FILES
+========================================================= */
 
 app.use(
     express.static(__dirname)
 );
 
 
-/* =========================================
-   HOME
-========================================= */
+/* =========================================================
+   FRONTEND PAGE ROUTES
+========================================================= */
 
 app.get(
     "/",
@@ -89,9 +108,114 @@ app.get(
 );
 
 
-/* =========================================
+app.get(
+    "/index.html",
+    function (req, res) {
+
+        res.sendFile(
+            path.join(
+                __dirname,
+                "index.html"
+            )
+        );
+
+    }
+);
+
+
+app.get(
+    "/login.html",
+    function (req, res) {
+
+        res.sendFile(
+            path.join(
+                __dirname,
+                "login.html"
+            )
+        );
+
+    }
+);
+
+
+app.get(
+    "/register.html",
+    function (req, res) {
+
+        res.sendFile(
+            path.join(
+                __dirname,
+                "register.html"
+            )
+        );
+
+    }
+);
+
+
+app.get(
+    "/dashboard.html",
+    function (req, res) {
+
+        res.sendFile(
+            path.join(
+                __dirname,
+                "dashboard.html"
+            )
+        );
+
+    }
+);
+
+
+app.get(
+    "/profile.html",
+    function (req, res) {
+
+        res.sendFile(
+            path.join(
+                __dirname,
+                "profile.html"
+            )
+        );
+
+    }
+);
+
+
+app.get(
+    "/investments.html",
+    function (req, res) {
+
+        res.sendFile(
+            path.join(
+                __dirname,
+                "investments.html"
+            )
+        );
+
+    }
+);
+
+
+app.get(
+    "/team.html",
+    function (req, res) {
+
+        res.sendFile(
+            path.join(
+                __dirname,
+                "team.html"
+            )
+        );
+
+    }
+);
+
+
+/* =========================================================
    API STATUS
-========================================= */
+========================================================= */
 
 app.get(
     "/api/status",
@@ -114,9 +238,9 @@ app.get(
 );
 
 
-/* =========================================
-   REGISTER TEST
-========================================= */
+/* =========================================================
+   REGISTRATION TEST
+========================================================= */
 
 app.get(
     "/api/register-test",
@@ -140,9 +264,9 @@ app.get(
 );
 
 
-/* =========================================
+/* =========================================================
    DATABASE HEALTH
-========================================= */
+========================================================= */
 
 app.get(
     "/api/health",
@@ -202,9 +326,9 @@ app.get(
 );
 
 
-/* =========================================
+/* =========================================================
    CREATE USERS TABLE
-========================================= */
+========================================================= */
 
 async function createUsersTable() {
 
@@ -245,6 +369,22 @@ async function createUsersTable() {
 
     `);
 
+
+    /*
+       Add account_number to older FINORA databases
+       if it does not already exist.
+    */
+
+    await pool.query(`
+
+        ALTER TABLE users
+
+        ADD COLUMN IF NOT EXISTS
+            account_number VARCHAR(50) UNIQUE;
+
+    `);
+
+
     console.log(
         "FINORA: users table is ready."
     );
@@ -252,9 +392,9 @@ async function createUsersTable() {
 }
 
 
-/* =========================================
+/* =========================================================
    GENERATE REFERRAL CODE
-========================================= */
+========================================================= */
 
 function generateReferralCode() {
 
@@ -269,9 +409,30 @@ function generateReferralCode() {
 }
 
 
-/* =========================================
+/* =========================================================
+   GENERATE ACCOUNT NUMBER
+========================================================= */
+
+function generateAccountNumber() {
+
+    const random =
+        Math.floor(
+            10000000 +
+            Math.random() *
+            90000000
+        );
+
+    return (
+        "FN" +
+        random
+    );
+
+}
+
+
+/* =========================================================
    REGISTER USER
-========================================= */
+========================================================= */
 
 app.post(
     "/api/register",
@@ -283,11 +444,6 @@ app.post(
 
         console.log(
             "FINORA: POST /api/register received"
-        );
-
-        console.log(
-            "FINORA request body:",
-            req.body
         );
 
         console.log(
@@ -309,9 +465,9 @@ app.post(
             } = req.body || {};
 
 
-            /* ==============================
+            /* =====================================
                REQUIRED FIELDS
-            ============================== */
+            ===================================== */
 
             if (
                 !fullName ||
@@ -332,9 +488,9 @@ app.post(
             }
 
 
-            /* ==============================
+            /* =====================================
                CLEAN DATA
-            ============================== */
+            ===================================== */
 
             const cleanName =
                 String(fullName).trim();
@@ -355,9 +511,9 @@ app.post(
                     : null;
 
 
-            /* ==============================
+            /* =====================================
                NAME VALIDATION
-            ============================== */
+            ===================================== */
 
             if (
                 cleanName.length < 2
@@ -375,9 +531,9 @@ app.post(
             }
 
 
-            /* ==============================
-               PHONE VALIDATION
-            ============================== */
+            /* =====================================
+               UGANDA PHONE VALIDATION
+            ===================================== */
 
             if (
                 !/^07[0-9]{8}$/.test(
@@ -397,9 +553,9 @@ app.post(
             }
 
 
-            /* ==============================
+            /* =====================================
                EMAIL VALIDATION
-            ============================== */
+            ===================================== */
 
             if (
                 !/^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -418,9 +574,9 @@ app.post(
             }
 
 
-            /* ==============================
+            /* =====================================
                PASSWORD VALIDATION
-            ============================== */
+            ===================================== */
 
             if (
                 password.length < 6
@@ -438,9 +594,9 @@ app.post(
             }
 
 
-            /* ==============================
+            /* =====================================
                CHECK EXISTING ACCOUNT
-            ============================== */
+            ===================================== */
 
             const existing =
                 await pool.query(
@@ -477,9 +633,9 @@ app.post(
             }
 
 
-            /* ==============================
+            /* =====================================
                HASH PASSWORD
-            ============================== */
+            ===================================== */
 
             const passwordHash =
                 await bcrypt.hash(
@@ -488,9 +644,9 @@ app.post(
                 );
 
 
-            /* ==============================
-               CREATE UNIQUE REFERRAL CODE
-            ============================== */
+            /* =====================================
+               UNIQUE REFERRAL CODE
+            ===================================== */
 
             let newReferralCode =
                 null;
@@ -524,9 +680,46 @@ app.post(
             }
 
 
-            /* ==============================
+            /* =====================================
+               UNIQUE ACCOUNT NUMBER
+            ===================================== */
+
+            let accountNumber =
+                null;
+
+            let accountNumberExists =
+                true;
+
+
+            while (accountNumberExists) {
+
+                accountNumber =
+                    generateAccountNumber();
+
+
+                const check =
+                    await pool.query(
+                        `
+                        SELECT id
+                        FROM users
+                        WHERE account_number = $1
+                        LIMIT 1
+                        `,
+                        [
+                            accountNumber
+                        ]
+                    );
+
+
+                accountNumberExists =
+                    check.rows.length > 0;
+
+            }
+
+
+            /* =====================================
                INSERT USER
-            ============================== */
+            ===================================== */
 
             const result =
                 await pool.query(
@@ -539,6 +732,7 @@ app.post(
                         password_hash,
                         referral_code,
                         referred_by,
+                        account_number,
                         wallet_balance,
                         cumulative_income,
                         account_status
@@ -552,6 +746,7 @@ app.post(
                         $4,
                         $5,
                         $6,
+                        $7,
                         0,
                         0,
                         'active'
@@ -564,6 +759,7 @@ app.post(
                         email,
                         referral_code,
                         referred_by,
+                        account_number,
                         wallet_balance,
                         cumulative_income,
                         account_status,
@@ -575,7 +771,8 @@ app.post(
                         cleanEmail,
                         passwordHash,
                         newReferralCode,
-                        cleanReferral
+                        cleanReferral,
+                        accountNumber
                     ]
                 );
 
@@ -618,7 +815,41 @@ app.post(
                 message:
                     "Account registered successfully.",
 
-                user: user
+                user: {
+
+                    id:
+                        user.id,
+
+                    fullName:
+                        user.full_name,
+
+                    phone:
+                        user.phone,
+
+                    email:
+                        user.email,
+
+                    referralCode:
+                        user.referral_code,
+
+                    referredBy:
+                        user.referred_by,
+
+                    accountNumber:
+                        user.account_number,
+
+                    walletBalance:
+                        user.wallet_balance,
+
+                    cumulativeIncome:
+                        user.cumulative_income,
+
+                    accountStatus:
+                        user.account_status,
+
+                    createdAt:
+                        user.created_at
+                }
 
             });
 
@@ -641,7 +872,7 @@ app.post(
                     success: false,
 
                     message:
-                        "An account with this phone number or email already exists."
+                        "An account with this phone number, email, referral code or account number already exists."
 
                 });
 
@@ -669,9 +900,9 @@ app.post(
 );
 
 
-/* =========================================
+/* =========================================================
    LOGIN USER
-========================================= */
+========================================================= */
 
 app.post(
     "/api/login",
@@ -690,9 +921,9 @@ app.post(
             } = req.body || {};
 
 
-            /* ==============================
+            /* =====================================
                REQUIRED FIELDS
-            ============================== */
+            ===================================== */
 
             if (
                 !identifier ||
@@ -715,9 +946,9 @@ app.post(
                 String(identifier).trim();
 
 
-            /* ==============================
+            /* =====================================
                FIND USER
-            ============================== */
+            ===================================== */
 
             const result =
                 await pool.query(
@@ -730,6 +961,7 @@ app.post(
                         password_hash,
                         referral_code,
                         referred_by,
+                        account_number,
                         wallet_balance,
                         cumulative_income,
                         account_status,
@@ -766,9 +998,9 @@ app.post(
                 result.rows[0];
 
 
-            /* ==============================
+            /* =====================================
                ACCOUNT STATUS
-            ============================== */
+            ===================================== */
 
             if (
                 user.account_status !==
@@ -787,9 +1019,9 @@ app.post(
             }
 
 
-            /* ==============================
+            /* =====================================
                VERIFY PASSWORD
-            ============================== */
+            ===================================== */
 
             const passwordMatch =
                 await bcrypt.compare(
@@ -812,19 +1044,12 @@ app.post(
             }
 
 
-            /* ==============================
-               CREATE LOGIN SESSION
-            ============================== */
+            /* =====================================
+               CREATE SESSION
+            ===================================== */
 
             req.session.userId =
                 user.id;
-
-
-            /* ==============================
-               REMOVE PASSWORD HASH
-            ============================== */
-
-            delete user.password_hash;
 
 
             console.log(
@@ -833,9 +1058,9 @@ app.post(
             );
 
 
-            /* ==============================
+            /* =====================================
                SAVE SESSION
-            ============================== */
+            ===================================== */
 
             req.session.save(
                 function (sessionError) {
@@ -866,7 +1091,42 @@ app.post(
                         message:
                             "Login successful.",
 
-                        user: user
+                        user: {
+
+                            id:
+                                user.id,
+
+                            fullName:
+                                user.full_name,
+
+                            phone:
+                                user.phone,
+
+                            email:
+                                user.email,
+
+                            referralCode:
+                                user.referral_code,
+
+                            referredBy:
+                                user.referred_by,
+
+                            accountNumber:
+                                user.account_number,
+
+                            walletBalance:
+                                user.wallet_balance,
+
+                            cumulativeIncome:
+                                user.cumulative_income,
+
+                            accountStatus:
+                                user.account_status,
+
+                            createdAt:
+                                user.created_at
+
+                        }
 
                     });
 
@@ -898,118 +1158,191 @@ app.post(
 );
 
 
-/* =========================================
+/* =========================================================
    CURRENT LOGGED-IN USER
-========================================= */
+========================================================= */
 
-app.get(
-    "/api/me",
-    async function (req, res) {
+async function getCurrentUser(req, res) {
 
-        try {
+    try {
 
-            if (
-                !req.session ||
-                !req.session.userId
-            ) {
+        /* =====================================
+           CHECK SESSION
+        ===================================== */
 
-                return res.status(401).json({
+        if (
+            !req.session ||
+            !req.session.userId
+        ) {
 
-                    success: false,
-
-                    message:
-                        "User is not logged in."
-
-                });
-
-            }
-
-
-            const result =
-                await pool.query(
-                    `
-                    SELECT
-                        id,
-                        full_name,
-                        phone,
-                        email,
-                        referral_code,
-                        referred_by,
-                        wallet_balance,
-                        cumulative_income,
-                        account_status,
-                        created_at
-                    FROM users
-                    WHERE id = $1
-                    LIMIT 1
-                    `,
-                    [
-                        req.session.userId
-                    ]
-                );
-
-
-            if (
-                result.rows.length === 0
-            ) {
-
-                req.session.destroy(
-                    function () {}
-                );
-
-
-                return res.status(404).json({
-
-                    success: false,
-
-                    message:
-                        "User account was not found."
-
-                });
-
-            }
-
-
-            const user =
-                result.rows[0];
-
-
-            return res.status(200).json({
-
-                success: true,
-
-                user: user
-
-            });
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "FINORA CURRENT USER ERROR:",
-                error
-            );
-
-
-            return res.status(500).json({
+            return res.status(401).json({
 
                 success: false,
 
                 message:
-                    "Unable to load user information."
+                    "User is not logged in."
 
             });
 
         }
 
+
+        /* =====================================
+           FIND USER
+        ===================================== */
+
+        const result =
+            await pool.query(
+                `
+                SELECT
+                    id,
+                    full_name,
+                    phone,
+                    email,
+                    referral_code,
+                    referred_by,
+                    account_number,
+                    wallet_balance,
+                    cumulative_income,
+                    account_status,
+                    created_at
+                FROM users
+                WHERE id = $1
+                LIMIT 1
+                `,
+                [
+                    req.session.userId
+                ]
+            );
+
+
+        if (
+            result.rows.length === 0
+        ) {
+
+            req.session.destroy(
+                function () {}
+            );
+
+
+            return res.status(404).json({
+
+                success: false,
+
+                message:
+                    "User account was not found."
+
+            });
+
+        }
+
+
+        const user =
+            result.rows[0];
+
+
+        /* =====================================
+           RETURN CLEAN FINORA USER OBJECT
+        ===================================== */
+
+        return res.status(200).json({
+
+            success: true,
+
+            user: {
+
+                id:
+                    user.id,
+
+                fullName:
+                    user.full_name,
+
+                phone:
+                    user.phone,
+
+                email:
+                    user.email,
+
+                referralCode:
+                    user.referral_code,
+
+                referredBy:
+                    user.referred_by,
+
+                accountNumber:
+                    user.account_number,
+
+                walletBalance:
+                    user.wallet_balance,
+
+                cumulativeIncome:
+                    user.cumulative_income,
+
+                accountStatus:
+                    user.account_status,
+
+                createdAt:
+                    user.created_at
+
+            }
+
+        });
+
     }
+
+    catch (error) {
+
+        console.error(
+            "FINORA CURRENT USER ERROR:",
+            error
+        );
+
+
+        return res.status(500).json({
+
+            success: false,
+
+            message:
+                "Unable to load user information."
+
+        });
+
+    }
+
+}
+
+
+/* =========================================================
+   CURRENT USER — PRIMARY ROUTE
+========================================================= */
+
+app.get(
+    "/api/me",
+    getCurrentUser
 );
 
 
-/* =========================================
+/* =========================================================
+   CURRENT USER — DASHBOARD COMPATIBILITY ROUTE
+=========================================================
+
+   dashboard.js currently requests:
+
+   /api/users/me
+
+   Keep this route so the dashboard and profile
+   both work without localStorage.
+========================================================= */
+
+app.get(
+    "/api/users/me",
+    getCurrentUser
+);
+
+
+/* =========================================================
    LOGOUT
-========================================= */
+========================================================= */
 
 app.post(
     "/api/logout",
@@ -1038,7 +1371,12 @@ app.post(
 
 
                 res.clearCookie(
-                    "connect.sid"
+                    "connect.sid",
+                    {
+                        httpOnly: true,
+                        secure: true,
+                        sameSite: "none"
+                    }
                 );
 
 
@@ -1058,13 +1396,105 @@ app.post(
 );
 
 
-/* =========================================
+/* =========================================================
+   TRANSACTIONS
+=========================================================
+
+   This endpoint is included so the current dashboard
+   does not receive an unnecessary 404.
+
+   Actual transaction records will be connected when
+   the transaction/deposit tables are implemented.
+========================================================= */
+
+app.get(
+    "/api/transactions/user",
+    async function (req, res) {
+
+        try {
+
+            if (
+                !req.session ||
+                !req.session.userId
+            ) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    message:
+                        "User is not logged in."
+
+                });
+
+            }
+
+
+            /*
+               Transactions will be connected to the
+               FINORA database in the transaction stage.
+
+               For now return an empty list instead of
+               returning a 404.
+            */
+
+            return res.status(200).json({
+
+                success: true,
+
+                transactions: []
+
+            });
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "FINORA TRANSACTIONS ERROR:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Unable to load transactions."
+
+            });
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   UNKNOWN API ROUTE
+========================================================= */
+
+app.use(
+    "/api",
+    function (req, res) {
+
+        return res.status(404).json({
+
+            success: false,
+
+            message:
+                "FINORA API endpoint not found."
+
+        });
+
+    }
+);
+
+
+/* =========================================================
    START SERVER
-========================================= */
-
-const PORT =
-    process.env.PORT || 10000;
-
+========================================================= */
 
 async function startServer() {
 
