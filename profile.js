@@ -2,17 +2,23 @@
    FINORA PROFILE
    profile.js
 
-   Loads the currently logged-in user's profile
-   from the FINORA MongoDB backend.
+   Uses the current FINORA backend session.
+
+   IMPORTANT:
+   - No MongoDB
+   - No localStorage user ID
+   - No CashNova backend
+   - No username
+   - FINORA registration uses Full Name
    ========================================================= */
 
 
 /* =========================================================
-   BACKEND
+   FINORA BACKEND
    ========================================================= */
 
 const FINORA_API =
-    "https://cashnova-backend-89lg.onrender.com/api/users";
+    "https://finora-backend-l949.onrender.com/api";
 
 
 /* =========================================================
@@ -42,7 +48,7 @@ const profileStatus =
 
 
 /* =========================================================
-   HELPERS
+   SAFE TEXT
    ========================================================= */
 
 function safeText(value, fallback = "—") {
@@ -52,15 +58,18 @@ function safeText(value, fallback = "—") {
         value === null ||
         String(value).trim() === ""
     ) {
+
         return fallback;
+
     }
 
     return String(value).trim();
+
 }
 
 
 /* =========================================================
-   SHOW PROFILE
+   DISPLAY PROFILE
    ========================================================= */
 
 function displayProfile(user) {
@@ -71,27 +80,41 @@ function displayProfile(user) {
 
 
     /*
-     * IMPORTANT:
+     * FINORA uses ONLY:
      *
-     * FINORA uses ONLY fullName.
+     * fullName
      *
-     * There is no username and no separate name field.
+     * There is NO username.
      */
 
     const fullName =
-        safeText(user.fullName, "Investor");
+        safeText(
+            user.fullName,
+            "Investor"
+        );
+
 
     const email =
-        safeText(user.email);
+        safeText(
+            user.email
+        );
+
 
     const phone =
-        safeText(user.phone);
+        safeText(
+            user.phone
+        );
+
 
     const accountNumber =
-        safeText(user.accountNumber);
+        safeText(
+            user.accountNumber
+        );
 
 
-    /* PROFILE SUMMARY */
+    /* =====================================================
+       PROFILE SUMMARY
+       ===================================================== */
 
     if (profileFullName) {
 
@@ -109,7 +132,9 @@ function displayProfile(user) {
     }
 
 
-    /* ACCOUNT INFORMATION */
+    /* =====================================================
+       ACCOUNT INFORMATION
+       ===================================================== */
 
     if (accountFullName) {
 
@@ -143,17 +168,31 @@ function displayProfile(user) {
     }
 
 
-    /* ACCOUNT STATUS */
+    /* =====================================================
+       ACCOUNT STATUS
+       ===================================================== */
 
     if (profileStatus) {
 
-        /*
-         * The profile is considered active when
-         * the backend account exists.
-         */
+        const status =
+            safeText(
+                user.accountStatus,
+                "active"
+            ).toLowerCase();
 
-        profileStatus.textContent =
-            "Active";
+
+        if (status === "active") {
+
+            profileStatus.textContent =
+                "Active";
+
+        } else {
+
+            profileStatus.textContent =
+                status.charAt(0).toUpperCase() +
+                status.slice(1);
+
+        }
 
     }
 
@@ -161,7 +200,7 @@ function displayProfile(user) {
 
 
 /* =========================================================
-   LOAD USER PROFILE
+   LOAD CURRENT FINORA USER
    ========================================================= */
 
 async function loadProfile() {
@@ -169,51 +208,73 @@ async function loadProfile() {
     try {
 
         /*
-         * The login system stores the MongoDB
-         * user ID here after successful login.
+         * IMPORTANT:
+         *
+         * We do NOT look for:
+         *
+         * cashnovaUserId
+         * cashnovaUserData
+         * username
+         *
+         * The current FINORA backend identifies the
+         * logged-in user through the Express session.
          */
 
-        const userId =
-            localStorage.getItem("cashnovaUserId");
-
-
-        /* NO USER ID */
-
-        if (!userId) {
-
-            console.warn(
-                "FINORA: No logged-in user ID found."
-            );
-
-            window.location.href =
-                "index.html";
-
-            return;
-        }
-
-
-        /* SHOW LOADING STATE */
 
         document.body.classList.add(
             "profile-loading"
         );
 
 
-        /* FETCH USER FROM MONGODB */
+        /* =================================================
+           REQUEST CURRENT SESSION USER
+           ================================================= */
 
         const response =
             await fetch(
-                `${FINORA_API}/${encodeURIComponent(userId)}`,
+                `${FINORA_API}/me`,
                 {
                     method: "GET",
+
+                    credentials: "include",
+
                     headers: {
-                        "Accept": "application/json"
+                        "Accept":
+                            "application/json"
                     }
                 }
             );
 
 
-        /* SERVER ERROR */
+        /* =================================================
+           NOT LOGGED IN
+           ================================================= */
+
+        if (
+            response.status === 401
+        ) {
+
+            console.warn(
+                "FINORA: No active login session."
+            );
+
+
+            /*
+             * Only redirect when the backend actually
+             * tells us that the user is not logged in.
+             */
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+
+        /* =================================================
+           OTHER SERVER ERROR
+           ================================================= */
 
         if (!response.ok) {
 
@@ -224,31 +285,58 @@ async function loadProfile() {
         }
 
 
-        const user =
+        /* =================================================
+           READ RESPONSE
+           ================================================= */
+
+        const data =
             await response.json();
 
 
-        /* DISPLAY USER */
+        if (
+            !data ||
+            data.success !== true ||
+            !data.user
+        ) {
 
-        displayProfile(user);
+            throw new Error(
+                "FINORA returned an invalid user response."
+            );
+
+        }
 
 
-    } catch (error) {
+        /* =================================================
+           DISPLAY USER
+           ================================================= */
+
+        displayProfile(
+            data.user
+        );
+
+
+    }
+
+    catch (error) {
 
         console.error(
-            "FINORA Profile Error:",
+            "FINORA PROFILE ERROR:",
             error
         );
 
 
         /*
-         * Do not invent user information.
+         * IMPORTANT:
          *
-         * If the backend cannot be reached,
-         * the page keeps the safe fallback values.
+         * Do NOT redirect to index.html here.
+         *
+         * A temporary backend/network problem should
+         * not throw the user back to the landing page.
          */
 
-    } finally {
+    }
+
+    finally {
 
         document.body.classList.remove(
             "profile-loading"
@@ -260,10 +348,20 @@ async function loadProfile() {
 
 
 /* =========================================================
-   START
+   START PROFILE
    ========================================================= */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    loadProfile
-);
+if (
+    document.readyState === "loading"
+) {
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        loadProfile
+    );
+
+} else {
+
+    loadProfile();
+
+}
