@@ -5,12 +5,13 @@
    Uses the current FINORA backend session.
 
    IMPORTANT:
-   - No MongoDB
    - No localStorage user ID
-   - No CashNova backend
    - No username
-   - Uses Express session
-   ========================================================= */
+   - No CashNova
+   - No MongoDB
+   - No extra navigation
+   - Uses /api/team
+========================================================= */
 
 
 /* =========================================================
@@ -25,17 +26,26 @@ const FINORA_API =
    ELEMENTS
 ========================================================= */
 
-const referralCodeElement =
+const referralCode =
     document.getElementById("referralCode");
 
-const referralIncomeElement =
-    document.getElementById("referralIncome");
+const referralLink =
+    document.getElementById("referralLink");
 
-const teamCountElement =
+const copyReferralButton =
+    document.getElementById("copyReferralButton");
+
+const copyReferralLinkButton =
+    document.getElementById("copyReferralLinkButton");
+
+const teamCount =
     document.getElementById("teamCount");
 
 const teamCountLabel =
     document.getElementById("teamCountLabel");
+
+const referralIncome =
+    document.getElementById("referralIncome");
 
 const teamLoading =
     document.getElementById("teamLoading");
@@ -48,9 +58,6 @@ const teamEmpty =
 
 const teamError =
     document.getElementById("teamError");
-
-const copyReferralButton =
-    document.getElementById("copyReferralButton");
 
 
 /* =========================================================
@@ -81,19 +88,12 @@ function safeText(
    FORMAT MONEY
 ========================================================= */
 
-function formatMoney(value) {
+function formatMoney(
+    value
+) {
 
     const amount =
-        Number(value);
-
-    if (
-        !Number.isFinite(amount)
-    ) {
-
-        return "UGX 0";
-
-    }
-
+        Number(value || 0);
 
     return (
         "UGX " +
@@ -110,26 +110,16 @@ function formatMoney(value) {
 
 
 /* =========================================================
-   FORMAT DATE
+   REFERRAL LINK
 ========================================================= */
 
-function formatDate(value) {
-
-    if (!value) {
-
-        return "—";
-
-    }
-
-
-    const date =
-        new Date(value);
-
+function createReferralLink(
+    code
+) {
 
     if (
-        Number.isNaN(
-            date.getTime()
-        )
+        !code ||
+        code === "—"
     ) {
 
         return "—";
@@ -137,109 +127,280 @@ function formatDate(value) {
     }
 
 
-    return date.toLocaleDateString(
-        "en-UG",
-        {
-            day: "2-digit",
-            month: "short",
-            year: "numeric"
-        }
+    /*
+     * The referral link points to FINORA
+     * registration and carries the user's
+     * referral code.
+     */
+
+    const baseUrl =
+        window.location.origin;
+
+
+    return (
+        baseUrl +
+        "/register.html?ref=" +
+        encodeURIComponent(code)
     );
 
 }
 
 
 /* =========================================================
-   GET MEMBER INITIAL
+   SHOW ERROR
 ========================================================= */
 
-function getInitial(
-    fullName
+function showError(
+    message
 ) {
 
-    const name =
+    if (!teamError) {
+        return;
+    }
+
+
+    teamError.textContent =
         safeText(
-            fullName,
-            "U"
+            message,
+            "Unable to load your team."
         );
 
 
-    return name
-        .charAt(0)
-        .toUpperCase();
+    teamError.style.display =
+        "block";
 
 }
 
 
 /* =========================================================
-   DISPLAY TEAM
+   HIDE ERROR
 ========================================================= */
 
-function displayTeam(
-    data
+function hideError() {
+
+    if (!teamError) {
+        return;
+    }
+
+
+    teamError.textContent =
+        "";
+
+
+    teamError.style.display =
+        "none";
+
+}
+
+
+/* =========================================================
+   COPY TEXT
+========================================================= */
+
+async function copyText(
+    text,
+    button,
+    defaultText
 ) {
 
-    if (!data) {
+    if (
+        !text ||
+        text === "—" ||
+        text === "Loading..."
+    ) {
 
         return;
 
     }
 
 
-    const referralCode =
-        safeText(
-            data.referralCode
+    try {
+
+        await navigator.clipboard.writeText(
+            text
         );
 
 
-    const team =
-        Array.isArray(
-            data.team
-        )
-            ? data.team
-            : [];
+        if (button) {
+
+            button.textContent =
+                "Copied";
 
 
-    const totalIncome =
-        Number(
-            data.totalReferralIncome
-        ) || 0;
+            setTimeout(
+                function () {
 
+                    button.textContent =
+                        defaultText;
 
-    /* =====================================================
-       REFERRAL CODE
-    ===================================================== */
-
-    if (referralCodeElement) {
-
-        referralCodeElement.textContent =
-            referralCode;
-
-    }
-
-
-    /* =====================================================
-       REFERRAL INCOME
-    ===================================================== */
-
-    if (referralIncomeElement) {
-
-        referralIncomeElement.textContent =
-            formatMoney(
-                totalIncome
+                },
+                1500
             );
 
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "FINORA COPY ERROR:",
+            error
+        );
+
+
+        /*
+         * Fallback for browsers where
+         * navigator.clipboard is unavailable.
+         */
+
+        try {
+
+            const textarea =
+                document.createElement(
+                    "textarea"
+                );
+
+
+            textarea.value =
+                text;
+
+
+            textarea.style.position =
+                "fixed";
+
+            textarea.style.opacity =
+                "0";
+
+
+            document.body.appendChild(
+                textarea
+            );
+
+
+            textarea.focus();
+
+            textarea.select();
+
+
+            document.execCommand(
+                "copy"
+            );
+
+
+            document.body.removeChild(
+                textarea
+            );
+
+
+            if (button) {
+
+                button.textContent =
+                    "Copied";
+
+
+                setTimeout(
+                    function () {
+
+                        button.textContent =
+                            defaultText;
+
+                    },
+                    1500
+                );
+
+            }
+
+        }
+
+        catch (fallbackError) {
+
+            console.error(
+                "FINORA COPY FALLBACK ERROR:",
+                fallbackError
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   DISPLAY REFERRAL INFORMATION
+========================================================= */
+
+function displayReferral(
+    code
+) {
+
+    const cleanCode =
+        safeText(
+            code,
+            "—"
+        );
+
+
+    /* -----------------------------------------
+       REFERRAL CODE
+    ----------------------------------------- */
+
+    if (referralCode) {
+
+        referralCode.textContent =
+            cleanCode;
+
     }
 
 
-    /* =====================================================
+    /* -----------------------------------------
+       REFERRAL LINK
+    ----------------------------------------- */
+
+    const link =
+        createReferralLink(
+            cleanCode
+        );
+
+
+    if (referralLink) {
+
+        referralLink.textContent =
+            link;
+
+    }
+
+}
+
+
+/* =========================================================
+   DISPLAY TEAM MEMBERS
+========================================================= */
+
+function displayTeam(
+    team
+) {
+
+    if (!Array.isArray(team)) {
+
+        team = [];
+
+    }
+
+
+    const count =
+        team.length;
+
+
+    /* -----------------------------------------
        TEAM COUNT
-    ===================================================== */
+    ----------------------------------------- */
 
-    if (teamCountElement) {
+    if (teamCount) {
 
-        teamCountElement.textContent =
-            team.length;
+        teamCount.textContent =
+            String(count);
 
     }
 
@@ -247,16 +408,16 @@ function displayTeam(
     if (teamCountLabel) {
 
         teamCountLabel.textContent =
-            team.length === 1
+            count === 1
                 ? "1 member"
-                : `${team.length} members`;
+                : `${count} members`;
 
     }
 
 
-    /* =====================================================
+    /* -----------------------------------------
        HIDE LOADING
-    ===================================================== */
+    ----------------------------------------- */
 
     if (teamLoading) {
 
@@ -266,21 +427,19 @@ function displayTeam(
     }
 
 
-    /* =====================================================
+    /* -----------------------------------------
        EMPTY TEAM
-    ===================================================== */
+    ----------------------------------------- */
 
-    if (
-        team.length === 0
-    ) {
+    if (count === 0) {
 
         if (teamList) {
 
-            teamList.style.display =
-                "none";
-
             teamList.innerHTML =
                 "";
+
+            teamList.style.display =
+                "none";
 
         }
 
@@ -298,9 +457,9 @@ function displayTeam(
     }
 
 
-    /* =====================================================
+    /* -----------------------------------------
        SHOW TEAM
-    ===================================================== */
+    ----------------------------------------- */
 
     if (teamEmpty) {
 
@@ -311,9 +470,7 @@ function displayTeam(
 
 
     if (!teamList) {
-
         return;
-
     }
 
 
@@ -324,32 +481,71 @@ function displayTeam(
     team.forEach(
         function (member) {
 
-            const fullName =
+            const name =
                 safeText(
                     member.full_name ||
                     member.fullName,
-                    "Investor"
+                    "FINORA Member"
                 );
 
 
             const phone =
                 safeText(
-                    member.phone
+                    member.phone,
+                    "—"
                 );
 
 
             const accountNumber =
                 safeText(
                     member.account_number ||
-                    member.accountNumber
+                    member.accountNumber,
+                    "—"
                 );
 
 
             const createdAt =
-                formatDate(
-                    member.created_at ||
-                    member.createdAt
-                );
+                member.created_at ||
+                member.createdAt;
+
+
+            let joinedDate =
+                "—";
+
+
+            if (createdAt) {
+
+                const date =
+                    new Date(
+                        createdAt
+                    );
+
+
+                if (
+                    !Number.isNaN(
+                        date.getTime()
+                    )
+                ) {
+
+                    joinedDate =
+                        date.toLocaleDateString(
+                            "en-GB",
+                            {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric"
+                            }
+                        );
+
+                }
+
+            }
+
+
+            const firstLetter =
+                name
+                    .charAt(0)
+                    .toUpperCase();
 
 
             const memberElement =
@@ -365,21 +561,24 @@ function displayTeam(
             memberElement.innerHTML = `
 
                 <div class="member-avatar">
-                    ${getInitial(fullName)}
+                    ${escapeHTML(firstLetter)}
                 </div>
+
 
                 <div class="member-info">
 
                     <div class="member-name">
-                        ${escapeHtml(fullName)}
+                        ${escapeHTML(name)}
                     </div>
 
+
                     <div class="member-details">
-                        ${escapeHtml(phone)}
-                        •
-                        ${escapeHtml(accountNumber)}
-                        •
-                        Joined ${escapeHtml(createdAt)}
+                        ${escapeHTML(phone)}
+                        <br>
+                        Account:
+                        ${escapeHTML(accountNumber)}
+                        · Joined:
+                        ${escapeHTML(joinedDate)}
                     </div>
 
                 </div>
@@ -405,7 +604,7 @@ function displayTeam(
    ESCAPE HTML
 ========================================================= */
 
-function escapeHtml(
+function escapeHTML(
     value
 ) {
 
@@ -435,59 +634,14 @@ function escapeHtml(
 
 
 /* =========================================================
-   SHOW ERROR
-========================================================= */
-
-function showTeamError(
-    message
-) {
-
-    if (!teamError) {
-
-        return;
-
-    }
-
-
-    teamError.textContent =
-        safeText(
-            message,
-            "Unable to load your team."
-        );
-
-
-    teamError.style.display =
-        "block";
-
-
-    if (teamLoading) {
-
-        teamLoading.style.display =
-            "none";
-
-    }
-
-}
-
-
-/* =========================================================
-   LOAD CURRENT TEAM
+   LOAD TEAM
 ========================================================= */
 
 async function loadTeam() {
 
     try {
 
-        /* =================================================
-           RESET DISPLAY
-        ================================================= */
-
-        if (teamError) {
-
-            teamError.style.display =
-                "none";
-
-        }
+        hideError();
 
 
         if (teamLoading) {
@@ -514,9 +668,9 @@ async function loadTeam() {
         }
 
 
-        /* =================================================
-           REQUEST CURRENT SESSION TEAM
-        ================================================= */
+        /* -----------------------------------------
+           REQUEST CURRENT USER'S TEAM
+        ----------------------------------------- */
 
         const response =
             await fetch(
@@ -534,18 +688,13 @@ async function loadTeam() {
             );
 
 
-        /* =================================================
-           NOT LOGGED IN
-        ================================================= */
+        /* -----------------------------------------
+           LOGIN SESSION EXPIRED
+        ----------------------------------------- */
 
         if (
             response.status === 401
         ) {
-
-            console.warn(
-                "FINORA: No active login session."
-            );
-
 
             window.location.href =
                 "login.html";
@@ -555,9 +704,9 @@ async function loadTeam() {
         }
 
 
-        /* =================================================
+        /* -----------------------------------------
            SERVER ERROR
-        ================================================= */
+        ----------------------------------------- */
 
         if (!response.ok) {
 
@@ -568,9 +717,9 @@ async function loadTeam() {
         }
 
 
-        /* =================================================
+        /* -----------------------------------------
            READ RESPONSE
-        ================================================= */
+        ----------------------------------------- */
 
         const data =
             await response.json();
@@ -585,18 +734,41 @@ async function loadTeam() {
                 data &&
                 data.message
                     ? data.message
-                    : "FINORA returned an invalid team response."
+                    : "Invalid FINORA team response."
             );
 
         }
 
 
-        /* =================================================
-           DISPLAY TEAM
-        ================================================= */
+        /* -----------------------------------------
+           REFERRAL CODE
+        ----------------------------------------- */
+
+        displayReferral(
+            data.referralCode
+        );
+
+
+        /* -----------------------------------------
+           REFERRAL INCOME
+        ----------------------------------------- */
+
+        if (referralIncome) {
+
+            referralIncome.textContent =
+                formatMoney(
+                    data.totalReferralIncome
+                );
+
+        }
+
+
+        /* -----------------------------------------
+           TEAM
+        ----------------------------------------- */
 
         displayTeam(
-            data
+            data.team
         );
 
     }
@@ -609,8 +781,32 @@ async function loadTeam() {
         );
 
 
-        showTeamError(
-            error.message
+        if (teamLoading) {
+
+            teamLoading.style.display =
+                "none";
+
+        }
+
+
+        if (teamList) {
+
+            teamList.style.display =
+                "none";
+
+        }
+
+
+        if (teamEmpty) {
+
+            teamEmpty.style.display =
+                "none";
+
+        }
+
+
+        showError(
+            "Unable to load your team right now. Please try again."
         );
 
     }
@@ -622,159 +818,65 @@ async function loadTeam() {
    COPY REFERRAL CODE
 ========================================================= */
 
-async function copyReferralCode() {
-
-    if (!referralCodeElement) {
-
-        return;
-
-    }
-
-
-    const code =
-        referralCodeElement.textContent.trim();
-
-
-    if (
-        !code ||
-        code === "Loading..."
-    ) {
-
-        return;
-
-    }
-
-
-    try {
-
-        await navigator.clipboard.writeText(
-            code
-        );
-
-
-        if (copyReferralButton) {
-
-            const originalText =
-                copyReferralButton.textContent;
-
-
-            copyReferralButton.textContent =
-                "Copied!";
-
-
-            setTimeout(
-                function () {
-
-                    copyReferralButton.textContent =
-                        originalText;
-
-                },
-                1500
-            );
-
-        }
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "FINORA COPY REFERRAL ERROR:",
-            error
-        );
-
-
-        /*
-         * Fallback for browsers where
-         * navigator.clipboard is unavailable.
-         */
-
-        const temporaryInput =
-            document.createElement(
-                "textarea"
-            );
-
-
-        temporaryInput.value =
-            code;
-
-
-        document.body.appendChild(
-            temporaryInput
-        );
-
-
-        temporaryInput.select();
-
-
-        try {
-
-            document.execCommand(
-                "copy"
-            );
-
-
-            if (copyReferralButton) {
-
-                const originalText =
-                    copyReferralButton.textContent;
-
-
-                copyReferralButton.textContent =
-                    "Copied!";
-
-
-                setTimeout(
-                    function () {
-
-                        copyReferralButton.textContent =
-                            originalText;
-
-                    },
-                    1500
-                );
-
-            }
-
-        }
-
-        catch (fallbackError) {
-
-            console.error(
-                "FINORA COPY FALLBACK ERROR:",
-                fallbackError
-            );
-
-        }
-
-
-        temporaryInput.remove();
-
-    }
-
-}
-
-
-/* =========================================================
-   COPY BUTTON
-========================================================= */
-
 if (copyReferralButton) {
 
     copyReferralButton.addEventListener(
         "click",
-        copyReferralCode
+        function () {
+
+            const code =
+                referralCode
+                    ? referralCode.textContent.trim()
+                    : "";
+
+
+            copyText(
+                code,
+                copyReferralButton,
+                "Copy"
+            );
+
+        }
     );
 
 }
 
 
 /* =========================================================
-   START TEAM
+   COPY REFERRAL LINK
+========================================================= */
+
+if (copyReferralLinkButton) {
+
+    copyReferralLinkButton.addEventListener(
+        "click",
+        function () {
+
+            const link =
+                referralLink
+                    ? referralLink.textContent.trim()
+                    : "";
+
+
+            copyText(
+                link,
+                copyReferralLinkButton,
+                "Copy"
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   START TEAM PAGE
 ========================================================= */
 
 if (
-    document.readyState === "loading"
+    document.readyState ===
+    "loading"
 ) {
 
     document.addEventListener(
@@ -782,7 +884,9 @@ if (
         loadTeam
     );
 
-} else {
+}
+
+else {
 
     loadTeam();
 
