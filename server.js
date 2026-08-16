@@ -3174,7 +3174,6 @@ app.get(
     }
 );
 
-
 /* =========================================================
    TEAM / REFERRALS
 ========================================================= */
@@ -3186,10 +3185,15 @@ app.get(
 
         try {
 
+            /* =================================================
+               GET CURRENT USER
+            ================================================= */
+
             const userResult =
                 await pool.query(
                     `
                     SELECT
+                        id,
                         referral_code
                     FROM users
                     WHERE id = $1
@@ -3218,23 +3222,46 @@ app.get(
             }
 
 
+            const currentUser =
+                userResult.rows[0];
+
             const referralCode =
-                userResult.rows[0]
-                    .referral_code;
+                currentUser.referral_code;
 
 
-            const teamResult =
+            /* =================================================
+               LEVEL 1 MEMBERS
+               Direct referrals
+            ================================================= */
+
+            const level1Result =
                 await pool.query(
                     `
                     SELECT
-                        id,
-                        full_name,
-                        phone,
-                        account_number,
-                        created_at
-                    FROM users
-                    WHERE referred_by = $1
-                    ORDER BY created_at DESC
+                        u.id,
+                        u.full_name,
+                        u.phone,
+                        u.account_number,
+                        u.account_status,
+                        u.created_at,
+
+                        COALESCE(
+                            (
+                                SELECT
+                                    SUM(d.amount)
+                                FROM deposits d
+                                WHERE d.user_id = u.id
+                                  AND d.status = 'approved'
+                            ),
+                            0
+                        ) AS deposit_amount
+
+                    FROM users u
+
+                    WHERE u.referred_by = $1
+
+                    ORDER BY
+                        u.created_at DESC
                     `,
                     [
                         referralCode
@@ -3242,15 +3269,156 @@ app.get(
                 );
 
 
+            const level1 =
+                level1Result.rows;
+
+
+            /* =================================================
+               LEVEL 2 MEMBERS
+            ================================================= */
+
+            const level2Result =
+                await pool.query(
+                    `
+                    SELECT
+                        u.id,
+                        u.full_name,
+                        u.phone,
+                        u.account_number,
+                        u.account_status,
+                        u.created_at,
+
+                        COALESCE(
+                            (
+                                SELECT
+                                    SUM(d.amount)
+                                FROM deposits d
+                                WHERE d.user_id = u.id
+                                  AND d.status = 'approved'
+                            ),
+                            0
+                        ) AS deposit_amount
+
+                    FROM users u
+
+                    INNER JOIN users parent
+                        ON u.referred_by =
+                           parent.referral_code
+
+                    WHERE parent.referred_by = $1
+
+                    ORDER BY
+                        u.created_at DESC
+                    `,
+                    [
+                        referralCode
+                    ]
+                );
+
+
+            const level2 =
+                level2Result.rows;
+
+
+            /* =================================================
+               LEVEL 3 MEMBERS
+            ================================================= */
+
+            const level3Result =
+                await pool.query(
+                    `
+                    SELECT
+                        u.id,
+                        u.full_name,
+                        u.phone,
+                        u.account_number,
+                        u.account_status,
+                        u.created_at,
+
+                        COALESCE(
+                            (
+                                SELECT
+                                    SUM(d.amount)
+                                FROM deposits d
+                                WHERE d.user_id = u.id
+                                  AND d.status = 'approved'
+                            ),
+                            0
+                        ) AS deposit_amount
+
+                    FROM users u
+
+                    INNER JOIN users parent2
+                        ON u.referred_by =
+                           parent2.referral_code
+
+                    INNER JOIN users parent1
+                        ON parent2.referred_by =
+                           parent1.referral_code
+
+                    WHERE parent1.referred_by = $1
+
+                    ORDER BY
+                        u.created_at DESC
+                    `,
+                    [
+                        referralCode
+                    ]
+                );
+
+
+            const level3 =
+                level3Result.rows;
+
+
+            /* =================================================
+               COMMISSION TOTALS
+            ================================================= */
+
             const commissionResult =
                 await pool.query(
                     `
                     SELECT
                         COALESCE(
+                            SUM(
+                                CASE
+                                    WHEN level = 1
+                                    THEN amount
+                                    ELSE 0
+                                END
+                            ),
+                            0
+                        ) AS level1_income,
+
+                        COALESCE(
+                            SUM(
+                                CASE
+                                    WHEN level = 2
+                                    THEN amount
+                                    ELSE 0
+                                END
+                            ),
+                            0
+                        ) AS level2_income,
+
+                        COALESCE(
+                            SUM(
+                                CASE
+                                    WHEN level = 3
+                                    THEN amount
+                                    ELSE 0
+                                END
+                            ),
+                            0
+                        ) AS level3_income,
+
+                        COALESCE(
                             SUM(amount),
                             0
-                        ) AS total
+                        ) AS total_income
+
                     FROM referral_commissions
+
                     WHERE user_id = $1
                     `,
                     [
@@ -3259,19 +3427,82 @@ app.get(
                 );
 
 
+            const commission =
+                commissionResult.rows[0];
+
+
+            /* =================================================
+               TOTAL MEMBERS
+            ================================================= */
+
+            const totalMembers =
+                level1.length +
+                level2.length +
+                level3.length;
+
+
+            /* =================================================
+               RESPONSE
+            ================================================= */
+
             return res.status(200).json({
 
                 success:
                     true,
 
-                referralCode,
+                referralCode:
+                    referralCode,
 
-                team:
-                    teamResult.rows,
+                totalMembers:
+                    totalMembers,
 
                 totalReferralIncome:
-                    commissionResult.rows[0]
-                        .total
+                    Number(
+                        commission.total_income || 0
+                    ),
+
+                level1Income:
+                    Number(
+                        commission.level1_income || 0
+                    ),
+
+                level2Income:
+                    Number(
+                        commission.level2_income || 0
+                    ),
+
+                level3Income:
+                    Number(
+                        commission.level3_income || 0
+                    ),
+
+                rates: {
+
+                    level1:
+                        0.15,
+
+                    level2:
+                        0.05,
+
+                    level3:
+                        0.02
+
+                },
+
+                level1:
+                    level1,
+
+                level2:
+                    level2,
+
+                level3:
+                    level3,
+
+                team: [
+                    ...level1,
+                    ...level2,
+                    ...level3
+                ]
 
             });
 
@@ -3299,7 +3530,6 @@ app.get(
 
     }
 );
-
 
 /* =========================================================
    REFERRAL COMMISSIONS
