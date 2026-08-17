@@ -7,102 +7,134 @@ const bcrypt = require("bcryptjs");
 const session = require("express-session");
 const pool = require("./database");
 
-
 /* =========================================================
    FINORA APPLICATION
 ========================================================= */
 
 const app = express();
 
-
 /* =========================================================
    SERVER CONFIGURATION
 ========================================================= */
 
-const PORT =
-    process.env.PORT || 10000;
-
-const FRONTEND_ORIGIN =
-    process.env.FRONTEND_ORIGIN || null;
+const PORT = Number(process.env.PORT) || 10000;
 
 const IS_PRODUCTION =
     process.env.NODE_ENV === "production";
 
+const FRONTEND_ORIGIN =
+    process.env.FRONTEND_ORIGIN || "";
+
+const SESSION_SECRET =
+    process.env.SESSION_SECRET ||
+    "FINORA_CHANGE_THIS_SESSION_SECRET";
 
 /* =========================================================
    FINORA BUSINESS RULES
 ========================================================= */
 
-const MIN_DEPOSIT =
-    10000;
+const MIN_DEPOSIT = 10000;
+const MIN_WITHDRAWAL = 4000;
 
-const MIN_WITHDRAWAL =
-    4000;
+const DAILY_RATE = 0.10;
 
-const DAILY_RATE =
-    0.10;
+const WITHDRAWAL_FEE_RATE = 0.15;
 
-const WITHDRAWAL_FEE_RATE =
-    0.15;
+const MAX_WITHDRAWALS_PER_DAY = 2;
 
-const MAX_WITHDRAWALS_PER_DAY =
-    2;
-
-const LEVEL_1_RATE =
-    0.15;
-
-const LEVEL_2_RATE =
-    0.05;
-
-const LEVEL_3_RATE =
-    0.02;
-
+const LEVEL_1_RATE = 0.15;
+const LEVEL_2_RATE = 0.05;
+const LEVEL_3_RATE = 0.02;
 
 /* =========================================================
    TRUST PROXY
 ========================================================= */
 
 if (IS_PRODUCTION) {
-
-    app.set(
-        "trust proxy",
-        1
-    );
-
+    app.set("trust proxy", 1);
 }
-
 
 /* =========================================================
    CORS
 ========================================================= */
 
+const allowedOrigins = FRONTEND_ORIGIN
+    ? FRONTEND_ORIGIN
+        .split(",")
+        .map((origin) => origin.trim())
+        .filter(Boolean)
+    : [];
+
 app.use(
     cors({
+        origin: function (origin, callback) {
 
-        origin:
-            FRONTEND_ORIGIN || true,
+            /*
+             * Allow requests with no Origin header.
+             * This is useful for server-side requests,
+             * health checks and same-origin requests.
+             */
 
-        credentials:
-            true
+            if (!origin) {
+                return callback(null, true);
+            }
 
+            /*
+             * If no FRONTEND_ORIGIN was configured,
+             * allow the requesting origin.
+             *
+             * IMPORTANT:
+             * In production, set FRONTEND_ORIGIN to
+             * your actual frontend URL.
+             */
+
+            if (allowedOrigins.length === 0) {
+                return callback(null, true);
+            }
+
+            if (allowedOrigins.includes(origin)) {
+                return callback(null, true);
+            }
+
+            return callback(
+                new Error("CORS origin not allowed.")
+            );
+        },
+
+        credentials: true,
+
+        methods: [
+            "GET",
+            "POST",
+            "PATCH",
+            "PUT",
+            "DELETE",
+            "OPTIONS"
+        ],
+
+        allowedHeaders: [
+            "Content-Type",
+            "Authorization"
+        ]
     })
 );
 
-
 /* =========================================================
-   REQUEST BODY PARSING
+   BODY PARSING
 ========================================================= */
 
 app.use(
-    express.json()
+    express.json({
+        limit: "1mb"
+    })
 );
 
 app.use(
     express.urlencoded({
-        extended: true
+        extended: true,
+        limit: "1mb"
     })
 );
-
 
 /* =========================================================
    SESSION
@@ -110,24 +142,20 @@ app.use(
 
 app.use(
     session({
+        name: "finora.sid",
 
-        secret:
-            process.env.SESSION_SECRET ||
-            "FINORA_CHANGE_THIS_SESSION_SECRET",
+        secret: SESSION_SECRET,
 
-        resave:
-            false,
+        resave: false,
 
-        saveUninitialized:
-            false,
+        saveUninitialized: false,
+
+        rolling: true,
 
         cookie: {
+            httpOnly: true,
 
-            httpOnly:
-                true,
-
-            secure:
-                IS_PRODUCTION,
+            secure: IS_PRODUCTION,
 
             sameSite:
                 IS_PRODUCTION
@@ -140,299 +168,189 @@ app.use(
                 60 *
                 24 *
                 7
-
         }
-
     })
 );
 
-
 /* =========================================================
-   STATIC FINORA FRONTEND
+   STATIC FRONTEND
 ========================================================= */
 
 app.use(
     express.static(__dirname)
 );
 
-
 /* =========================================================
-   FRONTEND PAGE ROUTES
+   PAGE ROUTES
 ========================================================= */
 
-app.get(
-    "/",
-    function (req, res) {
+const frontendPages = {
+    "/": "index.html",
+    "/index.html": "index.html",
+    "/login.html": "login.html",
+    "/register.html": "register.html",
+    "/dashboard.html": "dashboard.html",
+    "/profile.html": "profile.html",
+    "/profile": "profile.html",
+    "/investments.html": "investments.html",
+    "/team.html": "team.html",
+    "/transactions.html": "transactions.html",
+    "/deposit.html": "deposit.html",
+    "/withdraw.html": "withdraw.html"
+};
 
-        res.sendFile(
-            path.join(
-                __dirname,
-                "index.html"
-            )
+Object.entries(frontendPages).forEach(
+    ([route, file]) => {
+
+        app.get(
+            route,
+            function (req, res) {
+
+                res.sendFile(
+                    path.join(
+                        __dirname,
+                        file
+                    )
+                );
+
+            }
         );
 
     }
 );
-
-
-app.get(
-    "/index.html",
-    function (req, res) {
-
-        res.sendFile(
-            path.join(
-                __dirname,
-                "index.html"
-            )
-        );
-
-    }
-);
-
-
-app.get(
-    "/login.html",
-    function (req, res) {
-
-        res.sendFile(
-            path.join(
-                __dirname,
-                "login.html"
-            )
-        );
-
-    }
-);
-
-
-app.get(
-    "/register.html",
-    function (req, res) {
-
-        res.sendFile(
-            path.join(
-                __dirname,
-                "register.html"
-            )
-        );
-
-    }
-);
-
-
-app.get(
-    "/dashboard.html",
-    function (req, res) {
-
-        res.sendFile(
-            path.join(
-                __dirname,
-                "dashboard.html"
-            )
-        );
-
-    }
-);
-
-
-app.get(
-    "/profile.html",
-    function (req, res) {
-
-        res.sendFile(
-            path.join(
-                __dirname,
-                "profile.html"
-            )
-        );
-
-    }
-);
-
-
-app.get(
-    "/profile",
-    function (req, res) {
-
-        res.sendFile(
-            path.join(
-                __dirname,
-                "profile.html"
-            )
-        );
-
-    }
-);
-
-
-app.get(
-    "/investments.html",
-    function (req, res) {
-
-        res.sendFile(
-            path.join(
-                __dirname,
-                "investments.html"
-            )
-        );
-
-    }
-);
-
-
-app.get(
-    "/team.html",
-    function (req, res) {
-
-        res.sendFile(
-            path.join(
-                __dirname,
-                "team.html"
-            )
-        );
-
-    }
-);
-
-
-app.get(
-    "/transactions.html",
-    function (req, res) {
-
-        res.sendFile(
-            path.join(
-                __dirname,
-                "transactions.html"
-            )
-        );
-
-    }
-);
-
-
-app.get(
-    "/deposit.html",
-    function (req, res) {
-
-        res.sendFile(
-            path.join(
-                __dirname,
-                "deposit.html"
-            )
-        );
-
-    }
-);
-
-
-app.get(
-    "/withdraw.html",
-    function (req, res) {
-
-        res.sendFile(
-            path.join(
-                __dirname,
-                "withdraw.html"
-            )
-        );
-
-    }
-);
-
 
 /* =========================================================
-   API STATUS
+   HELPER FUNCTIONS
 ========================================================= */
 
-app.get(
-    "/api/status",
-    function (req, res) {
+function generateReferralCode() {
 
-        return res.status(200).json({
+    return (
+        "FIN" +
+        Math.random()
+            .toString(36)
+            .substring(2, 10)
+            .toUpperCase()
+    );
 
-            success:
-                true,
+}
 
-            platform:
-                "FINORA",
+function generateAccountNumber() {
 
-            status:
-                "online",
+    const random =
+        Math.floor(
+            10000000 +
+            Math.random() * 90000000
+        );
+
+    return "FN" + random;
+}
+
+function normalizeUgandaPhone(phone) {
+
+    let value =
+        String(phone || "")
+            .trim()
+            .replace(/\s+/g, "");
+
+    if (/^\+2567\d{8}$/.test(value)) {
+        value =
+            "0" +
+            value.substring(4);
+    }
+
+    if (/^2567\d{8}$/.test(value)) {
+        value =
+            "0" +
+            value.substring(3);
+    }
+
+    return value;
+}
+
+function normalizeEmail(email) {
+
+    return String(email || "")
+        .trim()
+        .toLowerCase();
+
+}
+
+function money(value) {
+
+    return Number(
+        Number(value || 0).toFixed(2)
+    );
+
+}
+
+function validEmail(email) {
+
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        .test(email);
+
+}
+
+function validUgandaPhone(phone) {
+
+    return /^07[0-9]{8}$/.test(phone);
+
+}
+
+/* =========================================================
+   USER AUTHENTICATION
+========================================================= */
+
+function requireUser(req, res, next) {
+
+    if (
+        !req.session ||
+        !req.session.userId
+    ) {
+
+        return res.status(401).json({
+
+            success: false,
 
             message:
-                "FINORA backend is running."
+                "User is not logged in."
 
         });
 
     }
-);
 
+    next();
+
+}
 
 /* =========================================================
-   DATABASE HEALTH
+   ADMIN AUTHENTICATION
 ========================================================= */
 
-app.get(
-    "/api/health",
-    async function (req, res) {
+function requireAdmin(req, res, next) {
 
-        try {
+    if (
+        !req.session ||
+        !req.session.adminId
+    ) {
 
-            await pool.query(
-                "SELECT 1"
-            );
+        return res.status(401).json({
 
+            success: false,
 
-            return res.status(200).json({
+            message:
+                "Administrator authentication required."
 
-                success:
-                    true,
-
-                platform:
-                    "FINORA",
-
-                database:
-                    "connected",
-
-                status:
-                    "healthy"
-
-            });
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "FINORA DATABASE HEALTH ERROR:",
-                error.message
-            );
-
-
-            return res.status(500).json({
-
-                success:
-                    false,
-
-                platform:
-                    "FINORA",
-
-                database:
-                    "disconnected",
-
-                status:
-                    "unhealthy"
-
-            });
-
-        }
+        });
 
     }
-);
 
+    next();
+
+}
 
 /* =========================================================
-   DATABASE TABLES
+   DATABASE TABLE INITIALIZATION
 ========================================================= */
 
 async function createUsersTable() {
@@ -476,8 +394,78 @@ async function createUsersTable() {
 
     `);
 
-}
+    /*
+     * Migration protection.
+     * If the table already existed from an older version,
+     * these statements make sure the required columns exist.
+     */
 
+    await pool.query(`
+        ALTER TABLE users
+        ADD COLUMN IF NOT EXISTS full_name VARCHAR(100)
+    `);
+
+    await pool.query(`
+        ALTER TABLE users
+        ADD COLUMN IF NOT EXISTS phone VARCHAR(20)
+    `);
+
+    await pool.query(`
+        ALTER TABLE users
+        ADD COLUMN IF NOT EXISTS email VARCHAR(150)
+    `);
+
+    await pool.query(`
+        ALTER TABLE users
+        ADD COLUMN IF NOT EXISTS password_hash TEXT
+    `);
+
+    await pool.query(`
+        ALTER TABLE users
+        ADD COLUMN IF NOT EXISTS referral_code VARCHAR(50)
+    `);
+
+    await pool.query(`
+        ALTER TABLE users
+        ADD COLUMN IF NOT EXISTS referred_by VARCHAR(50)
+    `);
+
+    await pool.query(`
+        ALTER TABLE users
+        ADD COLUMN IF NOT EXISTS account_number VARCHAR(50)
+    `);
+
+    await pool.query(`
+        ALTER TABLE users
+        ADD COLUMN IF NOT EXISTS wallet_balance NUMERIC(15,2)
+        DEFAULT 0
+    `);
+
+    await pool.query(`
+        ALTER TABLE users
+        ADD COLUMN IF NOT EXISTS cumulative_income NUMERIC(15,2)
+        DEFAULT 0
+    `);
+
+    await pool.query(`
+        ALTER TABLE users
+        ADD COLUMN IF NOT EXISTS account_status VARCHAR(20)
+        DEFAULT 'active'
+    `);
+
+    await pool.query(`
+        ALTER TABLE users
+        ADD COLUMN IF NOT EXISTS created_at TIMESTAMP
+        DEFAULT CURRENT_TIMESTAMP
+    `);
+
+    await pool.query(`
+        ALTER TABLE users
+        ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP
+        DEFAULT CURRENT_TIMESTAMP
+    `);
+
+}
 
 /* =========================================================
    DEPOSITS TABLE
@@ -520,8 +508,50 @@ async function createDepositsTable() {
 
     `);
 
-}
+    await pool.query(`
+        ALTER TABLE deposits
+        ADD COLUMN IF NOT EXISTS method VARCHAR(30)
+    `);
 
+    await pool.query(`
+        ALTER TABLE deposits
+        ADD COLUMN IF NOT EXISTS transaction_reference VARCHAR(100)
+    `);
+
+    await pool.query(`
+        ALTER TABLE deposits
+        ADD COLUMN IF NOT EXISTS status VARCHAR(20)
+        DEFAULT 'pending'
+    `);
+
+    await pool.query(`
+        ALTER TABLE deposits
+        ADD COLUMN IF NOT EXISTS approved_by INTEGER
+    `);
+
+    await pool.query(`
+        ALTER TABLE deposits
+        ADD COLUMN IF NOT EXISTS approved_at TIMESTAMP
+    `);
+
+    await pool.query(`
+        ALTER TABLE deposits
+        ADD COLUMN IF NOT EXISTS rejected_reason TEXT
+    `);
+
+    await pool.query(`
+        ALTER TABLE deposits
+        ADD COLUMN IF NOT EXISTS created_at TIMESTAMP
+        DEFAULT CURRENT_TIMESTAMP
+    `);
+
+    await pool.query(`
+        ALTER TABLE deposits
+        ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP
+        DEFAULT CURRENT_TIMESTAMP
+    `);
+
+}
 
 /* =========================================================
    WITHDRAWALS TABLE
@@ -568,8 +598,62 @@ async function createWithdrawalsTable() {
 
     `);
 
-}
+    await pool.query(`
+        ALTER TABLE withdrawals
+        ADD COLUMN IF NOT EXISTS fee NUMERIC(15,2)
+        DEFAULT 0
+    `);
 
+    await pool.query(`
+        ALTER TABLE withdrawals
+        ADD COLUMN IF NOT EXISTS net_amount NUMERIC(15,2)
+        DEFAULT 0
+    `);
+
+    await pool.query(`
+        ALTER TABLE withdrawals
+        ADD COLUMN IF NOT EXISTS method VARCHAR(30)
+    `);
+
+    await pool.query(`
+        ALTER TABLE withdrawals
+        ADD COLUMN IF NOT EXISTS phone VARCHAR(20)
+    `);
+
+    await pool.query(`
+        ALTER TABLE withdrawals
+        ADD COLUMN IF NOT EXISTS status VARCHAR(20)
+        DEFAULT 'pending'
+    `);
+
+    await pool.query(`
+        ALTER TABLE withdrawals
+        ADD COLUMN IF NOT EXISTS approved_by INTEGER
+    `);
+
+    await pool.query(`
+        ALTER TABLE withdrawals
+        ADD COLUMN IF NOT EXISTS approved_at TIMESTAMP
+    `);
+
+    await pool.query(`
+        ALTER TABLE withdrawals
+        ADD COLUMN IF NOT EXISTS rejected_reason TEXT
+    `);
+
+    await pool.query(`
+        ALTER TABLE withdrawals
+        ADD COLUMN IF NOT EXISTS created_at TIMESTAMP
+        DEFAULT CURRENT_TIMESTAMP
+    `);
+
+    await pool.query(`
+        ALTER TABLE withdrawals
+        ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP
+        DEFAULT CURRENT_TIMESTAMP
+    `);
+
+}
 
 /* =========================================================
    EARNINGS TABLE
@@ -612,7 +696,6 @@ async function createEarningsTable() {
 
 }
 
-
 /* =========================================================
    REFERRAL COMMISSIONS TABLE
 ========================================================= */
@@ -650,8 +733,23 @@ async function createReferralCommissionsTable() {
 
     `);
 
-}
+    /*
+     * Prevent the same deposit from generating the
+     * same level commission twice.
+     */
 
+    await pool.query(`
+        CREATE UNIQUE INDEX IF NOT EXISTS
+        referral_commission_unique_deposit_level
+        ON referral_commissions
+        (
+            referred_user_id,
+            deposit_id,
+            level
+        )
+    `);
+
+}
 
 /* =========================================================
    TRANSACTIONS TABLE
@@ -689,7 +787,6 @@ async function createTransactionsTable() {
 
 }
 
-
 /* =========================================================
    ADMIN TABLE
 ========================================================= */
@@ -718,112 +815,85 @@ async function createAdminsTable() {
 
 }
 
-
 /* =========================================================
-   GENERATE REFERRAL CODE
+   CREATE ADMIN FROM ENVIRONMENT
 ========================================================= */
 
-function generateReferralCode() {
+async function createDefaultAdmin() {
 
-    return (
-        "FIN" +
-        Math.random()
-            .toString(36)
-            .substring(2, 10)
-            .toUpperCase()
-    );
+    const username =
+        process.env.ADMIN_USERNAME;
 
-}
+    const password =
+        process.env.ADMIN_PASSWORD;
 
+    /*
+     * We do NOT create a default admin with a hard-coded
+     * password. This prevents accidental public credentials.
+     */
 
-/* =========================================================
-   GENERATE ACCOUNT NUMBER
-========================================================= */
+    if (!username || !password) {
 
-function generateAccountNumber() {
-
-    const random =
-        Math.floor(
-            10000000 +
-            Math.random() * 90000000
+        console.log(
+            "FINORA: ADMIN_USERNAME / ADMIN_PASSWORD not set. Existing admins will be used."
         );
 
-    return (
-        "FN" +
-        random
+        return;
+
+    }
+
+    const existing =
+        await pool.query(
+            `
+            SELECT id
+            FROM admins
+            WHERE username = $1
+            LIMIT 1
+            `,
+            [username]
+        );
+
+    if (existing.rows.length > 0) {
+
+        return;
+
+    }
+
+    const passwordHash =
+        await bcrypt.hash(
+            password,
+            12
+        );
+
+    await pool.query(
+        `
+        INSERT INTO admins
+        (
+            username,
+            password_hash,
+            admin_status
+        )
+        VALUES
+        (
+            $1,
+            $2,
+            'active'
+        )
+        `,
+        [
+            username,
+            passwordHash
+        ]
+    );
+
+    console.log(
+        `FINORA: Admin "${username}" created successfully.`
     );
 
 }
 
-
 /* =========================================================
-   AUTHENTICATION HELPER
-========================================================= */
-
-function requireUser(
-    req,
-    res,
-    next
-) {
-
-    if (
-        !req.session ||
-        !req.session.userId
-    ) {
-
-        return res.status(401).json({
-
-            success:
-                false,
-
-            message:
-                "User is not logged in."
-
-        });
-
-    }
-
-
-    next();
-
-}
-
-
-/* =========================================================
-   ADMIN AUTHENTICATION
-========================================================= */
-
-function requireAdmin(
-    req,
-    res,
-    next
-) {
-
-    if (
-        !req.session ||
-        !req.session.adminId
-    ) {
-
-        return res.status(401).json({
-
-            success:
-                false,
-
-            message:
-                "Administrator authentication required."
-
-        });
-
-    }
-
-
-    next();
-
-}
-
-
-/* =========================================================
-   REGISTER USER
+   REGISTER
 ========================================================= */
 
 app.post(
@@ -841,7 +911,6 @@ app.post(
                 referralCode
             } = req.body || {};
 
-
             if (
                 !fullName ||
                 !phone ||
@@ -851,8 +920,7 @@ app.post(
 
                 return res.status(400).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "Full name, phone, email and password are required."
@@ -860,7 +928,6 @@ app.post(
                 });
 
             }
-
 
             if (
                 confirmPassword !== undefined &&
@@ -870,8 +937,7 @@ app.post(
 
                 return res.status(400).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "Passwords do not match."
@@ -880,17 +946,19 @@ app.post(
 
             }
 
-
             const cleanName =
-                String(fullName).trim();
+                String(fullName)
+                    .trim();
 
             const cleanPhone =
-                String(phone).trim();
+                normalizeUgandaPhone(
+                    phone
+                );
 
             const cleanEmail =
-                String(email)
-                    .trim()
-                    .toLowerCase();
+                normalizeEmail(
+                    email
+                );
 
             const cleanReferral =
                 referralCode
@@ -899,15 +967,13 @@ app.post(
                     ).trim()
                     : null;
 
-
             if (
                 cleanName.length < 2
             ) {
 
                 return res.status(400).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "Please enter your full name."
@@ -916,17 +982,15 @@ app.post(
 
             }
 
-
             if (
-                !/^07[0-9]{8}$/.test(
+                !validUgandaPhone(
                     cleanPhone
                 )
             ) {
 
                 return res.status(400).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "Please enter a valid Uganda phone number."
@@ -935,16 +999,15 @@ app.post(
 
             }
 
-
             if (
-                !/^[^\s@]+@[^\s@]+\.[^\s@]+$/
-                    .test(cleanEmail)
+                !validEmail(
+                    cleanEmail
+                )
             ) {
 
                 return res.status(400).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "Please enter a valid email address."
@@ -953,15 +1016,13 @@ app.post(
 
             }
 
-
             if (
                 String(password).length < 6
             ) {
 
                 return res.status(400).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "Password must be at least 6 characters long."
@@ -970,14 +1031,13 @@ app.post(
 
             }
 
-
             const existing =
                 await pool.query(
                     `
                     SELECT id
                     FROM users
                     WHERE phone = $1
-                       OR email = $2
+                       OR LOWER(email) = LOWER($2)
                     LIMIT 1
                     `,
                     [
@@ -986,15 +1046,13 @@ app.post(
                     ]
                 );
 
-
             if (
                 existing.rows.length > 0
             ) {
 
                 return res.status(409).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "An account with this phone number or email already exists."
@@ -1003,14 +1061,9 @@ app.post(
 
             }
 
+            let referredBy = null;
 
-            let referredBy =
-                null;
-
-
-            if (
-                cleanReferral
-            ) {
+            if (cleanReferral) {
 
                 const referralResult =
                     await pool.query(
@@ -1025,15 +1078,13 @@ app.post(
                         ]
                     );
 
-
                 if (
                     referralResult.rows.length === 0
                 ) {
 
                     return res.status(400).json({
 
-                        success:
-                            false,
+                        success: false,
 
                         message:
                             "The referral code is invalid."
@@ -1042,28 +1093,23 @@ app.post(
 
                 }
 
-
                 referredBy =
                     cleanReferral;
 
             }
 
-
             const passwordHash =
                 await bcrypt.hash(
                     String(password),
-                    10
+                    12
                 );
-
 
             let newReferralCode;
 
+            for (;;) {
 
-            while (true) {
-
-                newReferralCode =
+                const candidate =
                     generateReferralCode();
-
 
                 const check =
                     await pool.query(
@@ -1073,15 +1119,15 @@ app.post(
                         WHERE referral_code = $1
                         LIMIT 1
                         `,
-                        [
-                            newReferralCode
-                        ]
+                        [candidate]
                     );
-
 
                 if (
                     check.rows.length === 0
                 ) {
+
+                    newReferralCode =
+                        candidate;
 
                     break;
 
@@ -1089,15 +1135,12 @@ app.post(
 
             }
 
-
             let accountNumber;
 
+            for (;;) {
 
-            while (true) {
-
-                accountNumber =
+                const candidate =
                     generateAccountNumber();
-
 
                 const check =
                     await pool.query(
@@ -1107,22 +1150,21 @@ app.post(
                         WHERE account_number = $1
                         LIMIT 1
                         `,
-                        [
-                            accountNumber
-                        ]
+                        [candidate]
                     );
-
 
                 if (
                     check.rows.length === 0
                 ) {
+
+                    accountNumber =
+                        candidate;
 
                     break;
 
                 }
 
             }
-
 
             const result =
                 await pool.query(
@@ -1135,9 +1177,11 @@ app.post(
                         password_hash,
                         referral_code,
                         referred_by,
-                        account_number
+                        account_number,
+                        wallet_balance,
+                        cumulative_income,
+                        account_status
                     )
-
                     VALUES
                     (
                         $1,
@@ -1146,9 +1190,11 @@ app.post(
                         $4,
                         $5,
                         $6,
-                        $7
+                        $7,
+                        0,
+                        0,
+                        'active'
                     )
-
                     RETURNING
                         id,
                         full_name,
@@ -1173,23 +1219,19 @@ app.post(
                     ]
                 );
 
-
             const user =
                 result.rows[0];
 
-
             return res.status(201).json({
 
-                success:
-                    true,
+                success: true,
 
                 message:
                     "Account registered successfully.",
 
                 user: {
 
-                    id:
-                        user.id,
+                    id: user.id,
 
                     fullName:
                         user.full_name,
@@ -1210,10 +1252,14 @@ app.post(
                         user.account_number,
 
                     walletBalance:
-                        user.wallet_balance,
+                        Number(
+                            user.wallet_balance
+                        ),
 
                     cumulativeIncome:
-                        user.cumulative_income,
+                        Number(
+                            user.cumulative_income
+                        ),
 
                     accountStatus:
                         user.account_status,
@@ -1234,11 +1280,24 @@ app.post(
                 error
             );
 
+            if (
+                error.code === "23505"
+            ) {
+
+                return res.status(409).json({
+
+                    success: false,
+
+                    message:
+                        "Phone, email, referral code or account number already exists."
+
+                });
+
+            }
 
             return res.status(500).json({
 
-                success:
-                    false,
+                success: false,
 
                 message:
                     "Unable to create account. Please try again."
@@ -1250,7 +1309,6 @@ app.post(
     }
 );
 
-
 /* =========================================================
    LOGIN
 ========================================================= */
@@ -1261,11 +1319,22 @@ app.post(
 
         try {
 
-            const {
-                identifier,
-                password
-            } = req.body || {};
+            /*
+             * Accept several common frontend names.
+             */
 
+            const identifier =
+                req.body &&
+                (
+                    req.body.identifier ||
+                    req.body.phone ||
+                    req.body.email ||
+                    req.body.username
+                );
+
+            const password =
+                req.body &&
+                req.body.password;
 
             if (
                 !identifier ||
@@ -1274,8 +1343,7 @@ app.post(
 
                 return res.status(400).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "Phone/email and password are required."
@@ -1284,10 +1352,8 @@ app.post(
 
             }
 
-
             const cleanIdentifier =
                 String(identifier).trim();
-
 
             const result =
                 await pool.query(
@@ -1315,15 +1381,13 @@ app.post(
                     ]
                 );
 
-
             if (
                 result.rows.length === 0
             ) {
 
                 return res.status(401).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "Invalid phone/email or password."
@@ -1332,10 +1396,27 @@ app.post(
 
             }
 
-
             const user =
                 result.rows[0];
 
+            const passwordMatch =
+                await bcrypt.compare(
+                    String(password),
+                    user.password_hash
+                );
+
+            if (!passwordMatch) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    message:
+                        "Invalid phone/email or password."
+
+                });
+
+            }
 
             if (
                 user.account_status !==
@@ -1344,8 +1425,7 @@ app.post(
 
                 return res.status(403).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "Your FINORA account is currently unavailable. Please contact support."
@@ -1354,32 +1434,15 @@ app.post(
 
             }
 
-
-            const passwordMatch =
-                await bcrypt.compare(
-                    String(password),
-                    user.password_hash
-                );
-
-
-            if (!passwordMatch) {
-
-                return res.status(401).json({
-
-                    success:
-                        false,
-
-                    message:
-                        "Invalid phone/email or password."
-
-                });
-
-            }
-
-
             req.session.userId =
                 user.id;
 
+            /*
+             * Prevent an old admin session from remaining
+             * attached to the same browser session.
+             */
+
+            delete req.session.adminId;
 
             req.session.save(
                 function (sessionError) {
@@ -1393,8 +1456,7 @@ app.post(
 
                         return res.status(500).json({
 
-                            success:
-                                false,
+                            success: false,
 
                             message:
                                 "Login session could not be created."
@@ -1403,11 +1465,9 @@ app.post(
 
                     }
 
-
                     return res.status(200).json({
 
-                        success:
-                            true,
+                        success: true,
 
                         message:
                             "Login successful.",
@@ -1436,10 +1496,14 @@ app.post(
                                 user.account_number,
 
                             walletBalance:
-                                user.wallet_balance,
+                                Number(
+                                    user.wallet_balance
+                                ),
 
                             cumulativeIncome:
-                                user.cumulative_income,
+                                Number(
+                                    user.cumulative_income
+                                ),
 
                             accountStatus:
                                 user.account_status,
@@ -1463,11 +1527,9 @@ app.post(
                 error
             );
 
-
             return res.status(500).json({
 
-                success:
-                    false,
+                success: false,
 
                 message:
                     "Unable to login. Please try again."
@@ -1478,7 +1540,6 @@ app.post(
 
     }
 );
-
 
 /* =========================================================
    CURRENT USER
@@ -1498,8 +1559,7 @@ async function getCurrentUser(
 
             return res.status(401).json({
 
-                success:
-                    false,
+                success: false,
 
                 message:
                     "User is not logged in."
@@ -1507,7 +1567,6 @@ async function getCurrentUser(
             });
 
         }
-
 
         const result =
             await pool.query(
@@ -1533,20 +1592,17 @@ async function getCurrentUser(
                 ]
             );
 
-
         if (
             result.rows.length === 0
         ) {
 
             req.session.destroy(
-                function () {}
+                () => {}
             );
-
 
             return res.status(404).json({
 
-                success:
-                    false,
+                success: false,
 
                 message:
                     "User account was not found."
@@ -1555,22 +1611,34 @@ async function getCurrentUser(
 
         }
 
-
         const user =
             result.rows[0];
 
+        if (
+            user.account_status !==
+            "active"
+        ) {
+
+            return res.status(403).json({
+
+                success: false,
+
+                message:
+                    "Your account is currently unavailable."
+
+            });
+
+        }
 
         let accountNumber =
             user.account_number;
 
-
         if (!accountNumber) {
 
-            while (true) {
+            for (;;) {
 
-                const newAccountNumber =
+                const candidate =
                     generateAccountNumber();
-
 
                 const check =
                     await pool.query(
@@ -1580,25 +1648,21 @@ async function getCurrentUser(
                         WHERE account_number = $1
                         LIMIT 1
                         `,
-                        [
-                            newAccountNumber
-                        ]
+                        [candidate]
                     );
-
 
                 if (
                     check.rows.length === 0
                 ) {
 
                     accountNumber =
-                        newAccountNumber;
+                        candidate;
 
                     break;
 
                 }
 
             }
-
 
             await pool.query(
                 `
@@ -1616,11 +1680,9 @@ async function getCurrentUser(
 
         }
 
-
         return res.status(200).json({
 
-            success:
-                true,
+            success: true,
 
             user: {
 
@@ -1642,14 +1704,17 @@ async function getCurrentUser(
                 referredBy:
                     user.referred_by,
 
-                accountNumber:
-                    accountNumber,
+                accountNumber,
 
                 walletBalance:
-                    user.wallet_balance,
+                    Number(
+                        user.wallet_balance
+                    ),
 
                 cumulativeIncome:
-                    user.cumulative_income,
+                    Number(
+                        user.cumulative_income
+                    ),
 
                 accountStatus:
                     user.account_status,
@@ -1670,11 +1735,9 @@ async function getCurrentUser(
             error
         );
 
-
         return res.status(500).json({
 
-            success:
-                false,
+            success: false,
 
             message:
                 "Unable to load user information."
@@ -1685,24 +1748,20 @@ async function getCurrentUser(
 
 }
 
-
 app.get(
     "/api/me",
     getCurrentUser
 );
-
 
 app.get(
     "/api/users/me",
     getCurrentUser
 );
 
-
 app.get(
     "/api/profile",
     getCurrentUser
 );
-
 
 /* =========================================================
    LOGOUT
@@ -1724,8 +1783,7 @@ app.post(
 
                     return res.status(500).json({
 
-                        success:
-                            false,
+                        success: false,
 
                         message:
                             "Unable to logout."
@@ -1734,30 +1792,21 @@ app.post(
 
                 }
 
-
                 res.clearCookie(
-                    "connect.sid",
+                    "finora.sid",
                     {
-
-                        httpOnly:
-                            true,
-
-                        secure:
-                            IS_PRODUCTION,
-
+                        httpOnly: true,
+                        secure: IS_PRODUCTION,
                         sameSite:
                             IS_PRODUCTION
                                 ? "none"
                                 : "lax"
-
                     }
                 );
 
-
                 return res.status(200).json({
 
-                    success:
-                        true,
+                    success: true,
 
                     message:
                         "Logged out successfully."
@@ -1770,7 +1819,6 @@ app.post(
     }
 );
 
-
 /* =========================================================
    DEPOSIT
 ========================================================= */
@@ -1782,28 +1830,42 @@ app.post(
 
         try {
 
-            const {
-                amount,
-                method,
-                transactionReference
-            } = req.body || {};
+            const amount =
+                Number(
+                    req.body &&
+                    req.body.amount
+                );
 
+            const method =
+                req.body &&
+                req.body.method
+                    ? String(
+                        req.body.method
+                    ).trim()
+                    : null;
 
-            const depositAmount =
-                Number(amount);
-
+            const transactionReference =
+                req.body &&
+                (
+                    req.body.transactionReference ||
+                    req.body.transaction_reference ||
+                    req.body.reference
+                )
+                    ? String(
+                        req.body.transactionReference ||
+                        req.body.transaction_reference ||
+                        req.body.reference
+                    ).trim()
+                    : null;
 
             if (
-                !Number.isFinite(
-                    depositAmount
-                ) ||
-                depositAmount <= 0
+                !Number.isFinite(amount) ||
+                amount <= 0
             ) {
 
                 return res.status(400).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "Enter a valid deposit amount."
@@ -1812,16 +1874,13 @@ app.post(
 
             }
 
-
             if (
-                depositAmount <
-                MIN_DEPOSIT
+                amount < MIN_DEPOSIT
             ) {
 
                 return res.status(400).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         `Minimum deposit is UGX ${MIN_DEPOSIT}.`
@@ -1830,6 +1889,42 @@ app.post(
 
             }
 
+            /*
+             * If a transaction reference is supplied,
+             * do not allow it to be submitted twice.
+             */
+
+            if (transactionReference) {
+
+                const duplicate =
+                    await pool.query(
+                        `
+                        SELECT id
+                        FROM deposits
+                        WHERE transaction_reference = $1
+                        LIMIT 1
+                        `,
+                        [
+                            transactionReference
+                        ]
+                    );
+
+                if (
+                    duplicate.rows.length > 0
+                ) {
+
+                    return res.status(409).json({
+
+                        success: false,
+
+                        message:
+                            "This transaction reference has already been submitted."
+
+                    });
+
+                }
+
+            }
 
             const result =
                 await pool.query(
@@ -1839,31 +1934,29 @@ app.post(
                         user_id,
                         amount,
                         method,
-                        transaction_reference
+                        transaction_reference,
+                        status
                     )
-
                     VALUES
                     (
                         $1,
                         $2,
                         $3,
-                        $4
+                        $4,
+                        'pending'
                     )
-
                     RETURNING *
                     `,
                     [
                         req.session.userId,
-                        depositAmount,
-                        method || null,
-                        transactionReference || null
+                        amount,
+                        method,
+                        transactionReference
                     ]
                 );
 
-
             const deposit =
                 result.rows[0];
-
 
             await pool.query(
                 `
@@ -1876,7 +1969,6 @@ app.post(
                     description,
                     status
                 )
-
                 VALUES
                 (
                     $1,
@@ -1889,17 +1981,15 @@ app.post(
                 `,
                 [
                     req.session.userId,
-                    depositAmount,
+                    amount,
                     deposit.id,
                     "Deposit submitted for approval."
                 ]
             );
 
-
             return res.status(201).json({
 
-                success:
-                    true,
+                success: true,
 
                 message:
                     "Deposit submitted successfully and is awaiting approval.",
@@ -1917,11 +2007,9 @@ app.post(
                 error
             );
 
-
             return res.status(500).json({
 
-                success:
-                    false,
+                success: false,
 
                 message:
                     "Unable to submit deposit."
@@ -1933,9 +2021,8 @@ app.post(
     }
 );
 
-
 /* =========================================================
-   USER DEPOSIT HISTORY
+   USER DEPOSITS
 ========================================================= */
 
 app.get(
@@ -1951,18 +2038,16 @@ app.get(
                     SELECT *
                     FROM deposits
                     WHERE user_id = $1
-                    ORDER BY created_at DESC
+                    ORDER BY created_at DESC, id DESC
                     `,
                     [
                         req.session.userId
                     ]
                 );
 
-
             return res.status(200).json({
 
-                success:
-                    true,
+                success: true,
 
                 deposits:
                     result.rows
@@ -1978,11 +2063,9 @@ app.get(
                 error
             );
 
-
             return res.status(500).json({
 
-                success:
-                    false,
+                success: false,
 
                 message:
                     "Unable to load deposits."
@@ -1993,7 +2076,6 @@ app.get(
 
     }
 );
-
 
 /* =========================================================
    PROCESS REFERRAL COMMISSIONS
@@ -2019,7 +2101,6 @@ async function processReferralCommissions(
             ]
         );
 
-
     if (
         referredUserResult.rows.length === 0
     ) {
@@ -2028,44 +2109,32 @@ async function processReferralCommissions(
 
     }
 
-
     let referralCode =
         referredUserResult.rows[0]
             .referred_by;
 
-
     const levels = [
-
         {
             level: 1,
             rate: LEVEL_1_RATE
         },
-
         {
             level: 2,
             rate: LEVEL_2_RATE
         },
-
         {
             level: 3,
             rate: LEVEL_3_RATE
         }
-
     ];
-
 
     for (
         const item of levels
     ) {
 
-        if (
-            !referralCode
-        ) {
-
+        if (!referralCode) {
             break;
-
         }
-
 
         const parentResult =
             await client.query(
@@ -2082,26 +2151,78 @@ async function processReferralCommissions(
                 ]
             );
 
-
         if (
             parentResult.rows.length === 0
         ) {
-
             break;
-
         }
-
 
         const parent =
             parentResult.rows[0];
 
-
         const commission =
-            Number(
-                deposit.amount
-            ) *
-            item.rate;
+            money(
+                Number(deposit.amount) *
+                item.rate
+            );
 
+        /*
+         * INSERT FIRST.
+         *
+         * If this commission already exists,
+         * nothing else is paid.
+         */
+
+        const commissionResult =
+            await client.query(
+                `
+                INSERT INTO referral_commissions
+                (
+                    user_id,
+                    referred_user_id,
+                    deposit_id,
+                    level,
+                    rate,
+                    amount
+                )
+                VALUES
+                (
+                    $1,
+                    $2,
+                    $3,
+                    $4,
+                    $5,
+                    $6
+                )
+                ON CONFLICT
+                (
+                    referred_user_id,
+                    deposit_id,
+                    level
+                )
+                DO NOTHING
+                RETURNING id
+                `,
+                [
+                    parent.id,
+                    deposit.user_id,
+                    deposit.id,
+                    item.level,
+                    item.rate,
+                    commission
+                ]
+            );
+
+        if (
+            commissionResult.rows.length === 0
+        ) {
+
+            referralCode =
+                parent.referred_by;
+
+            continue;
+
+        }
 
         await client.query(
             `
@@ -2123,40 +2244,6 @@ async function processReferralCommissions(
             ]
         );
 
-
-        await client.query(
-            `
-            INSERT INTO referral_commissions
-            (
-                user_id,
-                referred_user_id,
-                deposit_id,
-                level,
-                rate,
-                amount
-            )
-
-            VALUES
-            (
-                $1,
-                $2,
-                $3,
-                $4,
-                $5,
-                $6
-            )
-            `,
-            [
-                parent.id,
-                deposit.user_id,
-                deposit.id,
-                item.level,
-                item.rate,
-                commission
-            ]
-        );
-
-
         await client.query(
             `
             INSERT INTO transactions
@@ -2168,7 +2255,6 @@ async function processReferralCommissions(
                 description,
                 status
             )
-
             VALUES
             (
                 $1,
@@ -2187,7 +2273,6 @@ async function processReferralCommissions(
             ]
         );
 
-
         referralCode =
             parent.referred_by;
 
@@ -2195,9 +2280,226 @@ async function processReferralCommissions(
 
 }
 
+/* =========================================================
+   ADMIN LOGIN
+========================================================= */
+
+app.post(
+    "/api/admin/login",
+    async function (req, res) {
+
+        try {
+
+            const {
+                username,
+                password
+            } = req.body || {};
+
+            if (
+                !username ||
+                !password
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Admin username and password are required."
+
+                });
+
+            }
+
+            const result =
+                await pool.query(
+                    `
+                    SELECT *
+                    FROM admins
+                    WHERE username = $1
+                    LIMIT 1
+                    `,
+                    [
+                        String(username).trim()
+                    ]
+                );
+
+            if (
+                result.rows.length === 0
+            ) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    message:
+                        "Invalid admin credentials."
+
+                });
+
+            }
+
+            const admin =
+                result.rows[0];
+
+            if (
+                admin.admin_status !==
+                "active"
+            ) {
+
+                return res.status(403).json({
+
+                    success: false,
+
+                    message:
+                        "Admin account is unavailable."
+
+                });
+
+            }
+
+            const match =
+                await bcrypt.compare(
+                    String(password),
+                    admin.password_hash
+                );
+
+            if (!match) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    message:
+                        "Invalid admin credentials."
+
+                });
+
+            }
+
+            req.session.adminId =
+                admin.id;
+
+            delete req.session.userId;
+
+            req.session.save(
+                function (sessionError) {
+
+                    if (sessionError) {
+
+                        console.error(
+                            "FINORA ADMIN SESSION SAVE ERROR:",
+                            sessionError
+                        );
+
+                        return res.status(500).json({
+
+                            success: false,
+
+                            message:
+                                "Admin session could not be created."
+
+                        });
+
+                    }
+
+                    return res.status(200).json({
+
+                        success: true,
+
+                        message:
+                            "Admin login successful."
+
+                    });
+
+                }
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "FINORA ADMIN LOGIN ERROR:",
+                error
+            );
+
+            return res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Unable to login as administrator."
+
+            });
+
+        }
+
+    }
+);
 
 /* =========================================================
-   ADMIN DEPOSIT APPROVAL
+   ADMIN PENDING DEPOSITS
+========================================================= */
+
+app.get(
+    "/api/admin/deposits",
+    requireAdmin,
+    async function (req, res) {
+
+        try {
+
+            const result =
+                await pool.query(
+                    `
+                    SELECT
+                        d.*,
+                        u.full_name,
+                        u.phone,
+                        u.email,
+                        u.account_number
+                    FROM deposits d
+                    INNER JOIN users u
+                        ON u.id = d.user_id
+                    WHERE d.status = 'pending'
+                    ORDER BY d.created_at ASC, d.id ASC
+                    `
+                );
+
+            return res.status(200).json({
+
+                success: true,
+
+                deposits:
+                    result.rows
+
+            });
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "FINORA ADMIN DEPOSITS ERROR:",
+                error
+            );
+
+            return res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Unable to load pending deposits."
+
+            });
+
+        }
+
+    }
+);
+
+/* =========================================================
+   ADMIN APPROVE DEPOSIT
 ========================================================= */
 
 app.post(
@@ -2208,13 +2510,11 @@ app.post(
         const client =
             await pool.connect();
 
-
         try {
 
             await client.query(
                 "BEGIN"
             );
-
 
             const depositResult =
                 await client.query(
@@ -2229,7 +2529,6 @@ app.post(
                     ]
                 );
 
-
             if (
                 depositResult.rows.length === 0
             ) {
@@ -2240,8 +2539,7 @@ app.post(
 
                 return res.status(404).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "Deposit not found."
@@ -2250,10 +2548,8 @@ app.post(
 
             }
 
-
             const deposit =
                 depositResult.rows[0];
-
 
             if (
                 deposit.status !==
@@ -2266,8 +2562,7 @@ app.post(
 
                 return res.status(400).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "This deposit has already been processed."
@@ -2276,6 +2571,60 @@ app.post(
 
             }
 
+            const userResult =
+                await client.query(
+                    `
+                    SELECT
+                        id,
+                        account_status
+                    FROM users
+                    WHERE id = $1
+                    FOR UPDATE
+                    `,
+                    [
+                        deposit.user_id
+                    ]
+                );
+
+            if (
+                userResult.rows.length === 0
+            ) {
+
+                await client.query(
+                    "ROLLBACK"
+                );
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "Deposit owner was not found."
+
+                });
+
+            }
+
+            if (
+                userResult.rows[0]
+                    .account_status !==
+                "active"
+            ) {
+
+                await client.query(
+                    "ROLLBACK"
+                );
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "The user's account is frozen."
+
+                });
+
+            }
 
             await client.query(
                 `
@@ -2293,14 +2642,12 @@ app.post(
                 ]
             );
 
-
             await client.query(
                 `
                 UPDATE users
                 SET
                     wallet_balance =
                         wallet_balance + $1,
-
                     updated_at =
                         CURRENT_TIMESTAMP
                 WHERE id = $2
@@ -2311,13 +2658,13 @@ app.post(
                 ]
             );
 
-
             await client.query(
                 `
                 UPDATE transactions
                 SET
                     status = 'completed',
-                    description = 'Deposit approved.'
+                    description =
+                        'Deposit approved.'
                 WHERE reference_id = $1
                   AND type = 'deposit'
                 `,
@@ -2326,22 +2673,18 @@ app.post(
                 ]
             );
 
-
             await processReferralCommissions(
                 client,
                 deposit
             );
 
-
             await client.query(
                 "COMMIT"
             );
 
-
             return res.status(200).json({
 
-                success:
-                    true,
+                success: true,
 
                 message:
                     "Deposit approved successfully."
@@ -2352,21 +2695,26 @@ app.post(
 
         catch (error) {
 
-            await client.query(
-                "ROLLBACK"
-            );
-
+            try {
+                await client.query(
+                    "ROLLBACK"
+                );
+            }
+            catch (rollbackError) {
+                console.error(
+                    "FINORA DEPOSIT ROLLBACK ERROR:",
+                    rollbackError
+                );
+            }
 
             console.error(
                 "FINORA DEPOSIT APPROVAL ERROR:",
                 error
             );
 
-
             return res.status(500).json({
 
-                success:
-                    false,
+                success: false,
 
                 message:
                     "Unable to approve deposit."
@@ -2384,9 +2732,8 @@ app.post(
     }
 );
 
-
 /* =========================================================
-   ADMIN DEPOSIT REJECTION
+   ADMIN REJECT DEPOSIT
 ========================================================= */
 
 app.post(
@@ -2394,19 +2741,17 @@ app.post(
     requireAdmin,
     async function (req, res) {
 
+        const client =
+            await pool.connect();
+
         try {
 
-            const reason =
-                req.body &&
-                req.body.reason
-                    ? String(
-                        req.body.reason
-                    ).trim()
-                    : "Deposit rejected.";
-
+            await client.query(
+                "BEGIN"
+            );
 
             const result =
-                await pool.query(
+                await client.query(
                     `
                     UPDATE deposits
                     SET
@@ -2418,20 +2763,27 @@ app.post(
                     RETURNING *
                     `,
                     [
-                        reason,
+                        req.body &&
+                        req.body.reason
+                            ? String(
+                                req.body.reason
+                            ).trim()
+                            : "Deposit rejected.",
                         req.params.id
                     ]
                 );
-
 
             if (
                 result.rows.length === 0
             ) {
 
+                await client.query(
+                    "ROLLBACK"
+                );
+
                 return res.status(404).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "Pending deposit not found."
@@ -2440,8 +2792,10 @@ app.post(
 
             }
 
+            const deposit =
+                result.rows[0];
 
-            await pool.query(
+            await client.query(
                 `
                 UPDATE transactions
                 SET
@@ -2451,16 +2805,18 @@ app.post(
                   AND type = 'deposit'
                 `,
                 [
-                    reason,
-                    req.params.id
+                    deposit.rejected_reason,
+                    deposit.id
                 ]
             );
 
+            await client.query(
+                "COMMIT"
+            );
 
             return res.status(200).json({
 
-                success:
-                    true,
+                success: true,
 
                 message:
                     "Deposit rejected."
@@ -2471,16 +2827,26 @@ app.post(
 
         catch (error) {
 
+            try {
+                await client.query(
+                    "ROLLBACK"
+                );
+            }
+            catch (rollbackError) {
+                console.error(
+                    "FINORA REJECT DEPOSIT ROLLBACK ERROR:",
+                    rollbackError
+                );
+            }
+
             console.error(
                 "FINORA DEPOSIT REJECTION ERROR:",
                 error
             );
 
-
             return res.status(500).json({
 
-                success:
-                    false,
+                success: false,
 
                 message:
                     "Unable to reject deposit."
@@ -2489,9 +2855,14 @@ app.post(
 
         }
 
+        finally {
+
+            client.release();
+
+        }
+
     }
 );
-
 
 /* =========================================================
    WITHDRAWAL
@@ -2505,31 +2876,38 @@ app.post(
         const client =
             await pool.connect();
 
-
         try {
 
-            const {
-                amount,
-                method,
-                phone
-            } = req.body || {};
+            const amount =
+                Number(
+                    req.body &&
+                    req.body.amount
+                );
 
+            const method =
+                req.body &&
+                req.body.method
+                    ? String(
+                        req.body.method
+                    ).trim()
+                    : null;
 
-            const withdrawalAmount =
-                Number(amount);
-
+            const phone =
+                req.body &&
+                req.body.phone
+                    ? normalizeUgandaPhone(
+                        req.body.phone
+                    )
+                    : null;
 
             if (
-                !Number.isFinite(
-                    withdrawalAmount
-                ) ||
-                withdrawalAmount <= 0
+                !Number.isFinite(amount) ||
+                amount <= 0
             ) {
 
                 return res.status(400).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "Enter a valid withdrawal amount."
@@ -2538,16 +2916,13 @@ app.post(
 
             }
 
-
             if (
-                withdrawalAmount <
-                MIN_WITHDRAWAL
+                amount < MIN_WITHDRAWAL
             ) {
 
                 return res.status(400).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         `Minimum withdrawal is UGX ${MIN_WITHDRAWAL}.`
@@ -2556,18 +2931,89 @@ app.post(
 
             }
 
+            if (
+                phone &&
+                !validUgandaPhone(phone)
+            ) {
 
-            /*
-             * START TRANSACTION
-             *
-             * The balance check and wallet deduction
-             * must happen inside the same transaction.
-             */
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Please enter a valid Uganda mobile money number."
+
+                });
+
+            }
 
             await client.query(
                 "BEGIN"
             );
 
+            /*
+             * Lock the user row before checking balance.
+             * This prevents two simultaneous withdrawals
+             * from spending the same wallet balance.
+             */
+
+            const userResult =
+                await client.query(
+                    `
+                    SELECT
+                        id,
+                        wallet_balance,
+                        account_status
+                    FROM users
+                    WHERE id = $1
+                    FOR UPDATE
+                    `,
+                    [
+                        req.session.userId
+                    ]
+                );
+
+            if (
+                userResult.rows.length === 0
+            ) {
+
+                await client.query(
+                    "ROLLBACK"
+                );
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "User account was not found."
+
+                });
+
+            }
+
+            const user =
+                userResult.rows[0];
+
+            if (
+                user.account_status !==
+                "active"
+            ) {
+
+                await client.query(
+                    "ROLLBACK"
+                );
+
+                return res.status(403).json({
+
+                    success: false,
+
+                    message:
+                        "Your account is currently unavailable."
+
+                });
+
+            }
 
             const countResult =
                 await client.query(
@@ -2585,7 +3031,6 @@ app.post(
                     ]
                 );
 
-
             if (
                 Number(
                     countResult.rows[0].count
@@ -2599,8 +3044,7 @@ app.post(
 
                 return res.status(400).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "You have reached the maximum of 2 withdrawals for today."
@@ -2609,53 +3053,13 @@ app.post(
 
             }
 
-
-            const userResult =
-                await client.query(
-                    `
-                    SELECT
-                        wallet_balance
-                    FROM users
-                    WHERE id = $1
-                    FOR UPDATE
-                    `,
-                    [
-                        req.session.userId
-                    ]
-                );
-
-
-            if (
-                userResult.rows.length === 0
-            ) {
-
-                await client.query(
-                    "ROLLBACK"
-                );
-
-                return res.status(404).json({
-
-                    success:
-                        false,
-
-                    message:
-                        "User account was not found."
-
-                });
-
-            }
-
-
             const walletBalance =
                 Number(
-                    userResult.rows[0]
-                        .wallet_balance
+                    user.wallet_balance
                 );
 
-
             if (
-                walletBalance <
-                withdrawalAmount
+                walletBalance < amount
             ) {
 
                 await client.query(
@@ -2664,8 +3068,7 @@ app.post(
 
                 return res.status(400).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "Insufficient wallet balance."
@@ -2674,16 +3077,22 @@ app.post(
 
             }
 
-
             const fee =
-                withdrawalAmount *
-                WITHDRAWAL_FEE_RATE;
-
+                money(
+                    amount *
+                    WITHDRAWAL_FEE_RATE
+                );
 
             const netAmount =
-                withdrawalAmount -
-                fee;
+                money(
+                    amount - fee
+                );
 
+            /*
+             * The requested amount is reserved immediately.
+             * If admin rejects the withdrawal, the full amount
+             * is returned to the wallet.
+             */
 
             const withdrawalResult =
                 await client.query(
@@ -2695,9 +3104,9 @@ app.post(
                         fee,
                         net_amount,
                         method,
-                        phone
+                        phone,
+                        status
                     )
-
                     VALUES
                     (
                         $1,
@@ -2705,25 +3114,23 @@ app.post(
                         $3,
                         $4,
                         $5,
-                        $6
+                        $6,
+                        'pending'
                     )
-
                     RETURNING *
                     `,
                     [
                         req.session.userId,
-                        withdrawalAmount,
+                        amount,
                         fee,
                         netAmount,
-                        method || null,
-                        phone || null
+                        method,
+                        phone
                     ]
                 );
 
-
             const withdrawal =
                 withdrawalResult.rows[0];
-
 
             await client.query(
                 `
@@ -2731,17 +3138,15 @@ app.post(
                 SET
                     wallet_balance =
                         wallet_balance - $1,
-
                     updated_at =
                         CURRENT_TIMESTAMP
                 WHERE id = $2
                 `,
                 [
-                    withdrawalAmount,
+                    amount,
                     req.session.userId
                 ]
             );
-
 
             await client.query(
                 `
@@ -2754,7 +3159,6 @@ app.post(
                     description,
                     status
                 )
-
                 VALUES
                 (
                     $1,
@@ -2767,22 +3171,19 @@ app.post(
                 `,
                 [
                     req.session.userId,
-                    withdrawalAmount,
+                    amount,
                     withdrawal.id,
                     `Withdrawal request. Fee: UGX ${fee.toFixed(2)}`
                 ]
             );
 
-
             await client.query(
                 "COMMIT"
             );
 
-
             return res.status(201).json({
 
-                success:
-                    true,
+                success: true,
 
                 message:
                     "Withdrawal request submitted successfully.",
@@ -2793,13 +3194,19 @@ app.post(
                         withdrawal.id,
 
                     amount:
-                        withdrawal.amount,
+                        Number(
+                            withdrawal.amount
+                        ),
 
                     fee:
-                        withdrawal.fee,
+                        Number(
+                            withdrawal.fee
+                        ),
 
                     netAmount:
-                        withdrawal.net_amount,
+                        Number(
+                            withdrawal.net_amount
+                        ),
 
                     status:
                         withdrawal.status
@@ -2813,33 +3220,25 @@ app.post(
         catch (error) {
 
             try {
-
                 await client.query(
                     "ROLLBACK"
                 );
-
             }
-
             catch (rollbackError) {
-
                 console.error(
                     "FINORA WITHDRAWAL ROLLBACK ERROR:",
                     rollbackError
                 );
-
             }
-
 
             console.error(
                 "FINORA WITHDRAWAL ERROR:",
                 error
             );
 
-
             return res.status(500).json({
 
-                success:
-                    false,
+                success: false,
 
                 message:
                     "Unable to submit withdrawal."
@@ -2857,9 +3256,8 @@ app.post(
     }
 );
 
-
 /* =========================================================
-   USER WITHDRAWAL HISTORY
+   USER WITHDRAWALS
 ========================================================= */
 
 app.get(
@@ -2875,18 +3273,16 @@ app.get(
                     SELECT *
                     FROM withdrawals
                     WHERE user_id = $1
-                    ORDER BY created_at DESC
+                    ORDER BY created_at DESC, id DESC
                     `,
                     [
                         req.session.userId
                     ]
                 );
 
-
             return res.status(200).json({
 
-                success:
-                    true,
+                success: true,
 
                 withdrawals:
                     result.rows
@@ -2902,11 +3298,9 @@ app.get(
                 error
             );
 
-
             return res.status(500).json({
 
-                success:
-                    false,
+                success: false,
 
                 message:
                     "Unable to load withdrawals."
@@ -2918,10 +3312,412 @@ app.get(
     }
 );
 
+/* =========================================================
+   ADMIN PENDING WITHDRAWALS
+========================================================= */
+
+app.get(
+    "/api/admin/withdrawals",
+    requireAdmin,
+    async function (req, res) {
+
+        try {
+
+            const result =
+                await pool.query(
+                    `
+                    SELECT
+                        w.*,
+                        u.full_name,
+                        u.phone AS user_phone,
+                        u.email,
+                        u.account_number
+                    FROM withdrawals w
+                    INNER JOIN users u
+                        ON u.id = w.user_id
+                    WHERE w.status = 'pending'
+                    ORDER BY w.created_at ASC, w.id ASC
+                    `
+                );
+
+            return res.status(200).json({
+
+                success: true,
+
+                withdrawals:
+                    result.rows
+
+            });
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "FINORA ADMIN WITHDRAWALS ERROR:",
+                error
+            );
+
+            return res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Unable to load pending withdrawals."
+
+            });
+
+        }
+
+    }
+);
+
+/* =========================================================
+   ADMIN APPROVE WITHDRAWAL
+========================================================= */
+
+app.post(
+    "/api/admin/withdrawals/:id/approve",
+    requireAdmin,
+    async function (req, res) {
+
+        const client =
+            await pool.connect();
+
+        try {
+
+            await client.query(
+                "BEGIN"
+            );
+
+            const result =
+                await client.query(
+                    `
+                    SELECT *
+                    FROM withdrawals
+                    WHERE id = $1
+                    FOR UPDATE
+                    `,
+                    [
+                        req.params.id
+                    ]
+                );
+
+            if (
+                result.rows.length === 0
+            ) {
+
+                await client.query(
+                    "ROLLBACK"
+                );
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "Withdrawal not found."
+
+                });
+
+            }
+
+            const withdrawal =
+                result.rows[0];
+
+            if (
+                withdrawal.status !==
+                "pending"
+            ) {
+
+                await client.query(
+                    "ROLLBACK"
+                );
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "This withdrawal has already been processed."
+
+                });
+
+            }
+
+            await client.query(
+                `
+                UPDATE withdrawals
+                SET
+                    status = 'approved',
+                    approved_by = $1,
+                    approved_at = CURRENT_TIMESTAMP,
+                    updated_at = CURRENT_TIMESTAMP
+                WHERE id = $2
+                `,
+                [
+                    req.session.adminId,
+                    withdrawal.id
+                ]
+            );
+
+            await client.query(
+                `
+                UPDATE transactions
+                SET
+                    status = 'completed',
+                    description =
+                        'Withdrawal approved.'
+                WHERE reference_id = $1
+                  AND type = 'withdrawal'
+                `,
+                [
+                    withdrawal.id
+                ]
+            );
+
+            await client.query(
+                "COMMIT"
+            );
+
+            return res.status(200).json({
+
+                success: true,
+
+                message:
+                    "Withdrawal approved successfully."
+
+            });
+
+        }
+
+        catch (error) {
+
+            try {
+                await client.query(
+                    "ROLLBACK"
+                );
+            }
+            catch (rollbackError) {
+                console.error(
+                    "FINORA APPROVE WITHDRAWAL ROLLBACK ERROR:",
+                    rollbackError
+                );
+            }
+
+            console.error(
+                "FINORA APPROVE WITHDRAWAL ERROR:",
+                error
+            );
+
+            return res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Unable to approve withdrawal."
+
+            });
+
+        }
+
+        finally {
+
+            client.release();
+
+        }
+
+    }
+);
+
+/* =========================================================
+   ADMIN REJECT WITHDRAWAL
+========================================================= */
+
+app.post(
+    "/api/admin/withdrawals/:id/reject",
+    requireAdmin,
+    async function (req, res) {
+
+        const client =
+            await pool.connect();
+
+        try {
+
+            await client.query(
+                "BEGIN"
+            );
+
+            const result =
+                await client.query(
+                    `
+                    SELECT *
+                    FROM withdrawals
+                    WHERE id = $1
+                    FOR UPDATE
+                    `,
+                    [
+                        req.params.id
+                    ]
+                );
+
+            if (
+                result.rows.length === 0
+            ) {
+
+                await client.query(
+                    "ROLLBACK"
+                );
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "Withdrawal not found."
+
+                });
+
+            }
+
+            const withdrawal =
+                result.rows[0];
+
+            if (
+                withdrawal.status !==
+                "pending"
+            ) {
+
+                await client.query(
+                    "ROLLBACK"
+                );
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "This withdrawal has already been processed."
+
+                });
+
+            }
+
+            const reason =
+                req.body &&
+                req.body.reason
+                    ? String(
+                        req.body.reason
+                    ).trim()
+                    : "Withdrawal rejected.";
+
+            /*
+             * Return the RESERVED amount to the wallet.
+             */
+
+            await client.query(
+                `
+                UPDATE withdrawals
+                SET
+                    status = 'rejected',
+                    rejected_reason = $1,
+                    updated_at =
+                        CURRENT_TIMESTAMP
+                WHERE id = $2
+                `,
+                [
+                    reason,
+                    withdrawal.id
+                ]
+            );
+
+            await client.query(
+                `
+                UPDATE users
+                SET
+                    wallet_balance =
+                        wallet_balance + $1,
+                    updated_at =
+                        CURRENT_TIMESTAMP
+                WHERE id = $2
+                `,
+                [
+                    withdrawal.amount,
+                    withdrawal.user_id
+                ]
+            );
+
+            await client.query(
+                `
+                UPDATE transactions
+                SET
+                    status = 'rejected',
+                    description = $1
+                WHERE reference_id = $2
+                  AND type = 'withdrawal'
+                `,
+                [
+                    reason,
+                    withdrawal.id
+                ]
+            );
+
+            await client.query(
+                "COMMIT"
+            );
+
+            return res.status(200).json({
+
+                success: true,
+
+                message:
+                    "Withdrawal rejected and wallet amount restored."
+
+            });
+
+        }
+
+        catch (error) {
+
+            try {
+                await client.query(
+                    "ROLLBACK"
+                );
+            }
+            catch (rollbackError) {
+                console.error(
+                    "FINORA REJECT WITHDRAWAL ROLLBACK ERROR:",
+                    rollbackError
+                );
+            }
+
+            console.error(
+                "FINORA REJECT WITHDRAWAL ERROR:",
+                error
+            );
+
+            return res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Unable to reject withdrawal."
+
+            });
+
+        }
+
+        finally {
+
+            client.release();
+
+        }
+
+    }
+);
 
 /* =========================================================
    DAILY EARNINGS
-   ADMIN ONLY
 ========================================================= */
 
 app.post(
@@ -2932,13 +3728,11 @@ app.post(
         const client =
             await pool.connect();
 
-
         try {
 
             await client.query(
                 "BEGIN"
             );
-
 
             const depositsResult =
                 await client.query(
@@ -2948,14 +3742,15 @@ app.post(
                         d.user_id,
                         d.amount
                     FROM deposits d
+                    INNER JOIN users u
+                        ON u.id = d.user_id
                     WHERE d.status = 'approved'
+                      AND u.account_status = 'active'
+                    ORDER BY d.id ASC
                     `
                 );
 
-
-            let processed =
-                0;
-
+            let processed = 0;
 
             for (
                 const deposit
@@ -2963,11 +3758,12 @@ app.post(
             ) {
 
                 const earning =
-                    Number(
-                        deposit.amount
-                    ) *
-                    DAILY_RATE;
-
+                    money(
+                        Number(
+                            deposit.amount
+                        ) *
+                        DAILY_RATE
+                    );
 
                 const earningResult =
                     await client.query(
@@ -2980,7 +3776,6 @@ app.post(
                             rate,
                             earning_date
                         )
-
                         VALUES
                         (
                             $1,
@@ -2989,7 +3784,6 @@ app.post(
                             $4,
                             CURRENT_DATE
                         )
-
                         ON CONFLICT
                         (
                             user_id,
@@ -2997,7 +3791,6 @@ app.post(
                             earning_date
                         )
                         DO NOTHING
-
                         RETURNING id
                         `,
                         [
@@ -3008,6 +3801,9 @@ app.post(
                         ]
                     );
 
+                /*
+                 * Already paid today.
+                 */
 
                 if (
                     earningResult.rows.length === 0
@@ -3016,7 +3812,6 @@ app.post(
                     continue;
 
                 }
-
 
                 await client.query(
                     `
@@ -3038,7 +3833,6 @@ app.post(
                     ]
                 );
 
-
                 await client.query(
                     `
                     INSERT INTO transactions
@@ -3050,7 +3844,6 @@ app.post(
                         description,
                         status
                     )
-
                     VALUES
                     (
                         $1,
@@ -3069,23 +3862,22 @@ app.post(
                     ]
                 );
 
-
                 processed++;
 
             }
-
 
             await client.query(
                 "COMMIT"
             );
 
-
             return res.status(200).json({
 
-                success:
-                    true,
+                success: true,
 
-                processed
+                processed,
+
+                rate:
+                    DAILY_RATE
 
             });
 
@@ -3094,33 +3886,25 @@ app.post(
         catch (error) {
 
             try {
-
                 await client.query(
                     "ROLLBACK"
                 );
-
             }
-
             catch (rollbackError) {
-
                 console.error(
                     "FINORA EARNINGS ROLLBACK ERROR:",
                     rollbackError
                 );
-
             }
-
 
             console.error(
                 "FINORA DAILY EARNINGS ERROR:",
                 error
             );
 
-
             return res.status(500).json({
 
-                success:
-                    false,
+                success: false,
 
                 message:
                     "Unable to process daily earnings."
@@ -3137,7 +3921,6 @@ app.post(
 
     }
 );
-
 
 /* =========================================================
    USER EARNINGS
@@ -3156,18 +3939,16 @@ app.get(
                     SELECT *
                     FROM earnings
                     WHERE user_id = $1
-                    ORDER BY created_at DESC
+                    ORDER BY earning_date DESC, id DESC
                     `,
                     [
                         req.session.userId
                     ]
                 );
 
-
             return res.status(200).json({
 
-                success:
-                    true,
+                success: true,
 
                 earnings:
                     result.rows
@@ -3179,15 +3960,13 @@ app.get(
         catch (error) {
 
             console.error(
-                "FINORA EARNINGS HISTORY ERROR:",
+                "FINORA EARNINGS ERROR:",
                 error
             );
 
-
             return res.status(500).json({
 
-                success:
-                    false,
+                success: false,
 
                 message:
                     "Unable to load earnings."
@@ -3198,7 +3977,6 @@ app.get(
 
     }
 );
-
 
 /* =========================================================
    INVESTMENTS
@@ -3239,18 +4017,17 @@ app.get(
                         d.created_at
 
                     ORDER BY
-                        d.created_at DESC
+                        d.created_at DESC,
+                        d.id DESC
                     `,
                     [
                         req.session.userId
                     ]
                 );
 
-
             return res.status(200).json({
 
-                success:
-                    true,
+                success: true,
 
                 investments:
                     result.rows
@@ -3266,11 +4043,9 @@ app.get(
                 error
             );
 
-
             return res.status(500).json({
 
-                success:
-                    false,
+                success: false,
 
                 message:
                     "Unable to load investments."
@@ -3282,9 +4057,8 @@ app.get(
     }
 );
 
-
 /* =========================================================
-   TEAM / REFERRALS
+   TEAM
 ========================================================= */
 
 app.get(
@@ -3309,15 +4083,13 @@ app.get(
                     ]
                 );
 
-
             if (
                 userResult.rows.length === 0
             ) {
 
                 return res.status(404).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "User account was not found."
@@ -3326,13 +4098,9 @@ app.get(
 
             }
 
-
-            const currentUser =
-                userResult.rows[0];
-
             const referralCode =
-                currentUser.referral_code;
-
+                userResult.rows[0]
+                    .referral_code;
 
             const level1Result =
                 await pool.query(
@@ -3366,7 +4134,6 @@ app.get(
                         referralCode
                     ]
                 );
-
 
             const level2Result =
                 await pool.query(
@@ -3404,7 +4171,6 @@ app.get(
                         referralCode
                     ]
                 );
-
 
             const level3Result =
                 await pool.query(
@@ -3447,7 +4213,6 @@ app.get(
                     ]
                 );
 
-
             const level1 =
                 level1Result.rows;
 
@@ -3456,7 +4221,6 @@ app.get(
 
             const level3 =
                 level3Result.rows;
-
 
             const commissionResult =
                 await pool.query(
@@ -3510,27 +4274,23 @@ app.get(
                     ]
                 );
 
-
             const commission =
                 commissionResult.rows[0];
 
-
-            const totalMembers =
-                level1.length +
-                level2.length +
-                level3.length;
-
+            const team = [
+                ...level1,
+                ...level2,
+                ...level3
+            ];
 
             return res.status(200).json({
 
-                success:
-                    true,
+                success: true,
 
-                referralCode:
-                    referralCode,
+                referralCode,
 
                 totalMembers:
-                    totalMembers,
+                    team.length,
 
                 totalReferralIncome:
                     Number(
@@ -3565,20 +4325,13 @@ app.get(
 
                 },
 
-                level1:
-                    level1,
+                level1,
 
-                level2:
-                    level2,
+                level2,
 
-                level3:
-                    level3,
+                level3,
 
-                team: [
-                    ...level1,
-                    ...level2,
-                    ...level3
-                ]
+                team
 
             });
 
@@ -3591,11 +4344,9 @@ app.get(
                 error
             );
 
-
             return res.status(500).json({
 
-                success:
-                    false,
+                success: false,
 
                 message:
                     "Unable to load team information."
@@ -3606,7 +4357,6 @@ app.get(
 
     }
 );
-
 
 /* =========================================================
    REFERRAL COMMISSIONS
@@ -3625,18 +4375,16 @@ app.get(
                     SELECT *
                     FROM referral_commissions
                     WHERE user_id = $1
-                    ORDER BY created_at DESC
+                    ORDER BY created_at DESC, id DESC
                     `,
                     [
                         req.session.userId
                     ]
                 );
 
-
             return res.status(200).json({
 
-                success:
-                    true,
+                success: true,
 
                 referrals:
                     result.rows
@@ -3648,15 +4396,13 @@ app.get(
         catch (error) {
 
             console.error(
-                "FINORA REFERRAL ERROR:",
+                "FINORA REFERRALS ERROR:",
                 error
             );
 
-
             return res.status(500).json({
 
-                success:
-                    false,
+                success: false,
 
                 message:
                     "Unable to load referral income."
@@ -3667,7 +4413,6 @@ app.get(
 
     }
 );
-
 
 /* =========================================================
    TRANSACTION HISTORY
@@ -3700,11 +4445,9 @@ app.get(
                     ]
                 );
 
-
             return res.status(200).json({
 
-                success:
-                    true,
+                success: true,
 
                 transactions:
                     result.rows
@@ -3720,11 +4463,9 @@ app.get(
                 error
             );
 
-
             return res.status(500).json({
 
-                success:
-                    false,
+                success: false,
 
                 message:
                     "Unable to load transactions."
@@ -3735,7 +4476,6 @@ app.get(
 
     }
 );
-
 
 /* =========================================================
    TRANSACTION FILTER
@@ -3751,34 +4491,23 @@ app.get(
             const type =
                 String(
                     req.params.type
-                ).trim();
-
+                ).trim().toLowerCase();
 
             const allowedTypes = [
-
                 "deposit",
-
                 "withdrawal",
-
                 "daily_income",
-
                 "referral",
-
                 "bonus"
-
             ];
 
-
             if (
-                !allowedTypes.includes(
-                    type
-                )
+                !allowedTypes.includes(type)
             ) {
 
                 return res.status(400).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "Invalid transaction type."
@@ -3786,7 +4515,6 @@ app.get(
                 });
 
             }
-
 
             const result =
                 await pool.query(
@@ -3810,11 +4538,9 @@ app.get(
                     ]
                 );
 
-
             return res.status(200).json({
 
-                success:
-                    true,
+                success: true,
 
                 transactions:
                     result.rows
@@ -3830,11 +4556,9 @@ app.get(
                 error
             );
 
-
             return res.status(500).json({
 
-                success:
-                    false,
+                success: false,
 
                 message:
                     "Unable to load transaction records."
@@ -3845,710 +4569,6 @@ app.get(
 
     }
 );
-
-
-/* =========================================================
-   ADMIN LOGIN
-========================================================= */
-
-app.post(
-    "/api/admin/login",
-    async function (req, res) {
-
-        try {
-
-            const {
-                username,
-                password
-            } = req.body || {};
-
-
-            if (
-                !username ||
-                !password
-            ) {
-
-                return res.status(400).json({
-
-                    success:
-                        false,
-
-                    message:
-                        "Admin username and password are required."
-
-                });
-
-            }
-
-
-            const cleanUsername =
-                String(
-                    username
-                ).trim();
-
-
-            const result =
-                await pool.query(
-                    `
-                    SELECT *
-                    FROM admins
-                    WHERE username = $1
-                    LIMIT 1
-                    `,
-                    [
-                        cleanUsername
-                    ]
-                );
-
-
-            if (
-                result.rows.length === 0
-            ) {
-
-                return res.status(401).json({
-
-                    success:
-                        false,
-
-                    message:
-                        "Invalid admin credentials."
-
-                });
-
-            }
-
-
-            const admin =
-                result.rows[0];
-
-
-            if (
-                admin.admin_status !==
-                "active"
-            ) {
-
-                return res.status(403).json({
-
-                    success:
-                        false,
-
-                    message:
-                        "Admin account is unavailable."
-
-                });
-
-            }
-
-
-            const match =
-                await bcrypt.compare(
-                    String(password),
-                    admin.password_hash
-                );
-
-
-            if (!match) {
-
-                return res.status(401).json({
-
-                    success:
-                        false,
-
-                    message:
-                        "Invalid admin credentials."
-
-                });
-
-            }
-
-
-            req.session.adminId =
-                admin.id;
-
-
-            req.session.save(
-                function (sessionError) {
-
-                    if (sessionError) {
-
-                        console.error(
-                            "FINORA ADMIN SESSION SAVE ERROR:",
-                            sessionError
-                        );
-
-
-                        return res.status(500).json({
-
-                            success:
-                                false,
-
-                            message:
-                                "Admin session could not be created."
-
-                        });
-
-                    }
-
-
-                    return res.status(200).json({
-
-                        success:
-                            true,
-
-                        message:
-                            "Admin login successful."
-
-                    });
-
-                }
-            );
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "FINORA ADMIN LOGIN ERROR:",
-                error
-            );
-
-
-            return res.status(500).json({
-
-                success:
-                    false,
-
-                message:
-                    "Unable to login as administrator."
-
-            });
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   ADMIN PENDING DEPOSITS
-========================================================= */
-
-app.get(
-    "/api/admin/deposits",
-    requireAdmin,
-    async function (req, res) {
-
-        try {
-
-            const result =
-                await pool.query(
-                    `
-                    SELECT
-                        d.*,
-                        u.full_name,
-                        u.phone,
-                        u.email,
-                        u.account_number
-                    FROM deposits d
-
-                    INNER JOIN users u
-                        ON u.id = d.user_id
-
-                    WHERE d.status = 'pending'
-
-                    ORDER BY
-                        d.created_at ASC
-                    `
-                );
-
-
-            return res.status(200).json({
-
-                success:
-                    true,
-
-                deposits:
-                    result.rows
-
-            });
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "FINORA ADMIN DEPOSITS ERROR:",
-                error
-            );
-
-
-            return res.status(500).json({
-
-                success:
-                    false,
-
-                message:
-                    "Unable to load pending deposits."
-
-            });
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   ADMIN PENDING WITHDRAWALS
-========================================================= */
-
-app.get(
-    "/api/admin/withdrawals",
-    requireAdmin,
-    async function (req, res) {
-
-        try {
-
-            const result =
-                await pool.query(
-                    `
-                    SELECT
-                        w.*,
-                        u.full_name,
-                        u.phone AS user_phone,
-                        u.email,
-                        u.account_number
-                    FROM withdrawals w
-
-                    INNER JOIN users u
-                        ON u.id = w.user_id
-
-                    WHERE w.status = 'pending'
-
-                    ORDER BY
-                        w.created_at ASC
-                    `
-                );
-
-
-            return res.status(200).json({
-
-                success:
-                    true,
-
-                withdrawals:
-                    result.rows
-
-            });
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "FINORA ADMIN WITHDRAWALS ERROR:",
-                error
-            );
-
-
-            return res.status(500).json({
-
-                success:
-                    false,
-
-                message:
-                    "Unable to load pending withdrawals."
-
-            });
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   ADMIN APPROVE WITHDRAWAL
-========================================================= */
-
-app.post(
-    "/api/admin/withdrawals/:id/approve",
-    requireAdmin,
-    async function (req, res) {
-
-        const client =
-            await pool.connect();
-
-
-        try {
-
-            await client.query(
-                "BEGIN"
-            );
-
-
-            const result =
-                await client.query(
-                    `
-                    SELECT *
-                    FROM withdrawals
-                    WHERE id = $1
-                    FOR UPDATE
-                    `,
-                    [
-                        req.params.id
-                    ]
-                );
-
-
-            if (
-                result.rows.length === 0
-            ) {
-
-                await client.query(
-                    "ROLLBACK"
-                );
-
-                return res.status(404).json({
-
-                    success:
-                        false,
-
-                    message:
-                        "Withdrawal not found."
-
-                });
-
-            }
-
-
-            const withdrawal =
-                result.rows[0];
-
-
-            if (
-                withdrawal.status !==
-                "pending"
-            ) {
-
-                await client.query(
-                    "ROLLBACK"
-                );
-
-                return res.status(400).json({
-
-                    success:
-                        false,
-
-                    message:
-                        "This withdrawal has already been processed."
-
-                });
-
-            }
-
-
-            await client.query(
-                `
-                UPDATE withdrawals
-                SET
-                    status = 'approved',
-                    approved_by = $1,
-                    approved_at = CURRENT_TIMESTAMP,
-                    updated_at = CURRENT_TIMESTAMP
-                WHERE id = $2
-                `,
-                [
-                    req.session.adminId,
-                    withdrawal.id
-                ]
-            );
-
-
-            await client.query(
-                `
-                UPDATE transactions
-                SET
-                    status = 'completed',
-                    description = 'Withdrawal approved.'
-                WHERE reference_id = $1
-                  AND type = 'withdrawal'
-                `,
-                [
-                    withdrawal.id
-                ]
-            );
-
-
-            await client.query(
-                "COMMIT"
-            );
-
-
-            return res.status(200).json({
-
-                success:
-                    true,
-
-                message:
-                    "Withdrawal approved successfully."
-
-            });
-
-        }
-
-        catch (error) {
-
-            try {
-
-                await client.query(
-                    "ROLLBACK"
-                );
-
-            }
-
-            catch (rollbackError) {
-
-                console.error(
-                    "FINORA APPROVE WITHDRAWAL ROLLBACK ERROR:",
-                    rollbackError
-                );
-
-            }
-
-
-            console.error(
-                "FINORA APPROVE WITHDRAWAL ERROR:",
-                error
-            );
-
-
-            return res.status(500).json({
-
-                success:
-                    false,
-
-                message:
-                    "Unable to approve withdrawal."
-
-            });
-
-        }
-
-        finally {
-
-            client.release();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   ADMIN REJECT WITHDRAWAL
-========================================================= */
-
-app.post(
-    "/api/admin/withdrawals/:id/reject",
-    requireAdmin,
-    async function (req, res) {
-
-        const client =
-            await pool.connect();
-
-
-        try {
-
-            await client.query(
-                "BEGIN"
-            );
-
-
-            const result =
-                await client.query(
-                    `
-                    SELECT *
-                    FROM withdrawals
-                    WHERE id = $1
-                    FOR UPDATE
-                    `,
-                    [
-                        req.params.id
-                    ]
-                );
-
-
-            if (
-                result.rows.length === 0
-            ) {
-
-                await client.query(
-                    "ROLLBACK"
-                );
-
-                return res.status(404).json({
-
-                    success:
-                        false,
-
-                    message:
-                        "Withdrawal not found."
-
-                });
-
-            }
-
-
-            const withdrawal =
-                result.rows[0];
-
-
-            if (
-                withdrawal.status !==
-                "pending"
-            ) {
-
-                await client.query(
-                    "ROLLBACK"
-                );
-
-                return res.status(400).json({
-
-                    success:
-                        false,
-
-                    message:
-                        "This withdrawal has already been processed."
-
-                });
-
-            }
-
-
-            const reason =
-                req.body &&
-                req.body.reason
-                    ? String(
-                        req.body.reason
-                    ).trim()
-                    : "Withdrawal rejected.";
-
-
-            await client.query(
-                `
-                UPDATE withdrawals
-                SET
-                    status = 'rejected',
-                    rejected_reason = $1,
-                    updated_at = CURRENT_TIMESTAMP
-                WHERE id = $2
-                `,
-                [
-                    reason,
-                    withdrawal.id
-                ]
-            );
-
-
-            await client.query(
-                `
-                UPDATE users
-                SET
-                    wallet_balance =
-                        wallet_balance + $1,
-
-                    updated_at =
-                        CURRENT_TIMESTAMP
-                WHERE id = $2
-                `,
-                [
-                    withdrawal.amount,
-                    withdrawal.user_id
-                ]
-            );
-
-
-            await client.query(
-                `
-                UPDATE transactions
-                SET
-                    status = 'rejected',
-                    description = $1
-                WHERE reference_id = $2
-                  AND type = 'withdrawal'
-                `,
-                [
-                    reason,
-                    withdrawal.id
-                ]
-            );
-
-
-            await client.query(
-                "COMMIT"
-            );
-
-
-            return res.status(200).json({
-
-                success:
-                    true,
-
-                message:
-                    "Withdrawal rejected and wallet amount restored."
-
-            });
-
-        }
-
-        catch (error) {
-
-            try {
-
-                await client.query(
-                    "ROLLBACK"
-                );
-
-            }
-
-            catch (rollbackError) {
-
-                console.error(
-                    "FINORA REJECT WITHDRAWAL ROLLBACK ERROR:",
-                    rollbackError
-                );
-
-            }
-
-
-            console.error(
-                "FINORA REJECT WITHDRAWAL ERROR:",
-                error
-            );
-
-
-            return res.status(500).json({
-
-                success:
-                    false,
-
-                message:
-                    "Unable to reject withdrawal."
-
-            });
-
-        }
-
-        finally {
-
-            client.release();
-
-        }
-
-    }
-);
-
 
 /* =========================================================
    ADMIN USERS
@@ -4577,15 +4597,13 @@ app.get(
                         account_status,
                         created_at
                     FROM users
-                    ORDER BY created_at DESC
+                    ORDER BY created_at DESC, id DESC
                     `
                 );
 
-
             return res.status(200).json({
 
-                success:
-                    true,
+                success: true,
 
                 users:
                     result.rows
@@ -4601,11 +4619,9 @@ app.get(
                 error
             );
 
-
             return res.status(500).json({
 
-                success:
-                    false,
+                success: false,
 
                 message:
                     "Unable to load users."
@@ -4617,9 +4633,8 @@ app.get(
     }
 );
 
-
 /* =========================================================
-   ADMIN FREEZE / ACTIVATE USER
+   ADMIN USER STATUS
 ========================================================= */
 
 app.patch(
@@ -4635,8 +4650,7 @@ app.patch(
                     req.body.status
                         ? req.body.status
                         : ""
-                ).trim();
-
+                ).trim().toLowerCase();
 
             if (
                 ![
@@ -4647,8 +4661,7 @@ app.patch(
 
                 return res.status(400).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "Status must be active or frozen."
@@ -4657,14 +4670,14 @@ app.patch(
 
             }
 
-
             const result =
                 await pool.query(
                     `
                     UPDATE users
                     SET
                         account_status = $1,
-                        updated_at = CURRENT_TIMESTAMP
+                        updated_at =
+                            CURRENT_TIMESTAMP
                     WHERE id = $2
                     RETURNING
                         id,
@@ -4677,15 +4690,13 @@ app.patch(
                     ]
                 );
 
-
             if (
                 result.rows.length === 0
             ) {
 
                 return res.status(404).json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "User not found."
@@ -4694,11 +4705,9 @@ app.patch(
 
             }
 
-
             return res.status(200).json({
 
-                success:
-                    true,
+                success: true,
 
                 message:
                     `User account ${status}.`,
@@ -4717,11 +4726,9 @@ app.patch(
                 error
             );
 
-
             return res.status(500).json({
 
-                success:
-                    false,
+                success: false,
 
                 message:
                     "Unable to update user status."
@@ -4733,9 +4740,8 @@ app.patch(
     }
 );
 
-
 /* =========================================================
-   ADMIN DASHBOARD SUMMARY
+   ADMIN SUMMARY
 ========================================================= */
 
 app.get(
@@ -4748,12 +4754,10 @@ app.get(
             const users =
                 await pool.query(
                     `
-                    SELECT
-                        COUNT(*)::INTEGER AS count
+                    SELECT COUNT(*)::INTEGER AS count
                     FROM users
                     `
                 );
-
 
             const deposits =
                 await pool.query(
@@ -4769,17 +4773,14 @@ app.get(
                     `
                 );
 
-
             const pendingDeposits =
                 await pool.query(
                     `
-                    SELECT
-                        COUNT(*)::INTEGER AS count
+                    SELECT COUNT(*)::INTEGER AS count
                     FROM deposits
                     WHERE status = 'pending'
                     `
                 );
-
 
             const withdrawals =
                 await pool.query(
@@ -4795,45 +4796,55 @@ app.get(
                     `
                 );
 
-
             const pendingWithdrawals =
                 await pool.query(
                     `
-                    SELECT
-                        COUNT(*)::INTEGER AS count
+                    SELECT COUNT(*)::INTEGER AS count
                     FROM withdrawals
                     WHERE status = 'pending'
                     `
                 );
 
-
             return res.status(200).json({
 
-                success:
-                    true,
+                success: true,
 
                 summary: {
 
                     users:
-                        users.rows[0].count,
+                        Number(
+                            users.rows[0].count
+                        ),
 
                     totalDeposits:
-                        deposits.rows[0].total,
+                        Number(
+                            deposits.rows[0].total
+                        ),
 
                     approvedDepositCount:
-                        deposits.rows[0].count,
+                        Number(
+                            deposits.rows[0].count
+                        ),
 
                     pendingDeposits:
-                        pendingDeposits.rows[0].count,
+                        Number(
+                            pendingDeposits.rows[0].count
+                        ),
 
                     totalWithdrawals:
-                        withdrawals.rows[0].total,
+                        Number(
+                            withdrawals.rows[0].total
+                        ),
 
                     approvedWithdrawalCount:
-                        withdrawals.rows[0].count,
+                        Number(
+                            withdrawals.rows[0].count
+                        ),
 
                     pendingWithdrawals:
-                        pendingWithdrawals.rows[0].count
+                        Number(
+                            pendingWithdrawals.rows[0].count
+                        )
 
                 }
 
@@ -4848,11 +4859,9 @@ app.get(
                 error
             );
 
-
             return res.status(500).json({
 
-                success:
-                    false,
+                success: false,
 
                 message:
                     "Unable to load admin summary."
@@ -4864,7 +4873,6 @@ app.get(
     }
 );
 
-
 /* =========================================================
    ADMIN LOGOUT
 ========================================================= */
@@ -4874,25 +4882,56 @@ app.post(
     requireAdmin,
     function (req, res) {
 
-        delete req.session.adminId;
+        req.session.destroy(
+            function (error) {
 
+                if (error) {
 
-        return res.status(200).json({
+                    console.error(
+                        "FINORA ADMIN LOGOUT ERROR:",
+                        error
+                    );
 
-            success:
-                true,
+                    return res.status(500).json({
 
-            message:
-                "Admin logged out successfully."
+                        success: false,
 
-        });
+                        message:
+                            "Unable to logout."
+
+                    });
+
+                }
+
+                res.clearCookie(
+                    "finora.sid",
+                    {
+                        httpOnly: true,
+                        secure: IS_PRODUCTION,
+                        sameSite:
+                            IS_PRODUCTION
+                                ? "none"
+                                : "lax"
+                    }
+                );
+
+                return res.status(200).json({
+
+                    success: true,
+
+                    message:
+                        "Admin logged out successfully."
+
+                });
+
+            }
+        );
 
     }
 );
 
-
 /* =========================================================
-   API 404 HANDLER
+   API 404
 ========================================================= */
 
 app.use(
@@ -4901,8 +4940,7 @@ app.use(
 
         return res.status(404).json({
 
-            success:
-                false,
+            success: false,
 
             message:
                 "FINORA API endpoint not found."
@@ -4911,7 +4949,6 @@ app.use(
 
     }
 );
-
 
 /* =========================================================
    GENERAL ERROR HANDLER
@@ -4930,22 +4967,17 @@ app.use(
             error
         );
 
-
         if (
             res.headersSent
         ) {
 
-            return next(
-                error
-            );
+            return next(error);
 
         }
 
-
         return res.status(500).json({
 
-            success:
-                false,
+            success: false,
 
             message:
                 "FINORA server error."
@@ -4955,9 +4987,8 @@ app.use(
     }
 );
 
-
 /* =========================================================
-   START FINORA SERVER
+   START SERVER
 ========================================================= */
 
 async function startServer() {
@@ -4968,10 +4999,9 @@ async function startServer() {
             "FINORA: Starting server..."
         );
 
-
-        /* -----------------------------------------
-           CREATE DATABASE TABLES
-        ----------------------------------------- */
+        /*
+         * Create / migrate all required tables.
+         */
 
         await createUsersTable();
 
@@ -4987,24 +5017,24 @@ async function startServer() {
 
         await createAdminsTable();
 
+        /*
+         * Create admin only when credentials are
+         * explicitly supplied in Render environment variables.
+         */
 
-        /* -----------------------------------------
-           VERIFY DATABASE
-        ----------------------------------------- */
+        await createDefaultAdmin();
+
+        /*
+         * Verify PostgreSQL.
+         */
 
         await pool.query(
             "SELECT 1"
         );
 
-
         console.log(
             "FINORA: PostgreSQL connection verified."
         );
-
-
-        /* -----------------------------------------
-           START EXPRESS SERVER
-        ----------------------------------------- */
 
         app.listen(
             PORT,
@@ -5028,7 +5058,8 @@ async function startServer() {
                 );
 
                 console.log(
-                    "DAILY RATE: 10%"
+                    "DAILY RATE:",
+                    `${DAILY_RATE * 100}%`
                 );
 
                 console.log(
@@ -5042,19 +5073,23 @@ async function startServer() {
                 );
 
                 console.log(
-                    "WITHDRAWAL FEE: 15%"
+                    "WITHDRAWAL FEE:",
+                    `${WITHDRAWAL_FEE_RATE * 100}%`
                 );
 
                 console.log(
-                    "LEVEL 1 REFERRAL: 15%"
+                    "LEVEL 1 REFERRAL:",
+                    `${LEVEL_1_RATE * 100}%`
                 );
 
                 console.log(
-                    "LEVEL 2 REFERRAL: 5%"
+                    "LEVEL 2 REFERRAL:",
+                    `${LEVEL_2_RATE * 100}%`
                 );
 
                 console.log(
-                    "LEVEL 3 REFERRAL: 2%"
+                    "LEVEL 3 REFERRAL:",
+                    `${LEVEL_3_RATE * 100}%`
                 );
 
                 console.log(
@@ -5084,14 +5119,10 @@ async function startServer() {
             "========================================"
         );
 
-
-        process.exit(
-            1
-        );
+        process.exit(1);
 
     }
 
 }
-
 
 startServer();
