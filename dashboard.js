@@ -11,9 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
     /* =====================================================
        FINORA CONFIGURATION
     ===================================================== */
-
-    const FINORA_API =
-        "https://finora-backend-l949.onrender.com";
+const FINORA_API =
+    "https://finora-platform-production.up.railway.app";
 
     const REFERRAL_LEVELS = {
         levelOne: 15,
