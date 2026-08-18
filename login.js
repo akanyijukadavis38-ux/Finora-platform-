@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
     ========================================= */
 
     const API_URL =
-        "https://finora-backend-l949.onrender.com";
+    "https://finora-platform-production.up.railway.app";
 
 
     /* =========================================
