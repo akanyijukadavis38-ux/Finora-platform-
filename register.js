@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* =========================================
        FINORA REGISTER.JS
-       ========================================= */
+    ========================================= */
 
     const form = document.getElementById("registerForm");
     const createButton = document.getElementById("createButton");
@@ -16,16 +16,24 @@ document.addEventListener("DOMContentLoaded", function () {
     const referralCode = document.getElementById("referralCode");
     const terms = document.getElementById("terms");
 
+    /* =========================================
+       FINORA RAILWAY BACKEND
+    ========================================= */
+
     const API_URL =
-    "https://finora-platform-production.up.railway.app";
+        "https://finora-platform-production.up.railway.app";
 
 
     /* =========================================
-       CHECK THAT FORM EXISTS
+       CHECK FORM
     ========================================= */
 
     if (!form) {
-        console.error("FINORA: registerForm was not found.");
+
+        console.error(
+            "FINORA: registerForm was not found."
+        );
+
         return;
     }
 
@@ -34,47 +42,64 @@ document.addEventListener("DOMContentLoaded", function () {
        PASSWORD SHOW / HIDE
     ========================================= */
 
-    document.querySelectorAll(".toggle-password").forEach(function (button) {
+    document
+        .querySelectorAll(".toggle-password")
+        .forEach(function (button) {
 
-        button.addEventListener("click", function () {
+            button.addEventListener(
+                "click",
+                function () {
 
-            const targetId =
-                button.getAttribute("data-target");
+                    const targetId =
+                        button.getAttribute(
+                            "data-target"
+                        );
 
-            const target =
-                document.getElementById(targetId);
+                    const target =
+                        document.getElementById(
+                            targetId
+                        );
 
-            if (!target) {
-                return;
-            }
+                    if (!target) {
+                        return;
+                    }
 
-            if (target.type === "password") {
 
-                target.type = "text";
+                    if (
+                        target.type ===
+                        "password"
+                    ) {
 
-                button.textContent = "🙈";
+                        target.type =
+                            "text";
 
-                button.setAttribute(
-                    "aria-label",
-                    "Hide password"
-                );
+                        button.textContent =
+                            "🙈";
 
-            } else {
+                        button.setAttribute(
+                            "aria-label",
+                            "Hide password"
+                        );
 
-                target.type = "password";
+                    } else {
 
-                button.textContent = "👁";
+                        target.type =
+                            "password";
 
-                button.setAttribute(
-                    "aria-label",
-                    "Show password"
-                );
+                        button.textContent =
+                            "👁";
 
-            }
+                        button.setAttribute(
+                            "aria-label",
+                            "Show password"
+                        );
+
+                    }
+
+                }
+            );
 
         });
-
-    });
 
 
     /* =========================================
@@ -83,78 +108,102 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (password) {
 
-        password.addEventListener("input", function () {
+        password.addEventListener(
+            "input",
+            function () {
 
-            const value = password.value;
+                const value =
+                    password.value;
 
-            const bars =
-                document.querySelectorAll(".strength-bar");
+                const bars =
+                    document.querySelectorAll(
+                        ".strength-bar"
+                    );
 
-            const strengthText =
-                document.getElementById("strengthText");
+                const strengthText =
+                    document.getElementById(
+                        "strengthText"
+                    );
 
-            let score = 0;
-
-            if (value.length >= 6) {
-                score++;
-            }
-
-            if (/[A-Z]/.test(value)) {
-                score++;
-            }
-
-            if (/[0-9]/.test(value)) {
-                score++;
-            }
-
-            if (/[^A-Za-z0-9]/.test(value)) {
-                score++;
-            }
+                let score = 0;
 
 
-            bars.forEach(function (bar, index) {
+                if (value.length >= 6) {
+                    score++;
+                }
 
-                if (index < score) {
+                if (/[A-Z]/.test(value)) {
+                    score++;
+                }
 
-                    bar.classList.add("active");
+                if (/[0-9]/.test(value)) {
+                    score++;
+                }
+
+                if (
+                    /[^A-Za-z0-9]/.test(
+                        value
+                    )
+                ) {
+                    score++;
+                }
+
+
+                bars.forEach(
+                    function (
+                        bar,
+                        index
+                    ) {
+
+                        if (
+                            index < score
+                        ) {
+
+                            bar.classList.add(
+                                "active"
+                            );
+
+                        } else {
+
+                            bar.classList.remove(
+                                "active"
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                if (!value) {
+
+                    strengthText.textContent =
+                        "Password strength";
+
+                } else if (score === 1) {
+
+                    strengthText.textContent =
+                        "Weak";
+
+                } else if (score === 2) {
+
+                    strengthText.textContent =
+                        "Fair";
+
+                } else if (score === 3) {
+
+                    strengthText.textContent =
+                        "Good";
 
                 } else {
 
-                    bar.classList.remove("active");
+                    strengthText.textContent =
+                        "Strong";
 
                 }
 
-            });
-
-
-            if (!value) {
-
-                strengthText.textContent =
-                    "Password strength";
-
-            } else if (score === 1) {
-
-                strengthText.textContent =
-                    "Weak";
-
-            } else if (score === 2) {
-
-                strengthText.textContent =
-                    "Fair";
-
-            } else if (score === 3) {
-
-                strengthText.textContent =
-                    "Good";
-
-            } else {
-
-                strengthText.textContent =
-                    "Strong";
-
             }
-
-        });
+        );
 
     }
 
@@ -179,15 +228,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
 
-                if (!confirmPassword.value) {
+                if (
+                    !confirmPassword.value
+                ) {
 
-                    message.textContent = "";
+                    message.textContent =
+                        "";
 
                     message.className =
                         "field-message";
 
                     return;
-
                 }
 
 
@@ -226,8 +277,6 @@ document.addEventListener("DOMContentLoaded", function () {
         "submit",
         async function (event) {
 
-            /* STOP NORMAL HTML SUBMISSION */
-
             event.preventDefault();
             event.stopPropagation();
 
@@ -238,7 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             /* =====================================
-               READ VALUES
+               READ FORM VALUES
             ===================================== */
 
             const nameValue =
@@ -248,7 +297,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 phone.value.trim();
 
             const emailValue =
-                email.value.trim().toLowerCase();
+                email.value
+                    .trim()
+                    .toLowerCase();
 
             const passwordValue =
                 password.value;
@@ -261,10 +312,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             /* =====================================
-               CLEAR OLD STATUS
+               CLEAR STATUS
             ===================================== */
 
-            formStatus.textContent = "";
+            formStatus.textContent =
+                "";
 
             formStatus.className =
                 "form-status";
@@ -274,7 +326,9 @@ document.addEventListener("DOMContentLoaded", function () {
                VALIDATE NAME
             ===================================== */
 
-            if (nameValue.length < 2) {
+            if (
+                nameValue.length < 2
+            ) {
 
                 formStatus.textContent =
                     "Please enter your full name.";
@@ -285,7 +339,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 fullName.focus();
 
                 return;
-
             }
 
 
@@ -308,7 +361,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 phone.focus();
 
                 return;
-
             }
 
 
@@ -331,7 +383,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 email.focus();
 
                 return;
-
             }
 
 
@@ -339,7 +390,9 @@ document.addEventListener("DOMContentLoaded", function () {
                VALIDATE PASSWORD
             ===================================== */
 
-            if (passwordValue.length < 6) {
+            if (
+                passwordValue.length < 6
+            ) {
 
                 formStatus.textContent =
                     "Password must contain at least 6 characters.";
@@ -350,7 +403,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 password.focus();
 
                 return;
-
             }
 
 
@@ -372,7 +424,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 confirmPassword.focus();
 
                 return;
-
             }
 
 
@@ -380,7 +431,10 @@ document.addEventListener("DOMContentLoaded", function () {
                TERMS
             ===================================== */
 
-            if (!terms.checked) {
+            if (
+                terms &&
+                !terms.checked
+            ) {
 
                 formStatus.textContent =
                     "Please agree to the Terms & Conditions and Privacy Policy.";
@@ -389,7 +443,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     "form-status error";
 
                 return;
-
             }
 
 
@@ -397,7 +450,8 @@ document.addEventListener("DOMContentLoaded", function () {
                START LOADING
             ===================================== */
 
-            createButton.disabled = true;
+            createButton.disabled =
+                true;
 
             createButton.textContent =
                 "CREATING ACCOUNT...";
@@ -415,62 +469,96 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             /* =====================================
-               SERVER REQUEST WITH TIMEOUT
+               TIMEOUT CONTROLLER
             ===================================== */
 
             const controller =
                 new AbortController();
 
             const timeout =
-                setTimeout(function () {
+                setTimeout(
+                    function () {
 
-                    controller.abort();
+                        controller.abort();
 
-                }, 30000);
+                    },
+                    30000
+                );
 
 
             try {
 
+                /* =================================
+                   SEND TO USER ROUTES
+                   
+                   app.js:
+                   /api/users
+
+                   userRoutes.js:
+                   /register
+
+                   FINAL:
+                   /api/users/register
+                ================================= */
+
                 const response =
                     await fetch(
-                     API_URL + "/api/users/register",   
+                        API_URL +
+                        "/api/users/register",
                         {
-                            method: "POST",
+
+                            method:
+                                "POST",
 
                             headers: {
+
                                 "Content-Type":
                                     "application/json",
 
                                 "Accept":
                                     "application/json"
+
                             },
 
-                            body: JSON.stringify({
+                            body:
+                                JSON.stringify({
 
-                                fullName:
-                                    nameValue,
+                                    fullName:
+                                        nameValue,
 
-                                phone:
-                                    phoneValue,
+                                    phone:
+                                        phoneValue,
 
-                                email:
-                                    emailValue,
+                                    email:
+                                        emailValue,
 
-                                password:
-                                    passwordValue,
+                                    password:
+                                        passwordValue,
 
-                                referralCode:
-                                    referralValue || null
+                                    /* IMPORTANT:
+                                       This was missing
+                                       before.
+                                    */
 
-                            }),
+                                    confirmPassword:
+                                        confirmValue,
+
+                                    referralCode:
+                                        referralValue ||
+                                        null
+
+                                }),
 
                             signal:
                                 controller.signal
+
                         }
                     );
 
 
-                clearTimeout(timeout);
+                clearTimeout(
+                    timeout
+                );
 
 
                 console.log(
@@ -524,9 +612,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     createButton.textContent =
                         "CREATE FINORA ACCOUNT";
 
-
                     return;
-
                 }
 
 
@@ -553,9 +639,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     createButton.textContent =
                         "CREATE FINORA ACCOUNT";
 
-
                     return;
-
                 }
 
 
@@ -586,7 +670,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 /* =================================
-                   SHOW SUCCESS
+                   SUCCESS MESSAGE
                 ================================= */
 
                 formStatus.textContent =
@@ -607,26 +691,32 @@ document.addEventListener("DOMContentLoaded", function () {
                    CLEAR PASSWORDS
                 ================================= */
 
-                password.value = "";
+                password.value =
+                    "";
 
-                confirmPassword.value = "";
+                confirmPassword.value =
+                    "";
 
 
                 /* =================================
                    REDIRECT TO LOGIN
                 ================================= */
 
-                setTimeout(function () {
+                setTimeout(
+                    function () {
 
-                    window.location.href =
-                        "login.html";
+                        window.location.href =
+                            "login.html";
 
-                }, 1200);
-
+                    },
+                    1200
+                );
 
             } catch (error) {
 
-                clearTimeout(timeout);
+                clearTimeout(
+                    timeout
+                );
 
 
                 console.error(
