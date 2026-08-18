@@ -6,6 +6,7 @@ const path = require("path");
 const session = require("express-session");
 
 const pool = require("./database");
+const userRoutes = require("./userRoutes");
 
 /* =========================================================
    FINORA SERVER
@@ -297,25 +298,13 @@ app.get(
 );
 
 /* =========================================================
-   ROUTES
+   USER ROUTES
 ========================================================= */
 
-/*
- * We will connect these one by one as we build
- * the separated backend.
- *
- * Example:
- *
- * const authRoutes =
- *     require("./routes/authRoutes");
- *
- * app.use(
- *     "/api/auth",
- *     authRoutes
- * );
- *
- */
-
+app.use(
+    "/api/users",
+    userRoutes
+);
 
 /* =========================================================
    404 HANDLER
