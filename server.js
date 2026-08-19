@@ -306,7 +306,22 @@ app.use(
     "/api/users",
     userRoutes
 );
+/* =========================================================
+   USER ROUTE DIRECT TEST
+========================================================= */
 
+app.get(
+    "/api/users/direct-test",
+    (req, res) => {
+
+        res.json({
+            success: true,
+            message:
+                "FINORA direct users route is working."
+        });
+
+    }
+);
 /* =========================================================
    404 HANDLER
 ========================================================= */
