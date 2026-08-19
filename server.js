@@ -1247,7 +1247,19 @@ app.get(
 
     }
 );
+app.get("/api/users", (req, res) => {
+    res.json({
+        success: true,
+        message: "FINORA users API is working."
+    });
+});
 
+app.get("/api/users/test", (req, res) => {
+    res.json({
+        success: true,
+        message: "FINORA direct users route is working."
+    });
+});
 
 /* =========================================================
    404 HANDLER
