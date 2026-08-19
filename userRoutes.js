@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const pool = require("./database");
 
 const router = express.Router();
-
+console.log("🔥 FINORA USERROUTES.JS LOADED 🔥");
 /* =========================================================
    TEST ROUTE
    GET /api/users/test
