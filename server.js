@@ -296,7 +296,6 @@ app.get(
 
     }
 );
-
 /* =========================================================
    USER ROUTES
 ========================================================= */
@@ -305,6 +304,9 @@ app.use(
     "/api/users",
     userRoutes
 );
+
+console.log("FINORA: USER ROUTES LOADED SUCCESSFULLY");
+console.log("FINORA: userRoutes type =", typeof userRoutes);
 
 /* =========================================================
    404 HANDLER
