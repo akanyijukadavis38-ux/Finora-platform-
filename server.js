@@ -8,19 +8,24 @@ const bcrypt = require("bcryptjs");
 
 const pool = require("./database");
 
+
 /* =========================================================
    FINORA SERVER
-   User routes are intentionally kept directly in this file.
-   No userRoutes.js is required.
+   =========================================================
+   User routes are directly inside this file.
+
+   DO NOT require userRoutes.js.
 ========================================================= */
 
 const app = express();
+
 
 /* =========================================================
    SERVER CONFIGURATION
 ========================================================= */
 
-const PORT = Number(process.env.PORT) || 8080;
+const PORT =
+    Number(process.env.PORT) || 8080;
 
 const IS_PRODUCTION =
     process.env.NODE_ENV === "production";
@@ -54,23 +59,43 @@ const allowedOrigins =
 
 app.use(
     cors({
+
         origin: function (origin, callback) {
+
+            /*
+             * Allow requests without Origin.
+             */
 
             if (!origin) {
                 return callback(null, true);
             }
 
+
+            /*
+             * If FRONTEND_ORIGIN is not configured,
+             * allow all origins.
+             */
+
             if (allowedOrigins.length === 0) {
                 return callback(null, true);
             }
+
+
+            /*
+             * Allow configured frontend origins.
+             */
 
             if (allowedOrigins.includes(origin)) {
                 return callback(null, true);
             }
 
+
             return callback(
-                new Error("CORS origin not allowed.")
+                new Error(
+                    "CORS origin not allowed."
+                )
             );
+
         },
 
         credentials: true,
@@ -88,6 +113,7 @@ app.use(
             "Content-Type",
             "Authorization"
         ]
+
     })
 );
 
@@ -116,20 +142,29 @@ app.use(
 
 app.use(
     session({
-        name: "finora.sid",
 
-        secret: SESSION_SECRET,
+        name:
+            "finora.sid",
 
-        resave: false,
+        secret:
+            SESSION_SECRET,
 
-        saveUninitialized: false,
+        resave:
+            false,
 
-        rolling: true,
+        saveUninitialized:
+            false,
+
+        rolling:
+            true,
 
         cookie: {
-            httpOnly: true,
 
-            secure: IS_PRODUCTION,
+            httpOnly:
+                true,
+
+            secure:
+                IS_PRODUCTION,
 
             sameSite:
                 IS_PRODUCTION
@@ -142,7 +177,9 @@ app.use(
                 60 *
                 24 *
                 7
+
         }
+
     })
 );
 
@@ -152,10 +189,15 @@ app.use(
 ========================================================= */
 
 const publicPath =
-    path.join(__dirname, "public");
+    path.join(
+        __dirname,
+        "public"
+    );
 
 app.use(
-    express.static(publicPath)
+    express.static(
+        publicPath
+    )
 );
 
 
@@ -200,11 +242,14 @@ const frontendPages = {
 
     "/withdraw.html":
         "withdraw.html"
+
 };
 
 
-Object.entries(frontendPages)
-    .forEach(([route, file]) => {
+Object.entries(
+    frontendPages
+).forEach(
+    ([route, file]) => {
 
         app.get(
             route,
@@ -220,20 +265,23 @@ Object.entries(frontendPages)
             }
         );
 
-    });
+    }
+);
 
 
 /* =========================================================
    API ROOT
+   GET /api
 ========================================================= */
 
 app.get(
     "/api",
     (req, res) => {
 
-        res.json({
+        return res.json({
 
-            success: true,
+            success:
+                true,
 
             application:
                 "FINORA",
@@ -251,7 +299,8 @@ app.get(
 
 
 /* =========================================================
-   DATABASE HEALTH CHECK
+   DATABASE HEALTH
+   GET /api/health
 ========================================================= */
 
 app.get(
@@ -266,7 +315,8 @@ app.get(
 
             return res.json({
 
-                success: true,
+                success:
+                    true,
 
                 message:
                     "FINORA server is running.",
@@ -287,7 +337,8 @@ app.get(
 
             return res.status(500).json({
 
-                success: false,
+                success:
+                    false,
 
                 message:
                     "FINORA server is running but database connection failed.",
@@ -305,15 +356,21 @@ app.get(
 
 /* =========================================================
    USER API ROOT
+   GET /api/users
 ========================================================= */
 
 app.get(
     "/api/users",
     (req, res) => {
 
-        res.json({
+        console.log(
+            "FINORA: /api/users reached"
+        );
 
-            success: true,
+        return res.json({
+
+            success:
+                true,
 
             message:
                 "FINORA users API is working.",
@@ -346,9 +403,14 @@ app.get(
     "/api/users/test",
     (req, res) => {
 
-        res.json({
+        console.log(
+            "FINORA: /api/users/test reached"
+        );
 
-            success: true,
+        return res.json({
+
+            success:
+                true,
 
             message:
                 "FINORA direct users route is working."
@@ -360,7 +422,7 @@ app.get(
 
 
 /* =========================================================
-   REGISTER USER
+   REGISTER
    POST /api/users/register
 ========================================================= */
 
@@ -380,9 +442,9 @@ app.post(
             } = req.body || {};
 
 
-            /* -----------------------------------------
+            /* =========================================
                REQUIRED FIELDS
-            ----------------------------------------- */
+            ========================================= */
 
             if (
                 !fullName ||
@@ -393,7 +455,8 @@ app.post(
 
                 return res.status(400).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
                         "Full name, phone, email and password are required."
@@ -403,9 +466,9 @@ app.post(
             }
 
 
-            /* -----------------------------------------
+            /* =========================================
                CONFIRM PASSWORD
-            ----------------------------------------- */
+            ========================================= */
 
             if (
                 String(password) !==
@@ -414,7 +477,8 @@ app.post(
 
                 return res.status(400).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
                         "Passwords do not match."
@@ -424,17 +488,21 @@ app.post(
             }
 
 
-            /* -----------------------------------------
+            /* =========================================
                CLEAN DATA
-            ----------------------------------------- */
+            ========================================= */
 
             const cleanName =
-                String(fullName).trim();
+                String(fullName)
+                    .trim();
 
             let cleanPhone =
                 String(phone)
                     .trim()
-                    .replace(/\s+/g, "");
+                    .replace(
+                        /\s+/g,
+                        ""
+                    );
 
             const cleanEmail =
                 String(email)
@@ -443,13 +511,15 @@ app.post(
 
             const cleanReferral =
                 referralCode
-                    ? String(referralCode).trim()
+                    ? String(
+                        referralCode
+                    ).trim()
                     : null;
 
 
-            /* -----------------------------------------
+            /* =========================================
                NORMALIZE UGANDA PHONE
-            ----------------------------------------- */
+            ========================================= */
 
             if (
                 /^\+2567\d{8}$/.test(
@@ -459,9 +529,12 @@ app.post(
 
                 cleanPhone =
                     "0" +
-                    cleanPhone.substring(4);
+                    cleanPhone.substring(
+                        4
+                    );
 
             }
+
 
             if (
                 /^2567\d{8}$/.test(
@@ -471,14 +544,16 @@ app.post(
 
                 cleanPhone =
                     "0" +
-                    cleanPhone.substring(3);
+                    cleanPhone.substring(
+                        3
+                    );
 
             }
 
 
-            /* -----------------------------------------
+            /* =========================================
                NAME VALIDATION
-            ----------------------------------------- */
+            ========================================= */
 
             if (
                 cleanName.length < 2
@@ -486,7 +561,8 @@ app.post(
 
                 return res.status(400).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
                         "Please enter your full name."
@@ -496,9 +572,9 @@ app.post(
             }
 
 
-            /* -----------------------------------------
-               UGANDA PHONE VALIDATION
-            ----------------------------------------- */
+            /* =========================================
+               PHONE VALIDATION
+            ========================================= */
 
             if (
                 !/^07[0-9]{8}$/.test(
@@ -508,7 +584,8 @@ app.post(
 
                 return res.status(400).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
                         "Please enter a valid Uganda phone number."
@@ -518,9 +595,9 @@ app.post(
             }
 
 
-            /* -----------------------------------------
+            /* =========================================
                EMAIL VALIDATION
-            ----------------------------------------- */
+            ========================================= */
 
             if (
                 !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
@@ -530,7 +607,8 @@ app.post(
 
                 return res.status(400).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
                         "Please enter a valid email address."
@@ -540,9 +618,9 @@ app.post(
             }
 
 
-            /* -----------------------------------------
+            /* =========================================
                PASSWORD VALIDATION
-            ----------------------------------------- */
+            ========================================= */
 
             if (
                 String(password).length < 6
@@ -550,7 +628,8 @@ app.post(
 
                 return res.status(400).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
                         "Password must be at least 6 characters long."
@@ -560,9 +639,9 @@ app.post(
             }
 
 
-            /* -----------------------------------------
+            /* =========================================
                CHECK EXISTING USER
-            ----------------------------------------- */
+            ========================================= */
 
             const existing =
                 await pool.query(
@@ -586,7 +665,8 @@ app.post(
 
                 return res.status(409).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
                         "An account with this phone number or email already exists."
@@ -596,13 +676,16 @@ app.post(
             }
 
 
-            /* -----------------------------------------
+            /* =========================================
                CHECK REFERRAL
-            ----------------------------------------- */
+            ========================================= */
 
-            let referredBy = null;
+            let referredBy =
+                null;
 
-            if (cleanReferral) {
+            if (
+                cleanReferral
+            ) {
 
                 const referral =
                     await pool.query(
@@ -612,7 +695,9 @@ app.post(
                         WHERE referral_code = $1
                         LIMIT 1
                         `,
-                        [cleanReferral]
+                        [
+                            cleanReferral
+                        ]
                     );
 
 
@@ -622,7 +707,8 @@ app.post(
 
                     return res.status(400).json({
 
-                        success: false,
+                        success:
+                            false,
 
                         message:
                             "The referral code is invalid."
@@ -638,9 +724,9 @@ app.post(
             }
 
 
-            /* -----------------------------------------
+            /* =========================================
                HASH PASSWORD
-            ----------------------------------------- */
+            ========================================= */
 
             const passwordHash =
                 await bcrypt.hash(
@@ -649,19 +735,26 @@ app.post(
                 );
 
 
-            /* -----------------------------------------
+            /* =========================================
                GENERATE REFERRAL CODE
-            ----------------------------------------- */
+            ========================================= */
 
-            let newReferralCode = null;
+            let newReferralCode =
+                null;
 
-            while (!newReferralCode) {
+
+            while (
+                !newReferralCode
+            ) {
 
                 const candidate =
                     "FIN" +
                     Math.random()
                         .toString(36)
-                        .substring(2, 10)
+                        .substring(
+                            2,
+                            10
+                        )
                         .toUpperCase();
 
 
@@ -673,7 +766,9 @@ app.post(
                         WHERE referral_code = $1
                         LIMIT 1
                         `,
-                        [candidate]
+                        [
+                            candidate
+                        ]
                     );
 
 
@@ -689,13 +784,17 @@ app.post(
             }
 
 
-            /* -----------------------------------------
+            /* =========================================
                GENERATE ACCOUNT NUMBER
-            ----------------------------------------- */
+            ========================================= */
 
-            let accountNumber = null;
+            let accountNumber =
+                null;
 
-            while (!accountNumber) {
+
+            while (
+                !accountNumber
+            ) {
 
                 const candidate =
                     "FN" +
@@ -714,7 +813,9 @@ app.post(
                         WHERE account_number = $1
                         LIMIT 1
                         `,
-                        [candidate]
+                        [
+                            candidate
+                        ]
                     );
 
 
@@ -730,9 +831,9 @@ app.post(
             }
 
 
-            /* -----------------------------------------
-               CREATE USER
-            ----------------------------------------- */
+            /* =========================================
+               INSERT USER
+            ========================================= */
 
             const result =
                 await pool.query(
@@ -792,13 +893,14 @@ app.post(
                 result.rows[0];
 
 
-            /* -----------------------------------------
-               SUCCESS RESPONSE
-            ----------------------------------------- */
+            /* =========================================
+               SUCCESS
+            ========================================= */
 
             return res.status(201).json({
 
-                success: true,
+                success:
+                    true,
 
                 message:
                     "Account registered successfully.",
@@ -862,7 +964,8 @@ app.post(
 
                 return res.status(409).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
                         "Phone, email, referral code or account number already exists."
@@ -874,7 +977,8 @@ app.post(
 
             return res.status(500).json({
 
-                success: false,
+                success:
+                    false,
 
                 message:
                     "Unable to create account. Please try again."
@@ -911,8 +1015,7 @@ app.post(
                     email ||
                     ""
                 )
-                    .trim()
-                    .toLowerCase();
+                    .trim();
 
 
             const passwordValue =
@@ -929,7 +1032,8 @@ app.post(
 
                 return res.status(400).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
                         "Phone/email and password are required."
@@ -939,9 +1043,9 @@ app.post(
             }
 
 
-            /* -----------------------------------------
+            /* =========================================
                FIND USER
-            ----------------------------------------- */
+            ========================================= */
 
             const result =
                 await pool.query(
@@ -964,7 +1068,9 @@ app.post(
                        OR LOWER(email) = LOWER($1)
                     LIMIT 1
                     `,
-                    [loginValue]
+                    [
+                        loginValue
+                    ]
                 );
 
 
@@ -974,7 +1080,8 @@ app.post(
 
                 return res.status(401).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
                         "Invalid login details."
@@ -988,9 +1095,9 @@ app.post(
                 result.rows[0];
 
 
-            /* -----------------------------------------
-               CHECK ACCOUNT STATUS
-            ----------------------------------------- */
+            /* =========================================
+               ACCOUNT STATUS
+            ========================================= */
 
             if (
                 user.account_status &&
@@ -999,7 +1106,8 @@ app.post(
 
                 return res.status(403).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
                         "Your FINORA account is not active."
@@ -1009,9 +1117,9 @@ app.post(
             }
 
 
-            /* -----------------------------------------
-               CHECK PASSWORD
-            ----------------------------------------- */
+            /* =========================================
+               PASSWORD
+            ========================================= */
 
             const passwordMatches =
                 await bcrypt.compare(
@@ -1020,11 +1128,14 @@ app.post(
                 );
 
 
-            if (!passwordMatches) {
+            if (
+                !passwordMatches
+            ) {
 
                 return res.status(401).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
                         "Invalid login details."
@@ -1034,21 +1145,22 @@ app.post(
             }
 
 
-            /* -----------------------------------------
-               CREATE SESSION
-            ----------------------------------------- */
+            /* =========================================
+               SESSION
+            ========================================= */
 
             req.session.userId =
                 user.id;
 
 
-            /* -----------------------------------------
+            /* =========================================
                RESPONSE
-            ----------------------------------------- */
+            ========================================= */
 
             return res.json({
 
-                success: true,
+                success:
+                    true,
 
                 message:
                     "Login successful.",
@@ -1107,7 +1219,8 @@ app.post(
 
             return res.status(500).json({
 
-                success: false,
+                success:
+                    false,
 
                 message:
                     "Unable to login. Please try again."
@@ -1123,6 +1236,10 @@ app.post(
 /* =========================================================
    GET USER BY ID
    GET /api/users/:id
+
+   IMPORTANT:
+   This route is deliberately AFTER /test
+   and /register /login.
 ========================================================= */
 
 app.get(
@@ -1154,7 +1271,9 @@ app.get(
                     WHERE id = $1
                     LIMIT 1
                     `,
-                    [userId]
+                    [
+                        userId
+                    ]
                 );
 
 
@@ -1164,7 +1283,8 @@ app.get(
 
                 return res.status(404).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
                         "User not found."
@@ -1180,7 +1300,8 @@ app.get(
 
             return res.json({
 
-                success: true,
+                success:
+                    true,
 
                 user: {
 
@@ -1236,7 +1357,8 @@ app.get(
 
             return res.status(500).json({
 
-                success: false,
+                success:
+                    false,
 
                 message:
                     "Unable to load user."
@@ -1247,26 +1369,22 @@ app.get(
 
     }
 );
-app.get("/api/users", (req, res) => {
-    res.json({
-        success: true,
-        message: "FINORA users API is working."
-    });
-});
 
-app.get("/api/users/test", (req, res) => {
-    res.json({
-        success: true,
-        message: "FINORA direct users route is working."
-    });
-});
 
 /* =========================================================
    404 HANDLER
+   MUST BE LAST
 ========================================================= */
 
 app.use(
     (req, res) => {
+
+        console.log(
+            "FINORA 404:",
+            req.method,
+            req.originalUrl
+        );
+
 
         if (
             req.path.startsWith("/api/")
@@ -1274,7 +1392,8 @@ app.use(
 
             return res.status(404).json({
 
-                success: false,
+                success:
+                    false,
 
                 message:
                     "API endpoint not found."
@@ -1312,7 +1431,8 @@ app.use(
 
             return res.status(403).json({
 
-                success: false,
+                success:
+                    false,
 
                 message:
                     "CORS origin not allowed."
@@ -1324,7 +1444,8 @@ app.use(
 
         return res.status(500).json({
 
-            success: false,
+            success:
+                false,
 
             message:
                 "Internal server error."
@@ -1343,6 +1464,11 @@ async function startServer() {
 
     try {
 
+        /*
+         * Test PostgreSQL before
+         * starting HTTP server.
+         */
+
         await pool.query(
             "SELECT 1"
         );
@@ -1352,6 +1478,11 @@ async function startServer() {
             "FINORA: PostgreSQL connected successfully."
         );
 
+
+        /*
+         * Start server on Railway's
+         * assigned port and all interfaces.
+         */
 
         app.listen(
             PORT,
