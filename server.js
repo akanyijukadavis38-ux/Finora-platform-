@@ -300,31 +300,11 @@ app.get(
    USER ROUTES
 ========================================================= */
 
-console.log("FINORA: Loading userRoutes...");
+console.log("FINORA: userRoutes loaded successfully.");
 
 app.use(
     "/api/users",
     userRoutes
-);
-
-console.log("FINORA: userRoutes loaded.");
-console.log(
-    "FINORA: userRoutes type =",
-    typeof userRoutes
-);
-
-/* DIRECT TEST ROUTE */
-
-app.get(
-    "/api/users/direct-test",
-    (req, res) => {
-
-        res.json({
-            success: true,
-            message: "FINORA direct users route is working."
-        });
-
-    }
 );
 
 /* =========================================================
