@@ -31,7 +31,7 @@ const SESSION_SECRET =
     "FINORA_CHANGE_THIS_SESSION_SECRET";
 
 /* =========================================================
-   TRUST PROXY
+   TRUST RAILWAY PROXY
 ========================================================= */
 
 if (IS_PRODUCTION) {
@@ -50,12 +50,11 @@ const allowedOrigins =
 
 app.use(
     cors({
-
         origin: function (origin, callback) {
 
             /*
-             * Allow requests without Origin.
-             * This includes direct browser/API testing.
+             * Requests such as direct browser/API requests
+             * may not contain an Origin header.
              */
 
             if (!origin) {
@@ -63,17 +62,13 @@ app.use(
             }
 
             /*
-             * If FRONTEND_ORIGIN is not configured,
+             * If FRONTEND_ORIGIN has not been configured,
              * allow the request.
              */
 
             if (allowedOrigins.length === 0) {
                 return callback(null, true);
             }
-
-            /*
-             * Allow configured frontend.
-             */
 
             if (allowedOrigins.includes(origin)) {
                 return callback(null, true);
@@ -125,7 +120,6 @@ app.use(
 
 app.use(
     session({
-
         name: "finora.sid",
 
         secret: SESSION_SECRET,
@@ -137,7 +131,6 @@ app.use(
         rolling: true,
 
         cookie: {
-
             httpOnly: true,
 
             secure: IS_PRODUCTION,
@@ -158,7 +151,7 @@ app.use(
 );
 
 /* =========================================================
-   STATIC FRONTEND
+   FRONTEND
 ========================================================= */
 
 const publicPath =
@@ -232,6 +225,7 @@ Object.entries(frontendPages)
 
 /* =========================================================
    API ROOT
+   GET /api
 ========================================================= */
 
 app.get(
@@ -257,7 +251,8 @@ app.get(
 );
 
 /* =========================================================
-   DATABASE HEALTH CHECK
+   HEALTH CHECK
+   GET /api/health
 ========================================================= */
 
 app.get(
@@ -308,48 +303,34 @@ app.get(
     }
 );
 
+/* =========================================================
+   USER TEST ROUTE
+   GET /api/users/test
+========================================================= */
+
+app.get(
+    "/api/users/test",
+    (req, res) => {
+
+        console.log(
+            "FINORA: /api/users/test requested."
+        );
+
+        return res.json({
+
+            success: true,
+
+            message:
+                "FINORA direct users route is working."
+
+        });
+
+    }
+);
 
 /* =========================================================
    USER HELPER FUNCTIONS
 ========================================================= */
-
-/* ---------------------------------------------------------
-   GENERATE REFERRAL CODE
---------------------------------------------------------- */
-
-function generateReferralCode() {
-
-    return (
-        "FIN" +
-        Math.random()
-            .toString(36)
-            .substring(2, 10)
-            .toUpperCase()
-    );
-
-}
-
-
-/* ---------------------------------------------------------
-   GENERATE ACCOUNT NUMBER
---------------------------------------------------------- */
-
-function generateAccountNumber() {
-
-    return (
-        "FN" +
-        Math.floor(
-            10000000 +
-            Math.random() * 90000000
-        )
-    );
-
-}
-
-
-/* ---------------------------------------------------------
-   NORMALIZE UGANDA PHONE
---------------------------------------------------------- */
 
 function normalizeUgandaPhone(phone) {
 
@@ -364,9 +345,7 @@ function normalizeUgandaPhone(phone) {
      * 0701234567
      */
 
-    if (
-        /^\+2567\d{8}$/.test(value)
-    ) {
+    if (/^\+2567\d{8}$/.test(value)) {
 
         value =
             "0" +
@@ -380,9 +359,7 @@ function normalizeUgandaPhone(phone) {
      * 0701234567
      */
 
-    if (
-        /^2567\d{8}$/.test(value)
-    ) {
+    if (/^2567\d{8}$/.test(value)) {
 
         value =
             "0" +
@@ -391,13 +368,8 @@ function normalizeUgandaPhone(phone) {
     }
 
     return value;
-
 }
 
-
-/* ---------------------------------------------------------
-   NORMALIZE EMAIL
---------------------------------------------------------- */
 
 function normalizeEmail(email) {
 
@@ -408,10 +380,6 @@ function normalizeEmail(email) {
 }
 
 
-/* ---------------------------------------------------------
-   VALIDATE EMAIL
---------------------------------------------------------- */
-
 function validEmail(email) {
 
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -420,38 +388,38 @@ function validEmail(email) {
 }
 
 
-/* ---------------------------------------------------------
-   VALIDATE UGANDA PHONE
---------------------------------------------------------- */
-
 function validUgandaPhone(phone) {
 
-    return /^07[0-9]{8}$/.test(phone);
+    return /^07[0-9]{8}$/
+        .test(phone);
 
 }
 
 
-/* =========================================================
-   USER ROUTE TEST
-   DIRECTLY INSIDE SERVER.JS
-========================================================= */
+function generateReferralCode() {
 
-app.get(
-    "/api/users/test",
-    (req, res) => {
+    return (
+        "FIN" +
+        Math.random()
+            .toString(36)
+            .substring(2, 10)
+            .toUpperCase()
+    );
 
-        return res.json({
+}
 
-            success: true,
 
-            message:
-                "FINORA user system is working directly from server.js."
+function generateAccountNumber() {
 
-        });
+    return (
+        "FN" +
+        Math.floor(
+            10000000 +
+            Math.random() * 90000000
+        )
+    );
 
-    }
-);
-
+}
 
 /* =========================================================
    USER REGISTRATION
@@ -462,28 +430,24 @@ app.post(
     "/api/users/register",
     async (req, res) => {
 
+        console.log(
+            "FINORA: /api/users/register requested."
+        );
+
         try {
 
             const {
-
                 fullName,
-
                 phone,
-
                 email,
-
                 password,
-
                 confirmPassword,
-
                 referralCode
-
             } = req.body || {};
 
-
-            /* -----------------------------------------
+            /* =========================================
                REQUIRED FIELDS
-            ----------------------------------------- */
+            ========================================= */
 
             if (
                 !fullName ||
@@ -503,14 +467,14 @@ app.post(
 
             }
 
-
-            /* -----------------------------------------
+            /* =========================================
                CONFIRM PASSWORD
-            ----------------------------------------- */
+            ========================================= */
 
             if (
+                confirmPassword !== undefined &&
                 String(password) !==
-                String(confirmPassword || "")
+                String(confirmPassword)
             ) {
 
                 return res.status(400).json({
@@ -524,10 +488,9 @@ app.post(
 
             }
 
-
-            /* -----------------------------------------
+            /* =========================================
                CLEAN DATA
-            ----------------------------------------- */
+            ========================================= */
 
             const cleanName =
                 String(fullName).trim();
@@ -543,10 +506,9 @@ app.post(
                     ? String(referralCode).trim()
                     : null;
 
-
-            /* -----------------------------------------
+            /* =========================================
                VALIDATE NAME
-            ----------------------------------------- */
+            ========================================= */
 
             if (
                 cleanName.length < 2
@@ -563,13 +525,14 @@ app.post(
 
             }
 
-
-            /* -----------------------------------------
-               VALIDATE PHONE
-            ----------------------------------------- */
+            /* =========================================
+               VALIDATE UGANDA PHONE
+            ========================================= */
 
             if (
-                !validUgandaPhone(cleanPhone)
+                !validUgandaPhone(
+                    cleanPhone
+                )
             ) {
 
                 return res.status(400).json({
@@ -583,13 +546,14 @@ app.post(
 
             }
 
-
-            /* -----------------------------------------
+            /* =========================================
                VALIDATE EMAIL
-            ----------------------------------------- */
+            ========================================= */
 
             if (
-                !validEmail(cleanEmail)
+                !validEmail(
+                    cleanEmail
+                )
             ) {
 
                 return res.status(400).json({
@@ -603,10 +567,9 @@ app.post(
 
             }
 
-
-            /* -----------------------------------------
+            /* =========================================
                VALIDATE PASSWORD
-            ----------------------------------------- */
+            ========================================= */
 
             if (
                 String(password).length < 6
@@ -623,10 +586,9 @@ app.post(
 
             }
 
-
-            /* -----------------------------------------
+            /* =========================================
                CHECK EXISTING USER
-            ----------------------------------------- */
+            ========================================= */
 
             const existing =
                 await pool.query(
@@ -643,7 +605,6 @@ app.post(
                     ]
                 );
 
-
             if (
                 existing.rows.length > 0
             ) {
@@ -659,10 +620,9 @@ app.post(
 
             }
 
-
-            /* -----------------------------------------
+            /* =========================================
                CHECK REFERRAL
-            ----------------------------------------- */
+            ========================================= */
 
             let referredBy = null;
 
@@ -671,14 +631,15 @@ app.post(
                 const referralResult =
                     await pool.query(
                         `
-                        SELECT id
+                        SELECT referral_code
                         FROM users
                         WHERE referral_code = $1
                         LIMIT 1
                         `,
-                        [cleanReferral]
+                        [
+                            cleanReferral
+                        ]
                     );
-
 
                 if (
                     referralResult.rows.length === 0
@@ -695,16 +656,14 @@ app.post(
 
                 }
 
-
                 referredBy =
                     cleanReferral;
 
             }
 
-
-            /* -----------------------------------------
+            /* =========================================
                HASH PASSWORD
-            ----------------------------------------- */
+            ========================================= */
 
             const passwordHash =
                 await bcrypt.hash(
@@ -712,10 +671,9 @@ app.post(
                     12
                 );
 
-
-            /* -----------------------------------------
+            /* =========================================
                GENERATE UNIQUE REFERRAL CODE
-            ----------------------------------------- */
+            ========================================= */
 
             let newReferralCode = null;
 
@@ -732,9 +690,10 @@ app.post(
                         WHERE referral_code = $1
                         LIMIT 1
                         `,
-                        [candidate]
+                        [
+                            candidate
+                        ]
                     );
-
 
                 if (
                     check.rows.length === 0
@@ -747,10 +706,9 @@ app.post(
 
             }
 
-
-            /* -----------------------------------------
+            /* =========================================
                GENERATE UNIQUE ACCOUNT NUMBER
-            ----------------------------------------- */
+            ========================================= */
 
             let accountNumber = null;
 
@@ -767,9 +725,10 @@ app.post(
                         WHERE account_number = $1
                         LIMIT 1
                         `,
-                        [candidate]
+                        [
+                            candidate
+                        ]
                     );
-
 
                 if (
                     check.rows.length === 0
@@ -782,10 +741,9 @@ app.post(
 
             }
 
-
-            /* -----------------------------------------
+            /* =========================================
                CREATE USER
-            ----------------------------------------- */
+            ========================================= */
 
             const result =
                 await pool.query(
@@ -840,14 +798,17 @@ app.post(
                     ]
                 );
 
-
             const user =
                 result.rows[0];
 
+            /* =========================================
+               SUCCESS
+            ========================================= */
 
-            /* -----------------------------------------
-               SUCCESS RESPONSE
-            ----------------------------------------- */
+            console.log(
+                "FINORA: User registered successfully:",
+                user.id
+            );
 
             return res.status(201).json({
 
@@ -908,6 +869,9 @@ app.post(
                 error
             );
 
+            /* =========================================
+               POSTGRES UNIQUE ERROR
+            ========================================= */
 
             if (
                 error.code === "23505"
@@ -924,6 +888,29 @@ app.post(
 
             }
 
+            /* =========================================
+               DATABASE COLUMN/TABLE ERROR
+            ========================================= */
+
+            if (
+                error.code === "42P01" ||
+                error.code === "42703"
+            ) {
+
+                return res.status(500).json({
+
+                    success: false,
+
+                    message:
+                        "The FINORA users database structure does not match the registration code."
+
+                });
+
+            }
+
+            /* =========================================
+               GENERAL ERROR
+            ========================================= */
 
             return res.status(500).json({
 
@@ -939,441 +926,23 @@ app.post(
     }
 );
 
-
 /* =========================================================
-   USER LOGIN
-   POST /api/users/login
+   FUTURE ROUTES
 ========================================================= */
 
-app.post(
-    "/api/users/login",
-    async (req, res) => {
-
-        try {
-
-            const {
-                phone,
-                email,
-                password
-            } = req.body || {};
-
-
-            /* -----------------------------------------
-               REQUIRED LOGIN DATA
-            ----------------------------------------- */
-
-            if (
-                (!phone && !email) ||
-                !password
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "Phone or email and password are required."
-
-                });
-
-            }
-
-
-            /* -----------------------------------------
-               FIND USER
-            ----------------------------------------- */
-
-            let result;
-
-
-            if (email) {
-
-                const cleanEmail =
-                    normalizeEmail(email);
-
-                result =
-                    await pool.query(
-                        `
-                        SELECT *
-                        FROM users
-                        WHERE LOWER(email) = LOWER($1)
-                        LIMIT 1
-                        `,
-                        [cleanEmail]
-                    );
-
-            } else {
-
-                const cleanPhone =
-                    normalizeUgandaPhone(phone);
-
-                result =
-                    await pool.query(
-                        `
-                        SELECT *
-                        FROM users
-                        WHERE phone = $1
-                        LIMIT 1
-                        `,
-                        [cleanPhone]
-                    );
-
-            }
-
-
-            /* -----------------------------------------
-               USER NOT FOUND
-            ----------------------------------------- */
-
-            if (
-                result.rows.length === 0
-            ) {
-
-                return res.status(401).json({
-
-                    success: false,
-
-                    message:
-                        "Invalid login details."
-
-                });
-
-            }
-
-
-            const user =
-                result.rows[0];
-
-
-            /* -----------------------------------------
-               CHECK PASSWORD
-            ----------------------------------------- */
-
-            const passwordMatch =
-                await bcrypt.compare(
-                    String(password),
-                    user.password_hash
-                );
-
-
-            if (!passwordMatch) {
-
-                return res.status(401).json({
-
-                    success: false,
-
-                    message:
-                        "Invalid login details."
-
-                });
-
-            }
-
-
-            /* -----------------------------------------
-               CHECK ACCOUNT STATUS
-            ----------------------------------------- */
-
-            if (
-                user.account_status &&
-                user.account_status !== "active"
-            ) {
-
-                return res.status(403).json({
-
-                    success: false,
-
-                    message:
-                        "Your FINORA account is not active."
-
-                });
-
-            }
-
-
-            /* -----------------------------------------
-               SESSION
-            ----------------------------------------- */
-
-            req.session.userId =
-                user.id;
-
-
-            /* -----------------------------------------
-               SUCCESS
-            ----------------------------------------- */
-
-            return res.json({
-
-                success: true,
-
-                message:
-                    "Login successful.",
-
-                user: {
-
-                    id:
-                        user.id,
-
-                    fullName:
-                        user.full_name,
-
-                    phone:
-                        user.phone,
-
-                    email:
-                        user.email,
-
-                    referralCode:
-                        user.referral_code,
-
-                    referredBy:
-                        user.referred_by,
-
-                    accountNumber:
-                        user.account_number,
-
-                    walletBalance:
-                        Number(
-                            user.wallet_balance || 0
-                        ),
-
-                    cumulativeIncome:
-                        Number(
-                            user.cumulative_income || 0
-                        ),
-
-                    accountStatus:
-                        user.account_status,
-
-                    createdAt:
-                        user.created_at
-
-                }
-
-            });
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "FINORA LOGIN ERROR:",
-                error
-            );
-
-            return res.status(500).json({
-
-                success: false,
-
-                message:
-                    "Unable to login. Please try again."
-
-            });
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   CURRENT USER
-   GET /api/users/me
-========================================================= */
-
-app.get(
-    "/api/users/me",
-    async (req, res) => {
-
-        try {
-
-            if (!req.session.userId) {
-
-                return res.status(401).json({
-
-                    success: false,
-
-                    message:
-                        "You are not logged in."
-
-                });
-
-            }
-
-
-            const result =
-                await pool.query(
-                    `
-                    SELECT
-                        id,
-                        full_name,
-                        phone,
-                        email,
-                        referral_code,
-                        referred_by,
-                        account_number,
-                        wallet_balance,
-                        cumulative_income,
-                        account_status,
-                        created_at
-                    FROM users
-                    WHERE id = $1
-                    LIMIT 1
-                    `,
-                    [req.session.userId]
-                );
-
-
-            if (
-                result.rows.length === 0
-            ) {
-
-                req.session.destroy(
-                    () => {}
-                );
-
-                return res.status(404).json({
-
-                    success: false,
-
-                    message:
-                        "User account not found."
-
-                });
-
-            }
-
-
-            const user =
-                result.rows[0];
-
-
-            return res.json({
-
-                success: true,
-
-                user: {
-
-                    id:
-                        user.id,
-
-                    fullName:
-                        user.full_name,
-
-                    phone:
-                        user.phone,
-
-                    email:
-                        user.email,
-
-                    referralCode:
-                        user.referral_code,
-
-                    referredBy:
-                        user.referred_by,
-
-                    accountNumber:
-                        user.account_number,
-
-                    walletBalance:
-                        Number(
-                            user.wallet_balance || 0
-                        ),
-
-                    cumulativeIncome:
-                        Number(
-                            user.cumulative_income || 0
-                        ),
-
-                    accountStatus:
-                        user.account_status,
-
-                    createdAt:
-                        user.created_at
-
-                }
-
-            });
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "FINORA CURRENT USER ERROR:",
-                error
-            );
-
-            return res.status(500).json({
-
-                success: false,
-
-                message:
-                    "Unable to load your account."
-
-            });
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   LOGOUT
-   POST /api/users/logout
-========================================================= */
-
-app.post(
-    "/api/users/logout",
-    (req, res) => {
-
-        req.session.destroy(
-            error => {
-
-                if (error) {
-
-                    console.error(
-                        "FINORA LOGOUT ERROR:",
-                        error
-                    );
-
-                    return res.status(500).json({
-
-                        success: false,
-
-                        message:
-                            "Unable to logout."
-
-                    });
-
-                }
-
-
-                res.clearCookie(
-                    "finora.sid"
-                );
-
-
-                return res.json({
-
-                    success: true,
-
-                    message:
-                        "Logged out successfully."
-
-                });
-
-            }
-        );
-
-    }
-);
-
+/*
+   We will add these later, separately:
+
+   /api/deposits
+   /api/withdrawals
+   /api/transactions
+   /api/admin
+   /api/team
+*/
 
 /* =========================================================
    404 HANDLER
+   MUST COME AFTER ALL ROUTES
 ========================================================= */
 
 app.use(
@@ -1394,14 +963,12 @@ app.use(
 
         }
 
-
         return res.status(404).send(
             "FINORA page not found."
         );
 
     }
 );
-
 
 /* =========================================================
    ERROR HANDLER
@@ -1414,7 +981,6 @@ app.use(
             "FINORA SERVER ERROR:",
             error
         );
-
 
         if (
             error.message ===
@@ -1432,7 +998,6 @@ app.use(
 
         }
 
-
         return res.status(500).json({
 
             success: false,
@@ -1444,7 +1009,6 @@ app.use(
 
     }
 );
-
 
 /* =========================================================
    START SERVER
@@ -1461,7 +1025,6 @@ async function startServer() {
         console.log(
             "FINORA: PostgreSQL connected successfully."
         );
-
 
         app.listen(
             PORT,
@@ -1488,10 +1051,5 @@ async function startServer() {
     }
 
 }
-
-
-/* =========================================================
-   START
-========================================================= */
 
 startServer();
