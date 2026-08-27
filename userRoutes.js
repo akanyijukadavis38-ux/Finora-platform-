@@ -23,7 +23,8 @@ router.get("/test", (req, res) => {
 ========================================================= */
 
 router.post("/register", async (req, res) => {
-
+console.log("🔥 REGISTER REQUEST RECEIVED");
+console.log("REGISTER BODY:", req.body);
     try {
 
         const {
