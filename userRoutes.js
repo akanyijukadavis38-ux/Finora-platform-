@@ -12,7 +12,13 @@ console.log("🔥 FINORA USERROUTES.JS LOADED 🔥");
 ========================================================= */
 
 router.get("/test", (req, res) => {
+console.log("🔥 REGISTER ENDPOINT REACHED");
 
+return res.json({
+    success: true,
+    message: "REGISTER ENDPOINT IS WORKING",
+    body: req.body
+});
     res.json({
         success: true,
         message: "FINORA user routes are connected successfully."
