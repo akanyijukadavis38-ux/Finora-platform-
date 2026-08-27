@@ -3,6 +3,8 @@ require("dotenv").config();
 const express = require("express");
 const { Pool } = require("pg");
 
+const userRoutes = require("./userRoutes");
+
 const app = express();
 
 const PORT = Number(process.env.PORT) || 8080;
@@ -99,6 +101,16 @@ app.get("/api/health", async (req, res) => {
     }
 
 });
+
+
+/* =========================================================
+   FINORA USER ROUTES
+========================================================= */
+
+app.use(
+    "/api/users",
+    userRoutes
+);
 
 
 /* =========================================================
