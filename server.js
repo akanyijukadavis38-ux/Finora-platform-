@@ -11,6 +11,38 @@ const PORT = Number(process.env.PORT) || 8080;
 
 
 /* =========================================================
+   CORS
+========================================================= */
+
+app.use((req, res, next) => {
+
+    res.header(
+        "Access-Control-Allow-Origin",
+        "*"
+    );
+
+    res.header(
+        "Access-Control-Allow-Methods",
+        "GET,POST,PUT,PATCH,DELETE,OPTIONS"
+    );
+
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+
+    if (req.method === "OPTIONS") {
+
+        return res.sendStatus(204);
+
+    }
+
+    next();
+
+});
+
+
+/* =========================================================
    EXPRESS
 ========================================================= */
 
@@ -28,10 +60,15 @@ app.use(express.urlencoded({
 app.get("/", (req, res) => {
 
     res.json({
+
         success: true,
+
         application: "FINORA",
+
         message: "FINORA server is running.",
+
         version: "1.0.0"
+
     });
 
 });
@@ -44,10 +81,15 @@ app.get("/", (req, res) => {
 app.get("/api", (req, res) => {
 
     res.json({
+
         success: true,
+
         application: "FINORA",
+
         message: "FINORA API is running.",
+
         version: "1.0.0"
+
     });
 
 });
@@ -143,6 +185,10 @@ app.listen(
 
         console.log(
             `FINORA server running on port ${PORT}`
+        );
+
+        console.log(
+            "FINORA CORS enabled"
         );
 
     }
