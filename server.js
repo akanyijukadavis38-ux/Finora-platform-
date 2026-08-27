@@ -1,13 +1,14 @@
 require("dotenv").config();
 
 const express = require("express");
-const { Pool } = require("pg");
-
-const userRoutes = require("./userRoutes");
 
 const app = express();
 
+const userRoutes = require("./userRoutes");
+const pool = require("./database");
+
 const PORT = Number(process.env.PORT) || 8080;
+
 
 /* =========================================================
    EXPRESS
@@ -15,22 +16,11 @@ const PORT = Number(process.env.PORT) || 8080;
 
 app.use(express.json());
 
-app.use(express.urlencoded({
-    extended: true
-}));
-
-
-/* =========================================================
-   POSTGRESQL
-========================================================= */
-
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-
-    ssl: process.env.NODE_ENV === "production"
-        ? { rejectUnauthorized: false }
-        : false
-});
+app.use(
+    express.urlencoded({
+        extended: true
+    })
+);
 
 
 /* =========================================================
@@ -66,7 +56,7 @@ app.get("/api", (req, res) => {
 
 
 /* =========================================================
-   DATABASE TEST
+   DATABASE HEALTH TEST
 ========================================================= */
 
 app.get("/api/health", async (req, res) => {
@@ -87,7 +77,7 @@ app.get("/api/health", async (req, res) => {
     } catch (error) {
 
         console.error(
-            "DATABASE ERROR:",
+            "FINORA DATABASE ERROR:",
             error
         );
 
@@ -120,10 +110,45 @@ app.use(
 app.use((req, res) => {
 
     res.status(404).json({
+
         success: false,
-        message: "FINORA endpoint not found.",
-        method: req.method,
-        path: req.originalUrl
+
+        message:
+            "FINORA endpoint not found.",
+
+        method:
+            req.method,
+
+        path:
+            req.originalUrl
+
+    });
+
+});
+
+
+/* =========================================================
+   GLOBAL ERROR HANDLER
+========================================================= */
+
+app.use((error, req, res, next) => {
+
+    console.error(
+        "FINORA SERVER ERROR:",
+        error
+    );
+
+    if (res.headersSent) {
+        return next(error);
+    }
+
+    res.status(500).json({
+
+        success: false,
+
+        message:
+            "FINORA server error."
+
     });
 
 });
