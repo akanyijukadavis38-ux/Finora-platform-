@@ -10,6 +10,7 @@ const app = express();
 const PORT =
     Number(process.env.PORT) || 8080;
 
+
 /* =========================================================
    CORS
 ========================================================= */
@@ -17,9 +18,12 @@ const PORT =
 const allowedOrigin =
     "https://finora-platform-q56zx1xzc-akanyijukadavis38-1583s-projects.vercel.app";
 
+
 app.use((req, res, next) => {
 
-    const origin = req.headers.origin;
+    const origin =
+        req.headers.origin;
+
 
     if (origin === allowedOrigin) {
 
@@ -35,25 +39,18 @@ app.use((req, res, next) => {
 
     }
 
+
     res.header(
         "Access-Control-Allow-Methods",
         "GET,POST,PUT,PATCH,DELETE,OPTIONS"
     );
+
 
     res.header(
         "Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept, Authorization"
     );
 
-    if (req.method === "OPTIONS") {
-
-        return res.sendStatus(204);
-
-    }
-
-    next();
-
-});
 
     /* =====================================================
        PREFLIGHT REQUEST
@@ -78,6 +75,7 @@ app.use((req, res, next) => {
 app.use(
     express.json()
 );
+
 
 app.use(
     express.urlencoded({
