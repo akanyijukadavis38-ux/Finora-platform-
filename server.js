@@ -5,13 +5,9 @@ const app = express();
 
 const PORT = process.env.PORT || 8080;
 
-// Allow frontend requests
 app.use(cors());
-
-// Read JSON requests
 app.use(express.json());
 
-// Basic health check
 app.get("/", (req, res) => {
     res.status(200).json({
         success: true,
@@ -28,10 +24,7 @@ app.get("/health", (req, res) => {
     });
 });
 
-// Start server
 app.listen(PORT, "0.0.0.0", () => {
-    console.log("=================================");
-    console.log("🚀 FINORA BACKEND STARTED");
-    console.log("🚀 PORT:", PORT);
-    console.log("=================================");
+    console.log("FINORA BACKEND STARTED");
+    console.log("PORT:", PORT);
 });
