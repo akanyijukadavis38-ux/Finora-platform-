@@ -266,7 +266,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const response =
                     await fetch(
                         API_URL +
-                        "/api/login",
+                        "/api/Users/login",
                         {
 
                             method:
