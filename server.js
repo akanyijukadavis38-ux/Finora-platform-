@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const express = require("express");
+const mongoose = require("mongoose");
 
 const userRoutes = require("./userRoutes");
 const { connectDB } = require("./database");
@@ -12,11 +13,14 @@ const PORT =
 
 
 /* =========================================================
-   CORS
+   FINORA CORS
 ========================================================= */
 
-const allowedOrigin =
-    "https://finora-platform-q56zx1xzc-akanyijukadavis38-1583s-projects.vercel.app";
+const allowedOrigins = [
+
+    "https://finora-platform-q56zx1xzc-akanyijukadavis38-1583s-projects.vercel.app"
+
+];
 
 
 app.use((req, res, next) => {
@@ -25,14 +29,21 @@ app.use((req, res, next) => {
         req.headers.origin;
 
 
-    if (origin === allowedOrigin) {
+    /* =====================================================
+       ALLOW FINORA FRONTEND
+    ===================================================== */
 
-        res.header(
+    if (
+        origin &&
+        allowedOrigins.includes(origin)
+    ) {
+
+        res.setHeader(
             "Access-Control-Allow-Origin",
             origin
         );
 
-        res.header(
+        res.setHeader(
             "Access-Control-Allow-Credentials",
             "true"
         );
@@ -40,25 +51,31 @@ app.use((req, res, next) => {
     }
 
 
-    res.header(
+    res.setHeader(
         "Access-Control-Allow-Methods",
         "GET,POST,PUT,PATCH,DELETE,OPTIONS"
     );
 
 
-    res.header(
+    res.setHeader(
         "Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept, Authorization"
     );
 
 
+    res.setHeader(
+        "Vary",
+        "Origin"
+    );
+
+
     /* =====================================================
-       PREFLIGHT REQUEST
+       PREFLIGHT
     ===================================================== */
 
     if (req.method === "OPTIONS") {
 
-        return res.sendStatus(204);
+        return res.status(204).end();
 
     }
 
@@ -69,7 +86,7 @@ app.use((req, res, next) => {
 
 
 /* =========================================================
-   EXPRESS
+   EXPRESS BODY PARSING
 ========================================================= */
 
 app.use(
@@ -85,12 +102,29 @@ app.use(
 
 
 /* =========================================================
+   REQUEST LOGGER
+========================================================= */
+
+app.use((req, res, next) => {
+
+    console.log(
+        "FINORA REQUEST:",
+        req.method,
+        req.originalUrl
+    );
+
+    next();
+
+});
+
+
+/* =========================================================
    BASIC SERVER TEST
 ========================================================= */
 
 app.get("/", (req, res) => {
 
-    return res.json({
+    return res.status(200).json({
 
         success: true,
 
@@ -114,7 +148,7 @@ app.get("/", (req, res) => {
 
 app.get("/api", (req, res) => {
 
-    return res.json({
+    return res.status(200).json({
 
         success: true,
 
@@ -133,90 +167,55 @@ app.get("/api", (req, res) => {
 
 
 /* =========================================================
-   DATABASE TEST
+   DATABASE HEALTH
 ========================================================= */
 
-app.get("/api/health", async (req, res) => {
+app.get("/api/health", (req, res) => {
 
-    try {
-
-        const mongoose =
-            require("mongoose");
+    const state =
+        mongoose.connection.readyState;
 
 
-        const state =
-            mongoose.connection.readyState;
+    if (state === 1) {
 
+        return res.status(200).json({
 
-        if (state === 1) {
-
-            return res.json({
-
-                success: true,
-
-                server:
-                    "connected",
-
-                database:
-                    "connected",
-
-                databaseType:
-                    "MongoDB",
-
-                message:
-                    "FINORA MongoDB database is connected."
-
-            });
-
-        }
-
-
-        return res.status(503).json({
-
-            success: false,
+            success: true,
 
             server:
                 "connected",
 
             database:
-                "disconnected",
-
-            databaseType:
-                "MongoDB",
-
-            message:
-                "FINORA MongoDB database is not connected."
-
-        });
-
-
-    } catch (error) {
-
-        console.error(
-            "FINORA DATABASE ERROR:",
-            error
-        );
-
-
-        return res.status(500).json({
-
-            success: false,
-
-            server:
                 "connected",
 
-            database:
-                "disconnected",
-
             databaseType:
                 "MongoDB",
 
             message:
-                error.message
+                "FINORA MongoDB database is connected."
 
         });
 
     }
+
+
+    return res.status(503).json({
+
+        success: false,
+
+        server:
+            "connected",
+
+        database:
+            "disconnected",
+
+        databaseType:
+            "MongoDB",
+
+        message:
+            "FINORA MongoDB database is not connected."
+
+    });
 
 });
 
@@ -237,6 +236,13 @@ app.use(
 
 app.use((req, res) => {
 
+    console.log(
+        "FINORA 404:",
+        req.method,
+        req.originalUrl
+    );
+
+
     return res.status(404).json({
 
         success: false,
@@ -256,6 +262,30 @@ app.use((req, res) => {
 
 
 /* =========================================================
+   GLOBAL ERROR HANDLER
+========================================================= */
+
+app.use((error, req, res, next) => {
+
+    console.error(
+        "🔥 FINORA SERVER ERROR:",
+        error
+    );
+
+
+    return res.status(500).json({
+
+        success: false,
+
+        message:
+            "FINORA server error."
+
+    });
+
+});
+
+
+/* =========================================================
    START SERVER
 ========================================================= */
 
@@ -263,7 +293,17 @@ async function startServer() {
 
     try {
 
+        console.log(
+            "🔥 FINORA: Starting server..."
+        );
+
+
         await connectDB();
+
+
+        console.log(
+            "🔥 FINORA: Database connection ready."
+        );
 
 
         app.listen(
@@ -272,11 +312,27 @@ async function startServer() {
             () => {
 
                 console.log(
-                    `FINORA server running on port ${PORT}`
+                    "=============================================="
                 );
 
                 console.log(
-                    "FINORA CORS enabled"
+                    "🔥 FINORA BACKEND ONLINE"
+                );
+
+                console.log(
+                    `🔥 PORT: ${PORT}`
+                );
+
+                console.log(
+                    "🔥 MongoDB: CONNECTED"
+                );
+
+                console.log(
+                    "🔥 User routes: /api/users"
+                );
+
+                console.log(
+                    "=============================================="
                 );
 
             }
@@ -286,12 +342,19 @@ async function startServer() {
     } catch (error) {
 
         console.error(
+            "=============================================="
+        );
+
+        console.error(
             "❌ FINORA SERVER STARTUP FAILED"
         );
 
+        console.error(
+            error
+        );
 
         console.error(
-            error.message
+            "=============================================="
         );
 
 
