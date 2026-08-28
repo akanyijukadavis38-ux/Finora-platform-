@@ -1,27 +1,10 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
-const crypto = require("crypto");
-const db = require("./database");
+const User = require("./User");
 
 const router = express.Router();
 
 console.log("🔥 FINORA USERROUTES.JS LOADED 🔥");
-
-
-/* =========================================================
-   GET DATABASE
-========================================================= */
-
-function getDatabase() {
-    if (!db) {
-        throw new Error("MongoDB database connection is not available.");
-    }
-
-    // Supports database.js exporting either:
-    // 1. the MongoDB Db object directly
-    // 2. an object containing { db }
-    return db.db || db;
-}
 
 
 /* =========================================================
@@ -31,7 +14,7 @@ function getDatabase() {
 
 router.get("/test", (req, res) => {
 
-    console.log("🔥 FINORA USER TEST ENDPOINT REACHED");
+    console.log("🔥 FINORA USER ROUTES TEST REACHED");
 
     return res.json({
 
@@ -61,14 +44,12 @@ router.post("/register", async (req, res) => {
     try {
 
         const {
-
             fullName,
             phone,
             email,
             password,
             confirmPassword,
             referralCode
-
         } = req.body || {};
 
 
@@ -86,10 +67,6 @@ router.post("/register", async (req, res) => {
             !password
         ) {
 
-            console.log(
-                "CHECKPOINT FAILED: Required field missing"
-            );
-
             return res.status(400).json({
 
                 success: false,
@@ -102,9 +79,7 @@ router.post("/register", async (req, res) => {
         }
 
 
-        console.log(
-            "CHECKPOINT 2: Required fields passed"
-        );
+        console.log("CHECKPOINT 2: Required fields passed");
 
 
         /* =====================================================
@@ -115,10 +90,6 @@ router.post("/register", async (req, res) => {
             confirmPassword !== undefined &&
             String(password) !== String(confirmPassword)
         ) {
-
-            console.log(
-                "CHECKPOINT FAILED: Password mismatch"
-            );
 
             return res.status(400).json({
 
@@ -132,9 +103,7 @@ router.post("/register", async (req, res) => {
         }
 
 
-        console.log(
-            "CHECKPOINT 3: Password confirmation passed"
-        );
+        console.log("CHECKPOINT 3: Password confirmation passed");
 
 
         /* =====================================================
@@ -160,9 +129,7 @@ router.post("/register", async (req, res) => {
                 : null;
 
 
-        console.log(
-            "CHECKPOINT 4: Data cleaned"
-        );
+        console.log("CHECKPOINT 4: Data cleaned");
 
 
         /* =====================================================
@@ -264,49 +231,30 @@ router.post("/register", async (req, res) => {
         }
 
 
-        console.log(
-            "CHECKPOINT 6: All validation passed"
-        );
-
-
-        /* =====================================================
-           GET MONGODB
-        ===================================================== */
-
-        const database =
-            getDatabase();
-
-        const users =
-            database.collection("users");
-
-
-        console.log(
-            "🔥 CHECKPOINT 7: MongoDB users collection ready"
-        );
+        console.log("CHECKPOINT 6: All validation passed");
 
 
         /* =====================================================
            CHECK EXISTING USER
+           MONGODB
         ===================================================== */
 
         console.log(
-            "🔥 CHECKPOINT 8: Checking existing user..."
+            "🔥 CHECKPOINT 7: Checking existing user in MongoDB..."
         );
 
 
-        const existing =
-            await users.findOne({
+        const existingUser =
+            await User.findOne({
 
                 $or: [
 
                     {
-                        phone:
-                            cleanPhone
+                        phone: cleanPhone
                     },
 
                     {
-                        email:
-                            cleanEmail
+                        email: cleanEmail
                     }
 
                 ]
@@ -315,15 +263,11 @@ router.post("/register", async (req, res) => {
 
 
         console.log(
-            "🔥 CHECKPOINT 9: Existing-user query finished"
+            "🔥 CHECKPOINT 8: Existing-user check finished"
         );
 
 
-        if (existing) {
-
-            console.log(
-                "REGISTER STOPPED: User already exists"
-            );
+        if (existingUser) {
 
             return res.status(409).json({
 
@@ -337,11 +281,6 @@ router.post("/register", async (req, res) => {
         }
 
 
-        console.log(
-            "CHECKPOINT 10: No existing user found"
-        );
-
-
         /* =====================================================
            CHECK REFERRAL
         ===================================================== */
@@ -352,12 +291,12 @@ router.post("/register", async (req, res) => {
         if (cleanReferral) {
 
             console.log(
-                "🔥 CHECKPOINT 11: Checking referral code..."
+                "🔥 CHECKPOINT 9: Checking referral code..."
             );
 
 
-            const referral =
-                await users.findOne({
+            const referralUser =
+                await User.findOne({
 
                     referralCode:
                         cleanReferral
@@ -365,12 +304,7 @@ router.post("/register", async (req, res) => {
                 });
 
 
-            console.log(
-                "🔥 CHECKPOINT 12: Referral query finished"
-            );
-
-
-            if (!referral) {
+            if (!referralUser) {
 
                 return res.status(400).json({
 
@@ -387,12 +321,18 @@ router.post("/register", async (req, res) => {
             referredBy =
                 cleanReferral;
 
+
+            console.log(
+                "🔥 CHECKPOINT 10: Referral code verified"
+            );
+
+        } else {
+
+            console.log(
+                "CHECKPOINT 10: No referral code supplied"
+            );
+
         }
-
-
-        console.log(
-            "CHECKPOINT 13: Referral processing finished"
-        );
 
 
         /* =====================================================
@@ -400,7 +340,7 @@ router.post("/register", async (req, res) => {
         ===================================================== */
 
         console.log(
-            "🔥 CHECKPOINT 14: Hashing password..."
+            "🔥 CHECKPOINT 11: Hashing password..."
         );
 
 
@@ -412,7 +352,7 @@ router.post("/register", async (req, res) => {
 
 
         console.log(
-            "🔥 CHECKPOINT 15: Password hash finished"
+            "🔥 CHECKPOINT 12: Password hash finished"
         );
 
 
@@ -421,25 +361,24 @@ router.post("/register", async (req, res) => {
         ===================================================== */
 
         console.log(
-            "🔥 CHECKPOINT 16: Generating referral code..."
+            "🔥 CHECKPOINT 13: Generating referral code..."
         );
 
 
         let newReferralCode;
 
-
         while (!newReferralCode) {
 
             const candidate =
                 "FIN" +
-                crypto
-                    .randomBytes(4)
-                    .toString("hex")
+                Math.random()
+                    .toString(36)
+                    .substring(2, 10)
                     .toUpperCase();
 
 
-            const check =
-                await users.findOne({
+            const existingReferral =
+                await User.findOne({
 
                     referralCode:
                         candidate
@@ -447,7 +386,7 @@ router.post("/register", async (req, res) => {
                 });
 
 
-            if (!check) {
+            if (!existingReferral) {
 
                 newReferralCode =
                     candidate;
@@ -458,7 +397,7 @@ router.post("/register", async (req, res) => {
 
 
         console.log(
-            "🔥 CHECKPOINT 17: Referral code generated:",
+            "🔥 CHECKPOINT 14: Referral code generated:",
             newReferralCode
         );
 
@@ -468,12 +407,11 @@ router.post("/register", async (req, res) => {
         ===================================================== */
 
         console.log(
-            "🔥 CHECKPOINT 18: Generating account number..."
+            "🔥 CHECKPOINT 15: Generating account number..."
         );
 
 
         let accountNumber;
-
 
         while (!accountNumber) {
 
@@ -485,8 +423,8 @@ router.post("/register", async (req, res) => {
                 );
 
 
-            const check =
-                await users.findOne({
+            const existingAccount =
+                await User.findOne({
 
                     accountNumber:
                         candidate
@@ -494,7 +432,7 @@ router.post("/register", async (req, res) => {
                 });
 
 
-            if (!check) {
+            if (!existingAccount) {
 
                 accountNumber =
                     candidate;
@@ -505,77 +443,60 @@ router.post("/register", async (req, res) => {
 
 
         console.log(
-            "🔥 CHECKPOINT 19: Account number generated:",
+            "🔥 CHECKPOINT 16: Account number generated:",
             accountNumber
         );
 
 
         /* =====================================================
            CREATE USER
+           MONGODB
         ===================================================== */
 
         console.log(
-            "🔥 CHECKPOINT 20: CREATING USER IN MONGODB..."
+            "🔥 CHECKPOINT 17: Creating user in MongoDB..."
         );
 
 
-        const now =
-            new Date();
+        const user =
+            await User.create({
 
+                fullName:
+                    cleanName,
 
-        const newUser = {
+                phone:
+                    cleanPhone,
 
-            fullName:
-                cleanName,
+                email:
+                    cleanEmail,
 
-            phone:
-                cleanPhone,
+                passwordHash:
+                    passwordHash,
 
-            email:
-                cleanEmail,
+                referralCode:
+                    newReferralCode,
 
-            passwordHash:
-                passwordHash,
+                referredBy:
+                    referredBy,
 
-            referralCode:
-                newReferralCode,
+                accountNumber:
+                    accountNumber,
 
-            referredBy:
-                referredBy,
+                walletBalance:
+                    0,
 
-            accountNumber:
-                accountNumber,
+                cumulativeIncome:
+                    0,
 
-            walletBalance:
-                0,
+                accountStatus:
+                    "active"
 
-            cumulativeIncome:
-                0,
-
-            accountStatus:
-                "active",
-
-            createdAt:
-                now,
-
-            updatedAt:
-                now
-
-        };
-
-
-        /* =====================================================
-           INSERT USER
-        ===================================================== */
-
-        const result =
-            await users.insertOne(
-                newUser
-            );
+            });
 
 
         console.log(
-            "🔥 CHECKPOINT 21: USER INSERT FINISHED"
+            "🔥 CHECKPOINT 18: USER CREATED:",
+            user._id
         );
 
 
@@ -593,37 +514,41 @@ router.post("/register", async (req, res) => {
             user: {
 
                 id:
-                    result.insertedId,
+                    user._id,
 
                 fullName:
-                    newUser.fullName,
+                    user.fullName,
 
                 phone:
-                    newUser.phone,
+                    user.phone,
 
                 email:
-                    newUser.email,
+                    user.email,
 
                 referralCode:
-                    newUser.referralCode,
+                    user.referralCode,
 
                 referredBy:
-                    newUser.referredBy,
+                    user.referredBy,
 
                 accountNumber:
-                    newUser.accountNumber,
+                    user.accountNumber,
 
                 walletBalance:
-                    newUser.walletBalance,
+                    Number(
+                        user.walletBalance || 0
+                    ),
 
                 cumulativeIncome:
-                    newUser.cumulativeIncome,
+                    Number(
+                        user.cumulativeIncome || 0
+                    ),
 
                 accountStatus:
-                    newUser.accountStatus,
+                    user.accountStatus,
 
                 createdAt:
-                    newUser.createdAt
+                    user.createdAt
 
             }
 
@@ -636,11 +561,9 @@ router.post("/register", async (req, res) => {
         console.error(
             "=============================================="
         );
-
         console.error(
             "🔥 FINORA MONGODB REGISTRATION ERROR"
         );
-
         console.error(
             "=============================================="
         );
@@ -678,6 +601,10 @@ router.post("/register", async (req, res) => {
 
         }
 
+
+        /* =====================================================
+           GENERAL ERROR
+        ===================================================== */
 
         return res.status(500).json({
 
