@@ -3,7 +3,7 @@ require("dotenv").config();
 const express = require("express");
 
 const userRoutes = require("./userRoutes");
-const pool = require("./database");
+const { connectDB } = require("./database");
 
 const app = express();
 
@@ -103,19 +103,43 @@ app.get("/api/health", async (req, res) => {
 
     try {
 
-        const result = await pool.query(
-            "SELECT NOW() AS time"
-        );
+        const mongoose =
+            require("mongoose");
 
-        res.json({
+        const state =
+            mongoose.connection.readyState;
 
-            success: true,
+        if (state === 1) {
+
+            return res.json({
+
+                success: true,
+
+                server: "connected",
+
+                database: "connected",
+
+                databaseType: "MongoDB",
+
+                message:
+                    "FINORA MongoDB database is connected."
+
+            });
+
+        }
+
+        return res.status(503).json({
+
+            success: false,
 
             server: "connected",
 
-            database: "connected",
+            database: "disconnected",
 
-            time: result.rows[0].time
+            databaseType: "MongoDB",
+
+            message:
+                "FINORA MongoDB database is not connected."
 
         });
 
@@ -126,13 +150,15 @@ app.get("/api/health", async (req, res) => {
             error
         );
 
-        res.status(500).json({
+        return res.status(500).json({
 
             success: false,
 
             server: "connected",
 
             database: "disconnected",
+
+            databaseType: "MongoDB",
 
             message: error.message
 
@@ -163,11 +189,14 @@ app.use((req, res) => {
 
         success: false,
 
-        message: "FINORA endpoint not found.",
+        message:
+            "FINORA endpoint not found.",
 
-        method: req.method,
+        method:
+            req.method,
 
-        path: req.originalUrl
+        path:
+            req.originalUrl
 
     });
 
@@ -178,18 +207,42 @@ app.use((req, res) => {
    START SERVER
 ========================================================= */
 
-app.listen(
-    PORT,
-    "0.0.0.0",
-    () => {
+async function startServer() {
 
-        console.log(
-            `FINORA server running on port ${PORT}`
+    try {
+
+        await connectDB();
+
+        app.listen(
+            PORT,
+            "0.0.0.0",
+            () => {
+
+                console.log(
+                    `FINORA server running on port ${PORT}`
+                );
+
+                console.log(
+                    "FINORA CORS enabled"
+                );
+
+            }
         );
 
-        console.log(
-            "FINORA CORS enabled"
+    } catch (error) {
+
+        console.error(
+            "❌ FINORA SERVER STARTUP FAILED"
         );
+
+        console.error(
+            error.message
+        );
+
+        process.exit(1);
 
     }
-);
+
+}
+
+startServer();
