@@ -7,7 +7,8 @@ const { connectDB } = require("./database");
 
 const app = express();
 
-const PORT = Number(process.env.PORT) || 8080;
+const PORT =
+    Number(process.env.PORT) || 8080;
 
 
 /* =========================================================
@@ -16,10 +17,22 @@ const PORT = Number(process.env.PORT) || 8080;
 
 app.use((req, res, next) => {
 
-    res.header(
-        "Access-Control-Allow-Origin",
-        "*"
-    );
+    const allowedOrigin =
+        req.headers.origin;
+
+    if (allowedOrigin) {
+
+        res.header(
+            "Access-Control-Allow-Origin",
+            allowedOrigin
+        );
+
+        res.header(
+            "Vary",
+            "Origin"
+        );
+
+    }
 
     res.header(
         "Access-Control-Allow-Methods",
@@ -48,9 +61,11 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-app.use(express.urlencoded({
-    extended: true
-}));
+app.use(
+    express.urlencoded({
+        extended: true
+    })
+);
 
 
 /* =========================================================
@@ -65,9 +80,11 @@ app.get("/", (req, res) => {
 
         application: "FINORA",
 
-        message: "FINORA server is running.",
+        message:
+            "FINORA server is running.",
 
-        version: "1.0.0"
+        version:
+            "1.0.0"
 
     });
 
@@ -86,9 +103,11 @@ app.get("/api", (req, res) => {
 
         application: "FINORA",
 
-        message: "FINORA API is running.",
+        message:
+            "FINORA API is running.",
 
-        version: "1.0.0"
+        version:
+            "1.0.0"
 
     });
 
@@ -109,17 +128,21 @@ app.get("/api/health", async (req, res) => {
         const state =
             mongoose.connection.readyState;
 
+
         if (state === 1) {
 
             return res.json({
 
                 success: true,
 
-                server: "connected",
+                server:
+                    "connected",
 
-                database: "connected",
+                database:
+                    "connected",
 
-                databaseType: "MongoDB",
+                databaseType:
+                    "MongoDB",
 
                 message:
                     "FINORA MongoDB database is connected."
@@ -128,15 +151,19 @@ app.get("/api/health", async (req, res) => {
 
         }
 
+
         return res.status(503).json({
 
             success: false,
 
-            server: "connected",
+            server:
+                "connected",
 
-            database: "disconnected",
+            database:
+                "disconnected",
 
-            databaseType: "MongoDB",
+            databaseType:
+                "MongoDB",
 
             message:
                 "FINORA MongoDB database is not connected."
@@ -154,13 +181,17 @@ app.get("/api/health", async (req, res) => {
 
             success: false,
 
-            server: "connected",
+            server:
+                "connected",
 
-            database: "disconnected",
+            database:
+                "disconnected",
 
-            databaseType: "MongoDB",
+            databaseType:
+                "MongoDB",
 
-            message: error.message
+            message:
+                error.message
 
         });
 
@@ -213,6 +244,7 @@ async function startServer() {
 
         await connectDB();
 
+
         app.listen(
             PORT,
             "0.0.0.0",
@@ -244,5 +276,6 @@ async function startServer() {
     }
 
 }
+
 
 startServer();
