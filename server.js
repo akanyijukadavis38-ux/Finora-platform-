@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const { connectDB } = require("./db");
 
 const app = express();
 
@@ -23,6 +24,8 @@ app.get("/health", (req, res) => {
         message: "FINORA Backend is healthy"
     });
 });
+
+connectDB();
 
 app.listen(PORT, "0.0.0.0", () => {
     console.log("FINORA BACKEND STARTED");
