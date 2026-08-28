@@ -9,7 +9,7 @@ console.log("🔥 FINORA USERROUTES.JS LOADED 🔥");
 
 /* =========================================================
    TEST ROUTE
-   GET /api/Users/test
+   GET /api/users/test
 ========================================================= */
 
 router.get("/test", (req, res) => {
@@ -30,7 +30,7 @@ router.get("/test", (req, res) => {
 
 /* =========================================================
    REGISTER
-   POST /api/Users/register
+   POST /api/users/register
 ========================================================= */
 
 router.post("/register", async (req, res) => {
@@ -39,7 +39,6 @@ router.post("/register", async (req, res) => {
     console.log("==============================================");
     console.log("🔥 FINORA REGISTER REQUEST RECEIVED");
     console.log("==============================================");
-
 
     try {
 
@@ -614,7 +613,7 @@ router.post("/register", async (req, res) => {
 
 /* =========================================================
    LOGIN
-   POST /api/Users/login
+   POST /api/users/login
 ========================================================= */
 
 router.post("/login", async (req, res) => {
@@ -634,7 +633,7 @@ router.post("/login", async (req, res) => {
 
 
         console.log(
-            "LOGIN CHECKPOINT 1: Request body received"
+            "CHECKPOINT 1: Login request body received"
         );
 
 
@@ -649,7 +648,7 @@ router.post("/login", async (req, res) => {
                 success: false,
 
                 message:
-                    "Phone number or email and password are required."
+                    "Phone number/email and password are required."
 
             });
 
@@ -665,51 +664,50 @@ router.post("/login", async (req, res) => {
                 .trim();
 
 
-        const cleanPassword =
-            String(password);
+        console.log(
+            "CHECKPOINT 2: Identifier:",
+            cleanIdentifier
+        );
 
 
         /* =====================================================
-           NORMALIZE PHONE IF PHONE WAS PROVIDED
+           NORMALIZE EMAIL
         ===================================================== */
 
-        if (
-            /^\+2567\d{8}$/.test(
-                cleanIdentifier
-            )
-        ) {
+        const identifierIsEmail =
+            cleanIdentifier.includes("@");
+
+
+        if (identifierIsEmail) {
 
             cleanIdentifier =
-                "0" +
-                cleanIdentifier.substring(4);
-
-        }
-
-
-        if (
-            /^2567\d{8}$/.test(
-                cleanIdentifier
-            )
-        ) {
-
-            cleanIdentifier =
-                "0" +
-                cleanIdentifier.substring(3);
+                cleanIdentifier.toLowerCase();
 
         }
 
 
         /* =====================================================
-           EMAIL NORMALIZATION
+           NORMALIZE UGANDA PHONE
         ===================================================== */
 
-        const identifierForSearch =
-            cleanIdentifier.toLowerCase();
+        if (/^\+2567\d{8}$/.test(cleanIdentifier)) {
+
+            cleanIdentifier =
+                "0" + cleanIdentifier.substring(4);
+
+        }
+
+        if (/^2567\d{8}$/.test(cleanIdentifier)) {
+
+            cleanIdentifier =
+                "0" + cleanIdentifier.substring(3);
+
+        }
 
 
         console.log(
-            "LOGIN CHECKPOINT 2: Identifier cleaned:",
-            identifierForSearch
+            "CHECKPOINT 3: Identifier normalized:",
+            cleanIdentifier
         );
 
 
@@ -718,7 +716,7 @@ router.post("/login", async (req, res) => {
         ===================================================== */
 
         console.log(
-            "🔥 LOGIN CHECKPOINT 3: Searching MongoDB..."
+            "🔥 CHECKPOINT 4: Searching MongoDB for user..."
         );
 
 
@@ -734,7 +732,7 @@ router.post("/login", async (req, res) => {
 
                     {
                         email:
-                            identifierForSearch
+                            cleanIdentifier
                     }
 
                 ]
@@ -743,26 +741,18 @@ router.post("/login", async (req, res) => {
 
 
         console.log(
-            "🔥 LOGIN CHECKPOINT 4: User search finished"
+            "🔥 CHECKPOINT 5: User search completed"
         );
 
 
-        /* =====================================================
-           USER NOT FOUND
-        ===================================================== */
-
         if (!user) {
-
-            console.log(
-                "LOGIN FAILED: User not found"
-            );
 
             return res.status(401).json({
 
                 success: false,
 
                 message:
-                    "Invalid phone number/email or password."
+                    "Invalid phone/email or password."
 
             });
 
@@ -770,25 +760,37 @@ router.post("/login", async (req, res) => {
 
 
         /* =====================================================
-           ACCOUNT STATUS
+           CHECK ACCOUNT STATUS
         ===================================================== */
 
         if (
-            user.accountStatus !==
-            "active"
+            user.accountStatus ===
+            "frozen"
         ) {
-
-            console.log(
-                "LOGIN FAILED: Account status:",
-                user.accountStatus
-            );
 
             return res.status(403).json({
 
                 success: false,
 
                 message:
-                    "Your FINORA account is not active."
+                    "Your FINORA account is frozen."
+
+            });
+
+        }
+
+
+        if (
+            user.accountStatus ===
+            "suspended"
+        ) {
+
+            return res.status(403).json({
+
+                success: false,
+
+                message:
+                    "Your FINORA account is suspended."
 
             });
 
@@ -796,30 +798,25 @@ router.post("/login", async (req, res) => {
 
 
         /* =====================================================
-           CHECK PASSWORD
+           COMPARE PASSWORD
         ===================================================== */
 
         console.log(
-            "🔥 LOGIN CHECKPOINT 5: Checking password..."
+            "🔥 CHECKPOINT 6: Comparing password..."
         );
 
 
-        const passwordMatch =
+        const passwordMatches =
             await bcrypt.compare(
-                cleanPassword,
+                String(password),
                 user.passwordHash
             );
 
 
-        console.log(
-            "🔥 LOGIN CHECKPOINT 6: Password check finished"
-        );
-
-
-        if (!passwordMatch) {
+        if (!passwordMatches) {
 
             console.log(
-                "LOGIN FAILED: Incorrect password"
+                "🔥 CHECKPOINT 7: Password incorrect"
             );
 
             return res.status(401).json({
@@ -827,11 +824,16 @@ router.post("/login", async (req, res) => {
                 success: false,
 
                 message:
-                    "Invalid phone number/email or password."
+                    "Invalid phone/email or password."
 
             });
 
         }
+
+
+        console.log(
+            "🔥 CHECKPOINT 7: Password correct"
+        );
 
 
         /* =====================================================
@@ -839,16 +841,10 @@ router.post("/login", async (req, res) => {
         ===================================================== */
 
         console.log(
-            "🔥 LOGIN CHECKPOINT 7: LOGIN SUCCESS:",
+            "🔥 CHECKPOINT 8: LOGIN SUCCESS:",
             user._id
         );
 
-
-        /* =====================================================
-           RETURN SAFE USER DATA
-           
-           NEVER RETURN passwordHash
-        ===================================================== */
 
         return res.status(200).json({
 
@@ -907,11 +903,9 @@ router.post("/login", async (req, res) => {
         console.error(
             "=============================================="
         );
-
         console.error(
-            "🔥 FINORA LOGIN ERROR"
+            "🔥 FINORA MONGODB LOGIN ERROR"
         );
-
         console.error(
             "=============================================="
         );
