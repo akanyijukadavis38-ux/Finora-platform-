@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
     ========================================= */
 
     const API_URL =
-    "https://finora-platform-production.up.railway.app";
+        "https://finora-platform-production.up.railway.app";
 
 
     /* =========================================
@@ -33,31 +33,17 @@ document.addEventListener("DOMContentLoaded", function () {
     ========================================= */
 
     if (!form) {
-
-        console.error(
-            "FINORA: loginForm was not found."
-        );
-
+        console.error("FINORA: loginForm was not found.");
         return;
     }
-
 
     if (!identifier) {
-
-        console.error(
-            "FINORA: loginIdentifier was not found."
-        );
-
+        console.error("FINORA: loginIdentifier was not found.");
         return;
     }
 
-
     if (!password) {
-
-        console.error(
-            "FINORA: loginPassword was not found."
-        );
-
+        console.error("FINORA: loginPassword was not found.");
         return;
     }
 
@@ -70,58 +56,43 @@ document.addEventListener("DOMContentLoaded", function () {
         .querySelectorAll(".toggle-password")
         .forEach(function (button) {
 
-            button.addEventListener(
-                "click",
-                function () {
+            button.addEventListener("click", function () {
 
-                    const targetId =
-                        button.getAttribute(
-                            "data-target"
-                        );
+                const targetId =
+                    button.getAttribute("data-target");
 
-                    const target =
-                        document.getElementById(
-                            targetId
-                        );
+                const target =
+                    document.getElementById(targetId);
 
-                    if (!target) {
-                        return;
-                    }
+                if (!target) {
+                    return;
+                }
 
+                if (target.type === "password") {
 
-                    if (
-                        target.type ===
-                        "password"
-                    ) {
+                    target.type = "text";
 
-                        target.type =
-                            "text";
+                    button.textContent = "🙈";
 
-                        button.textContent =
-                            "🙈";
+                    button.setAttribute(
+                        "aria-label",
+                        "Hide password"
+                    );
 
-                        button.setAttribute(
-                            "aria-label",
-                            "Hide password"
-                        );
+                } else {
 
-                    } else {
+                    target.type = "password";
 
-                        target.type =
-                            "password";
+                    button.textContent = "👁";
 
-                        button.textContent =
-                            "👁";
-
-                        button.setAttribute(
-                            "aria-label",
-                            "Show password"
-                        );
-
-                    }
+                    button.setAttribute(
+                        "aria-label",
+                        "Show password"
+                    );
 
                 }
-            );
+
+            });
 
         });
 
@@ -155,8 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (formStatus) {
 
-                formStatus.textContent =
-                    "";
+                formStatus.textContent = "";
 
                 formStatus.className =
                     "form-status";
@@ -200,9 +170,7 @@ document.addEventListener("DOMContentLoaded", function () {
                PASSWORD MINIMUM
             ================================= */
 
-            if (
-                passwordValue.length < 6
-            ) {
+            if (passwordValue.length < 6) {
 
                 showError(
                     "Password must be at least 6 characters."
@@ -218,8 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
                START LOADING
             ================================= */
 
-            loginButton.disabled =
-                true;
+            loginButton.disabled = true;
 
             loginButton.textContent =
                 "LOGGING IN...";
@@ -254,13 +221,10 @@ document.addEventListener("DOMContentLoaded", function () {
             try {
 
                 /* =================================
-                   SEND LOGIN TO FINORA SERVER
-
-                   IMPORTANT:
-                   credentials: "include"
-                   allows the browser to keep
-                   and send the FINORA session
-                   cookie created by server.js.
+                   SEND LOGIN TO FINORA BACKEND
+                   
+                   CORRECT ENDPOINT:
+                   /api/users/login
                 ================================= */
 
                 const response =
@@ -269,8 +233,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         "/api/users/login",
                         {
 
-                            method:
-                                "POST",
+                            method: "POST",
 
                             headers: {
 
@@ -281,9 +244,6 @@ document.addEventListener("DOMContentLoaded", function () {
                                     "application/json"
 
                             },
-
-                            credentials:
-                                "include",
 
                             body:
                                 JSON.stringify({
@@ -383,12 +343,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 console.log(
-                    "FINORA: Session created successfully."
+                    "FINORA: User authenticated successfully."
                 );
 
 
                 /* =================================
-                   SHOW SUCCESS MESSAGE
+                   SHOW SUCCESS
                 ================================= */
 
                 if (formStatus) {
@@ -402,8 +362,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
 
-                loginButton.disabled =
-                    true;
+                loginButton.disabled = true;
 
                 loginButton.textContent =
                     "LOGIN SUCCESSFUL ✓";
@@ -411,8 +370,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 /* =================================
                    REDIRECT TO DASHBOARD
-                   
-                   NO LOCAL STORAGE
                 ================================= */
 
                 setTimeout(function () {
@@ -491,8 +448,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function resetLoginButton() {
 
-        loginButton.disabled =
-            false;
+        loginButton.disabled = false;
 
         loginButton.textContent =
             "LOGIN TO FINORA";
