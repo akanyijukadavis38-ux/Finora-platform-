@@ -13,18 +13,35 @@ const PORT =
 
 /* =========================================================
    CORS
+   FINORA VERCEL FRONTEND
 ========================================================= */
+
+const ALLOWED_ORIGINS = [
+
+    "https://finora-platform-q56zx1xzc-akanyijukadavis38-1583s-projects.vercel.app"
+
+];
+
 
 app.use((req, res, next) => {
 
-    const allowedOrigin =
+    const origin =
         req.headers.origin;
 
-    if (allowedOrigin) {
+
+    if (
+        origin &&
+        ALLOWED_ORIGINS.includes(origin)
+    ) {
 
         res.header(
             "Access-Control-Allow-Origin",
-            allowedOrigin
+            origin
+        );
+
+        res.header(
+            "Access-Control-Allow-Credentials",
+            "true"
         );
 
         res.header(
@@ -34,21 +51,29 @@ app.use((req, res, next) => {
 
     }
 
+
     res.header(
         "Access-Control-Allow-Methods",
         "GET,POST,PUT,PATCH,DELETE,OPTIONS"
     );
+
 
     res.header(
         "Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept, Authorization"
     );
 
+
+    /* =====================================================
+       PREFLIGHT REQUEST
+    ===================================================== */
+
     if (req.method === "OPTIONS") {
 
         return res.sendStatus(204);
 
     }
+
 
     next();
 
@@ -59,7 +84,9 @@ app.use((req, res, next) => {
    EXPRESS
 ========================================================= */
 
-app.use(express.json());
+app.use(
+    express.json()
+);
 
 app.use(
     express.urlencoded({
@@ -74,11 +101,12 @@ app.use(
 
 app.get("/", (req, res) => {
 
-    res.json({
+    return res.json({
 
         success: true,
 
-        application: "FINORA",
+        application:
+            "FINORA",
 
         message:
             "FINORA server is running.",
@@ -97,11 +125,12 @@ app.get("/", (req, res) => {
 
 app.get("/api", (req, res) => {
 
-    res.json({
+    return res.json({
 
         success: true,
 
-        application: "FINORA",
+        application:
+            "FINORA",
 
         message:
             "FINORA API is running.",
@@ -124,6 +153,7 @@ app.get("/api/health", async (req, res) => {
 
         const mongoose =
             require("mongoose");
+
 
         const state =
             mongoose.connection.readyState;
@@ -170,12 +200,14 @@ app.get("/api/health", async (req, res) => {
 
         });
 
+
     } catch (error) {
 
         console.error(
             "FINORA DATABASE ERROR:",
             error
         );
+
 
         return res.status(500).json({
 
@@ -216,7 +248,7 @@ app.use(
 
 app.use((req, res) => {
 
-    res.status(404).json({
+    return res.status(404).json({
 
         success: false,
 
@@ -261,15 +293,18 @@ async function startServer() {
             }
         );
 
+
     } catch (error) {
 
         console.error(
             "❌ FINORA SERVER STARTUP FAILED"
         );
 
+
         console.error(
             error.message
         );
+
 
         process.exit(1);
 
