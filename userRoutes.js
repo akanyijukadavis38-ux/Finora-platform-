@@ -9,7 +9,7 @@ console.log("🔥 FINORA USERROUTES.JS LOADED 🔥");
 
 /* =========================================================
    TEST ROUTE
-   GET /api/users/test
+   GET /api/Users/test
 ========================================================= */
 
 router.get("/test", (req, res) => {
@@ -30,7 +30,7 @@ router.get("/test", (req, res) => {
 
 /* =========================================================
    REGISTER
-   POST /api/users/register
+   POST /api/Users/register
 ========================================================= */
 
 router.post("/register", async (req, res) => {
@@ -125,7 +125,9 @@ router.post("/register", async (req, res) => {
 
         const cleanReferral =
             referralCode
-                ? String(referralCode).trim().toUpperCase()
+                ? String(referralCode)
+                    .trim()
+                    .toUpperCase()
                 : null;
 
 
@@ -236,7 +238,6 @@ router.post("/register", async (req, res) => {
 
         /* =====================================================
            CHECK EXISTING USER
-           MONGODB
         ===================================================== */
 
         console.log(
@@ -450,7 +451,6 @@ router.post("/register", async (req, res) => {
 
         /* =====================================================
            CREATE USER
-           MONGODB
         ===================================================== */
 
         console.log(
@@ -584,10 +584,6 @@ router.post("/register", async (req, res) => {
         );
 
 
-        /* =====================================================
-           DUPLICATE KEY
-        ===================================================== */
-
         if (error.code === 11000) {
 
             return res.status(409).json({
@@ -602,16 +598,341 @@ router.post("/register", async (req, res) => {
         }
 
 
-        /* =====================================================
-           GENERAL ERROR
-        ===================================================== */
-
         return res.status(500).json({
 
             success: false,
 
             message:
                 "Unable to create account. Please try again."
+
+        });
+
+    }
+
+});
+
+
+/* =========================================================
+   LOGIN
+   POST /api/Users/login
+========================================================= */
+
+router.post("/login", async (req, res) => {
+
+    console.log("");
+    console.log("==============================================");
+    console.log("🔥 FINORA LOGIN REQUEST RECEIVED");
+    console.log("==============================================");
+
+
+    try {
+
+        const {
+            identifier,
+            password
+        } = req.body || {};
+
+
+        console.log(
+            "LOGIN CHECKPOINT 1: Request body received"
+        );
+
+
+        /* =====================================================
+           REQUIRED FIELDS
+        ===================================================== */
+
+        if (!identifier || !password) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "Phone number or email and password are required."
+
+            });
+
+        }
+
+
+        /* =====================================================
+           CLEAN IDENTIFIER
+        ===================================================== */
+
+        let cleanIdentifier =
+            String(identifier)
+                .trim();
+
+
+        const cleanPassword =
+            String(password);
+
+
+        /* =====================================================
+           NORMALIZE PHONE IF PHONE WAS PROVIDED
+        ===================================================== */
+
+        if (
+            /^\+2567\d{8}$/.test(
+                cleanIdentifier
+            )
+        ) {
+
+            cleanIdentifier =
+                "0" +
+                cleanIdentifier.substring(4);
+
+        }
+
+
+        if (
+            /^2567\d{8}$/.test(
+                cleanIdentifier
+            )
+        ) {
+
+            cleanIdentifier =
+                "0" +
+                cleanIdentifier.substring(3);
+
+        }
+
+
+        /* =====================================================
+           EMAIL NORMALIZATION
+        ===================================================== */
+
+        const identifierForSearch =
+            cleanIdentifier.toLowerCase();
+
+
+        console.log(
+            "LOGIN CHECKPOINT 2: Identifier cleaned:",
+            identifierForSearch
+        );
+
+
+        /* =====================================================
+           FIND USER
+        ===================================================== */
+
+        console.log(
+            "🔥 LOGIN CHECKPOINT 3: Searching MongoDB..."
+        );
+
+
+        const user =
+            await User.findOne({
+
+                $or: [
+
+                    {
+                        phone:
+                            cleanIdentifier
+                    },
+
+                    {
+                        email:
+                            identifierForSearch
+                    }
+
+                ]
+
+            });
+
+
+        console.log(
+            "🔥 LOGIN CHECKPOINT 4: User search finished"
+        );
+
+
+        /* =====================================================
+           USER NOT FOUND
+        ===================================================== */
+
+        if (!user) {
+
+            console.log(
+                "LOGIN FAILED: User not found"
+            );
+
+            return res.status(401).json({
+
+                success: false,
+
+                message:
+                    "Invalid phone number/email or password."
+
+            });
+
+        }
+
+
+        /* =====================================================
+           ACCOUNT STATUS
+        ===================================================== */
+
+        if (
+            user.accountStatus !==
+            "active"
+        ) {
+
+            console.log(
+                "LOGIN FAILED: Account status:",
+                user.accountStatus
+            );
+
+            return res.status(403).json({
+
+                success: false,
+
+                message:
+                    "Your FINORA account is not active."
+
+            });
+
+        }
+
+
+        /* =====================================================
+           CHECK PASSWORD
+        ===================================================== */
+
+        console.log(
+            "🔥 LOGIN CHECKPOINT 5: Checking password..."
+        );
+
+
+        const passwordMatch =
+            await bcrypt.compare(
+                cleanPassword,
+                user.passwordHash
+            );
+
+
+        console.log(
+            "🔥 LOGIN CHECKPOINT 6: Password check finished"
+        );
+
+
+        if (!passwordMatch) {
+
+            console.log(
+                "LOGIN FAILED: Incorrect password"
+            );
+
+            return res.status(401).json({
+
+                success: false,
+
+                message:
+                    "Invalid phone number/email or password."
+
+            });
+
+        }
+
+
+        /* =====================================================
+           LOGIN SUCCESS
+        ===================================================== */
+
+        console.log(
+            "🔥 LOGIN CHECKPOINT 7: LOGIN SUCCESS:",
+            user._id
+        );
+
+
+        /* =====================================================
+           RETURN SAFE USER DATA
+           
+           NEVER RETURN passwordHash
+        ===================================================== */
+
+        return res.status(200).json({
+
+            success: true,
+
+            message:
+                "Login successful.",
+
+            user: {
+
+                id:
+                    user._id,
+
+                fullName:
+                    user.fullName,
+
+                phone:
+                    user.phone,
+
+                email:
+                    user.email,
+
+                referralCode:
+                    user.referralCode,
+
+                referredBy:
+                    user.referredBy,
+
+                accountNumber:
+                    user.accountNumber,
+
+                walletBalance:
+                    Number(
+                        user.walletBalance || 0
+                    ),
+
+                cumulativeIncome:
+                    Number(
+                        user.cumulativeIncome || 0
+                    ),
+
+                accountStatus:
+                    user.accountStatus,
+
+                createdAt:
+                    user.createdAt
+
+            }
+
+        });
+
+
+    } catch (error) {
+
+        console.error("");
+        console.error(
+            "=============================================="
+        );
+
+        console.error(
+            "🔥 FINORA LOGIN ERROR"
+        );
+
+        console.error(
+            "=============================================="
+        );
+
+        console.error(
+            "ERROR MESSAGE:",
+            error.message
+        );
+
+        console.error(
+            "FULL ERROR:",
+            error
+        );
+
+
+        return res.status(500).json({
+
+            success: false,
+
+            message:
+                "Unable to login. Please try again."
 
         });
 
