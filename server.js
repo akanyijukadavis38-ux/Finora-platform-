@@ -1,11 +1,8 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
-
-console.log("STEP 1: server.js loaded");
-
 const { connectDB } = require("./database");
-
-console.log("STEP 2: database.js loaded");
 
 const app = express();
 
@@ -30,24 +27,22 @@ app.get("/health", (req, res) => {
     });
 });
 
-app.listen(PORT, "0.0.0.0", async () => {
-
-    console.log("STEP 3: FINORA SERVER STARTED");
-    console.log("PORT:", PORT);
-
-    console.log("STEP 4: Starting database connection...");
-
+async function startServer() {
     try {
-
         await connectDB();
 
-        console.log("STEP 5: DATABASE CONNECTED SUCCESSFULLY");
+        app.listen(PORT, "0.0.0.0", () => {
+            console.log("=================================");
+            console.log("🚀 FINORA BACKEND STARTED");
+            console.log("🚀 PORT:", PORT);
+            console.log("=================================");
+        });
 
     } catch (error) {
-
-        console.error("STEP 5: DATABASE CONNECTION FAILED");
+        console.error("❌ FINORA SERVER START FAILED");
         console.error(error.message);
-
+        process.exit(1);
     }
+}
 
-});
+startServer();
