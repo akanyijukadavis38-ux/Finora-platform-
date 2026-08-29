@@ -28,6 +28,8 @@ app.get("/health", (req, res) => {
 });
 
 async function startServer() {
+    console.log("FINORA-CURRENT-SERVER-2026");
+
     try {
         await connectDB();
 
