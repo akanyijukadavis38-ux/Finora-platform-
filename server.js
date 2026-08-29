@@ -28,9 +28,10 @@ app.get("/health", (req, res) => {
 });
 
 async function startServer() {
+    console.log("🔎 STARTSERVER FUNCTION IS RUNNING");
     try {
         await connectDB();
-
+console.log("🔎 ABOUT TO CONNECT TO MONGODB");
         app.listen(PORT, "0.0.0.0", () => {
             console.log("=================================");
             console.log("🚀 FINORA BACKEND STARTED");
