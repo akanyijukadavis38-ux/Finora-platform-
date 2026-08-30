@@ -3,14 +3,14 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const { connectDB } = require("./database");
-
+const userRoutes = require("./userRoutes");
 const app = express();
 
 const PORT = process.env.PORT || 8080;
 
 app.use(cors());
 app.use(express.json());
-
+app.use("/api/users", userRoutes);
 app.get("/", (req, res) => {
     res.status(200).json({
         success: true,
