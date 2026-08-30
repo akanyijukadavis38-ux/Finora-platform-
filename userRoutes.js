@@ -1,4 +1,5 @@
 const express = require("express");
+const bcrypt = require("bcrypt");
 const User = require("./user");
 
 const router = express.Router();
@@ -6,6 +7,7 @@ const router = express.Router();
 
 /* =====================================================
    REGISTER USER
+   POST /api/users/register
 ===================================================== */
 
 router.post("/register", async (req, res) => {
@@ -22,9 +24,9 @@ router.post("/register", async (req, res) => {
         } = req.body;
 
 
-        /* =============================================
+        /* =================================================
            BASIC VALIDATION
-        ============================================= */
+        ================================================= */
 
         if (
             !fullName ||
@@ -42,26 +44,50 @@ router.post("/register", async (req, res) => {
         }
 
 
-        /* =============================================
-           PHONE VALIDATION
-        ============================================= */
+        /* =================================================
+           NAME VALIDATION
+        ================================================= */
 
-        if (!/^07[0-9]{8}$/.test(phone)) {
+        const cleanName = fullName.trim();
+
+        if (cleanName.length < 2) {
 
             return res.status(400).json({
                 success: false,
-                message: "Enter a valid Uganda phone number."
+                message: "Please enter your full name."
             });
 
         }
 
 
-        /* =============================================
+        /* =================================================
+           PHONE VALIDATION
+        ================================================= */
+
+        const cleanPhone = phone.trim();
+
+        if (!/^07[0-9]{8}$/.test(cleanPhone)) {
+
+            return res.status(400).json({
+                success: false,
+                message:
+                    "Enter a valid Uganda phone number, e.g. 0701234567."
+            });
+
+        }
+
+
+        /* =================================================
            EMAIL VALIDATION
-        ============================================= */
+        ================================================= */
+
+        const cleanEmail =
+            email.trim().toLowerCase();
 
         if (
-            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+                cleanEmail
+            )
         ) {
 
             return res.status(400).json({
@@ -72,19 +98,24 @@ router.post("/register", async (req, res) => {
         }
 
 
-        /* =============================================
+        /* =================================================
            PASSWORD VALIDATION
-        ============================================= */
+        ================================================= */
 
         if (password.length < 6) {
 
             return res.status(400).json({
                 success: false,
-                message: "Password must contain at least 6 characters."
+                message:
+                    "Password must contain at least 6 characters."
             });
 
         }
 
+
+        /* =================================================
+           CONFIRM PASSWORD
+        ================================================= */
 
         if (password !== confirmPassword) {
 
@@ -96,88 +127,125 @@ router.post("/register", async (req, res) => {
         }
 
 
-        /* =============================================
+        /* =================================================
            CHECK EXISTING EMAIL
-        ============================================= */
+        ================================================= */
 
         const existingEmail = await User.findOne({
-            email: email.toLowerCase()
+            email: cleanEmail
         });
 
         if (existingEmail) {
 
             return res.status(409).json({
                 success: false,
-                message: "An account with this email already exists."
+                message:
+                    "An account with this email already exists."
             });
 
         }
 
 
-        /* =============================================
+        /* =================================================
            CHECK EXISTING PHONE
-        ============================================= */
+        ================================================= */
 
         const existingPhone = await User.findOne({
-            phone: phone
+            phone: cleanPhone
         });
 
         if (existingPhone) {
 
             return res.status(409).json({
                 success: false,
-                message: "An account with this phone number already exists."
+                message:
+                    "An account with this phone number already exists."
             });
 
         }
 
 
-        /* =============================================
+        /* =================================================
+           HASH PASSWORD
+        ================================================= */
+
+        const hashedPassword =
+            await bcrypt.hash(password, 12);
+
+
+        /* =================================================
+           CLEAN REFERRAL CODE
+        ================================================= */
+
+        const cleanReferralCode =
+            referralCode &&
+            referralCode.trim()
+                ? referralCode.trim()
+                : null;
+
+
+        /* =================================================
            CREATE USER
-        ============================================= */
+        ================================================= */
 
         const user = await User.create({
 
-            fullName: fullName.trim(),
+            fullName: cleanName,
 
-            phone: phone.trim(),
+            phone: cleanPhone,
 
-            email: email
-                .trim()
-                .toLowerCase(),
+            email: cleanEmail,
 
-            password: password,
+            password: hashedPassword,
 
-            referralCode:
-                referralCode
-                    ? referralCode.trim()
-                    : null
+            referralCode: cleanReferralCode
 
         });
 
 
-        /* =============================================
-           RESPONSE
-        ============================================= */
+        /* =================================================
+           SUCCESS RESPONSE
+           NEVER RETURN PASSWORD
+        ================================================= */
 
         return res.status(201).json({
 
             success: true,
 
-            message: "FINORA account created successfully.",
+            message:
+                "FINORA account created successfully.",
 
             user: {
+
                 id: user._id,
+
                 fullName: user.fullName,
+
                 phone: user.phone,
+
                 email: user.email,
-                referralCode: user.referralCode,
-                balance: user.balance,
-                totalIncome: user.totalIncome,
-                totalDeposit: user.totalDeposit,
-                totalWithdrawal: user.totalWithdrawal,
-                status: user.status,
-                createdAt: user.createdAt
+
+                referralCode:
+                    user.referralCode,
+
+                balance:
+                    user.balance,
+
+                totalIncome:
+                    user.totalIncome,
+
+                totalDeposit:
+                    user.totalDeposit,
+
+                totalWithdrawal:
+                    user.totalWithdrawal,
+
+                status:
+                    user.status,
+
+                createdAt:
+                    user.createdAt
+
             }
 
         });
@@ -190,19 +258,27 @@ router.post("/register", async (req, res) => {
         );
 
 
-        /* =============================================
+        /* =================================================
            DUPLICATE KEY ERROR
-        ============================================= */
+        ================================================= */
 
         if (error.code === 11000) {
 
             return res.status(409).json({
+
                 success: false,
-                message: "An account with those details already exists."
+
+                message:
+                    "An account with those details already exists."
+
             });
 
         }
 
+
+        /* =================================================
+           SERVER ERROR
+        ================================================= */
 
         return res.status(500).json({
 
