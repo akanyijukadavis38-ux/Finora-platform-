@@ -70,27 +70,23 @@ const FINORA_API =
 
     let currentUser = null;
 
+/* =====================================================
+   LOAD AUTHENTICATED USER
 
-    /* =====================================================
-       LOAD AUTHENTICATED USER
-       
-       IMPORTANT:
-       server.js provides:
-       
-       GET /api/me
-       
-       NOT:
-       
-       /api/users/me
-    ===================================================== */
+   Backend endpoint:
+   GET /api/users/me
 
+   The session cookie is sent with:
+   credentials: "include"
+===================================================== */
+   
     async function loadCurrentUser() {
 
         try {
 
             const response =
                 await fetch(
-                    `${FINORA_API}/api/me`,
+                    `${FINORA_API}/api/users/me`,
                     {
                         method: "GET",
 
