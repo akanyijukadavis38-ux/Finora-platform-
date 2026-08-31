@@ -323,8 +323,6 @@ router.post("/register", async (req, res) => {
         });
     }
 });
-
-
 /* =====================================================
    LOGIN USER
    POST /api/users/login
@@ -360,15 +358,19 @@ router.post("/login", async (req, res) => {
 
 
         /* =================================================
-           CLEAN IDENTIFIER
+           CLEAN LOGIN DETAILS
         ================================================= */
 
         const identifierValue =
             String(identifier).trim();
 
 
+        const passwordValue =
+            String(password);
+
+
         /* =================================================
-           FIND USER
+           FIND USER BY EMAIL OR PHONE
         ================================================= */
 
         const user =
@@ -385,7 +387,9 @@ router.post("/login", async (req, res) => {
                         phone:
                             identifierValue
                     }
+
                 ]
+
             });
 
 
@@ -406,7 +410,7 @@ router.post("/login", async (req, res) => {
 
 
         /* =================================================
-           ACCOUNT STATUS
+           CHECK ACCOUNT STATUS
         ================================================= */
 
         if (
@@ -424,12 +428,12 @@ router.post("/login", async (req, res) => {
 
 
         /* =================================================
-           PASSWORD
+           CHECK PASSWORD
         ================================================= */
 
         const passwordMatches =
             await bcrypt.compare(
-                password,
+                passwordValue,
                 user.password
             );
 
@@ -447,7 +451,7 @@ router.post("/login", async (req, res) => {
 
 
         /* =================================================
-           CREATE AUTHENTICATED SESSION
+           CREATE FINORA SESSION
         ================================================= */
 
         req.session.userId =
@@ -459,7 +463,7 @@ router.post("/login", async (req, res) => {
 
 
         /* =================================================
-           SAVE SESSION BEFORE RESPONSE
+           SAVE SESSION
         ================================================= */
 
         req.session.save(
@@ -472,7 +476,6 @@ router.post("/login", async (req, res) => {
                         sessionError
                     );
 
-
                     return res.status(500).json({
 
                         success: false,
@@ -483,9 +486,9 @@ router.post("/login", async (req, res) => {
                 }
 
 
-                /* =========================================
+                /* =================================================
                    LOGIN SUCCESS
-                ========================================= */
+                ================================================= */
 
                 return res.status(200).json({
 
@@ -533,14 +536,12 @@ router.post("/login", async (req, res) => {
             }
         );
 
-
     } catch (error) {
 
         console.error(
             "❌ FINORA LOGIN ERROR:",
             error
         );
-
 
         return res.status(500).json({
 
@@ -551,7 +552,6 @@ router.post("/login", async (req, res) => {
         });
     }
 });
-
 
 /* =====================================================
    GET CURRENT AUTHENTICATED USER
