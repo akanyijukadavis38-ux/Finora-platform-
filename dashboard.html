@@ -1,1418 +1,325 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 
-<head>
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
 
-    <meta charset="UTF-8">
+<meta
+    name="theme-color"
+    content="#F3DCE7">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
+<meta
+    name="description"
+    content="FINORA Dashboard — Invest • Grow • Earn">
 
-    <meta
-        name="theme-color"
-        content="#F3DCE7">
+<title>FINORA | Dashboard</title>
 
-    <meta
-        name="description"
-        content="FINORA Dashboard — Invest • Grow • Earn">
+<!-- MAIN DASHBOARD CSS -->
+<link
+    rel="stylesheet"
+    href="dashboard.css">
 
-    <title>FINORA | Dashboard</title>
-
-    <!-- MAIN DASHBOARD CSS -->
-    <link
-        rel="stylesheet"
-        href="dashboard.css">
-
-</head>
-
-
-<body>
-
-<div class="dashboard-shell">
-
-
-<!-- =========================================================
+</head><body><div class="dashboard-shell"><!-- =========================================================
      HEADER
-     ========================================================= -->
+     ========================================================= --><header class="dashboard-header"><div class="dashboard-container">
 
-<header class="dashboard-header">
-
-    <div class="dashboard-container">
-
-        <div class="top-header">
+    <div class="top-header">
 
 
-            <!-- =================================================
-                 FINORA BRAND
-                 ================================================= -->
+        <!-- FINORA BRAND -->
 
-            <a
-                href="dashboard.html"
-                class="finora-brand"
-                aria-label="FINORA Home">
+        <a
+            href="dashboard.html"
+            class="finora-brand"
+            aria-label="FINORA Home">
 
 
-                <!-- FINORA F LOGO -->
+            <!-- FINORA F LOGO -->
+
+            <svg
+                class="finora-logo-mark"
+                viewBox="0 0 100 110"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-label="FINORA logo"
+                role="img">
+
+                <defs>
+
+                    <linearGradient
+                        id="finoraGold"
+                        x1="12"
+                        y1="5"
+                        x2="88"
+                        y2="105"
+                        gradientUnits="userSpaceOnUse">
+
+                        <stop
+                            offset="0"
+                            stop-color="#FFF0A8"/>
+
+                        <stop
+                            offset=".22"
+                            stop-color="#FFD35A"/>
+
+                        <stop
+                            offset=".55"
+                            stop-color="#F2B52F"/>
+
+                        <stop
+                            offset=".82"
+                            stop-color="#D88A12"/>
+
+                        <stop
+                            offset="1"
+                            stop-color="#A95E05"/>
+
+                    </linearGradient>
+
+
+                    <linearGradient
+                        id="finoraShine"
+                        x1="20"
+                        y1="4"
+                        x2="55"
+                        y2="70"
+                        gradientUnits="userSpaceOnUse">
+
+                        <stop
+                            offset="0"
+                            stop-color="#FFF8D0"/>
+
+                        <stop
+                            offset=".45"
+                            stop-color="#FFE27A"/>
+
+                        <stop
+                            offset="1"
+                            stop-color="#E9A51E"/>
+
+                    </linearGradient>
+
+                </defs>
+
+
+                <path
+                    fill="url(#finoraGold)"
+                    d="
+                    M20 8
+                    C21 5 24 3 28 3
+                    H82
+                    C85 3 87 5 85 8
+                    L78 19
+                    C77 21 75 22 72 22
+                    H46
+                    C39 22 34 24 29 27
+                    C25 30 22 33 20 37
+                    L15 49
+                    C14 52 16 54 19 52
+                    L28 46
+                    C33 42 39 40 45 40
+                    H67
+                    C70 40 72 42 70 45
+                    L63 56
+                    C62 58 60 59 57 59
+                    H46
+                    C40 59 36 62 33 67
+                    C30 72 27 80 24 88
+                    L20 101
+                    H5
+                    L18 56
+                    C20 49 23 42 27 37
+                    C32 30 39 27 47 26
+                    H72
+                    L77 18
+                    H43
+                    C34 18 27 21 21 27
+                    L16 32
+                    Z
+                    " />
+
+                <path
+                    fill="url(#finoraShine)"
+                    opacity=".72"
+                    d="
+                    M27 7
+                    H79
+                    L75 13
+                    H45
+                    C36 13 29 16 23 21
+                    L20 23
+                    L24 10
+                    C24 8 25 7 27 7
+                    Z
+                    " />
+
+            </svg>
+
+
+            <!-- FINORA WORDMARK -->
+
+            <div class="finora-brand-text">
+
+                <div class="finora-name">
+
+                    <span class="finora-fin">
+                        FIN
+                    </span>
+
+                    <span class="finora-ora">
+                        ORA
+                    </span>
+
+                </div>
+
+
+                <div class="finora-tagline">
+                    INVEST • GROW • EARN
+                </div>
+
+            </div>
+
+        </a>
+
+
+        <!-- HEADER ACTIONS -->
+
+        <div class="header-actions">
+
+
+            <!-- NOTIFICATION -->
+
+            <button
+                class="notification-button"
+                id="notificationButton"
+                type="button"
+                aria-label="Notifications">
 
                 <svg
-                    class="finora-logo-mark"
-                    viewBox="0 0 100 110"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-label="FINORA logo"
-                    role="img">
-
-                    <defs>
-
-                        <linearGradient
-                            id="finoraGold"
-                            x1="12"
-                            y1="5"
-                            x2="88"
-                            y2="105"
-                            gradientUnits="userSpaceOnUse">
-
-                            <stop
-                                offset="0"
-                                stop-color="#FFF0A8"/>
-
-                            <stop
-                                offset=".22"
-                                stop-color="#FFD35A"/>
-
-                            <stop
-                                offset=".55"
-                                stop-color="#F2B52F"/>
-
-                            <stop
-                                offset=".82"
-                                stop-color="#D88A12"/>
-
-                            <stop
-                                offset="1"
-                                stop-color="#A95E05"/>
-
-                        </linearGradient>
-
-
-                        <linearGradient
-                            id="finoraShine"
-                            x1="20"
-                            y1="4"
-                            x2="55"
-                            y2="70"
-                            gradientUnits="userSpaceOnUse">
-
-                            <stop
-                                offset="0"
-                                stop-color="#FFF8D0"/>
-
-                            <stop
-                                offset=".45"
-                                stop-color="#FFE27A"/>
-
-                            <stop
-                                offset="1"
-                                stop-color="#E9A51E"/>
-
-                        </linearGradient>
-
-                    </defs>
-
-
-                    <path
-                        fill="url(#finoraGold)"
-                        d="
-                        M20 8
-                        C21 5 24 3 28 3
-                        H82
-                        C85 3 87 5 85 8
-                        L78 19
-                        C77 21 75 22 72 22
-                        H46
-                        C39 22 34 24 29 27
-                        C25 30 22 33 20 37
-                        L15 49
-                        C14 52 16 54 19 52
-                        L28 46
-                        C33 42 39 40 45 40
-                        H67
-                        C70 40 72 42 70 45
-                        L63 56
-                        C62 58 60 59 57 59
-                        H46
-                        C40 59 36 62 33 67
-                        C30 72 27 80 24 88
-                        L20 101
-                        H5
-                        L18 56
-                        C20 49 23 42 27 37
-                        C32 30 39 27 47 26
-                        H72
-                        L77 18
-                        H43
-                        C34 18 27 21 21 27
-                        L16 32
-                        Z
-                        " />
-
-                    <path
-                        fill="url(#finoraShine)"
-                        opacity=".72"
-                        d="
-                        M27 7
-                        H79
-                        L75 13
-                        H45
-                        C36 13 29 16 23 21
-                        L20 23
-                        L24 10
-                        C24 8 25 7 27 7
-                        Z
-                        " />
-
-                </svg>
-
-
-                <!-- FINORA WORDMARK -->
-
-                <div class="finora-brand-text">
-
-                    <div class="finora-name">
-
-                        <span class="finora-fin">
-                            FIN
-                        </span>
-
-                        <span class="finora-ora">
-                            ORA
-                        </span>
-
-                    </div>
-
-
-                    <div class="finora-tagline">
-                        INVEST • GROW • EARN
-                    </div>
-
-                </div>
-
-            </a>
-
-
-            <!-- =================================================
-                 HEADER ACTIONS
-                 ================================================= -->
-
-            <div class="header-actions">
-
-
-                <!-- NOTIFICATION -->
-
-                <button
-                    class="notification-button"
-                    id="notificationButton"
-                    type="button"
-                    aria-label="Notifications">
-
-                    <svg
-                        class="header-icon"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-
-                        <path
-                            d="M18 8C18 4.686 15.314 2 12 2C8.686 2 6 4.686 6 8C6 15 3 15 3 17H21C21 15 18 15 18 8Z"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"/>
-
-                        <path
-                            d="M9.5 21C10.1 21.7 11 22 12 22C13 22 13.9 21.7 14.5 21"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"/>
-
-                    </svg>
-
-
-                    <span
-                        class="notification-count"
-                        id="notificationCount">
-                        3
-                    </span>
-
-                </button>
-
-
-                <!-- PROFILE -->
-
-                <a
-    href="profile.html"
-    class="profile-button"
-    aria-label="My Profile">
-                
-                    
-    
-
-                    <svg
-                        class="profile-icon"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-
-                        <circle
-                            cx="12"
-                            cy="8"
-                            r="4"
-                            fill="currentColor"/>
-
-                        <path
-                            d="M4 21C4 16.582 7.582 13 12 13C16.418 13 20 16.582 20 21"
-                            fill="currentColor"/>
-
-                    </svg>
-
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</header>
-
-
-
-<!-- =========================================================
-     MAIN CONTENT
-     ========================================================= -->
-
-<main>
-
-<div class="dashboard-container">
-
-
-<!-- =========================================================
-     WELCOME SECTION
-     ========================================================= -->
-
-<section class="welcome-section">
-
-    <div class="welcome-kicker">
-        WELCOME TO FINORA
-    </div>
-
-    <h1>
-
-        Welcome back,
-
-        <span id="fullName">Loading...</span>
-
-    </h1>
-
-    <p>
-        Your financial journey continues with FINORA.
-    </p>
-
-</section>
-
-
-
-<!-- =========================================================
-     FEATURED BANNER CAROUSEL
-     ========================================================= -->
-
-<section
-    class="banner-section"
-    aria-label="FINORA featured investments">
-
-
-    <div
-        class="banner-track"
-        id="bannerTrack">
-
-
-        <!-- =================================================
-             BANNER 1 — INVEST
-             ================================================= -->
-
-        <article
-            class="dashboard-banner banner-invest">
-
-
-            <div class="banner-content">
-
-                <div class="banner-label">
-                    FINORA INVESTMENT
-                </div>
-
-                <h2>
-
-                    Invest Smart.<br>
-
-                    <span>
-                        Grow Daily.
-                    </span>
-
-                </h2>
-
-                <div class="banner-subtitle">
-                    SMART INVESTING • REAL GROWTH
-                </div>
-
-                <p>
-                    Put your money to work with carefully
-                    structured investment opportunities.
-                </p>
-
-                <a
-                    href="investment.html"
-                    class="banner-button">
-
-                    EXPLORE INVESTMENTS
-
-                    <span>
-                        →
-                    </span>
-
-                </a>
-
-            </div>
-
-
-            <!-- INVESTMENT IMAGE -->
-
-            <div
-                class="banner-artwork investment-artwork">
-
-                <img
-                    src="assets/banners/banner-invest.jpg"
-                    alt="FINORA Investment"
-                    class="banner-image">
-
-            </div>
-
-        </article>
-
-
-
-        <!-- =================================================
-             BANNER 2 — WEALTH
-             ================================================= -->
-
-        <article
-            class="dashboard-banner banner-wealth">
-
-
-            <div class="banner-content">
-
-                <div class="banner-label">
-                    FINORA WEALTH
-                </div>
-
-                <h2>
-
-                    Grow Your<br>
-
-                    <span>
-                        Wealth.
-                    </span>
-
-                </h2>
-
-                <div class="banner-subtitle">
-                    PLAN • INVEST • GROW
-                </div>
-
-                <p>
-                    Build your financial future with
-                    investment opportunities designed
-                    around your goals.
-                </p>
-
-                <a
-                    href="investment.html"
-                    class="banner-button">
-
-                    START INVESTING
-
-                    <span>
-                        →
-                    </span>
-
-                </a>
-
-            </div>
-
-
-            <!-- WEALTH IMAGE -->
-
-            <div
-                class="banner-artwork wealth-artwork">
-
-                <img
-                    src="assets/banners/banner-wealth.jpg"
-                    alt="FINORA Wealth"
-                    class="banner-image">
-
-            </div>
-
-        </article>
-
-
-
-        <!-- =================================================
-             BANNER 3 — INVESTMENT PLANS
-             ================================================= -->
-
-        <article
-            class="dashboard-banner banner-plans">
-
-
-            <div class="banner-content">
-
-                <div class="banner-label">
-                    FINORA INVESTMENT PLANS
-                </div>
-
-                <h2>
-
-                    Choose Your<br>
-
-                    <span>
-                        Investment Plan.
-                    </span>
-
-                </h2>
-
-                <div class="banner-subtitle">
-                    FLEXIBLE PLANS • SMART CHOICES
-                </div>
-
-                <p>
-                    Explore FINORA investment plans and
-                    choose an opportunity that matches
-                    your goals.
-                </p>
-
-                <a
-                    href="investment.html"
-                    class="banner-button">
-
-                    VIEW PLANS
-
-                    <span>
-                        →
-                    </span>
-
-                </a>
-
-            </div>
-
-
-            <!-- PLANS IMAGE -->
-
-            <div
-                class="banner-artwork plans-artwork">
-
-                <img
-                    src="assets/banners/banner-plans.jpg"
-                    alt="FINORA Investment Plans"
-                    class="banner-image">
-
-            </div>
-
-        </article>
-
-
-
-        <!-- =================================================
-             BANNER 4 — FINANCIAL FUTURE
-             ================================================= -->
-
-        <article
-            class="dashboard-banner banner-future">
-
-
-            <div class="banner-content">
-
-                <div class="banner-label">
-                    FINORA FUTURE
-                </div>
-
-                <h2>
-
-                    Build Your<br>
-
-                    <span>
-                        Financial Future.
-                    </span>
-
-                </h2>
-
-                <div class="banner-subtitle">
-                    INVEST TODAY • GROW TOMORROW
-                </div>
-
-                <p>
-                    Take the next step toward your
-                    financial goals with FINORA.
-                </p>
-
-                <a
-                    href="investment.html"
-                    class="banner-button">
-
-                    GET STARTED
-
-                    <span>
-                        →
-                    </span>
-
-                </a>
-
-            </div>
-
-
-            <!-- FUTURE IMAGE -->
-
-            <div
-                class="banner-artwork future-artwork">
-
-                <img
-                    src="assets/banners/banner-future.jpg"
-                    alt="FINORA Financial Future"
-                    class="banner-image">
-
-            </div>
-
-        </article>
-
-    </div>
-
-
-
-    <!-- =====================================================
-         BANNER INDICATORS
-         ===================================================== -->
-
-    <div
-        class="banner-indicators"
-        id="bannerIndicators">
-
-
-        <button
-            type="button"
-            class="banner-dot active"
-            data-slide="0"
-            aria-label="Investment banner">
-        </button>
-
-
-        <button
-            type="button"
-            class="banner-dot"
-            data-slide="1"
-            aria-label="Wealth banner">
-        </button>
-
-
-        <button
-            type="button"
-            class="banner-dot"
-            data-slide="2"
-            aria-label="Investment plans banner">
-        </button>
-
-
-        <button
-            type="button"
-            class="banner-dot"
-            data-slide="3"
-            aria-label="Financial future banner">
-        </button>
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================================================
-     WALLET + FINANCIAL SUMMARY
-     ========================================================= -->
-
-<section class="financial-overview">
-
-
-    <!-- WALLET -->
-
-    <article class="wallet-card">
-
-        <div class="wallet-header">
-
-            <div>
-
-                <div class="small-label">
-                    AVAILABLE WALLET BALANCE
-                </div>
-
-                <h2 id="walletBalance">
-                    UGX 0
-                </h2>
-
-                <p>
-                    Available balance
-                </p>
-
-            </div>
-
-
-            <div class="wallet-icon">
-
-                <svg
+                    class="header-icon"
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg">
 
                     <path
-                        d="
-                        M3 7.5
-                        C3 6.119 4.119 5 5.5 5
-                        H19
-                        C20.105 5 21 5.895 21 7
-                        V19
-                        C21 20.105 20.105 21 19 21
-                        H5
-                        C3.895 21 3 20.105 3 19
-                        V7.5Z"
+                        d="M18 8C18 4.686 15.314 2 12 2C8.686 2 6 4.686 6 8C6 15 3 15 3 17H21C21 15 18 15 18 8Z"
                         stroke="currentColor"
-                        stroke-width="1.8"/>
-
-                    <path
-                        d="M3 8H19"
-                        stroke="currentColor"
-                        stroke-width="1.8"/>
-
-                    <path
-                        d="M16 13H21"
-                        stroke="currentColor"
-                        stroke-width="1.8"/>
-
-                    <circle
-                        cx="16"
-                        cy="13"
-                        r="1.5"
-                        fill="currentColor"/>
-
-                </svg>
-
-            </div>
-
-        </div>
-
-
-        <div class="wallet-actions">
-
-            <a
-                href="deposit.html"
-                class="wallet-deposit-button">
-
-                DEPOSIT
-
-            </a>
-
-
-            <a
-                href="withdraw.html"
-                class="wallet-withdraw-button">
-
-                WITHDRAW
-
-            </a>
-
-        </div>
-
-    </article>
-
-
-
-    <!-- FINANCIAL SUMMARY -->
-
-    <div class="financial-summary">
-
-
-        <!-- TOTAL EARNINGS -->
-
-        <article class="summary-card">
-
-            <div class="summary-icon">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-
-                    <path
-                        d="
-                        M4 18
-                        L10 12
-                        L14 15
-                        L21 7"
-                        stroke="currentColor"
-                        stroke-width="2"
+                        stroke-width="1.8"
                         stroke-linecap="round"
                         stroke-linejoin="round"/>
 
                     <path
-                        d="M16 7H21V12"
+                        d="M9.5 21C10.1 21.7 11 22 12 22C13 22 13.9 21.7 14.5 21"
                         stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"/>
+                        stroke-width="1.8"
+                        stroke-linecap="round"/>
 
                 </svg>
 
-            </div>
+
+                <span
+                    class="notification-count"
+                    id="notificationCount">
+                    3
+                </span>
+
+            </button>
 
 
-            <div>
+            <!-- PROFILE -->
 
-                <div class="summary-label">
-                    TOTAL EARNINGS
-                </div>
-
-                <strong id="totalEarnings">
-                    UGX 0
-                </strong>
-
-                <small>
-                    All time earnings
-                </small>
-
-            </div>
-
-        </article>
-
-
-
-        <!-- TODAY'S EARNINGS -->
-
-        <article class="summary-card">
-
-            <div class="summary-icon">
+            <a
+                href="profile.html"
+                class="profile-button"
+                aria-label="My Profile">
 
                 <svg
+                    class="profile-icon"
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg">
-
-                    <rect
-                        x="3"
-                        y="5"
-                        width="18"
-                        height="16"
-                        rx="2"
-                        stroke="currentColor"
-                        stroke-width="1.8"/>
-
-                    <path
-                        d="M7 3V7"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"/>
-
-                    <path
-                        d="M17 3V7"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"/>
-
-                    <path
-                        d="M3 10H21"
-                        stroke="currentColor"
-                        stroke-width="1.8"/>
-
-                    <circle
-                        cx="8"
-                        cy="14"
-                        r="1"
-                        fill="currentColor"/>
 
                     <circle
                         cx="12"
-                        cy="14"
-                        r="1"
-                        fill="currentColor"/>
-
-                    <circle
-                        cx="16"
-                        cy="14"
-                        r="1"
-                        fill="currentColor"/>
-
-                </svg>
-
-            </div>
-
-
-            <div>
-
-                <div class="summary-label">
-                    TODAY'S EARNINGS
-                </div>
-
-                <strong id="todayEarnings">
-                    UGX 0
-                </strong>
-
-                <small>
-                    Updated at 00:00
-                </small>
-
-            </div>
-
-        </article>
-
-
-
-        <!-- TOTAL INVESTED -->
-
-        <article class="summary-card">
-
-            <div class="summary-icon">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-
-                    <path
-                        d="M12 3L21 8L12 13L3 8L12 3Z"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linejoin="round"/>
-
-                    <path
-                        d="M3 12L12 17L21 12"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linejoin="round"/>
-
-                    <path
-                        d="M3 16L12 21L21 16"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linejoin="round"/>
-
-                </svg>
-
-            </div>
-
-
-            <div>
-
-                <div class="summary-label">
-                    TOTAL INVESTED
-                </div>
-
-                <strong id="totalInvested">
-                    UGX 0
-                </strong>
-
-                <small>
-                    Active investments
-                </small>
-
-            </div>
-
-        </article>
-
-
-
-        <!-- REFERRAL BONUS -->
-
-        <article class="summary-card">
-
-            <div class="summary-icon">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-
-                    <circle
-                        cx="9"
                         cy="8"
-                        r="3"
-                        stroke="currentColor"
-                        stroke-width="1.8"/>
-
-                    <circle
-                        cx="17"
-                        cy="9"
-                        r="2.5"
-                        stroke="currentColor"
-                        stroke-width="1.8"/>
+                        r="4"
+                        fill="currentColor"/>
 
                     <path
-                        d="
-                        M3 20
-                        C3 16.686 5.686 14 9 14
-                        C12.314 14 15 16.686 15 20"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"/>
-
-                    <path
-                        d="
-                        M14 14.5
-                        C15 13.6 16.2 13 17.5 13
-                        C19.985 13 22 15.015 22 17.5"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"/>
+                        d="M4 21C4 16.582 7.582 13 12 13C16.418 13 20 16.582 20 21"
+                        fill="currentColor"/>
 
                 </svg>
 
-            </div>
-
-
-            <div>
-
-                <div class="summary-label">
-                    REFERRAL BONUS
-                </div>
-
-                <strong id="referralBonus">
-                    UGX 0
-                </strong>
-
-                <small>
-                    Total referral bonus
-                </small>
-
-            </div>
-
-        </article>
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================================================
-     QUICK ACTIONS
-     ========================================================= -->
-
-<section class="quick-actions-section">
-
-
-    <div class="section-row">
-
-        <div>
-
-            <div class="section-kicker">
-                MANAGE YOUR MONEY
-            </div>
-
-            <h2>
-                Quick Actions
-            </h2>
+            </a>
 
         </div>
 
-
-        <span class="section-helper">
-            Tap to open
-        </span>
-
     </div>
 
+</div>
 
+</header><!-- =========================================================
+     MAIN CONTENT
+     ========================================================= --><main><div class="dashboard-container"><!-- =========================================================
+     WELCOME SECTION
+     ========================================================= --><section class="welcome-section"><div class="welcome-kicker">
+    WELCOME TO FINORA
+</div>
 
-    <div class="quick-actions">
+<h1>
 
+    Welcome back,
 
-        <!-- DEPOSIT -->
+    <span id="fullName">Loading...</span>
 
-        <a
-            href="deposit.html"
-            class="quick-action">
+</h1>
 
-            <div class="quick-action-icon">
+<p>
+    Your financial journey continues with FINORA.
+</p>
 
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+</section><!-- =========================================================
+     FEATURED BANNER CAROUSEL
+     ========================================================= --><section
+    class="banner-section"
+    aria-label="FINORA featured investments"><div
+    class="banner-track"
+    id="bannerTrack">
 
-                    <path
-                        d="
-                        M3 7.5
-                        C3 6.119 4.119 5 5.5 5
-                        H19
-                        C20.105 5 21 5.895 21 7
-                        V19
-                        C21 20.105 20.105 21 19 21
-                        H5
-                        C3.895 21 3 20.105 3 19
-                        V7.5Z"
-                        stroke="currentColor"
-                        stroke-width="1.8"/>
 
-                    <path
-                        d="M3 8H19"
-                        stroke="currentColor"
-                        stroke-width="1.8"/>
+    <!-- BANNER 1 -->
 
-                    <path
-                        d="M16 13H21"
-                        stroke="currentColor"
-                        stroke-width="1.8"/>
+    <article
+        class="dashboard-banner banner-invest">
 
-                    <circle
-                        cx="16"
-                        cy="13"
-                        r="1.5"
-                        fill="currentColor"/>
+        <div class="banner-content">
 
-                </svg>
-
-            </div>
-
-            <strong>
-                Deposit
-            </strong>
-
-            <small>
-                Fund wallet
-            </small>
-
-        </a>
-
-
-
-        <!-- INVEST -->
-
-        <a
-            href="investment.html"
-            class="quick-action">
-
-            <div class="quick-action-icon">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-
-                    <path
-                        d="
-                        M4 18
-                        L10 12
-                        L14 15
-                        L21 7"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"/>
-
-                    <path
-                        d="M16 7H21V12"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"/>
-
-                </svg>
-
-            </div>
-
-            <strong>
-                Invest
-            </strong>
-
-            <small>
-                Start investing
-            </small>
-
-        </a>
-
-
-
-        <!-- WITHDRAW -->
-
-        <a
-            href="withdraw.html"
-            class="quick-action">
-
-            <div class="quick-action-icon">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-
-                    <path
-                        d="M12 16V4"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"/>
-
-                    <path
-                        d="M8 8L12 4L16 8"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"/>
-
-                    <path
-                        d="
-                        M5 14V19
-                        C5 20.105 5.895 21 7 21
-                        H17
-                        C18.105 21 19 20.105 19 19
-                        V14"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"/>
-
-                </svg>
-
-            </div>
-
-            <strong>
-                Withdraw
-            </strong>
-
-            <small>
-                To MoMo
-            </small>
-
-        </a>
-
-
-
-        <!-- MY INVESTMENTS -->
-
-        <a
-            href="my-investments.html"
-            class="quick-action">
-
-            <div class="quick-action-icon">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-
-                    <rect
-                        x="4"
-                        y="7"
-                        width="16"
-                        height="13"
-                        rx="2"
-                        stroke="currentColor"
-                        stroke-width="1.8"/>
-
-                    <path
-                        d="
-                        M8 7V5
-                        C8 3.895 8.895 3 10 3
-                        H14
-                        C15.105 3 16 3.895 16 5
-                        V7"
-                        stroke="currentColor"
-                        stroke-width="1.8"/>
-
-                    <path
-                        d="M4 12H20"
-                        stroke="currentColor"
-                        stroke-width="1.8"/>
-
-                    <path
-                        d="M10 12V14H14V12"
-                        stroke="currentColor"
-                        stroke-width="1.8"/>
-
-                </svg>
-
-            </div>
-
-            <strong>
-                My Investments
-            </strong>
-
-            <small>
-                Active plans
-            </small>
-
-        </a>
-
-
-
-        <!-- TEAM -->
-
-        <a
-            href="team.html"
-            class="quick-action">
-
-            <div class="quick-action-icon">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-
-                    <circle
-                        cx="9"
-                        cy="8"
-                        r="3"
-                        stroke="currentColor"
-                        stroke-width="1.8"/>
-
-                    <circle
-                        cx="17"
-                        cy="9"
-                        r="2.5"
-                        stroke="currentColor"
-                        stroke-width="1.8"/>
-
-                    <path
-                        d="
-                        M3 20
-                        C3 16.686 5.686 14 9 14
-                        C12.314 14 15 16.686 15 20"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"/>
-
-                    <path
-                        d="
-                        M14 14.5
-                        C15 13.6 16.2 13 17.5 13
-                        C19.985 13 22 15.015 22 17.5"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"/>
-
-                </svg>
-
-            </div>
-
-            <strong>
-                Team
-            </strong>
-
-            <small>
-                Referrals
-            </small>
-
-        </a>
-
-
-
-        <!-- RECORDS -->
-
-        <a
-            href="transaction-history.html"
-            class="quick-action">
-
-            <div class="quick-action-icon">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-
-                    <rect
-                        x="5"
-                        y="3"
-                        width="14"
-                        height="18"
-                        rx="2"
-                        stroke="currentColor"
-                        stroke-width="1.8"/>
-
-                    <path
-                        d="M9 8H15"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"/>
-
-                    <path
-                        d="M9 12H15"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"/>
-
-                    <path
-                        d="M9 16H13"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"/>
-
-                </svg>
-
-            </div>
-
-            <strong>
-                Records
-            </strong>
-
-            <small>
-                Transactions
-            </small>
-
-        </a>
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================================================
-     PREMIUM INVESTMENT BANNER
-     ========================================================= -->
-
-<section class="premium-section">
-
-
-    <article class="premium-banner">
-
-
-        <div class="premium-content">
-
-            <div class="premium-badge">
-                PREMIUM PLAN
+            <div class="banner-label">
+                FINORA INVESTMENT
             </div>
 
             <h2>
+                Invest Smart.<br>
 
                 <span>
-                    10% DAILY RETURNS
+                    Grow Daily.
                 </span>
-
-                <br>
-
-                FOR 20 DAYS
-
             </h2>
 
+            <div class="banner-subtitle">
+                SMART INVESTING • REAL GROWTH
+            </div>
+
             <p>
-                Invest once and earn daily for 20 days.
+                Put your money to work with carefully
+                structured investment opportunities.
             </p>
 
             <a
                 href="investment.html"
-                class="premium-button">
+                class="banner-button">
 
-                VIEW PLAN DETAILS
+                EXPLORE INVESTMENTS
 
                 <span>
                     →
@@ -1423,194 +330,380 @@
         </div>
 
 
-        <!-- PREMIUM IMAGE -->
-
-        <div class="premium-artwork">
+        <div class="banner-artwork investment-artwork">
 
             <img
-                src="assets/banners/banner-premium.jpg"
-                alt="FINORA Premium Investment Plan"
-                class="premium-banner-image">
+                src="assets/banners/banner-invest.jpg"
+                alt="FINORA Investment"
+                class="banner-image">
 
         </div>
 
     </article>
 
-</section>
+
+
+    <!-- BANNER 2 -->
+
+    <article
+        class="dashboard-banner banner-wealth">
+
+        <div class="banner-content">
+
+            <div class="banner-label">
+                FINORA WEALTH
+            </div>
+
+            <h2>
+                Grow Your<br>
+
+                <span>
+                    Wealth.
+                </span>
+            </h2>
+
+            <div class="banner-subtitle">
+                PLAN • INVEST • GROW
+            </div>
+
+            <p>
+                Build your financial future with
+                investment opportunities designed
+                around your goals.
+            </p>
+
+            <a
+                href="investment.html"
+                class="banner-button">
+
+                START INVESTING
+
+                <span>
+                    →
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <div class="banner-artwork wealth-artwork">
+
+            <img
+                src="assets/banners/banner-wealth.jpg"
+                alt="FINORA Wealth"
+                class="banner-image">
+
+        </div>
+
+    </article>
 
 
 
-<!-- =========================================================
-     REFERRAL PROGRAM
-     ========================================================= -->
+    <!-- BANNER 3 -->
 
-<section class="referral-section">
+    <article
+        class="dashboard-banner banner-plans">
+
+        <div class="banner-content">
+
+            <div class="banner-label">
+                FINORA INVESTMENT PLANS
+            </div>
+
+            <h2>
+                Choose Your<br>
+
+                <span>
+                    Investment Plan.
+                </span>
+            </h2>
+
+            <div class="banner-subtitle">
+                FLEXIBLE PLANS • SMART CHOICES
+            </div>
+
+            <p>
+                Explore FINORA investment plans and
+                choose an opportunity that matches
+                your goals.
+            </p>
+
+            <a
+                href="investment.html"
+                class="banner-button">
+
+                VIEW PLANS
+
+                <span>
+                    →
+                </span>
+
+            </a>
+
+        </div>
 
 
-    <article class="referral-card">
+        <div class="banner-artwork plans-artwork">
+
+            <img
+                src="assets/banners/banner-plans.jpg"
+                alt="FINORA Investment Plans"
+                class="banner-image">
+
+        </div>
+
+    </article>
 
 
-        <div class="referral-icon">
+
+    <!-- BANNER 4 -->
+
+    <article
+        class="dashboard-banner banner-future">
+
+        <div class="banner-content">
+
+            <div class="banner-label">
+                FINORA FUTURE
+            </div>
+
+            <h2>
+                Build Your<br>
+
+                <span>
+                    Financial Future.
+                </span>
+            </h2>
+
+            <div class="banner-subtitle">
+                INVEST TODAY • GROW TOMORROW
+            </div>
+
+            <p>
+                Take the next step toward your
+                financial goals with FINORA.
+            </p>
+
+            <a
+                href="investment.html"
+                class="banner-button">
+
+                GET STARTED
+
+                <span>
+                    →
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <div class="banner-artwork future-artwork">
+
+            <img
+                src="assets/banners/banner-future.jpg"
+                alt="FINORA Financial Future"
+                class="banner-image">
+
+        </div>
+
+    </article>
+
+</div>
+
+
+<!-- BANNER INDICATORS -->
+
+<div
+    class="banner-indicators"
+    id="bannerIndicators">
+
+    <button
+        type="button"
+        class="banner-dot active"
+        data-slide="0"
+        aria-label="Investment banner">
+    </button>
+
+    <button
+        type="button"
+        class="banner-dot"
+        data-slide="1"
+        aria-label="Wealth banner">
+    </button>
+
+    <button
+        type="button"
+        class="banner-dot"
+        data-slide="2"
+        aria-label="Investment plans banner">
+    </button>
+
+    <button
+        type="button"
+        class="banner-dot"
+        data-slide="3"
+        aria-label="Financial future banner">
+    </button>
+
+</div>
+
+</section><!-- =========================================================
+     WALLET + FINANCIAL SUMMARY
+     ========================================================= --><section class="financial-overview"><!-- WALLET -->
+
+<article class="wallet-card">
+
+    <div class="wallet-header">
+
+        <div>
+
+            <div class="small-label">
+                AVAILABLE WALLET BALANCE
+            </div>
+
+            <h2 id="walletBalance">
+                UGX 0
+            </h2>
+
+            <p>
+                Available balance
+            </p>
+
+        </div>
+
+
+        <div class="wallet-icon">
 
             <svg
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg">
 
-                <circle
-                    cx="9"
-                    cy="8"
-                    r="3"
-                    stroke="currentColor"
-                    stroke-width="1.8"/>
-
                 <path
                     d="
-                    M3 20
-                    C3 16.686 5.686 14 9 14
-                    C12.314 14 15 16.686 15 20"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"/>
-
-                <circle
-                    cx="18"
-                    cy="17"
-                    r="3"
+                    M3 7.5
+                    C3 6.119 4.119 5 5.5 5
+                    H19
+                    C20.105 5 21 5.895 21 7
+                    V19
+                    C21 20.105 20.105 21 19 21
+                    H5
+                    C3.895 21 3 20.105 3 19
+                    V7.5Z"
                     stroke="currentColor"
                     stroke-width="1.8"/>
 
                 <path
-                    d="M18 15V19"
+                    d="M3 8H19"
                     stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"/>
+                    stroke-width="1.8"/>
 
                 <path
-                    d="M16 17H20"
+                    d="M16 13H21"
                     stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"/>
+                    stroke-width="1.8"/>
+
+                <circle
+                    cx="16"
+                    cy="13"
+                    r="1.5"
+                    fill="currentColor"/>
+
+            </svg>
+
+        </div>
+
+    </div>
+
+
+    <div class="wallet-actions">
+
+        <a
+            href="deposit.html"
+            class="wallet-deposit-button">
+
+            DEPOSIT
+
+        </a>
+
+
+        <a
+            href="withdraw.html"
+            class="wallet-withdraw-button">
+
+            WITHDRAW
+
+        </a>
+
+    </div>
+
+</article>
+
+
+
+<!-- FINANCIAL SUMMARY -->
+
+<div class="financial-summary">
+
+
+    <!-- TOTAL EARNINGS -->
+
+    <article class="summary-card">
+
+        <div class="summary-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+
+                <path
+                    d="M4 18L10 12L14 15L21 7"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
+
+                <path
+                    d="M16 7H21V12"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
 
             </svg>
 
         </div>
 
 
-        <div class="referral-content">
+        <div>
 
-            <div class="section-kicker">
-                REFERRAL PROGRAM
+            <div class="summary-label">
+                TOTAL EARNINGS
             </div>
 
-            <h2>
-                Earn More When You Share
-            </h2>
+            <strong id="totalEarnings">
+                UGX 0
+            </strong>
 
-            <p>
-                Invite friends to FINORA and earn
-                referral income through our
-                three-level referral program.
-            </p>
-
-
-            <div class="referral-levels">
-
-
-                <div class="referral-level">
-
-                    <span>
-                        LEVEL 1
-                    </span>
-
-                    <strong id="levelOneRate">
-                        15%
-                    </strong>
-
-                </div>
-
-
-                <div class="referral-level">
-
-                    <span>
-                        LEVEL 2
-                    </span>
-
-                    <strong id="levelTwoRate">
-                        5%
-                    </strong>
-
-                </div>
-
-
-                <div class="referral-level">
-
-                    <span>
-                        LEVEL 3
-                    </span>
-
-                    <strong id="levelThreeRate">
-                        2%
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="referral-link-row">
-
-                <input
-                    type="text"
-                    id="referralLink"
-                    readonly
-                    value="">
-
-
-                <button
-                    type="button"
-                    id="copyReferralButton"
-                    aria-label="Copy referral link">
-
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-
-                        <rect
-                            x="8"
-                            y="8"
-                            width="12"
-                            height="12"
-                            rx="2"
-                            stroke="currentColor"
-                            stroke-width="1.8"/>
-
-                        <path
-                            d="
-                            M16 8V6
-                            C16 4.895 15.105 4 14 4
-                            H6
-                            C4.895 4 4 4.895 4 6
-                            V14
-                            C4 15.105 4.895 16 6 16
-                            H8"
-                            stroke="currentColor"
-                            stroke-width="1.8"/>
-
-                    </svg>
-
-                </button>
-
-            </div>
+            <small>
+                All time earnings
+            </small>
 
         </div>
 
+    </article>
 
-        <button
-            type="button"
-            class="copy-referral-button"
-            id="copyReferralMain">
+
+
+    <!-- TODAY'S EARNINGS -->
+
+    <article class="summary-card">
+
+        <div class="summary-icon">
 
             <svg
                 viewBox="0 0 24 24"
@@ -1618,270 +711,133 @@
                 xmlns="http://www.w3.org/2000/svg">
 
                 <rect
-                    x="8"
-                    y="8"
-                    width="12"
-                    height="12"
+                    x="3"
+                    y="5"
+                    width="18"
+                    height="16"
                     rx="2"
                     stroke="currentColor"
                     stroke-width="1.8"/>
 
                 <path
-                    d="
-                    M16 8V6
-                    C16 4.895 15.105 4 14 4
-                    H6
-                    C4.895 4 4 4.895 4 6
-                    V14
-                    C4 15.105 4.895 16 6 16
-                    H8"
+                    d="M7 3V7"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"/>
+
+                <path
+                    d="M17 3V7"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"/>
+
+                <path
+                    d="M3 10H21"
                     stroke="currentColor"
                     stroke-width="1.8"/>
 
+                <circle
+                    cx="8"
+                    cy="14"
+                    r="1"
+                    fill="currentColor"/>
+
+                <circle
+                    cx="12"
+                    cy="14"
+                    r="1"
+                    fill="currentColor"/>
+
+                <circle
+                    cx="16"
+                    cy="14"
+                    r="1"
+                    fill="currentColor"/>
+
             </svg>
 
-            <span>
-                COPY
-            </span>
+        </div>
 
-        </button>
+
+        <div>
+
+            <div class="summary-label">
+                TODAY'S EARNINGS
+            </div>
+
+            <strong id="todayEarnings">
+                UGX 0
+            </strong>
+
+            <small>
+                Updated at 00:00
+            </small>
+
+        </div>
 
     </article>
 
-</section>
 
 
+    <!-- TOTAL INVESTED -->
 
-<!-- =========================================================
-     INVESTMENT OVERVIEW
-     ========================================================= -->
+    <article class="summary-card">
 
-<section class="investment-overview-section">
+        <div class="summary-icon">
 
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
 
-    <div class="section-row">
+                <path
+                    d="M12 3L21 8L12 13L3 8L12 3Z"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linejoin="round"/>
 
-        <div>
+                <path
+                    d="M3 12L12 17L21 12"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linejoin="round"/>
 
-            <div class="section-kicker">
-                YOUR PROGRESS
-            </div>
+                <path
+                    d="M3 16L12 21L21 16"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linejoin="round"/>
 
-            <h2>
-                Investment Overview
-            </h2>
+            </svg>
 
         </div>
 
-    </div>
-
-
-
-    <div class="overview-grid">
-
-
-        <!-- ACTIVE INVESTMENTS -->
-
-        <article class="overview-card">
-
-            <div class="overview-icon">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-
-                    <path
-                        d="M12 3L21 8L12 13L3 8L12 3Z"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linejoin="round"/>
-
-                    <path
-                        d="M3 12L12 17L21 12"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linejoin="round"/>
-
-                    <path
-                        d="M3 16L12 21L21 16"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linejoin="round"/>
-
-                </svg>
-
-            </div>
-
-
-            <div>
-
-                <div class="overview-label">
-                    INVEST
-                </div>
-
-                <div class="overview-title">
-                    ACTIVE INVESTMENTS
-                </div>
-
-                <strong id="activeInvestments">
-                    0
-                </strong>
-
-            </div>
-
-        </article>
-
-
-
-        <!-- DAILY INCOME -->
-
-        <article class="overview-card">
-
-            <div class="overview-icon">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-
-                    <path
-                        d="
-                        M4 18
-                        L10 12
-                        L14 15
-                        L21 7"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"/>
-
-                    <path
-                        d="M16 7H21V12"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"/>
-
-                </svg>
-
-            </div>
-
-
-            <div>
-
-                <div class="overview-label">
-                    INCOME
-                </div>
-
-                <div class="overview-title">
-                    DAILY INCOME
-                </div>
-
-                <strong id="dailyIncome">
-                    UGX 0
-                </strong>
-
-            </div>
-
-        </article>
-
-
-
-        <!-- TOTAL EARNINGS -->
-
-        <article class="overview-card">
-
-            <div class="overview-icon">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-
-                    <circle
-                        cx="12"
-                        cy="12"
-                        r="9"
-                        stroke="currentColor"
-                        stroke-width="1.8"/>
-
-                    <path
-                        d="
-                        M15 9.5
-                        C14.4 8.8 13.5 8.4 12.4 8.4
-                        C10.8 8.4 9.7 9.2 9.7 10.3
-                        C9.7 11.5 10.7 12 12.2 12.3
-                        C13.8 12.6 14.7 13.1 14.7 14.3
-                        C14.7 15.5 13.6 16.3 12 16.3
-                        C10.8 16.3 9.7 15.8 9 15"
-                        stroke="currentColor"
-                        stroke-width="1.6"
-                        stroke-linecap="round"/>
-
-                    <path
-                        d="M12 7V17"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                        stroke-linecap="round"/>
-
-                </svg>
-
-            </div>
-
-
-            <div>
-
-                <div class="overview-label">
-                    EARNINGS
-                </div>
-
-                <div class="overview-title">
-                    TOTAL EARNINGS
-                </div>
-
-                <strong id="overviewTotalEarnings">
-                    UGX 0
-                </strong>
-
-            </div>
-
-        </article>
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================================================
-     INVITE & EARN
-     ========================================================= -->
-
-<section class="invite-section">
-
-
-    <div class="section-row">
 
         <div>
 
-            <div class="section-kicker">
-                GROW TOGETHER
+            <div class="summary-label">
+                TOTAL INVESTED
             </div>
 
-            <h2>
-                Invite &amp; Earn
-            </h2>
+            <strong id="totalInvested">
+                UGX 0
+            </strong>
+
+            <small>
+                Active investments
+            </small>
 
         </div>
 
-    </div>
+    </article>
 
 
-    <article class="invite-card">
 
+    <!-- REFERRAL BONUS SUMMARY -->
 
-        <div class="invite-icon">
+    <article class="summary-card">
+
+        <div class="summary-icon">
 
             <svg
                 viewBox="0 0 24 24"
@@ -1895,6 +851,13 @@
                     stroke="currentColor"
                     stroke-width="1.8"/>
 
+                <circle
+                    cx="17"
+                    cy="9"
+                    r="2.5"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
+
                 <path
                     d="
                     M3 20
@@ -1904,23 +867,13 @@
                     stroke-width="1.8"
                     stroke-linecap="round"/>
 
-                <circle
-                    cx="18"
-                    cy="17"
-                    r="3"
-                    stroke="currentColor"
-                    stroke-width="1.8"/>
-
                 <path
-                    d="M18 15V19"
+                    d="
+                    M14 14.5
+                    C15 13.6 16.2 13 17.5 13
+                    C19.985 13 22 15.015 22 17.5"
                     stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"/>
-
-                <path
-                    d="M16 17H20"
-                    stroke="currentColor"
-                    stroke-width="1.5"
+                    stroke-width="1.8"
                     stroke-linecap="round"/>
 
             </svg>
@@ -1930,391 +883,114 @@
 
         <div>
 
-            <div class="invite-label">
-                REFERRAL PROGRAM
+            <div class="summary-label">
+                REFERRAL BONUS
             </div>
 
-            <h2>
-                Earn More When You Share
-            </h2>
+            <strong id="referralBonus">
+                UGX 0
+            </strong>
 
-            <p>
-                Invite friends to FINORA and earn
-                referral income through our three-level
-                referral program.
-            </p>
-
-            <a
-                href="team.html"
-                class="invite-button">
-
-                VIEW TEAM
-
-                <span>
-                    →
-                </span>
-
-            </a>
+            <small>
+                Total referral bonus
+            </small>
 
         </div>
 
     </article>
-
-</section>
-
-
-
-<!-- =========================================================
-     COMMUNITY / SUPPORT
-     ========================================================= -->
-
-<section class="community-section">
-
-
-    <div class="section-row">
-
-        <div>
-
-            <div class="section-kicker">
-                FINORA COMMUNITY
-            </div>
-
-            <h2>
-                Stay Connected
-            </h2>
-
-        </div>
-
-    </div>
-
-
-
-    <div class="community-grid">
-
-
-        <!-- COMMUNITY -->
-
-        <a
-            href="#"
-            class="community-card"
-            id="communityLink">
-
-            <div class="community-icon">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-
-                    <path
-                        d="M21 4L3 11L10 14L13 21L21 4Z"
-                        fill="currentColor"/>
-
-                    <path
-                        d="M10 14L21 4"
-                        stroke="#07050A"
-                        stroke-width="1.2"/>
-
-                </svg>
-
-            </div>
-
-
-            <div>
-
-                <div class="community-label">
-                    COMMUNITY
-                </div>
-
-                <strong>
-                    Join our Telegram group
-                </strong>
-
-                <small>
-                    Get updates, news and announcements
-                </small>
-
-            </div>
-
-
-            <span class="community-arrow">
-                →
-            </span>
-
-        </a>
-
-
-
-        <!-- SUPPORT -->
-
-        <a
-            href="#"
-            class="community-card"
-            id="supportLink">
-
-            <div class="community-icon">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-
-                    <path
-                        d="
-                        M4 13V11
-                        C4 6.582 7.582 3 12 3
-                        C16.418 3 20 6.582 20 11
-                        V13"
-                        stroke="currentColor"
-                        stroke-width="1.8"/>
-
-                    <rect
-                        x="2"
-                        y="12"
-                        width="5"
-                        height="7"
-                        rx="2"
-                        stroke="currentColor"
-                        stroke-width="1.8"/>
-
-                    <rect
-                        x="17"
-                        y="12"
-                        width="5"
-                        height="7"
-                        rx="2"
-                        stroke="currentColor"
-                        stroke-width="1.8"/>
-
-                    <path
-                        d="
-                        M17 19
-                        C16 21 14.5 22 12 22"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"/>
-
-                </svg>
-
-            </div>
-
-
-            <div>
-
-                <div class="community-label">
-                    SUPPORT
-                </div>
-
-                <strong>
-                    FINORA Support
-                </strong>
-
-                <small>
-                    Need help? Contact our support team
-                </small>
-
-            </div>
-
-
-            <span class="community-arrow">
-                →
-            </span>
-
-        </a>
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================================================
-     RECENT TRANSACTIONS
-     ========================================================= -->
-
-<section class="activity-section">
-
-
-    <div class="section-row">
-
-        <div>
-
-            <div class="section-kicker">
-                ACTIVITY
-            </div>
-
-            <h2>
-                Recent Transactions
-            </h2>
-
-        </div>
-
-
-        <a
-            href="transaction-history.html"
-            class="view-all">
-
-            VIEW ALL
-
-        </a>
-
-    </div>
-
-
-
-    <article class="activity-card">
-
-
-        <div class="activity-header">
-
-            <span>
-                ACTIVITY
-            </span>
-
-        </div>
-
-
-        <div
-            class="transaction-list"
-            id="recentTransactions">
-
-
-            <div class="empty-transactions">
-
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-
-                    <rect
-                        x="5"
-                        y="3"
-                        width="14"
-                        height="18"
-                        rx="2"
-                        stroke="currentColor"
-                        stroke-width="1.7"/>
-
-                    <path
-                        d="M9 8H15"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linecap="round"/>
-
-                    <path
-                        d="M9 12H15"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linecap="round"/>
-
-                    <path
-                        d="M9 16H13"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linecap="round"/>
-
-                </svg>
-
-
-                <p>
-                    No recent transactions
-                </p>
-
-            </div>
-
-        </div>
-
-    </article>
-
-</section>
-
 
 </div>
 
-</main>
+</section><!-- =========================================================
+     QUICK ACTIONS
+     
+     FINAL QUICK ACTIONS:
+     Deposit
+     Invest
+     Withdraw
+     My Investments
+     Records
+     Support
+     ========================================================= --><section class="quick-actions-section"><div class="section-row">
 
+    <div>
 
+        <div class="section-kicker">
+            MANAGE YOUR MONEY
+        </div>
 
-<!-- =========================================================
-     FOOTER
-     ========================================================= -->
-
-<footer class="dashboard-footer">
-
-    <div class="dashboard-container">
-
-        <p>
-
-            FINORA 2026
-
-            <span>
-                •
-            </span>
-
-            Invest
-
-            <span>
-                •
-            </span>
-
-            Grow
-
-            <span>
-                •
-            </span>
-
-            Earn
-
-        </p>
+        <h2>
+            Quick Actions
+        </h2>
 
     </div>
 
-</footer>
+
+    <span class="section-helper">
+        Tap to open
+    </span>
+
+</div>
 
 
 
-<!-- =========================================================
-     BOTTOM NAVIGATION
-     ========================================================= -->
-
-<nav
-    class="bottom-navigation"
-    aria-label="Main navigation">
+<div class="quick-actions">
 
 
-    <!-- HOME -->
+    <!-- DEPOSIT -->
 
     <a
-        href="dashboard.html"
-        class="bottom-nav-item active">
+        href="deposit.html"
+        class="quick-action">
 
-        <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg">
+        <div class="quick-action-icon">
 
-            <path
-                d="
-                M3 11
-                L12 3
-                L21 11
-                V20
-                C21 20.552 20.552 21 20 21
-                H4
-                C3.448 21 3 20.552 3 20
-                V11Z"
-                fill="currentColor"/>
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
 
-            <path
-                d="M9 21V14H15V21"
-                fill="#07050A"/>
+                <path
+                    d="
+                    M3 7.5
+                    C3 6.119 4.119 5 5.5 5
+                    H19
+                    C20.105 5 21 5.895 21 7
+                    V19
+                    C21 20.105 20.105 21 19 21
+                    H5
+                    C3.895 21 3 20.105 3 19
+                    V7.5Z"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
 
-        </svg>
+                <path
+                    d="M3 8H19"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
 
-        <span>
-            Home
-        </span>
+                <path
+                    d="M16 13H21"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
+
+                <circle
+                    cx="16"
+                    cy="13"
+                    r="1.5"
+                    fill="currentColor"/>
+
+            </svg>
+
+        </div>
+
+        <strong>
+            Deposit
+        </strong>
+
+        <small>
+            Fund wallet
+        </small>
 
     </a>
 
@@ -2324,89 +1000,155 @@
 
     <a
         href="investment.html"
-        class="bottom-nav-item">
+        class="quick-action">
 
-        <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg">
+        <div class="quick-action-icon">
 
-            <path
-                d="
-                M4 18
-                L10 12
-                L14 15
-                L21 7"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"/>
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
 
-            <path
-                d="M16 7H21V12"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"/>
+                <path
+                    d="
+                    M4 18
+                    L10 12
+                    L14 15
+                    L21 7"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
 
-        </svg>
+                <path
+                    d="M16 7H21V12"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
 
-        <span>
+            </svg>
+
+        </div>
+
+        <strong>
             Invest
-        </span>
+        </strong>
+
+        <small>
+            Start investing
+        </small>
 
     </a>
 
 
 
-    <!-- TEAM -->
+    <!-- WITHDRAW -->
 
     <a
-        href="team.html"
-        class="bottom-nav-item">
+        href="withdraw.html"
+        class="quick-action">
 
-        <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg">
+        <div class="quick-action-icon">
 
-            <circle
-                cx="9"
-                cy="8"
-                r="3"
-                stroke="currentColor"
-                stroke-width="1.8"/>
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
 
-            <circle
-                cx="17"
-                cy="9"
-                r="2.5"
-                stroke="currentColor"
-                stroke-width="1.8"/>
+                <path
+                    d="M12 16V4"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"/>
 
-            <path
-                d="
-                M3 20
-                C3 16.686 5.686 14 9 14
-                C12.314 14 15 16.686 15 20"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"/>
+                <path
+                    d="M8 8L12 4L16 8"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
 
-            <path
-                d="
-                M14 14.5
-                C15 13.6 16.2 13 17.5 13
-                C19.985 13 22 15.015 22 17.5"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"/>
+                <path
+                    d="
+                    M5 14V19
+                    C5 20.105 5.895 21 7 21
+                    H17
+                    C18.105 21 19 20.105 19 19
+                    V14"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"/>
 
-        </svg>
+            </svg>
 
-        <span>
-            Team
-        </span>
+        </div>
+
+        <strong>
+            Withdraw
+        </strong>
+
+        <small>
+            To MoMo
+        </small>
+
+    </a>
+
+
+
+    <!-- MY INVESTMENTS -->
+
+    <a
+        href="my-investments.html"
+        class="quick-action">
+
+        <div class="quick-action-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+
+                <rect
+                    x="4"
+                    y="7"
+                    width="16"
+                    height="13"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
+
+                <path
+                    d="
+                    M8 7V5
+                    C8 3.895 8.895 3 10 3
+                    H14
+                    C15.105 3 16 3.895 16 5
+                    V7"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
+
+                <path
+                    d="M4 12H20"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
+
+                <path
+                    d="M10 12V14H14V12"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
+
+            </svg>
+
+        </div>
+
+        <strong>
+            My Investments
+        </strong>
+
+        <small>
+            Active plans
+        </small>
 
     </a>
 
@@ -2416,102 +1158,786 @@
 
     <a
         href="transaction-history.html"
-        class="bottom-nav-item">
+        class="quick-action">
 
-        <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg">
+        <div class="quick-action-icon">
 
-            <rect
-                x="5"
-                y="3"
-                width="14"
-                height="18"
-                rx="2"
-                stroke="currentColor"
-                stroke-width="1.8"/>
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
 
-            <path
-                d="M9 8H15"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"/>
+                <rect
+                    x="5"
+                    y="3"
+                    width="14"
+                    height="18"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
 
-            <path
-                d="M9 12H15"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"/>
+                <path
+                    d="M9 8H15"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"/>
 
-            <path
-                d="M9 16H13"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"/>
+                <path
+                    d="M9 12H15"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"/>
 
-        </svg>
+                <path
+                    d="M9 16H13"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"/>
 
-        <span>
+            </svg>
+
+        </div>
+
+        <strong>
             Records
-        </span>
+        </strong>
+
+        <small>
+            Transactions
+        </small>
 
     </a>
 
 
 
-    <!-- MINE -->
+    <!-- SUPPORT -->
 
     <a
-        href="mine.html"
-        class="bottom-nav-item">
+        href="support.html"
+        class="quick-action">
 
-        <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg">
+        <div class="quick-action-icon">
 
-            <circle
-                cx="12"
-                cy="8"
-                r="3.5"
-                stroke="currentColor"
-                stroke-width="1.8"/>
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
 
-            <path
-                d="
-                M4 21
-                C4 16.582 7.582 13 12 13
-                C16.418 13 20 16.582 20 21"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"/>
+                <path
+                    d="
+                    M4 13V11
+                    C4 6.582 7.582 3 12 3
+                    C16.418 3 20 6.582 20 11
+                    V13"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"/>
 
-        </svg>
+                <rect
+                    x="2"
+                    y="12"
+                    width="5"
+                    height="7"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
 
-        <span>
-            Mine
+                <rect
+                    x="17"
+                    y="12"
+                    width="5"
+                    height="7"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
+
+                <path
+                    d="
+                    M17 19
+                    C16 21 14.5 22 12 22"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"/>
+
+            </svg>
+
+        </div>
+
+        <strong>
+            Support
+        </strong>
+
+        <small>
+            Get help
+        </small>
+
+    </a>
+
+</div>
+
+</section><!-- =========================================================
+     PREMIUM INVESTMENT BANNER
+     ========================================================= --><section class="premium-section"><article class="premium-banner">
+
+    <div class="premium-content">
+
+        <div class="premium-badge">
+            PREMIUM PLAN
+        </div>
+
+        <h2>
+
+            <span>
+                10% DAILY RETURNS
+            </span>
+
+            <br>
+
+            FOR 20 DAYS
+
+        </h2>
+
+        <p>
+            Invest once and earn daily for 20 days.
+        </p>
+
+        <a
+            href="investment.html"
+            class="premium-button">
+
+            VIEW PLAN DETAILS
+
+            <span>
+                →
+            </span>
+
+        </a>
+
+    </div>
+
+
+    <div class="premium-artwork">
+
+        <img
+            src="assets/banners/banner-premium.jpg"
+            alt="FINORA Premium Investment Plan"
+            class="premium-banner-image">
+
+    </div>
+
+</article>
+
+</section><!-- =========================================================
+     INVESTMENT OVERVIEW
+     ========================================================= --><section class="investment-overview-section"><div class="section-row">
+
+    <div>
+
+        <div class="section-kicker">
+            YOUR PROGRESS
+        </div>
+
+        <h2>
+            Investment Overview
+        </h2>
+
+    </div>
+
+</div>
+
+
+
+<div class="overview-grid">
+
+
+    <!-- ACTIVE INVESTMENTS -->
+
+    <article class="overview-card">
+
+        <div class="overview-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+
+                <path
+                    d="M12 3L21 8L12 13L3 8L12 3Z"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linejoin="round"/>
+
+                <path
+                    d="M3 12L12 17L21 12"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linejoin="round"/>
+
+                <path
+                    d="M3 16L12 21L21 16"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linejoin="round"/>
+
+            </svg>
+
+        </div>
+
+
+        <div>
+
+            <div class="overview-label">
+                INVEST
+            </div>
+
+            <div class="overview-title">
+                ACTIVE INVESTMENTS
+            </div>
+
+            <strong id="activeInvestments">
+                0
+            </strong>
+
+        </div>
+
+    </article>
+
+
+
+    <!-- DAILY INCOME -->
+
+    <article class="overview-card">
+
+        <div class="overview-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+
+                <path
+                    d="
+                    M4 18
+                    L10 12
+                    L14 15
+                    L21 7"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
+
+                <path
+                    d="M16 7H21V12"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
+
+            </svg>
+
+        </div>
+
+
+        <div>
+
+            <div class="overview-label">
+                INCOME
+            </div>
+
+            <div class="overview-title">
+                DAILY INCOME
+            </div>
+
+            <strong id="dailyIncome">
+                UGX 0
+            </strong>
+
+        </div>
+
+    </article>
+
+
+
+    <!-- TOTAL EARNINGS -->
+
+    <article class="overview-card">
+
+        <div class="overview-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+
+                <circle
+                    cx="12"
+                    cy="12"
+                    r="9"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
+
+                <path
+                    d="
+                    M15 9.5
+                    C14.4 8.8 13.5 8.4 12.4 8.4
+                    C10.8 8.4 9.7 9.2 9.7 10.3
+                    C9.7 11.5 10.7 12 12.2 12.3
+                    C13.8 12.6 14.7 13.1 14.7 14.3
+                    C14.7 15.5 13.6 16.3 12 16.3
+                    C10.8 16.3 9.7 15.8 9 15"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"/>
+
+                <path
+                    d="M12 7V17"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"/>
+
+            </svg>
+
+        </div>
+
+
+        <div>
+
+            <div class="overview-label">
+                EARNINGS
+            </div>
+
+            <div class="overview-title">
+                TOTAL EARNINGS
+            </div>
+
+            <strong id="overviewTotalEarnings">
+                UGX 0
+            </strong>
+
+        </div>
+
+    </article>
+
+</div>
+
+</section><!-- =========================================================
+     COMMUNITY
+     
+     SUPPORT HAS BEEN MOVED TO QUICK ACTIONS.
+     ONLY COMMUNITY REMAINS HERE.
+     ========================================================= --><section class="community-section"><div class="section-row">
+
+    <div>
+
+        <div class="section-kicker">
+            FINORA COMMUNITY
+        </div>
+
+        <h2>
+            Stay Connected
+        </h2>
+
+    </div>
+
+</div>
+
+
+
+<div class="community-grid">
+
+
+    <!-- COMMUNITY -->
+
+    <a
+        href="#"
+        class="community-card"
+        id="communityLink">
+
+        <div class="community-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+
+                <path
+                    d="M21 4L3 11L10 14L13 21L21 4Z"
+                    fill="currentColor"/>
+
+                <path
+                    d="M10 14L21 4"
+                    stroke="#07050A"
+                    stroke-width="1.2"/>
+
+            </svg>
+
+        </div>
+
+
+        <div>
+
+            <div class="community-label">
+                COMMUNITY
+            </div>
+
+            <strong>
+                Join our Telegram group
+            </strong>
+
+            <small>
+                Get updates, news and announcements
+            </small>
+
+        </div>
+
+
+        <span class="community-arrow">
+            →
         </span>
 
     </a>
 
-</nav>
+</div>
+
+</section><!-- =========================================================
+     RECENT TRANSACTIONS
+     ========================================================= --><section class="activity-section"><div class="section-row">
+
+    <div>
+
+        <div class="section-kicker">
+            ACTIVITY
+        </div>
+
+        <h2>
+            Recent Transactions
+        </h2>
+
+    </div>
 
 
+    <a
+        href="transaction-history.html"
+        class="view-all">
 
-<!-- =========================================================
-     JAVASCRIPT IS INTENTIONALLY NOT INSIDE THIS FILE.
-     
-     It will be connected separately as:
-     
-     <script src="dashboard.js"></script>
-     
-     We will add that separately when we reach the JS step.
-     ========================================================= -->
+        VIEW ALL
 
+    </a>
 
 </div>
-<script src="dashboard.js"></script>
-</body>
 
-</html>
+
+
+<article class="activity-card">
+
+
+    <div class="activity-header">
+
+        <span>
+            ACTIVITY
+        </span>
+
+    </div>
+
+
+    <div
+        class="transaction-list"
+        id="recentTransactions">
+
+
+        <div class="empty-transactions">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+
+                <rect
+                    x="5"
+                    y="3"
+                    width="14"
+                    height="18"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="1.7"/>
+
+                <path
+                    d="M9 8H15"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"/>
+
+                <path
+                    d="M9 12H15"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"/>
+
+                <path
+                    d="M9 16H13"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"/>
+
+            </svg>
+
+
+            <p>
+                No recent transactions
+            </p>
+
+        </div>
+
+    </div>
+
+</article>
+
+</section></div></main><!-- =========================================================
+     FOOTER
+     ========================================================= --><footer class="dashboard-footer"><div class="dashboard-container">
+
+    <p>
+
+        FINORA 2026
+
+        <span>
+            •
+        </span>
+
+        Invest
+
+        <span>
+            •
+        </span>
+
+        Grow
+
+        <span>
+            •
+        </span>
+
+        Earn
+
+    </p>
+
+</div>
+
+</footer><!-- =========================================================
+     BOTTOM NAVIGATION
+     
+     FINAL ORDER:
+     
+     1. HOME
+     2. TEAM
+     3. RATES
+     4. MINE
+     5. PROFILE
+     
+     RECORDS IS NOT HERE.
+     RECORDS IS IN QUICK ACTIONS.
+     
+     REFERRAL IS NOT HERE.
+     REFERRAL FUNCTIONS ARE PART OF TEAM.
+     ========================================================= --><nav
+    class="bottom-navigation"
+    aria-label="Main navigation"><!-- HOME -->
+
+<a
+    href="dashboard.html"
+    class="bottom-nav-item active">
+
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+
+        <path
+            d="
+            M3 11
+            L12 3
+            L21 11
+            V20
+            C21 20.552 20.552 21 20 21
+            H4
+            C3.448 21 3 20.552 3 20
+            V11Z"
+            fill="currentColor"/>
+
+        <path
+            d="M9 21V14H15V21"
+            fill="#07050A"/>
+
+    </svg>
+
+    <span>
+        Home
+    </span>
+
+</a>
+
+
+
+<!-- TEAM -->
+
+<a
+    href="team.html"
+    class="bottom-nav-item">
+
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+
+        <circle
+            cx="9"
+            cy="8"
+            r="3"
+            stroke="currentColor"
+            stroke-width="1.8"/>
+
+        <circle
+            cx="17"
+            cy="9"
+            r="2.5"
+            stroke="currentColor"
+            stroke-width="1.8"/>
+
+        <path
+            d="
+            M3 20
+            C3 16.686 5.686 14 9 14
+            C12.314 14 15 16.686 15 20"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"/>
+
+        <path
+            d="
+            M14 14.5
+            C15 13.6 16.2 13 17.5 13
+            C19.985 13 22 15.015 22 17.5"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"/>
+
+    </svg>
+
+    <span>
+        Team
+    </span>
+
+</a>
+
+
+
+<!-- RATES -->
+
+<a
+    href="rates.html"
+    class="bottom-nav-item">
+
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+
+        <path
+            d="
+            M4 18
+            L10 12
+            L14 15
+            L21 7"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+
+        <path
+            d="M16 7H21V12"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+
+    </svg>
+
+    <span>
+        Rates
+    </span>
+
+</a>
+
+
+
+<!-- MINE -->
+
+<a
+    href="mine.html"
+    class="bottom-nav-item">
+
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+
+        <circle
+            cx="12"
+            cy="8"
+            r="3.5"
+            stroke="currentColor"
+            stroke-width="1.8"/>
+
+        <path
+            d="
+            M4 21
+            C4 16.582 7.582 13 12 13
+            C16.418 13 20 16.582 20 21"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"/>
+
+    </svg>
+
+    <span>
+        Mine
+    </span>
+
+</a>
+
+
+
+<!-- PROFILE -->
+
+<a
+    href="profile.html"
+    class="bottom-nav-item">
+
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+
+        <circle
+            cx="12"
+            cy="8"
+            r="4"
+            fill="currentColor"/>
+
+        <path
+            d="
+            M4 21
+            C4 16.582 7.582 13 12 13
+            C16.418 13 20 16.582 20 21"
+            fill="currentColor"/>
+
+    </svg>
+
+    <span>
+        Profile
+    </span>
+
+</a>
+
+</nav><!-- =========================================================
+     DASHBOARD JAVASCRIPT
+     ========================================================= --><script src="dashboard.js"></script></div></body></html>
