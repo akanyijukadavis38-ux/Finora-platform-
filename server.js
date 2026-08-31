@@ -7,10 +7,13 @@ const MongoStore = require("connect-mongo");
 
 const { connectDB, mongoose } = require("./database");
 const userRoutes = require("./userRoutes");
-
 const app = express();
+
+/* Railway runs Express behind a proxy */
 app.set("trust proxy", 1);
+
 const PORT = process.env.PORT || 8080;
+
 
 
 /* =====================================================
