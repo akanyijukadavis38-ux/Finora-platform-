@@ -12,20 +12,19 @@ const app = express();
 
 const PORT = process.env.PORT || 8080;
 
-/* =====================================================
-   FINORA FRONTEND URL
-===================================================== */
-
-const FRONTEND_URL =
-    process.env.FRONTEND_URL || "";
-
 
 /* =====================================================
-   CORS
+   FINORA CORS
+   OFFICIAL FRONTEND
 ===================================================== */
+
+const allowedOrigins = [
+    "https://finora-platform.vercel.app"
+];
 
 app.use(
     cors({
+
         origin: function (origin, callback) {
 
             /*
@@ -40,16 +39,11 @@ app.use(
 
 
             /*
-               FRONTEND_URL must be configured on Railway.
-
-               Example:
-
-               FRONTEND_URL=https://your-finora-frontend.com
+               Allow the official FINORA Vercel frontend.
             */
 
             if (
-                FRONTEND_URL &&
-                origin === FRONTEND_URL
+                allowedOrigins.includes(origin)
             ) {
 
                 return callback(null, true);
@@ -69,7 +63,21 @@ app.use(
             );
         },
 
-        credentials: true
+        credentials: true,
+
+        methods: [
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE",
+            "OPTIONS"
+        ],
+
+        allowedHeaders: [
+            "Content-Type",
+            "Accept"
+        ]
     })
 );
 
@@ -132,219 +140,238 @@ app.use(
 
 
 /* =====================================================
-   API ROUTES
+   USER API ROUTES
 ===================================================== */
 
 app.use(
     "/api/users",
     userRoutes
 );
-app.get("/api/me", async (req, res) => {
-
-    try {
-
-        if (
-            !req.session ||
-            !req.session.userId
-        ) {
-
-            return res.status(401).json({
-
-                success: false,
-
-                message:
-                    "No authenticated FINORA session."
-            });
-        }
 
 
-        const User =
-            require("./user");
+/* =====================================================
+   CURRENT USER
+   GET /api/me
+===================================================== */
 
+app.get(
+    "/api/me",
+    async (req, res) => {
 
-        const user =
-            await User.findById(
-                req.session.userId
-            ).select("-password");
+        try {
 
+            if (
+                !req.session ||
+                !req.session.userId
+            ) {
 
-        if (!user) {
+                return res.status(401).json({
 
-            req.session.destroy(
-                () => {}
-            );
+                    success: false,
 
-
-            return res.status(401).json({
-
-                success: false,
-
-                message:
-                    "FINORA user account could not be found."
-            });
-        }
-
-
-        if (
-            user.status === "frozen"
-        ) {
-
-            req.session.destroy(
-                () => {}
-            );
-
-
-            return res.status(403).json({
-
-                success: false,
-
-                message:
-                    "Your FINORA account has been frozen."
-            });
-        }
-
-
-        return res.status(200).json({
-
-            success: true,
-
-            user: {
-
-                id:
-                    user._id,
-
-                fullName:
-                    user.fullName,
-
-                full_name:
-                    user.fullName,
-
-                phone:
-                    user.phone,
-
-                email:
-                    user.email,
-
-                referralCode:
-                    user.referralCode,
-
-                referral_code:
-                    user.referralCode,
-
-                balance:
-                    user.balance,
-
-                walletBalance:
-                    user.balance,
-
-                wallet_balance:
-                    user.balance,
-
-                totalIncome:
-                    user.totalIncome,
-
-                totalEarnings:
-                    user.totalIncome,
-
-                total_earnings:
-                    user.totalIncome,
-
-                totalDeposit:
-                    user.totalDeposit,
-
-                totalInvested:
-                    user.totalDeposit,
-
-                total_invested:
-                    user.totalDeposit,
-
-                totalWithdrawal:
-                    user.totalWithdrawal,
-
-                status:
-                    user.status,
-
-                createdAt:
-                    user.createdAt
+                    message:
+                        "No authenticated FINORA session."
+                });
             }
-        });
-
-    } catch (error) {
-
-        console.error(
-            "❌ FINORA /api/me ERROR:",
-            error
-        );
 
 
-        return res.status(500).json({
+            const User =
+                require("./user");
 
-            success: false,
 
-            message:
-                "FINORA could not load your account."
-        });
+            const user =
+                await User.findById(
+                    req.session.userId
+                ).select("-password");
+
+
+            if (!user) {
+
+                req.session.destroy(
+                    () => {}
+                );
+
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    message:
+                        "FINORA user account could not be found."
+                });
+            }
+
+
+            if (
+                user.status === "frozen"
+            ) {
+
+                req.session.destroy(
+                    () => {}
+                );
+
+
+                return res.status(403).json({
+
+                    success: false,
+
+                    message:
+                        "Your FINORA account has been frozen."
+                });
+            }
+
+
+            return res.status(200).json({
+
+                success: true,
+
+                user: {
+
+                    id:
+                        user._id,
+
+                    fullName:
+                        user.fullName,
+
+                    full_name:
+                        user.fullName,
+
+                    phone:
+                        user.phone,
+
+                    email:
+                        user.email,
+
+                    referralCode:
+                        user.referralCode,
+
+                    referral_code:
+                        user.referralCode,
+
+                    balance:
+                        user.balance,
+
+                    walletBalance:
+                        user.balance,
+
+                    wallet_balance:
+                        user.balance,
+
+                    totalIncome:
+                        user.totalIncome,
+
+                    totalEarnings:
+                        user.totalIncome,
+
+                    total_earnings:
+                        user.totalIncome,
+
+                    totalDeposit:
+                        user.totalDeposit,
+
+                    totalInvested:
+                        user.totalDeposit,
+
+                    total_invested:
+                        user.totalDeposit,
+
+                    totalWithdrawal:
+                        user.totalWithdrawal,
+
+                    status:
+                        user.status,
+
+                    createdAt:
+                        user.createdAt
+                }
+            });
+
+        } catch (error) {
+
+            console.error(
+                "❌ FINORA /api/me ERROR:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success: false,
+
+                message:
+                    "FINORA could not load your account."
+            });
+        }
     }
-});
+);
+
 
 /* =====================================================
    ROOT
 ===================================================== */
 
-app.get("/", (req, res) => {
+app.get(
+    "/",
+    (req, res) => {
 
-    res.status(200).json({
+        res.status(200).json({
 
-        success: true,
+            success: true,
 
-        application: "FINORA",
+            application: "FINORA",
 
-        message:
-            "FINORA Backend Running Successfully"
-    });
-});
+            message:
+                "FINORA Backend Running Successfully"
+        });
+    }
+);
 
 
 /* =====================================================
    HEALTH CHECK
 ===================================================== */
 
-app.get("/health", (req, res) => {
+app.get(
+    "/health",
+    (req, res) => {
 
-    res.status(200).json({
+        res.status(200).json({
 
-        success: true,
+            success: true,
 
-        status: "ok",
+            status: "ok",
 
-        database:
-            mongoose.connection.readyState === 1
-                ? "connected"
-                : "disconnected",
+            database:
+                mongoose.connection.readyState === 1
+                    ? "connected"
+                    : "disconnected",
 
-        message:
-            "FINORA Backend is healthy"
-    });
-});
+            message:
+                "FINORA Backend is healthy"
+        });
+    }
+);
 
 
 /* =====================================================
    404 HANDLER
 ===================================================== */
 
-app.use((req, res) => {
+app.use(
+    (req, res) => {
 
-    res.status(404).json({
+        res.status(404).json({
 
-        success: false,
+            success: false,
 
-        message:
-            "FINORA API endpoint not found.",
+            message:
+                "FINORA API endpoint not found.",
 
-        path:
-            req.originalUrl
-    });
-});
+            path:
+                req.originalUrl
+        });
+    }
+);
 
 
 /* =====================================================
