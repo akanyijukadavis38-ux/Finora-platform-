@@ -7,49 +7,62 @@ const MongoStore = require("connect-mongo");
 
 const { connectDB, mongoose } = require("./database");
 const userRoutes = require("./userRoutes");
+
 const app = express();
 
-/* Railway runs Express behind a proxy */
-app.set("trust proxy", 1);
+const PORT =
+    process.env.PORT || 8080;
 
-const PORT = process.env.PORT || 8080;
 
+/* =====================================================
+   RAILWAY PROXY
+===================================================== */
+
+app.set(
+    "trust proxy",
+    1
+);
 
 
 /* =====================================================
    FINORA CORS
-   OFFICIAL FRONTEND
 ===================================================== */
 
 const allowedOrigins = [
+
     "https://finora-platform.vercel.app"
+
 ];
 
+
 app.use(
+
     cors({
 
-        origin: function (origin, callback) {
-
-            /*
-               Allow requests without an Origin header.
-               Useful for health checks and server-to-server
-               requests.
-            */
+        origin: function (
+            origin,
+            callback
+        ) {
 
             if (!origin) {
-                return callback(null, true);
+
+                return callback(
+                    null,
+                    true
+                );
             }
 
 
-            /*
-               Allow the official FINORA Vercel frontend.
-            */
-
             if (
-                allowedOrigins.includes(origin)
+                allowedOrigins.includes(
+                    origin
+                )
             ) {
 
-                return callback(null, true);
+                return callback(
+                    null,
+                    true
+                );
             }
 
 
@@ -66,20 +79,27 @@ app.use(
             );
         },
 
+
         credentials: true,
 
+
         methods: [
+
             "GET",
             "POST",
             "PUT",
             "PATCH",
             "DELETE",
             "OPTIONS"
+
         ],
 
+
         allowedHeaders: [
+
             "Content-Type",
             "Accept"
+
         ]
     })
 );
@@ -99,41 +119,51 @@ app.use(
 ===================================================== */
 
 app.use(
+
     session({
 
-        name: "finora.sid",
+        name:
+            "finora.sid",
+
 
         secret:
             process.env.SESSION_SECRET ||
             "FINORA_CHANGE_THIS_SESSION_SECRET",
 
-        resave: false,
 
-        saveUninitialized: false,
+        resave:
+            false,
 
-        store: MongoStore.create({
 
-            mongoUrl:
-                process.env.MONGODB_URI,
+        saveUninitialized:
+            false,
 
-            collectionName:
-                "finora_sessions",
 
-            ttl:
-                7 * 24 * 60 * 60
-        }),
+        store:
+
+            MongoStore.create({
+
+                mongoUrl:
+                    process.env.MONGODB_URI,
+
+                collectionName:
+                    "finora_sessions",
+
+                ttl:
+                    7 * 24 * 60 * 60
+            }),
+
 
         cookie: {
 
-            httpOnly: true,
+            httpOnly:
+                true,
 
             secure:
-                process.env.NODE_ENV === "production",
+                true,
 
             sameSite:
-                process.env.NODE_ENV === "production"
-                    ? "none"
-                    : "lax",
+                "none",
 
             maxAge:
                 7 * 24 * 60 * 60 * 1000
@@ -143,7 +173,7 @@ app.use(
 
 
 /* =====================================================
-   USER API ROUTES
+   USER ROUTES
 ===================================================== */
 
 app.use(
@@ -155,6 +185,8 @@ app.use(
 /* =====================================================
    CURRENT USER
    GET /api/me
+
+   THIS IS THE ENDPOINT YOUR DASHBOARD USES.
 ===================================================== */
 
 app.get(
@@ -170,7 +202,8 @@ app.get(
 
                 return res.status(401).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
                         "No authenticated FINORA session."
@@ -197,7 +230,8 @@ app.get(
 
                 return res.status(401).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
                         "FINORA user account could not be found."
@@ -216,7 +250,8 @@ app.get(
 
                 return res.status(403).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
                         "Your FINORA account has been frozen."
@@ -224,9 +259,62 @@ app.get(
             }
 
 
+            /* =================================================
+               IMPORTANT:
+               EXISTING USERS WITHOUT A CODE GET ONE.
+            ================================================= */
+
+            if (
+                !user.referralCode
+            ) {
+
+                const crypto =
+                    require("crypto");
+
+
+                let referralCode;
+                let exists = true;
+
+
+                while (exists) {
+
+                    referralCode =
+                        "FIN" +
+                        crypto
+                            .randomBytes(4)
+                            .toString("hex")
+                            .toUpperCase();
+
+
+                    const existing =
+                        await User.findOne({
+
+                            referralCode:
+                                referralCode
+                        });
+
+
+                    exists =
+                        !!existing;
+                }
+
+
+                user.referralCode =
+                    referralCode;
+
+
+                await user.save();
+            }
+
+
+            /* =================================================
+               RETURN DASHBOARD USER
+            ================================================= */
+
             return res.status(200).json({
 
-                success: true,
+                success:
+                    true,
 
                 user: {
 
@@ -250,6 +338,9 @@ app.get(
 
                     referral_code:
                         user.referralCode,
+
+                    referredBy:
+                        user.referredBy || null,
 
                     balance:
                         user.balance,
@@ -285,9 +376,34 @@ app.get(
                         user.status,
 
                     createdAt:
-                        user.createdAt
+                        user.createdAt,
+
+                    referralIncome:
+                        0,
+
+                    referral_income:
+                        0,
+
+                    activeInvestments:
+                        0,
+
+                    active_investments:
+                        0,
+
+                    todayEarnings:
+                        0,
+
+                    today_earnings:
+                        0,
+
+                    dailyIncome:
+                        0,
+
+                    daily_income:
+                        0
                 }
             });
+
 
         } catch (error) {
 
@@ -299,7 +415,8 @@ app.get(
 
             return res.status(500).json({
 
-                success: false,
+                success:
+                    false,
 
                 message:
                     "FINORA could not load your account."
@@ -319,9 +436,11 @@ app.get(
 
         res.status(200).json({
 
-            success: true,
+            success:
+                true,
 
-            application: "FINORA",
+            application:
+                "FINORA",
 
             message:
                 "FINORA Backend Running Successfully"
@@ -340,9 +459,11 @@ app.get(
 
         res.status(200).json({
 
-            success: true,
+            success:
+                true,
 
-            status: "ok",
+            status:
+                "ok",
 
             database:
                 mongoose.connection.readyState === 1
@@ -357,7 +478,7 @@ app.get(
 
 
 /* =====================================================
-   404 HANDLER
+   404
 ===================================================== */
 
 app.use(
@@ -365,7 +486,8 @@ app.use(
 
         res.status(404).json({
 
-            success: false,
+            success:
+                false,
 
             message:
                 "FINORA API endpoint not found.",
@@ -382,7 +504,12 @@ app.use(
 ===================================================== */
 
 app.use(
-    (error, req, res, next) => {
+    (
+        error,
+        req,
+        res,
+        next
+    ) => {
 
         console.error(
             "❌ FINORA SERVER ERROR:",
@@ -397,7 +524,8 @@ app.use(
 
             return res.status(403).json({
 
-                success: false,
+                success:
+                    false,
 
                 message:
                     "FINORA CORS rejected this request."
@@ -407,7 +535,8 @@ app.use(
 
         return res.status(500).json({
 
-            success: false,
+            success:
+                false,
 
             message:
                 "FINORA server error."
@@ -433,8 +562,11 @@ async function startServer() {
 
 
         app.listen(
+
             PORT,
+
             "0.0.0.0",
+
             () => {
 
                 console.log(
@@ -455,10 +587,15 @@ async function startServer() {
                 );
 
                 console.log(
+                    "🔗 DASHBOARD USER ENDPOINT: /api/me"
+                );
+
+                console.log(
                     "================================="
                 );
             }
         );
+
 
     } catch (error) {
 
@@ -469,6 +606,7 @@ async function startServer() {
         console.error(
             error.message
         );
+
 
         process.exit(1);
     }
