@@ -488,12 +488,9 @@ const FINORA_API =
 
         return;
     }
-
 referralLink.value =
-    "https://akanyijukadavis38-ux.github.io/?ref=" +
-    encodeURIComponent(
-        referralCode
-    );
+    "https://finora-platform.vercel.app/?ref=" +
+    encodeURIComponent(referralCode);
 }
 
 
