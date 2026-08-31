@@ -5,8 +5,12 @@ const cors = require("cors");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 
-const { connectDB, mongoose } = require("./database");
-const userRoutes = require("./userRoutes");
+const { connectDB, mongoose } =
+    require("./database");
+
+const userRoutes =
+    require("./userRoutes");
+
 
 const app = express();
 
@@ -14,9 +18,21 @@ const PORT =
     process.env.PORT || 8080;
 
 
-/* =====================================================
-   RAILWAY PROXY
-===================================================== */
+/* =========================================================
+   FINORA SERVER IDENTIFICATION
+========================================================= */
+
+console.log(
+    "FINORA-CURRENT-SERVER-2026-AUTH-FIX"
+);
+
+
+/* =========================================================
+   RAILWAY / PROXY CONFIGURATION
+
+   Required because Railway sits behind a proxy and
+   FINORA uses secure cross-site session cookies.
+========================================================= */
 
 app.set(
     "trust proxy",
@@ -24,9 +40,9 @@ app.set(
 );
 
 
-/* =====================================================
+/* =========================================================
    FINORA CORS
-===================================================== */
+========================================================= */
 
 const allowedOrigins = [
 
@@ -36,13 +52,16 @@ const allowedOrigins = [
 
 
 app.use(
-
     cors({
 
         origin: function (
             origin,
             callback
         ) {
+
+            /* =============================================
+               Requests without Origin
+            ============================================= */
 
             if (!origin) {
 
@@ -52,6 +71,10 @@ app.use(
                 );
             }
 
+
+            /* =============================================
+               Official FINORA frontend
+            ============================================= */
 
             if (
                 allowedOrigins.includes(
@@ -67,7 +90,7 @@ app.use(
 
 
             console.warn(
-                "⚠️ FINORA CORS blocked origin:",
+                "⚠️ FINORA CORS BLOCKED:",
                 origin
             );
 
@@ -101,35 +124,47 @@ app.use(
             "Accept"
 
         ]
+
     })
 );
 
 
-/* =====================================================
+/* =========================================================
    BODY PARSER
-===================================================== */
+========================================================= */
 
 app.use(
     express.json()
 );
 
 
-/* =====================================================
+/* =========================================================
    SESSION
-===================================================== */
+========================================================= */
 
 app.use(
-
     session({
+
+        /* =============================================
+           COOKIE NAME
+        ============================================= */
 
         name:
             "finora.sid",
 
 
+        /* =============================================
+           SECRET
+        ============================================= */
+
         secret:
             process.env.SESSION_SECRET ||
             "FINORA_CHANGE_THIS_SESSION_SECRET",
 
+
+        /* =============================================
+           SESSION SAVE OPTIONS
+        ============================================= */
 
         resave:
             false,
@@ -139,8 +174,11 @@ app.use(
             false,
 
 
-        store:
+        /* =============================================
+           MONGODB SESSION STORE
+        ============================================= */
 
+        store:
             MongoStore.create({
 
                 mongoUrl:
@@ -151,8 +189,22 @@ app.use(
 
                 ttl:
                     7 * 24 * 60 * 60
+
             }),
 
+
+        /* =============================================
+           COOKIE
+           
+           Vercel frontend:
+           finora-platform.vercel.app
+
+           Railway backend:
+           finora-platform-production.up.railway.app
+
+           These are cross-site, so SameSite=None
+           and Secure are required.
+        ============================================= */
 
         cookie: {
 
@@ -167,14 +219,16 @@ app.use(
 
             maxAge:
                 7 * 24 * 60 * 60 * 1000
+
         }
+
     })
 );
 
 
-/* =====================================================
+/* =========================================================
    USER ROUTES
-===================================================== */
+========================================================= */
 
 app.use(
     "/api/users",
@@ -182,253 +236,9 @@ app.use(
 );
 
 
-/* =====================================================
-   CURRENT USER
-   GET /api/me
-
-   THIS IS THE ENDPOINT YOUR DASHBOARD USES.
-===================================================== */
-
-app.get(
-    "/api/me",
-    async (req, res) => {
-
-        try {
-
-            if (
-                !req.session ||
-                !req.session.userId
-            ) {
-
-                return res.status(401).json({
-
-                    success:
-                        false,
-
-                    message:
-                        "No authenticated FINORA session."
-                });
-            }
-
-
-            const User =
-                require("./user");
-
-
-            const user =
-                await User.findById(
-                    req.session.userId
-                ).select("-password");
-
-
-            if (!user) {
-
-                req.session.destroy(
-                    () => {}
-                );
-
-
-                return res.status(401).json({
-
-                    success:
-                        false,
-
-                    message:
-                        "FINORA user account could not be found."
-                });
-            }
-
-
-            if (
-                user.status === "frozen"
-            ) {
-
-                req.session.destroy(
-                    () => {}
-                );
-
-
-                return res.status(403).json({
-
-                    success:
-                        false,
-
-                    message:
-                        "Your FINORA account has been frozen."
-                });
-            }
-
-
-            /* =================================================
-               IMPORTANT:
-               EXISTING USERS WITHOUT A CODE GET ONE.
-            ================================================= */
-
-            if (
-                !user.referralCode
-            ) {
-
-                const crypto =
-                    require("crypto");
-
-
-                let referralCode;
-                let exists = true;
-
-
-                while (exists) {
-
-                    referralCode =
-                        "FIN" +
-                        crypto
-                            .randomBytes(4)
-                            .toString("hex")
-                            .toUpperCase();
-
-
-                    const existing =
-                        await User.findOne({
-
-                            referralCode:
-                                referralCode
-                        });
-
-
-                    exists =
-                        !!existing;
-                }
-
-
-                user.referralCode =
-                    referralCode;
-
-
-                await user.save();
-            }
-
-
-            /* =================================================
-               RETURN DASHBOARD USER
-            ================================================= */
-
-            return res.status(200).json({
-
-                success:
-                    true,
-
-                user: {
-
-                    id:
-                        user._id,
-
-                    fullName:
-                        user.fullName,
-
-                    full_name:
-                        user.fullName,
-
-                    phone:
-                        user.phone,
-
-                    email:
-                        user.email,
-
-                    referralCode:
-                        user.referralCode,
-
-                    referral_code:
-                        user.referralCode,
-
-                    referredBy:
-                        user.referredBy || null,
-
-                    balance:
-                        user.balance,
-
-                    walletBalance:
-                        user.balance,
-
-                    wallet_balance:
-                        user.balance,
-
-                    totalIncome:
-                        user.totalIncome,
-
-                    totalEarnings:
-                        user.totalIncome,
-
-                    total_earnings:
-                        user.totalIncome,
-
-                    totalDeposit:
-                        user.totalDeposit,
-
-                    totalInvested:
-                        user.totalDeposit,
-
-                    total_invested:
-                        user.totalDeposit,
-
-                    totalWithdrawal:
-                        user.totalWithdrawal,
-
-                    status:
-                        user.status,
-
-                    createdAt:
-                        user.createdAt,
-
-                    referralIncome:
-                        0,
-
-                    referral_income:
-                        0,
-
-                    activeInvestments:
-                        0,
-
-                    active_investments:
-                        0,
-
-                    todayEarnings:
-                        0,
-
-                    today_earnings:
-                        0,
-
-                    dailyIncome:
-                        0,
-
-                    daily_income:
-                        0
-                }
-            });
-
-
-        } catch (error) {
-
-            console.error(
-                "❌ FINORA /api/me ERROR:",
-                error
-            );
-
-
-            return res.status(500).json({
-
-                success:
-                    false,
-
-                message:
-                    "FINORA could not load your account."
-            });
-        }
-    }
-);
-
-
-/* =====================================================
+/* =========================================================
    ROOT
-===================================================== */
+========================================================= */
 
 app.get(
     "/",
@@ -443,15 +253,19 @@ app.get(
                 "FINORA",
 
             message:
-                "FINORA Backend Running Successfully"
+                "FINORA Backend Running Successfully",
+
+            version:
+                "AUTH-FIX-2026"
+
         });
     }
 );
 
 
-/* =====================================================
+/* =========================================================
    HEALTH CHECK
-===================================================== */
+========================================================= */
 
 app.get(
     "/health",
@@ -470,16 +284,20 @@ app.get(
                     ? "connected"
                     : "disconnected",
 
+            session:
+                "enabled",
+
             message:
                 "FINORA Backend is healthy"
+
         });
     }
 );
 
 
-/* =====================================================
-   404
-===================================================== */
+/* =========================================================
+   404 HANDLER
+========================================================= */
 
 app.use(
     (req, res) => {
@@ -494,14 +312,15 @@ app.use(
 
             path:
                 req.originalUrl
+
         });
     }
 );
 
 
-/* =====================================================
+/* =========================================================
    ERROR HANDLER
-===================================================== */
+========================================================= */
 
 app.use(
     (
@@ -529,6 +348,7 @@ app.use(
 
                 message:
                     "FINORA CORS rejected this request."
+
             });
         }
 
@@ -540,37 +360,56 @@ app.use(
 
             message:
                 "FINORA server error."
+
         });
     }
 );
 
 
-/* =====================================================
+/* =========================================================
    START SERVER
-===================================================== */
+========================================================= */
 
 async function startServer() {
 
-    console.log(
-        "FINORA-CURRENT-SERVER-2026"
-    );
-
-
     try {
+
+        console.log(
+            "=========================================="
+        );
+
+        console.log(
+            "🚀 FINORA BACKEND STARTING"
+        );
+
+        console.log(
+            "=========================================="
+        );
+
+
+        /* =============================================
+           CONNECT MONGODB
+        ============================================= */
 
         await connectDB();
 
 
+        console.log(
+            "✅ FINORA DATABASE CONNECTED"
+        );
+
+
+        /* =============================================
+           START EXPRESS
+        ============================================= */
+
         app.listen(
-
             PORT,
-
             "0.0.0.0",
-
             () => {
 
                 console.log(
-                    "================================="
+                    "=========================================="
                 );
 
                 console.log(
@@ -587,11 +426,16 @@ async function startServer() {
                 );
 
                 console.log(
-                    "🔗 DASHBOARD USER ENDPOINT: /api/me"
+                    "🍪 CROSS-SITE SECURE COOKIE ENABLED"
                 );
 
                 console.log(
-                    "================================="
+                    "🌐 FRONTEND:",
+                    "https://finora-platform.vercel.app"
+                );
+
+                console.log(
+                    "=========================================="
                 );
             }
         );
@@ -600,11 +444,19 @@ async function startServer() {
     } catch (error) {
 
         console.error(
+            "=========================================="
+        );
+
+        console.error(
             "❌ FINORA SERVER START FAILED"
         );
 
         console.error(
-            error.message
+            error
+        );
+
+        console.error(
+            "=========================================="
         );
 
 
