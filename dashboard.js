@@ -196,61 +196,41 @@ const FINORA_API =
        UPDATE USER FULL NAME
     ===================================================== */
 
-    function updateDashboardUser(user) {
+ function updateDashboardUser(user) {
 
-        const fullName =
-            getElement("fullName");
+    const fullName =
+        getElement("fullName");
 
-
-        if (!fullName) {
-            return;
-        }
-
-
-        if (!user) {
-
-            fullName.textContent =
-                "Unable to load name";
-
-            return;
-        }
-
-
-        /*
-           PostgreSQL server returns:
-
-           full_name
-
-           We also support fullName/name
-           in case the backend response changes.
-        */
-
-        const name =
-            user.full_name ||
-            user.fullName ||
-            user.name;
-
-
-        if (
-            name &&
-            String(name).trim()
-        ) {
-
-            fullName.textContent =
-                String(name).trim();
-
-        } else {
-
-            /*
-               DO NOT SHOW "Investor".
-               The actual registered name
-               must come from the backend.
-            */
-
-            fullName.textContent =
-                "Unable to load name";
-        }
+    if (!fullName) {
+        return;
     }
+
+    if (!user) {
+
+        fullName.textContent =
+            "Unable to load name";
+
+        return;
+    }
+
+    const name =
+        user.fullName ||
+        user.full_name;
+
+    if (
+        name &&
+        String(name).trim()
+    ) {
+
+        fullName.textContent =
+            String(name).trim();
+
+    } else {
+
+        fullName.textContent =
+            "Unable to load name";
+    }
+}
 
 
     /* =====================================================
@@ -446,72 +426,76 @@ const FINORA_API =
        REFERRAL PROGRAM
     ===================================================== */
 
-    function setupReferralProgram() {
+ function setupReferralProgram() {
 
-        const levelOneRate =
-            getElement("levelOneRate");
+    const levelOneRate =
+        getElement("levelOneRate");
 
+    const levelTwoRate =
+        getElement("levelTwoRate");
 
-        const levelTwoRate =
-            getElement("levelTwoRate");
-
-
-        const levelThreeRate =
-            getElement("levelThreeRate");
+    const levelThreeRate =
+        getElement("levelThreeRate");
 
 
-        if (levelOneRate) {
+    if (levelOneRate) {
 
-            levelOneRate.textContent =
-                REFERRAL_LEVELS.levelOne + "%";
-        }
-
-
-        if (levelTwoRate) {
-
-            levelTwoRate.textContent =
-                REFERRAL_LEVELS.levelTwo + "%";
-        }
+        levelOneRate.textContent =
+            "15%";
+    }
 
 
-        if (levelThreeRate) {
+    if (levelTwoRate) {
 
-            levelThreeRate.textContent =
-                REFERRAL_LEVELS.levelThree + "%";
-        }
-
-
-        const referralLink =
-            getElement("referralLink");
+        levelTwoRate.textContent =
+            "5%";
+    }
 
 
-        if (!referralLink) {
-            return;
-        }
+    if (levelThreeRate) {
+
+        levelThreeRate.textContent =
+            "2%";
+    }
 
 
-        if (!currentUser) {
-
-            referralLink.value = "";
-
-            return;
-        }
+    const referralLink =
+        getElement("referralLink");
 
 
-        const referralCode =
-            currentUser.referral_code ||
-            currentUser.referralCode ||
-            currentUser.myReferralCode ||
-            currentUser.my_referral_code ||
-            "";
+    if (!referralLink) {
+        return;
+    }
 
 
-        if (!referralCode) {
+    if (!currentUser) {
 
-            referralLink.value = "";
+        referralLink.value = "";
 
-            return;
-        }
+        return;
+    }
+
+
+    const referralCode =
+        currentUser.referralCode ||
+        currentUser.referral_code;
+
+
+    if (!referralCode) {
+
+        referralLink.value =
+            "Generating referral link...";
+
+        return;
+    }
+
+
+    referralLink.value =
+        "https://finora-platform.vercel.app/?ref=" +
+        encodeURIComponent(
+            referralCode
+        );
+}
 
 
         /* =================================================
