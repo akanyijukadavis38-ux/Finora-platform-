@@ -7,6 +7,38 @@ const router = express.Router();
 
 
 /* =====================================================
+   GENERATE UNIQUE FINORA REFERRAL CODE
+===================================================== */
+
+async function generateReferralCode() {
+
+    let code;
+    let exists = true;
+
+    while (exists) {
+
+        const randomPart =
+            Math.random()
+                .toString(36)
+                .substring(2, 8)
+                .toUpperCase();
+
+        code =
+            "FIN" + randomPart;
+
+        const existingUser =
+            await User.findOne({
+                referralCode: code
+            });
+
+        exists = !!existingUser;
+    }
+
+    return code;
+}
+
+
+/* =====================================================
    REGISTER USER
    POST /api/users/register
 ===================================================== */
@@ -48,7 +80,7 @@ router.post("/register", async (req, res) => {
 
 
         /* =================================================
-           NAME VALIDATION
+           NAME
         ================================================= */
 
         const cleanName =
@@ -68,7 +100,7 @@ router.post("/register", async (req, res) => {
 
 
         /* =================================================
-           PHONE VALIDATION
+           PHONE
         ================================================= */
 
         const cleanPhone =
@@ -92,7 +124,7 @@ router.post("/register", async (req, res) => {
 
 
         /* =================================================
-           EMAIL VALIDATION
+           EMAIL
         ================================================= */
 
         const cleanEmail =
@@ -118,7 +150,7 @@ router.post("/register", async (req, res) => {
 
 
         /* =================================================
-           PASSWORD VALIDATION
+           PASSWORD
         ================================================= */
 
         if (
@@ -154,7 +186,7 @@ router.post("/register", async (req, res) => {
 
 
         /* =================================================
-           CHECK EXISTING EMAIL
+           CHECK EMAIL
         ================================================= */
 
         const existingEmail =
@@ -176,7 +208,7 @@ router.post("/register", async (req, res) => {
 
 
         /* =================================================
-           CHECK EXISTING PHONE
+           CHECK PHONE
         ================================================= */
 
         const existingPhone =
@@ -198,49 +230,115 @@ router.post("/register", async (req, res) => {
 
 
         /* =================================================
+           REFERRER
+           
+           This is the code belonging to the person
+           who referred the new user.
+        ================================================= */
+
+        let referredBy = null;
+
+
+        const suppliedReferralCode =
+            referralCode &&
+            String(referralCode).trim()
+                ? String(referralCode).trim().toUpperCase()
+                : null;
+
+
+        if (suppliedReferralCode) {
+
+            const referringUser =
+                await User.findOne({
+
+                    referralCode:
+                        suppliedReferralCode
+                });
+
+
+            if (!referringUser) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "The referral link or referral code is invalid."
+                });
+            }
+
+
+            referredBy =
+                referringUser.referralCode;
+        }
+
+
+        /* =================================================
+           GENERATE THIS USER'S OWN REFERRAL CODE
+           
+           EVERY USER GETS ONE.
+           
+           It does NOT matter whether they were referred
+           by someone else.
+        ================================================= */
+
+        const ownReferralCode =
+            await generateReferralCode();
+
+
+        /* =================================================
            HASH PASSWORD
         ================================================= */
 
         const hashedPassword =
             await bcrypt.hash(
-                password,
+                String(password),
                 12
             );
-
-
-        /* =================================================
-           REFERRAL CODE
-        ================================================= */
-
-        const cleanReferralCode =
-            referralCode &&
-            String(referralCode).trim()
-                ? String(referralCode).trim()
-                : null;
 
 
         /* =================================================
            CREATE USER
         ================================================= */
 
+        const userData = {
+
+            fullName:
+                cleanName,
+
+            phone:
+                cleanPhone,
+
+            email:
+                cleanEmail,
+
+            password:
+                hashedPassword,
+
+            referralCode:
+                ownReferralCode
+        };
+
+
+        /*
+           Only add referredBy when a referral was actually
+           used.
+
+           This prevents an unnecessary null value for users
+           who register directly.
+        */
+
+        if (referredBy) {
+
+            userData.referredBy =
+                referredBy;
+        }
+
+
         const user =
-            await User.create({
-
-                fullName:
-                    cleanName,
-
-                phone:
-                    cleanPhone,
-
-                email:
-                    cleanEmail,
-
-                password:
-                    hashedPassword,
-
-                referralCode:
-                    cleanReferralCode
-            });
+            await User.create(
+                userData
+            );
 
 
         /* =================================================
@@ -270,6 +368,12 @@ router.post("/register", async (req, res) => {
 
                 referralCode:
                     user.referralCode,
+
+                referral_code:
+                    user.referralCode,
+
+                referredBy:
+                    user.referredBy || null,
 
                 balance:
                     user.balance,
@@ -323,6 +427,8 @@ router.post("/register", async (req, res) => {
         });
     }
 });
+
+
 /* =====================================================
    LOGIN USER
    POST /api/users/login
@@ -337,10 +443,6 @@ router.post("/login", async (req, res) => {
             password
         } = req.body;
 
-
-        /* =================================================
-           BASIC VALIDATION
-        ================================================= */
 
         if (
             !identifier ||
@@ -357,10 +459,6 @@ router.post("/login", async (req, res) => {
         }
 
 
-        /* =================================================
-           CLEAN LOGIN DETAILS
-        ================================================= */
-
         const identifierValue =
             String(identifier).trim();
 
@@ -368,10 +466,6 @@ router.post("/login", async (req, res) => {
         const passwordValue =
             String(password);
 
-
-        /* =================================================
-           FIND USER BY EMAIL OR PHONE
-        ================================================= */
 
         const user =
             await User.findOne({
@@ -393,10 +487,6 @@ router.post("/login", async (req, res) => {
             });
 
 
-        /* =================================================
-           USER NOT FOUND
-        ================================================= */
-
         if (!user) {
 
             return res.status(401).json({
@@ -408,10 +498,6 @@ router.post("/login", async (req, res) => {
             });
         }
 
-
-        /* =================================================
-           CHECK ACCOUNT STATUS
-        ================================================= */
 
         if (
             user.status === "frozen"
@@ -426,10 +512,6 @@ router.post("/login", async (req, res) => {
             });
         }
 
-
-        /* =================================================
-           CHECK PASSWORD
-        ================================================= */
 
         const passwordMatches =
             await bcrypt.compare(
@@ -451,12 +533,29 @@ router.post("/login", async (req, res) => {
 
 
         /* =================================================
-           CREATE FINORA SESSION
+           IMPORTANT:
+           OLD USERS MAY NOT HAVE A REFERRAL CODE.
+           
+           Generate one automatically when they log in.
+        ================================================= */
+
+        if (
+            !user.referralCode
+        ) {
+
+            user.referralCode =
+                await generateReferralCode();
+
+            await user.save();
+        }
+
+
+        /* =================================================
+           CREATE SESSION
         ================================================= */
 
         req.session.userId =
             user._id.toString();
-
 
         req.session.authenticated =
             true;
@@ -486,10 +585,6 @@ router.post("/login", async (req, res) => {
                 }
 
 
-                /* =================================================
-                   LOGIN SUCCESS
-                ================================================= */
-
                 return res.status(200).json({
 
                     success: true,
@@ -512,6 +607,9 @@ router.post("/login", async (req, res) => {
                             user.email,
 
                         referralCode:
+                            user.referralCode,
+
+                        referral_code:
                             user.referralCode,
 
                         balance:
@@ -543,6 +641,7 @@ router.post("/login", async (req, res) => {
             error
         );
 
+
         return res.status(500).json({
 
             success: false,
@@ -552,6 +651,7 @@ router.post("/login", async (req, res) => {
         });
     }
 });
+
 
 /* =====================================================
    GET CURRENT AUTHENTICATED USER
@@ -620,7 +720,23 @@ router.get("/me", async (req, res) => {
 
 
         /* =================================================
-           DASHBOARD-COMPATIBLE RESPONSE
+           OLD USERS:
+           CREATE REFERRAL CODE IF MISSING
+        ================================================= */
+
+        if (
+            !user.referralCode
+        ) {
+
+            user.referralCode =
+                await generateReferralCode();
+
+            await user.save();
+        }
+
+
+        /* =================================================
+           CURRENT USER RESPONSE
         ================================================= */
 
         return res.status(200).json({
@@ -632,9 +748,10 @@ router.get("/me", async (req, res) => {
                 id:
                     user._id,
 
-                /* Original model fields */
-
                 fullName:
+                    user.fullName,
+
+                full_name:
                     user.fullName,
 
                 phone:
@@ -646,13 +763,37 @@ router.get("/me", async (req, res) => {
                 referralCode:
                     user.referralCode,
 
+                referral_code:
+                    user.referralCode,
+
+                referredBy:
+                    user.referredBy || null,
+
                 balance:
+                    user.balance,
+
+                walletBalance:
+                    user.balance,
+
+                wallet_balance:
                     user.balance,
 
                 totalIncome:
                     user.totalIncome,
 
+                totalEarnings:
+                    user.totalIncome,
+
+                total_earnings:
+                    user.totalIncome,
+
                 totalDeposit:
+                    user.totalDeposit,
+
+                totalInvested:
+                    user.totalDeposit,
+
+                total_invested:
                     user.totalDeposit,
 
                 totalWithdrawal:
@@ -663,36 +804,6 @@ router.get("/me", async (req, res) => {
 
                 createdAt:
                     user.createdAt,
-
-
-                /* Dashboard aliases */
-
-                full_name:
-                    user.fullName,
-
-                walletBalance:
-                    user.balance,
-
-                wallet_balance:
-                    user.balance,
-
-                totalEarnings:
-                    user.totalIncome,
-
-                total_earnings:
-                    user.totalIncome,
-
-                totalInvested:
-                    user.totalDeposit,
-
-                total_invested:
-                    user.totalDeposit,
-
-                referralCode:
-                    user.referralCode,
-
-                referral_code:
-                    user.referralCode,
 
                 referralIncome:
                     0,
@@ -781,7 +892,12 @@ router.post("/logout", (req, res) => {
 
 
             res.clearCookie(
-                "finora.sid"
+                "finora.sid",
+                {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: "none"
+                }
             );
 
 
