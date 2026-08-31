@@ -5,34 +5,42 @@ const cors = require("cors");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 
-const { connectDB, mongoose } =
-    require("./database");
-
-const userRoutes =
-    require("./userRoutes");
-
+const { connectDB, mongoose } = require("./database");
+const User = require("./user");
+const userRoutes = require("./userRoutes");
 
 const app = express();
 
-const PORT =
-    process.env.PORT || 8080;
+const PORT = process.env.PORT || 8080;
 
 
 /* =========================================================
-   FINORA SERVER IDENTIFICATION
+   FINORA PRODUCTION CONFIGURATION
 ========================================================= */
 
-console.log(
-    "FINORA-CURRENT-SERVER-2026-AUTH-FIX"
-);
+const FRONTEND_URL =
+    "https://finora-platform.vercel.app";
+
+
+const allowedOrigins = [
+    FRONTEND_URL
+];
 
 
 /* =========================================================
-   RAILWAY / PROXY CONFIGURATION
-
-   Required because Railway sits behind a proxy and
-   FINORA uses secure cross-site session cookies.
+   RAILWAY / PROXY
 ========================================================= */
+
+/*
+   Railway sits behind a proxy.
+
+   This is important because FINORA uses:
+   secure: true
+   cookies in production.
+
+   Without trust proxy, Express may not correctly
+   recognize the HTTPS connection through Railway.
+*/
 
 app.set(
     "trust proxy",
@@ -41,45 +49,30 @@ app.set(
 
 
 /* =========================================================
-   FINORA CORS
+   CORS
 ========================================================= */
-
-const allowedOrigins = [
-
-    "https://finora-platform.vercel.app"
-
-];
-
 
 app.use(
     cors({
 
-        origin: function (
-            origin,
-            callback
-        ) {
+        origin: function(origin, callback) {
 
-            /* =============================================
-               Requests without Origin
-            ============================================= */
+            /*
+               Allow requests without an Origin header.
+               Useful for health checks and direct API calls.
+            */
 
             if (!origin) {
-
-                return callback(
-                    null,
-                    true
-                );
+                return callback(null, true);
             }
 
 
-            /* =============================================
-               Official FINORA frontend
-            ============================================= */
+            /*
+               Allow only the official FINORA frontend.
+            */
 
             if (
-                allowedOrigins.includes(
-                    origin
-                )
+                allowedOrigins.includes(origin)
             ) {
 
                 return callback(
@@ -107,24 +100,19 @@ app.use(
 
 
         methods: [
-
             "GET",
             "POST",
             "PUT",
             "PATCH",
             "DELETE",
             "OPTIONS"
-
         ],
 
 
         allowedHeaders: [
-
             "Content-Type",
             "Accept"
-
         ]
-
     })
 );
 
@@ -142,29 +130,34 @@ app.use(
    SESSION
 ========================================================= */
 
+/*
+   IMPORTANT:
+
+   Vercel frontend:
+   https://finora-platform.vercel.app
+
+   Railway backend:
+   https://finora-platform-production.up.railway.app
+
+   These are different sites.
+
+   Therefore production requires:
+
+   secure: true
+   sameSite: "none"
+*/
+
 app.use(
     session({
-
-        /* =============================================
-           COOKIE NAME
-        ============================================= */
 
         name:
             "finora.sid",
 
 
-        /* =============================================
-           SECRET
-        ============================================= */
-
         secret:
             process.env.SESSION_SECRET ||
             "FINORA_CHANGE_THIS_SESSION_SECRET",
 
-
-        /* =============================================
-           SESSION SAVE OPTIONS
-        ============================================= */
 
         resave:
             false,
@@ -173,10 +166,6 @@ app.use(
         saveUninitialized:
             false,
 
-
-        /* =============================================
-           MONGODB SESSION STORE
-        ============================================= */
 
         store:
             MongoStore.create({
@@ -188,23 +177,12 @@ app.use(
                     "finora_sessions",
 
                 ttl:
-                    7 * 24 * 60 * 60
+                    7 * 24 * 60 * 60,
 
+                autoRemove:
+                    "native"
             }),
 
-
-        /* =============================================
-           COOKIE
-           
-           Vercel frontend:
-           finora-platform.vercel.app
-
-           Railway backend:
-           finora-platform-production.up.railway.app
-
-           These are cross-site, so SameSite=None
-           and Secure are required.
-        ============================================= */
 
         cookie: {
 
@@ -217,11 +195,12 @@ app.use(
             sameSite:
                 "none",
 
+            path:
+                "/",
+
             maxAge:
                 7 * 24 * 60 * 60 * 1000
-
         }
-
     })
 );
 
@@ -233,6 +212,191 @@ app.use(
 app.use(
     "/api/users",
     userRoutes
+);
+
+
+/* =========================================================
+   CURRENT USER
+   GET /api/me
+
+   Kept as a compatibility endpoint.
+
+   The dashboard currently uses:
+   GET /api/users/me
+========================================================= */
+
+app.get(
+    "/api/me",
+    async (req, res) => {
+
+        try {
+
+            if (
+                !req.session ||
+                !req.session.userId
+            ) {
+
+                return res.status(401).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "No authenticated FINORA session."
+                });
+            }
+
+
+            const user =
+                await User.findById(
+                    req.session.userId
+                ).select("-password");
+
+
+            if (!user) {
+
+                req.session.destroy(
+                    () => {}
+                );
+
+
+                return res.status(401).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "FINORA user account could not be found."
+                });
+            }
+
+
+            if (
+                user.status === "frozen"
+            ) {
+
+                req.session.destroy(
+                    () => {}
+                );
+
+
+                return res.status(403).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "Your FINORA account has been frozen."
+                });
+            }
+
+
+            /*
+               Existing users created before the automatic
+               referral-code system may not have a code.
+
+               Saving here allows the User model's
+               pre-validation hook to generate one.
+            */
+
+            if (
+                !user.referralCode
+            ) {
+
+                await user.save();
+            }
+
+
+            return res.status(200).json({
+
+                success:
+                    true,
+
+                user: {
+
+                    id:
+                        user._id,
+
+                    fullName:
+                        user.fullName,
+
+                    full_name:
+                        user.fullName,
+
+                    phone:
+                        user.phone,
+
+                    email:
+                        user.email,
+
+                    referralCode:
+                        user.referralCode,
+
+                    referral_code:
+                        user.referralCode,
+
+                    referredByCode:
+                        user.referredByCode || null,
+
+                    referred_by_code:
+                        user.referredByCode || null,
+
+                    balance:
+                        user.balance,
+
+                    walletBalance:
+                        user.balance,
+
+                    wallet_balance:
+                        user.balance,
+
+                    totalIncome:
+                        user.totalIncome,
+
+                    totalEarnings:
+                        user.totalIncome,
+
+                    total_earnings:
+                        user.totalIncome,
+
+                    totalDeposit:
+                        user.totalDeposit,
+
+                    totalInvested:
+                        user.totalDeposit,
+
+                    total_invested:
+                        user.totalDeposit,
+
+                    totalWithdrawal:
+                        user.totalWithdrawal,
+
+                    status:
+                        user.status,
+
+                    createdAt:
+                        user.createdAt
+                }
+            });
+
+        } catch (error) {
+
+            console.error(
+                "❌ FINORA /api/me ERROR:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success:
+                    false,
+
+                message:
+                    "FINORA could not load your account."
+            });
+        }
+    }
 );
 
 
@@ -253,11 +417,7 @@ app.get(
                 "FINORA",
 
             message:
-                "FINORA Backend Running Successfully",
-
-            version:
-                "AUTH-FIX-2026"
-
+                "FINORA Backend Running Successfully"
         });
     }
 );
@@ -289,7 +449,6 @@ app.get(
 
             message:
                 "FINORA Backend is healthy"
-
         });
     }
 );
@@ -312,7 +471,6 @@ app.use(
 
             path:
                 req.originalUrl
-
         });
     }
 );
@@ -323,12 +481,7 @@ app.use(
 ========================================================= */
 
 app.use(
-    (
-        error,
-        req,
-        res,
-        next
-    ) => {
+    (error, req, res, next) => {
 
         console.error(
             "❌ FINORA SERVER ERROR:",
@@ -348,7 +501,6 @@ app.use(
 
                 message:
                     "FINORA CORS rejected this request."
-
             });
         }
 
@@ -360,7 +512,6 @@ app.use(
 
             message:
                 "FINORA server error."
-
         });
     }
 );
@@ -372,36 +523,23 @@ app.use(
 
 async function startServer() {
 
+    console.log(
+        "================================="
+    );
+
+    console.log(
+        "FINORA-CURRENT-SERVER-2026"
+    );
+
+    console.log(
+        "================================="
+    );
+
+
     try {
-
-        console.log(
-            "=========================================="
-        );
-
-        console.log(
-            "🚀 FINORA BACKEND STARTING"
-        );
-
-        console.log(
-            "=========================================="
-        );
-
-
-        /* =============================================
-           CONNECT MONGODB
-        ============================================= */
 
         await connectDB();
 
-
-        console.log(
-            "✅ FINORA DATABASE CONNECTED"
-        );
-
-
-        /* =============================================
-           START EXPRESS
-        ============================================= */
 
         app.listen(
             PORT,
@@ -409,7 +547,7 @@ async function startServer() {
             () => {
 
                 console.log(
-                    "=========================================="
+                    "================================="
                 );
 
                 console.log(
@@ -422,6 +560,11 @@ async function startServer() {
                 );
 
                 console.log(
+                    "🌐 FRONTEND:",
+                    FRONTEND_URL
+                );
+
+                console.log(
                     "🔐 SESSION AUTHENTICATION ENABLED"
                 );
 
@@ -430,22 +573,12 @@ async function startServer() {
                 );
 
                 console.log(
-                    "🌐 FRONTEND:",
-                    "https://finora-platform.vercel.app"
-                );
-
-                console.log(
-                    "=========================================="
+                    "================================="
                 );
             }
         );
 
-
     } catch (error) {
-
-        console.error(
-            "=========================================="
-        );
 
         console.error(
             "❌ FINORA SERVER START FAILED"
@@ -454,11 +587,6 @@ async function startServer() {
         console.error(
             error
         );
-
-        console.error(
-            "=========================================="
-        );
-
 
         process.exit(1);
     }
