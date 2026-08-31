@@ -23,7 +23,8 @@ const FRONTEND_URL =
 
 
 const allowedOrigins = [
-    FRONTEND_URL
+    FRONTEND_URL,
+    "https://akanyijukadavis38-ux.github.io"
 ];
 
 
