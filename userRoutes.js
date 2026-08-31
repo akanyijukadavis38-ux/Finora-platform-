@@ -7,401 +7,489 @@ const router = express.Router();
 
 
 /* =========================================================
+   FINORA FRONTEND
+========================================================= */
+
+const FRONTEND_URL =
+    "https://finora-platform.vercel.app";
+
+
+/* =========================================================
    REGISTER USER
    POST /api/users/register
 ========================================================= */
 
-router.post("/register", async (req, res) => {
-
-    try {
-
-        const {
-            fullName,
-            phone,
-            email,
-            password,
-            confirmPassword,
-            referralCode
-        } = req.body;
-
-
-        /* =================================================
-           BASIC VALIDATION
-        ================================================= */
-
-        if (
-            !fullName ||
-            !phone ||
-            !email ||
-            !password ||
-            !confirmPassword
-        ) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "All required fields must be provided."
-            });
-        }
-
-
-        /* =================================================
-           FULL NAME
-        ================================================= */
-
-        const cleanName =
-            String(fullName).trim();
-
-
-        if (cleanName.length < 2) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "Please enter your full name."
-            });
-        }
-
-
-        /* =================================================
-           UGANDA PHONE
-        ================================================= */
-
-        const cleanPhone =
-            String(phone).trim();
-
-
-        if (
-            !/^07[0-9]{8}$/.test(cleanPhone)
-        ) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "Enter a valid Uganda phone number, e.g. 0701234567."
-            });
-        }
-
-
-        /* =================================================
-           EMAIL
-        ================================================= */
-
-        const cleanEmail =
-            String(email)
-                .trim()
-                .toLowerCase();
-
-
-        if (
-            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
-                cleanEmail
-            )
-        ) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "Please enter a valid email address."
-            });
-        }
-
-
-        /* =================================================
-           PASSWORD
-        ================================================= */
-
-        const passwordValue =
-            String(password);
-
-
-        if (
-            passwordValue.length < 6
-        ) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "Password must contain at least 6 characters."
-            });
-        }
-
-
-        /* =================================================
-           CONFIRM PASSWORD
-        ================================================= */
-
-        if (
-            passwordValue !==
-            String(confirmPassword)
-        ) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "Passwords do not match."
-            });
-        }
-
-
-        /* =================================================
-           EXISTING EMAIL
-        ================================================= */
-
-        const existingEmail =
-            await User.findOne({
-                email: cleanEmail
-            });
-
-
-        if (existingEmail) {
-
-            return res.status(409).json({
-
-                success: false,
-
-                message:
-                    "An account with this email already exists."
-            });
-        }
-
-
-        /* =================================================
-           EXISTING PHONE
-        ================================================= */
-
-        const existingPhone =
-            await User.findOne({
-                phone: cleanPhone
-            });
-
-
-        if (existingPhone) {
-
-            return res.status(409).json({
-
-                success: false,
-
-                message:
-                    "An account with this phone number already exists."
-            });
-        }
-
-
-        /* =================================================
-           REFERRAL CODE FROM REGISTRATION LINK
-
-           IMPORTANT:
-
-           referralCode = code of the person
-           who referred this new user.
-
-           It is NOT the new user's own code.
-        ================================================= */
-
-        let referredByCode = null;
-
-
-        if (
-            referralCode &&
-            String(referralCode).trim()
-        ) {
-
-            referredByCode =
-                String(referralCode)
-                    .trim()
-                    .toUpperCase();
-
-
-            /*
-               Verify that the referring user exists.
-            */
-
-            const referringUser =
-                await User.findOne({
-                    referralCode:
-                        referredByCode
-                });
-
-
-            if (!referringUser) {
+router.post(
+    "/register",
+    async (req, res) => {
+
+        try {
+
+            const {
+                fullName,
+                phone,
+                email,
+                password,
+                confirmPassword,
+                referralCode
+            } = req.body;
+
+
+            /* =================================================
+               BASIC VALIDATION
+            ================================================= */
+
+            if (
+                !fullName ||
+                !phone ||
+                !email ||
+                !password ||
+                !confirmPassword
+            ) {
 
                 return res.status(400).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
-                        "The referral link is invalid or the referral code does not exist."
+                        "All required fields must be provided."
                 });
             }
-        }
 
 
-        /* =================================================
-           HASH PASSWORD
-        ================================================= */
+            /* =================================================
+               FULL NAME
+            ================================================= */
 
-        const hashedPassword =
-            await bcrypt.hash(
-                passwordValue,
-                12
+            const cleanName =
+                String(fullName).trim();
+
+
+            if (
+                cleanName.length < 2
+            ) {
+
+                return res.status(400).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "Please enter your full name."
+                });
+            }
+
+
+            /* =================================================
+               UGANDA PHONE
+            ================================================= */
+
+            const cleanPhone =
+                String(phone).trim();
+
+
+            if (
+                !/^07[0-9]{8}$/.test(
+                    cleanPhone
+                )
+            ) {
+
+                return res.status(400).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "Enter a valid Uganda phone number, e.g. 0701234567."
+                });
+            }
+
+
+            /* =================================================
+               EMAIL
+            ================================================= */
+
+            const cleanEmail =
+                String(email)
+                    .trim()
+                    .toLowerCase();
+
+
+            if (
+                !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+                    cleanEmail
+                )
+            ) {
+
+                return res.status(400).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "Please enter a valid email address."
+                });
+            }
+
+
+            /* =================================================
+               PASSWORD
+            ================================================= */
+
+            const cleanPassword =
+                String(password);
+
+
+            if (
+                cleanPassword.length < 6
+            ) {
+
+                return res.status(400).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "Password must contain at least 6 characters."
+                });
+            }
+
+
+            /* =================================================
+               CONFIRM PASSWORD
+            ================================================= */
+
+            if (
+                cleanPassword !==
+                String(confirmPassword)
+            ) {
+
+                return res.status(400).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "Passwords do not match."
+                });
+            }
+
+
+            /* =================================================
+               CHECK EMAIL
+            ================================================= */
+
+            const existingEmail =
+                await User.findOne({
+
+                    email:
+                        cleanEmail
+                });
+
+
+            if (
+                existingEmail
+            ) {
+
+                return res.status(409).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "An account with this email already exists."
+                });
+            }
+
+
+            /* =================================================
+               CHECK PHONE
+            ================================================= */
+
+            const existingPhone =
+                await User.findOne({
+
+                    phone:
+                        cleanPhone
+                });
+
+
+            if (
+                existingPhone
+            ) {
+
+                return res.status(409).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "An account with this phone number already exists."
+                });
+            }
+
+
+            /* =================================================
+               REFERRAL CODE
+
+               IMPORTANT:
+
+               This is the CODE OF THE PERSON WHO REFERRED
+               THE NEW USER.
+
+               It is NOT the new user's own referral code.
+            ================================================= */
+
+            let cleanReferredByCode =
+                null;
+
+
+            if (
+                referralCode &&
+                String(referralCode).trim()
+            ) {
+
+                cleanReferredByCode =
+                    String(
+                        referralCode
+                    )
+                        .trim()
+                        .toUpperCase();
+
+
+                /*
+                   Check whether the referral code actually
+                   belongs to an existing FINORA user.
+                */
+
+                const referringUser =
+                    await User.findOne({
+
+                        referralCode:
+                            cleanReferredByCode
+                    });
+
+
+                if (
+                    !referringUser
+                ) {
+
+                    return res.status(400).json({
+
+                        success:
+                            false,
+
+                        message:
+                            "The referral link or referral code is invalid."
+                    });
+                }
+            }
+
+
+            /* =================================================
+               HASH PASSWORD
+            ================================================= */
+
+            const hashedPassword =
+                await bcrypt.hash(
+                    cleanPassword,
+                    12
+                );
+
+
+            /* =================================================
+               CREATE USER
+            ================================================= */
+
+            /*
+               DO NOT manually set referralCode here.
+
+               The User model automatically generates the
+               new user's OWN referralCode.
+
+               We only save referredByCode when applicable.
+            */
+
+            const user =
+                await User.create({
+
+                    fullName:
+                        cleanName,
+
+                    phone:
+                        cleanPhone,
+
+                    email:
+                        cleanEmail,
+
+                    password:
+                        hashedPassword,
+
+                    referredByCode:
+                        cleanReferredByCode
+                });
+
+
+            /* =================================================
+               AUTOMATIC LOGIN AFTER REGISTRATION
+            ================================================= */
+
+            req.session.userId =
+                user._id.toString();
+
+
+            req.session.authenticated =
+                true;
+
+
+            /* =================================================
+               SAVE SESSION
+            ================================================= */
+
+            req.session.save(
+                (sessionError) => {
+
+                    if (
+                        sessionError
+                    ) {
+
+                        console.error(
+                            "❌ FINORA REGISTRATION SESSION ERROR:",
+                            sessionError
+                        );
+
+
+                        return res.status(500).json({
+
+                            success:
+                                false,
+
+                            message:
+                                "Account was created, but FINORA could not create your login session."
+                        });
+                    }
+
+
+                    /* =============================================
+                       REGISTRATION SUCCESS
+                    ============================================= */
+
+                    return res.status(201).json({
+
+                        success:
+                            true,
+
+                        message:
+                            "FINORA account created successfully.",
+
+                        user: {
+
+                            id:
+                                user._id,
+
+                            fullName:
+                                user.fullName,
+
+                            full_name:
+                                user.fullName,
+
+                            phone:
+                                user.phone,
+
+                            email:
+                                user.email,
+
+                            /*
+                               THIS is the new user's own code.
+                            */
+
+                            referralCode:
+                                user.referralCode,
+
+                            referral_code:
+                                user.referralCode,
+
+                            /*
+                               THIS is the referrer's code.
+                            */
+
+                            referredByCode:
+                                user.referredByCode,
+
+                            referred_by_code:
+                                user.referredByCode,
+
+                            balance:
+                                user.balance,
+
+                            walletBalance:
+                                user.balance,
+
+                            totalIncome:
+                                user.totalIncome,
+
+                            totalEarnings:
+                                user.totalIncome,
+
+                            totalDeposit:
+                                user.totalDeposit,
+
+                            totalInvested:
+                                user.totalDeposit,
+
+                            totalWithdrawal:
+                                user.totalWithdrawal,
+
+                            status:
+                                user.status,
+
+                            createdAt:
+                                user.createdAt,
+
+                            referralLink:
+                                `${FRONTEND_URL}/?ref=${encodeURIComponent(
+                                    user.referralCode
+                                )}`
+                        }
+                    });
+                }
+            );
+
+        } catch (error) {
+
+            console.error(
+                "❌ FINORA REGISTRATION ERROR:",
+                error
             );
 
 
-        /* =================================================
-           CREATE USER
+            if (
+                error.code === 11000
+            ) {
 
-           DO NOT manually set referralCode.
+                return res.status(409).json({
 
-           user.js automatically generates the
-           user's OWN unique referral code.
+                    success:
+                        false,
 
-           referredByCode stores the code of
-           the person who referred them.
-        ================================================= */
-
-        const user =
-            await User.create({
-
-                fullName:
-                    cleanName,
-
-                phone:
-                    cleanPhone,
-
-                email:
-                    cleanEmail,
-
-                password:
-                    hashedPassword,
-
-                referredByCode:
-                    referredByCode
-            });
-
-
-        /* =================================================
-           SUCCESS
-        ================================================= */
-
-        return res.status(201).json({
-
-            success: true,
-
-            message:
-                "FINORA account created successfully.",
-
-            user: {
-
-                id:
-                    user._id,
-
-                fullName:
-                    user.fullName,
-
-                full_name:
-                    user.fullName,
-
-                phone:
-                    user.phone,
-
-                email:
-                    user.email,
-
-                referralCode:
-                    user.referralCode,
-
-                referral_code:
-                    user.referralCode,
-
-                referredByCode:
-                    user.referredByCode,
-
-                referred_by_code:
-                    user.referredByCode,
-
-                balance:
-                    user.balance,
-
-                walletBalance:
-                    user.balance,
-
-                wallet_balance:
-                    user.balance,
-
-                totalIncome:
-                    user.totalIncome,
-
-                totalEarnings:
-                    user.totalIncome,
-
-                total_earnings:
-                    user.totalIncome,
-
-                totalDeposit:
-                    user.totalDeposit,
-
-                totalInvested:
-                    user.totalDeposit,
-
-                total_invested:
-                    user.totalDeposit,
-
-                totalWithdrawal:
-                    user.totalWithdrawal,
-
-                status:
-                    user.status,
-
-                createdAt:
-                    user.createdAt
+                    message:
+                        "An account with those details already exists."
+                });
             }
-        });
 
 
-    } catch (error) {
+            return res.status(500).json({
 
-        console.error(
-            "❌ FINORA REGISTRATION ERROR:",
-            error
-        );
-
-
-        if (
-            error.code === 11000
-        ) {
-
-            return res.status(409).json({
-
-                success: false,
+                success:
+                    false,
 
                 message:
-                    "An account with those details already exists."
+                    "FINORA could not create the account. Please try again."
             });
         }
-
-
-        return res.status(500).json({
-
-            success: false,
-
-            message:
-                "FINORA could not create the account. Please try again."
-        });
     }
-});
+);
 
 
 /* =========================================================
@@ -409,535 +497,581 @@ router.post("/register", async (req, res) => {
    POST /api/users/login
 ========================================================= */
 
-router.post("/login", async (req, res) => {
+router.post(
+    "/login",
+    async (req, res) => {
 
-    try {
+        try {
 
-        const {
-            identifier,
-            password
-        } = req.body;
-
-
-        /* =================================================
-           BASIC VALIDATION
-        ================================================= */
-
-        if (
-            !identifier ||
-            !password
-        ) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "Phone/email and password are required."
-            });
-        }
+            const {
+                identifier,
+                password
+            } = req.body;
 
 
-        const identifierValue =
-            String(identifier).trim();
+            /* =================================================
+               BASIC VALIDATION
+            ================================================= */
+
+            if (
+                !identifier ||
+                !password
+            ) {
+
+                return res.status(400).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "Phone/email and password are required."
+                });
+            }
 
 
-        const passwordValue =
-            String(password);
+            const identifierValue =
+                String(
+                    identifier
+                ).trim();
 
 
-        /* =================================================
-           FIND USER
-
-           Login supports:
-
-           EMAIL
-           OR
-           PHONE
-
-           There is NO username.
-        ================================================= */
-
-        const user =
-            await User.findOne({
-
-                $or: [
-
-                    {
-                        email:
-                            identifierValue.toLowerCase()
-                    },
-
-                    {
-                        phone:
-                            identifierValue
-                    }
-
-                ]
-
-            });
+            const passwordValue =
+                String(password);
 
 
-        /* =================================================
-           USER NOT FOUND
-        ================================================= */
+            /* =================================================
+               FIND USER
 
-        if (!user) {
+               LOGIN USES PHONE OR EMAIL.
 
-            return res.status(401).json({
+               NOT USERNAME.
+            ================================================= */
 
-                success: false,
+            const user =
+                await User.findOne({
 
-                message:
-                    "Invalid login details."
-            });
-        }
+                    $or: [
 
+                        {
+                            email:
+                                identifierValue
+                                    .toLowerCase()
+                        },
 
-        /* =================================================
-           ACCOUNT STATUS
-        ================================================= */
+                        {
+                            phone:
+                                identifierValue
+                        }
 
-        if (
-            user.status === "frozen"
-        ) {
-
-            return res.status(403).json({
-
-                success: false,
-
-                message:
-                    "Your FINORA account has been frozen."
-            });
-        }
+                    ]
+                });
 
 
-        /* =================================================
-           PASSWORD
-        ================================================= */
+            /* =================================================
+               USER NOT FOUND
+            ================================================= */
 
-        const passwordMatches =
-            await bcrypt.compare(
-                passwordValue,
-                user.password
-            );
+            if (
+                !user
+            ) {
 
+                return res.status(401).json({
 
-        if (!passwordMatches) {
+                    success:
+                        false,
 
-            return res.status(401).json({
-
-                success: false,
-
-                message:
-                    "Invalid login details."
-            });
-        }
+                    message:
+                        "Invalid login details."
+                });
+            }
 
 
-        /* =================================================
-           CREATE SESSION
+            /* =================================================
+               ACCOUNT STATUS
+            ================================================= */
 
-           This is what allows dashboard.js to call
-           /api/users/me after login.
-        ================================================= */
+            if (
+                user.status ===
+                "frozen"
+            ) {
 
-        req.session.userId =
-            user._id.toString();
+                return res.status(403).json({
 
-        req.session.authenticated =
-            true;
+                    success:
+                        false,
 
-
-        /* =================================================
-           SAVE SESSION BEFORE RESPONSE
-        ================================================= */
-
-        req.session.save(
-            (sessionError) => {
-
-                if (sessionError) {
-
-                    console.error(
-                        "❌ FINORA SESSION SAVE ERROR:",
-                        sessionError
-                    );
-
-                    return res.status(500).json({
-
-                        success: false,
-
-                        message:
-                            "Login succeeded, but FINORA could not create your session."
-                    });
-                }
+                    message:
+                        "Your FINORA account has been frozen."
+                });
+            }
 
 
-                console.log(
-                    "✅ FINORA SESSION CREATED FOR:",
-                    user.email
+            /* =================================================
+               PASSWORD
+            ================================================= */
+
+            const passwordMatches =
+                await bcrypt.compare(
+                    passwordValue,
+                    user.password
                 );
 
 
-                /* =============================================
-                   LOGIN SUCCESS
-                ============================================= */
+            if (
+                !passwordMatches
+            ) {
 
-                return res.status(200).json({
+                return res.status(401).json({
 
-                    success: true,
+                    success:
+                        false,
 
                     message:
-                        "FINORA login successful.",
-
-                    user: {
-
-                        id:
-                            user._id,
-
-                        fullName:
-                            user.fullName,
-
-                        full_name:
-                            user.fullName,
-
-                        phone:
-                            user.phone,
-
-                        email:
-                            user.email,
-
-                        referralCode:
-                            user.referralCode,
-
-                        referral_code:
-                            user.referralCode,
-
-                        referredByCode:
-                            user.referredByCode,
-
-                        referred_by_code:
-                            user.referredByCode,
-
-                        balance:
-                            user.balance,
-
-                        walletBalance:
-                            user.balance,
-
-                        wallet_balance:
-                            user.balance,
-
-                        totalIncome:
-                            user.totalIncome,
-
-                        totalEarnings:
-                            user.totalIncome,
-
-                        total_earnings:
-                            user.totalIncome,
-
-                        totalDeposit:
-                            user.totalDeposit,
-
-                        totalInvested:
-                            user.totalDeposit,
-
-                        total_invested:
-                            user.totalDeposit,
-
-                        totalWithdrawal:
-                            user.totalWithdrawal,
-
-                        status:
-                            user.status,
-
-                        createdAt:
-                            user.createdAt
-                    }
+                        "Invalid login details."
                 });
             }
-        );
 
 
-    } catch (error) {
+            /* =================================================
+               MAKE SURE USER HAS OWN REFERRAL CODE
+            ================================================= */
 
-        console.error(
-            "❌ FINORA LOGIN ERROR:",
-            error
-        );
+            if (
+                !user.referralCode
+            ) {
+
+                await user.save();
+            }
 
 
-        return res.status(500).json({
+            /* =================================================
+               CREATE SESSION
+            ================================================= */
 
-            success: false,
+            req.session.userId =
+                user._id.toString();
 
-            message:
-                "FINORA could not process your login. Please try again."
-        });
+
+            req.session.authenticated =
+                true;
+
+
+            /* =================================================
+               SAVE SESSION BEFORE RESPONSE
+            ================================================= */
+
+            req.session.save(
+                (sessionError) => {
+
+                    if (
+                        sessionError
+                    ) {
+
+                        console.error(
+                            "❌ FINORA SESSION SAVE ERROR:",
+                            sessionError
+                        );
+
+
+                        return res.status(500).json({
+
+                            success:
+                                false,
+
+                            message:
+                                "Login succeeded, but FINORA could not create your session."
+                        });
+                    }
+
+
+                    /* =============================================
+                       LOGIN SUCCESS
+                    ============================================= */
+
+                    return res.status(200).json({
+
+                        success:
+                            true,
+
+                        message:
+                            "FINORA login successful.",
+
+                        user: {
+
+                            id:
+                                user._id,
+
+                            fullName:
+                                user.fullName,
+
+                            full_name:
+                                user.fullName,
+
+                            phone:
+                                user.phone,
+
+                            email:
+                                user.email,
+
+                            referralCode:
+                                user.referralCode,
+
+                            referral_code:
+                                user.referralCode,
+
+                            referredByCode:
+                                user.referredByCode || null,
+
+                            referred_by_code:
+                                user.referredByCode || null,
+
+                            balance:
+                                user.balance,
+
+                            walletBalance:
+                                user.balance,
+
+                            wallet_balance:
+                                user.balance,
+
+                            totalIncome:
+                                user.totalIncome,
+
+                            totalEarnings:
+                                user.totalIncome,
+
+                            total_earnings:
+                                user.totalIncome,
+
+                            totalDeposit:
+                                user.totalDeposit,
+
+                            totalInvested:
+                                user.totalDeposit,
+
+                            total_invested:
+                                user.totalDeposit,
+
+                            totalWithdrawal:
+                                user.totalWithdrawal,
+
+                            status:
+                                user.status,
+
+                            createdAt:
+                                user.createdAt,
+
+                            referralLink:
+                                `${FRONTEND_URL}/?ref=${encodeURIComponent(
+                                    user.referralCode
+                                )}`
+                        }
+                    });
+                }
+            );
+
+        } catch (error) {
+
+            console.error(
+                "❌ FINORA LOGIN ERROR:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success:
+                    false,
+
+                message:
+                    "FINORA could not process your login. Please try again."
+            });
+        }
     }
-});
+);
 
 
 /* =========================================================
    GET CURRENT AUTHENTICATED USER
-
    GET /api/users/me
-
-   THIS IS THE ONLY CURRENT-USER ENDPOINT WE NEED.
 ========================================================= */
 
-router.get("/me", async (req, res) => {
+router.get(
+    "/me",
+    async (req, res) => {
 
-    try {
+        try {
 
-        /* =================================================
-           CHECK SESSION
-        ================================================= */
+            console.log(
+                "FINORA /api/users/me SESSION:",
+                req.session
+                    ? {
+                        userId:
+                            req.session.userId,
 
-        if (
-            !req.session ||
-            !req.session.userId
-        ) {
-
-            return res.status(401).json({
-
-                success: false,
-
-                message:
-                    "No authenticated FINORA session."
-            });
-        }
-
-
-        console.log(
-            "🔐 FINORA /me SESSION USER:",
-            req.session.userId
-        );
-
-
-        /* =================================================
-           FIND USER
-        ================================================= */
-
-        const user =
-            await User.findById(
-                req.session.userId
-            ).select("-password");
-
-
-        /* =================================================
-           USER NOT FOUND
-        ================================================= */
-
-        if (!user) {
-
-            req.session.destroy(
-                () => {}
+                        authenticated:
+                            req.session.authenticated
+                    }
+                    : "NO SESSION"
             );
 
 
-            return res.status(401).json({
-
-                success: false,
-
-                message:
-                    "FINORA user account could not be found."
-            });
-        }
-
-
-        /* =================================================
-           FROZEN ACCOUNT
-        ================================================= */
-
-        if (
-            user.status === "frozen"
-        ) {
-
-            req.session.destroy(
-                () => {}
-            );
-
-
-            return res.status(403).json({
-
-                success: false,
-
-                message:
-                    "Your FINORA account has been frozen."
-            });
-        }
-
-
-        /* =================================================
-           CURRENT USER RESPONSE
-
-           FULL NAME — NOT USERNAME.
-        ================================================= */
-
-        return res.status(200).json({
-
-            success: true,
-
-            user: {
-
-                id:
-                    user._id,
-
-                /* ================================
-                   FULL NAME
-                ================================ */
-
-                fullName:
-                    user.fullName,
-
-                full_name:
-                    user.fullName,
-
-
-                /* ================================
-                   CONTACT
-                ================================ */
-
-                phone:
-                    user.phone,
-
-                email:
-                    user.email,
-
-
-                /* ================================
-                   OWN REFERRAL CODE
-                ================================ */
-
-                referralCode:
-                    user.referralCode,
-
-                referral_code:
-                    user.referralCode,
-
-
-                /* ================================
-                   REFERRER
-                ================================ */
-
-                referredByCode:
-                    user.referredByCode,
-
-                referred_by_code:
-                    user.referredByCode,
-
-
-                /* ================================
-                   WALLET
-                ================================ */
-
-                balance:
-                    user.balance,
-
-                walletBalance:
-                    user.balance,
-
-                wallet_balance:
-                    user.balance,
-
-
-                /* ================================
-                   EARNINGS
-                ================================ */
-
-                totalIncome:
-                    user.totalIncome,
-
-                totalEarnings:
-                    user.totalIncome,
-
-                total_earnings:
-                    user.totalIncome,
-
-
-                /* ================================
-                   INVESTMENT
-                ================================ */
-
-                totalDeposit:
-                    user.totalDeposit,
-
-                totalInvested:
-                    user.totalDeposit,
-
-                total_invested:
-                    user.totalDeposit,
-
-
-                /* ================================
-                   WITHDRAWALS
-                ================================ */
-
-                totalWithdrawal:
-                    user.totalWithdrawal,
-
-
-                /* ================================
-                   DASHBOARD VALUES
-                ================================ */
-
-                referralIncome:
-                    0,
-
-                referral_income:
-                    0,
-
-                activeInvestments:
-                    0,
-
-                active_investments:
-                    0,
-
-                todayEarnings:
-                    0,
-
-                today_earnings:
-                    0,
-
-                dailyIncome:
-                    0,
-
-                daily_income:
-                    0,
-
-
-                /* ================================
-                   ACCOUNT
-                ================================ */
-
-                status:
-                    user.status,
-
-                createdAt:
-                    user.createdAt
+            /* =================================================
+               CHECK SESSION
+            ================================================= */
+
+            if (
+                !req.session ||
+                !req.session.userId
+            ) {
+
+                return res.status(401).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "No authenticated FINORA session."
+                });
             }
-        });
 
 
-    } catch (error) {
+            /* =================================================
+               FIND USER
+            ================================================= */
 
-        console.error(
-            "❌ FINORA /api/users/me ERROR:",
-            error
-        );
+            const user =
+                await User.findById(
+                    req.session.userId
+                ).select("-password");
 
 
-        return res.status(500).json({
+            if (
+                !user
+            ) {
 
-            success: false,
+                req.session.destroy(
+                    () => {}
+                );
 
-            message:
-                "FINORA could not load your account."
-        });
+
+                return res.status(401).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "FINORA user account could not be found."
+                });
+            }
+
+
+            /* =================================================
+               FROZEN ACCOUNT
+            ================================================= */
+
+            if (
+                user.status ===
+                "frozen"
+            ) {
+
+                req.session.destroy(
+                    () => {}
+                );
+
+
+                return res.status(403).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "Your FINORA account has been frozen."
+                });
+            }
+
+
+            /* =================================================
+               ENSURE OWN REFERRAL CODE EXISTS
+            ================================================= */
+
+            if (
+                !user.referralCode
+            ) {
+
+                await user.save();
+            }
+
+
+            /* =================================================
+               DASHBOARD RESPONSE
+            ================================================= */
+
+            return res.status(200).json({
+
+                success:
+                    true,
+
+                user: {
+
+                    id:
+                        user._id,
+
+                    /*
+                       FULL NAME — NOT USERNAME
+                    */
+
+                    fullName:
+                        user.fullName,
+
+                    full_name:
+                        user.fullName,
+
+                    phone:
+                        user.phone,
+
+                    email:
+                        user.email,
+
+
+                    /*
+                       USER'S OWN REFERRAL CODE
+                    */
+
+                    referralCode:
+                        user.referralCode,
+
+                    referral_code:
+                        user.referralCode,
+
+
+                    /*
+                       PERSON WHO REFERRED USER
+                    */
+
+                    referredByCode:
+                        user.referredByCode || null,
+
+                    referred_by_code:
+                        user.referredByCode || null,
+
+
+                    /*
+                       REFERRAL LINK
+                    */
+
+                    referralLink:
+                        `${FRONTEND_URL}/?ref=${encodeURIComponent(
+                            user.referralCode
+                        )}`,
+
+
+                    /*
+                       WALLET
+                    */
+
+                    balance:
+                        user.balance,
+
+                    walletBalance:
+                        user.balance,
+
+                    wallet_balance:
+                        user.balance,
+
+
+                    /*
+                       EARNINGS
+                    */
+
+                    totalIncome:
+                        user.totalIncome,
+
+                    totalEarnings:
+                        user.totalIncome,
+
+                    total_earnings:
+                        user.totalIncome,
+
+
+                    /*
+                       INVESTMENT
+                    */
+
+                    totalDeposit:
+                        user.totalDeposit,
+
+                    totalInvested:
+                        user.totalDeposit,
+
+                    total_invested:
+                        user.totalDeposit,
+
+
+                    /*
+                       WITHDRAWAL
+                    */
+
+                    totalWithdrawal:
+                        user.totalWithdrawal,
+
+
+                    /*
+                       DASHBOARD VALUES
+                    */
+
+                    referralIncome:
+                        0,
+
+                    referral_income:
+                        0,
+
+                    activeInvestments:
+                        0,
+
+                    active_investments:
+                        0,
+
+                    todayEarnings:
+                        0,
+
+                    today_earnings:
+                        0,
+
+                    dailyIncome:
+                        0,
+
+                    daily_income:
+                        0,
+
+
+                    status:
+                        user.status,
+
+                    createdAt:
+                        user.createdAt
+                }
+            });
+
+        } catch (error) {
+
+            console.error(
+                "❌ FINORA /api/users/me ERROR:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success:
+                    false,
+
+                message:
+                    "FINORA could not load your account."
+            });
+        }
     }
-});
+);
 
 
 /* =========================================================
@@ -945,61 +1079,89 @@ router.get("/me", async (req, res) => {
    POST /api/users/logout
 ========================================================= */
 
-router.post("/logout", (req, res) => {
+router.post(
+    "/logout",
+    (req, res) => {
 
-    if (!req.session) {
-
-        return res.status(200).json({
-
-            success: true,
-
-            message:
-                "FINORA logout successful."
-        });
-    }
-
-
-    req.session.destroy(
-        (error) => {
-
-            if (error) {
-
-                console.error(
-                    "❌ FINORA LOGOUT ERROR:",
-                    error
-                );
-
-
-                return res.status(500).json({
-
-                    success: false,
-
-                    message:
-                        "FINORA could not complete logout."
-                });
-            }
-
-
-            res.clearCookie(
-                "finora.sid",
-                {
-                    httpOnly: true,
-                    secure: true,
-                    sameSite: "none"
-                }
-            );
-
+        if (
+            !req.session
+        ) {
 
             return res.status(200).json({
 
-                success: true,
+                success:
+                    true,
 
                 message:
                     "FINORA logout successful."
             });
         }
-    );
-});
 
 
-module.exports = router;
+        req.session.destroy(
+            (error) => {
+
+                if (
+                    error
+                ) {
+
+                    console.error(
+                        "❌ FINORA LOGOUT ERROR:",
+                        error
+                    );
+
+
+                    return res.status(500).json({
+
+                        success:
+                            false,
+
+                        message:
+                            "FINORA could not complete logout."
+                    });
+                }
+
+
+                /*
+                   Clear the same cookie configuration
+                   used by the production session.
+                */
+
+                res.clearCookie(
+                    "finora.sid",
+                    {
+                        httpOnly:
+                            true,
+
+                        secure:
+                            true,
+
+                        sameSite:
+                            "none",
+
+                        path:
+                            "/"
+                    }
+                );
+
+
+                return res.status(200).json({
+
+                    success:
+                        true,
+
+                    message:
+                        "FINORA logout successful."
+                });
+            }
+        );
+    }
+);
+
+
+/* =========================================================
+   EXPORT ROUTER
+========================================================= */
+
+module.exports =
+    router;
