@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    /* =========================================
+    /* =====================================================
        FINORA LOGIN.JS
-    ========================================= */
+       SESSION-AWARE VERSION
+    ===================================================== */
 
     const form =
         document.getElementById("loginForm");
@@ -20,86 +21,122 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("loginPassword");
 
 
-    /* =========================================
+    /* =====================================================
        FINORA BACKEND
-    ========================================= */
+    ===================================================== */
 
     const API_URL =
         "https://finora-platform-production.up.railway.app";
 
+    const LOGIN_URL =
+        API_URL + "/api/users/login";
 
-    /* =========================================
-       CHECK FORM
-    ========================================= */
+
+    console.log("====================================");
+    console.log("FINORA LOGIN.JS LOADED");
+    console.log("FINORA LOGIN URL:", LOGIN_URL);
+    console.log("====================================");
+
+
+    /* =====================================================
+       BASIC ELEMENT CHECK
+    ===================================================== */
 
     if (!form) {
-        console.error("FINORA: loginForm was not found.");
+        console.error(
+            "FINORA ERROR: loginForm was not found."
+        );
+        return;
+    }
+
+    if (!loginButton) {
+        console.error(
+            "FINORA ERROR: loginButton was not found."
+        );
         return;
     }
 
     if (!identifier) {
-        console.error("FINORA: loginIdentifier was not found.");
+        console.error(
+            "FINORA ERROR: loginIdentifier was not found."
+        );
         return;
     }
 
     if (!password) {
-        console.error("FINORA: loginPassword was not found.");
+        console.error(
+            "FINORA ERROR: loginPassword was not found."
+        );
         return;
     }
 
 
-    /* =========================================
+    /* =====================================================
        PASSWORD SHOW / HIDE
-    ========================================= */
+    ===================================================== */
 
     document
         .querySelectorAll(".toggle-password")
         .forEach(function (button) {
 
-            button.addEventListener("click", function () {
+            button.addEventListener(
+                "click",
+                function (event) {
 
-                const targetId =
-                    button.getAttribute("data-target");
+                    event.preventDefault();
 
-                const target =
-                    document.getElementById(targetId);
+                    const targetId =
+                        button.getAttribute(
+                            "data-target"
+                        );
 
-                if (!target) {
-                    return;
+                    const target =
+                        document.getElementById(
+                            targetId
+                        );
+
+                    if (!target) {
+                        return;
+                    }
+
+                    if (
+                        target.type ===
+                        "password"
+                    ) {
+
+                        target.type =
+                            "text";
+
+                        button.textContent =
+                            "🙈";
+
+                        button.setAttribute(
+                            "aria-label",
+                            "Hide password"
+                        );
+
+                    } else {
+
+                        target.type =
+                            "password";
+
+                        button.textContent =
+                            "👁";
+
+                        button.setAttribute(
+                            "aria-label",
+                            "Show password"
+                        );
+                    }
                 }
-
-                if (target.type === "password") {
-
-                    target.type = "text";
-
-                    button.textContent = "🙈";
-
-                    button.setAttribute(
-                        "aria-label",
-                        "Hide password"
-                    );
-
-                } else {
-
-                    target.type = "password";
-
-                    button.textContent = "👁";
-
-                    button.setAttribute(
-                        "aria-label",
-                        "Show password"
-                    );
-
-                }
-
-            });
+            );
 
         });
 
 
-    /* =========================================
-       LOGIN SUBMISSION
-    ========================================= */
+    /* =====================================================
+       LOGIN FORM
+    ===================================================== */
 
     form.addEventListener(
         "submit",
@@ -109,9 +146,9 @@ document.addEventListener("DOMContentLoaded", function () {
             event.stopPropagation();
 
 
-            /* =================================
+            /* =================================================
                READ VALUES
-            ================================= */
+            ================================================= */
 
             const identifierValue =
                 identifier.value.trim();
@@ -120,23 +157,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 password.value;
 
 
-            /* =================================
+            /* =================================================
                CLEAR OLD STATUS
-            ================================= */
+            ================================================= */
 
             if (formStatus) {
 
-                formStatus.textContent = "";
+                formStatus.textContent =
+                    "";
 
                 formStatus.className =
                     "form-status";
-
             }
 
 
-            /* =================================
+            /* =================================================
                VALIDATE IDENTIFIER
-            ================================= */
+            ================================================= */
 
             if (!identifierValue) {
 
@@ -150,9 +187,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            /* =================================
+            /* =================================================
                VALIDATE PASSWORD
-            ================================= */
+            ================================================= */
 
             if (!passwordValue) {
 
@@ -166,11 +203,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            /* =================================
-               PASSWORD MINIMUM
-            ================================= */
-
-            if (passwordValue.length < 6) {
+            if (
+                passwordValue.length < 6
+            ) {
 
                 showError(
                     "Password must be at least 6 characters."
@@ -182,11 +217,12 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            /* =================================
-               START LOADING
-            ================================= */
+            /* =================================================
+               START LOGIN
+            ================================================= */
 
-            loginButton.disabled = true;
+            loginButton.disabled =
+                true;
 
             loginButton.textContent =
                 "LOGGING IN...";
@@ -195,45 +231,60 @@ document.addEventListener("DOMContentLoaded", function () {
             if (formStatus) {
 
                 formStatus.textContent =
-                    "Signing you in...";
+                    "Connecting to FINORA...";
 
                 formStatus.className =
                     "form-status";
-
             }
 
 
-            /* =================================
-               SERVER TIMEOUT
-            ================================= */
+            /* =================================================
+               TIMEOUT
+            ================================================= */
 
             const controller =
                 new AbortController();
 
-            const timeout =
-                setTimeout(function () {
+            const timeoutId =
+                setTimeout(
+                    function () {
 
-                    controller.abort();
+                        controller.abort();
 
-                }, 30000);
+                    },
+                    30000
+                );
 
 
             try {
 
-                /* =================================
-                   SEND LOGIN TO FINORA BACKEND
-                   
-                   CORRECT ENDPOINT:
-                   /api/users/login
-                ================================= */
+                console.log(
+                    "FINORA: Sending login request..."
+                );
+
+                console.log(
+                    "FINORA LOGIN URL:",
+                    LOGIN_URL
+                );
+
+
+                /* =================================================
+                   LOGIN REQUEST
+
+                   IMPORTANT:
+                   credentials: "include"
+
+                   This allows the browser to receive
+                   and send the FINORA session cookie.
+                ================================================= */
 
                 const response =
                     await fetch(
-                        API_URL +
-                        "/api/users/login",
+                        LOGIN_URL,
                         {
 
-                            method: "POST",
+                            method:
+                                "POST",
 
                             headers: {
 
@@ -242,8 +293,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                                 "Accept":
                                     "application/json"
-
                             },
+
+                            credentials:
+                                "include",
 
                             body:
                                 JSON.stringify({
@@ -258,36 +311,56 @@ document.addEventListener("DOMContentLoaded", function () {
 
                             signal:
                                 controller.signal
-
                         }
                     );
 
 
-                clearTimeout(timeout);
+                clearTimeout(
+                    timeoutId
+                );
 
 
-                /* =================================
+                console.log(
+                    "FINORA LOGIN HTTP STATUS:",
+                    response.status
+                );
+
+
+                /* =================================================
                    READ SERVER RESPONSE
-                ================================= */
+                ================================================= */
 
                 const responseText =
                     await response.text();
 
 
                 console.log(
-                    "FINORA LOGIN STATUS:",
-                    response.status
-                );
-
-
-                console.log(
-                    "FINORA LOGIN RESPONSE:",
+                    "FINORA LOGIN RAW RESPONSE:",
                     responseText
                 );
 
 
-                let data;
+                /* =================================================
+                   EMPTY RESPONSE
+                ================================================= */
 
+                if (!responseText) {
+
+                    showError(
+                        "FINORA server returned an empty response."
+                    );
+
+                    resetLoginButton();
+
+                    return;
+                }
+
+
+                /* =================================================
+                   PARSE JSON
+                ================================================= */
+
+                let data;
 
                 try {
 
@@ -304,7 +377,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     );
 
                     showError(
-                        "The FINORA server returned an invalid response."
+                        "FINORA server returned an invalid response."
                     );
 
                     resetLoginButton();
@@ -313,9 +386,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
 
-                /* =================================
+                console.log(
+                    "FINORA LOGIN DATA:",
+                    data
+                );
+
+
+                /* =================================================
                    LOGIN FAILED
-                ================================= */
+                ================================================= */
 
                 if (
                     !response.ok ||
@@ -333,23 +412,59 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
 
-                /* =================================
+                /* =================================================
                    LOGIN SUCCESS
-                ================================= */
+                ================================================= */
 
                 console.log(
-                    "FINORA: LOGIN SUCCESS"
+                    "===================================="
+                );
+
+                console.log(
+                    "FINORA LOGIN SUCCESS"
+                );
+
+                console.log(
+                    "Authenticated user:",
+                    data.user
+                );
+
+                console.log(
+                    "===================================="
                 );
 
 
-                console.log(
-                    "FINORA: User authenticated successfully."
-                );
+                /* =================================================
+                   SAVE CURRENT USER
+
+                   This is only for dashboard compatibility.
+                   The real authentication is the server session.
+                ================================================= */
+
+                if (data.user) {
+
+                    try {
+
+                        localStorage.setItem(
+                            "finoraCurrentUser",
+                            JSON.stringify(
+                                data.user
+                            )
+                        );
+
+                    } catch (storageError) {
+
+                        console.error(
+                            "FINORA LOCAL STORAGE ERROR:",
+                            storageError
+                        );
+                    }
+                }
 
 
-                /* =================================
-                   SHOW SUCCESS
-                ================================= */
+                /* =================================================
+                   SUCCESS MESSAGE
+                ================================================= */
 
                 if (formStatus) {
 
@@ -358,44 +473,57 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     formStatus.className =
                         "form-status success";
-
                 }
 
 
-                loginButton.disabled = true;
+                loginButton.disabled =
+                    true;
 
                 loginButton.textContent =
                     "LOGIN SUCCESSFUL ✓";
 
 
-                /* =================================
-                   REDIRECT TO DASHBOARD
-                ================================= */
+                /* =================================================
+                   DASHBOARD REDIRECT
+                ================================================= */
 
-                setTimeout(function () {
+                setTimeout(
+                    function () {
 
-                    window.location.href =
-                        "dashboard.html";
+                        window.location.href =
+                            "dashboard.html";
 
-                }, 1200);
+                    },
+                    1000
+                );
 
-            }
+            } catch (error) {
 
-
-            /* =================================
-               CONNECTION ERROR
-            ================================= */
-
-            catch (error) {
-
-                clearTimeout(timeout);
+                clearTimeout(
+                    timeoutId
+                );
 
 
                 console.error(
-                    "FINORA LOGIN ERROR:",
+                    "===================================="
+                );
+
+                console.error(
+                    "FINORA LOGIN CONNECTION ERROR"
+                );
+
+                console.error(
                     error
                 );
 
+                console.error(
+                    "===================================="
+                );
+
+
+                /* =================================================
+                   TIMEOUT
+                ================================================= */
 
                 if (
                     error.name ===
@@ -411,21 +539,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     showError(
                         "Unable to connect to the FINORA server. Please try again."
                     );
-
                 }
 
 
                 resetLoginButton();
-
             }
-
         }
     );
 
 
-    /* =========================================
+    /* =====================================================
        SHOW ERROR
-    ========================================= */
+    ===================================================== */
 
     function showError(message) {
 
@@ -438,21 +563,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
         formStatus.className =
             "form-status error";
-
     }
 
 
-    /* =========================================
+    /* =====================================================
        RESET LOGIN BUTTON
-    ========================================= */
+    ===================================================== */
 
     function resetLoginButton() {
 
-        loginButton.disabled = false;
+        loginButton.disabled =
+            false;
 
         loginButton.textContent =
             "LOGIN TO FINORA";
-
     }
+
+
+    /* =====================================================
+       READY
+    ===================================================== */
+
+    console.log(
+        "FINORA LOGIN.JS READY"
+    );
 
 });
