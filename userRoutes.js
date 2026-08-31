@@ -292,6 +292,172 @@ router.post("/register", async (req, res) => {
     }
 
 });
+/* =====================================================
+   LOGIN USER
+   POST /api/users/login
+===================================================== */
+
+router.post("/login", async (req, res) => {
+
+    try {
+
+        const {
+            identifier,
+            password
+        } = req.body;
+
+
+        /* =============================================
+           BASIC VALIDATION
+        ============================================= */
+
+        if (!identifier || !password) {
+
+            return res.status(400).json({
+                success: false,
+                message: "Phone/email and password are required."
+            });
+
+        }
+
+
+        /* =============================================
+           CLEAN IDENTIFIER
+        ============================================= */
+
+        const identifierValue =
+            identifier.trim();
+
+
+        /* =============================================
+           FIND USER BY PHONE OR EMAIL
+        ============================================= */
+
+        const user = await User.findOne({
+            $or: [
+                {
+                    email: identifierValue.toLowerCase()
+                },
+                {
+                    phone: identifierValue
+                }
+            ]
+        });
+
+
+        /* =============================================
+           USER NOT FOUND
+        ============================================= */
+
+        if (!user) {
+
+            return res.status(401).json({
+                success: false,
+                message: "Invalid login details."
+            });
+
+        }
+
+
+        /* =============================================
+           CHECK ACCOUNT STATUS
+        ============================================= */
+
+        if (user.status === "frozen") {
+
+            return res.status(403).json({
+                success: false,
+                message: "Your FINORA account has been frozen."
+            });
+
+        }
+
+
+        /* =============================================
+           CHECK PASSWORD USING BCRYPT
+        ============================================= */
+
+        const passwordMatches =
+            await bcrypt.compare(
+                password,
+                user.password
+            );
+
+
+        if (!passwordMatches) {
+
+            return res.status(401).json({
+                success: false,
+                message: "Invalid login details."
+            });
+
+        }
+
+
+        /* =============================================
+           LOGIN SUCCESS
+        ============================================= */
+
+        return res.status(200).json({
+
+            success: true,
+
+            message: "FINORA login successful.",
+
+            user: {
+
+                id: user._id,
+
+                fullName: user.fullName,
+
+                phone: user.phone,
+
+                email: user.email,
+
+                referralCode:
+                    user.referralCode,
+
+                balance:
+                    user.balance,
+
+                totalIncome:
+                    user.totalIncome,
+
+                totalDeposit:
+                    user.totalDeposit,
+
+                totalWithdrawal:
+                    user.totalWithdrawal,
+
+                status:
+                    user.status,
+
+                createdAt:
+                    user.createdAt
+
+            }
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "❌ FINORA LOGIN ERROR:",
+            error
+        );
+
+        return res.status(500).json({
+
+            success: false,
+
+            message:
+                "FINORA could not process your login. Please try again."
+
+        });
+
+    }
+
+});
 
 
 module.exports = router;
