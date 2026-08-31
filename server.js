@@ -139,7 +139,153 @@ app.use(
     "/api/users",
     userRoutes
 );
+app.get("/api/me", async (req, res) => {
 
+    try {
+
+        if (
+            !req.session ||
+            !req.session.userId
+        ) {
+
+            return res.status(401).json({
+
+                success: false,
+
+                message:
+                    "No authenticated FINORA session."
+            });
+        }
+
+
+        const User =
+            require("./user");
+
+
+        const user =
+            await User.findById(
+                req.session.userId
+            ).select("-password");
+
+
+        if (!user) {
+
+            req.session.destroy(
+                () => {}
+            );
+
+
+            return res.status(401).json({
+
+                success: false,
+
+                message:
+                    "FINORA user account could not be found."
+            });
+        }
+
+
+        if (
+            user.status === "frozen"
+        ) {
+
+            req.session.destroy(
+                () => {}
+            );
+
+
+            return res.status(403).json({
+
+                success: false,
+
+                message:
+                    "Your FINORA account has been frozen."
+            });
+        }
+
+
+        return res.status(200).json({
+
+            success: true,
+
+            user: {
+
+                id:
+                    user._id,
+
+                fullName:
+                    user.fullName,
+
+                full_name:
+                    user.fullName,
+
+                phone:
+                    user.phone,
+
+                email:
+                    user.email,
+
+                referralCode:
+                    user.referralCode,
+
+                referral_code:
+                    user.referralCode,
+
+                balance:
+                    user.balance,
+
+                walletBalance:
+                    user.balance,
+
+                wallet_balance:
+                    user.balance,
+
+                totalIncome:
+                    user.totalIncome,
+
+                totalEarnings:
+                    user.totalIncome,
+
+                total_earnings:
+                    user.totalIncome,
+
+                totalDeposit:
+                    user.totalDeposit,
+
+                totalInvested:
+                    user.totalDeposit,
+
+                total_invested:
+                    user.totalDeposit,
+
+                totalWithdrawal:
+                    user.totalWithdrawal,
+
+                status:
+                    user.status,
+
+                createdAt:
+                    user.createdAt
+            }
+        });
+
+    } catch (error) {
+
+        console.error(
+            "❌ FINORA /api/me ERROR:",
+            error
+        );
+
+
+        return res.status(500).json({
+
+            success: false,
+
+            message:
+                "FINORA could not load your account."
+        });
+    }
+});
 
 /* =====================================================
    ROOT
