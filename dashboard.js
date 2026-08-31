@@ -498,25 +498,6 @@ const FINORA_API =
 }
 
 
-        /* =================================================
-           ONLY CHANGE:
-           CLEAN REFERRAL URL
-
-           NO register.html
-           NO index.html
-        ================================================= */
-
-        const baseURL =
-            window.location.origin + "/";
-
-
-        referralLink.value =
-            baseURL +
-            "?ref=" +
-            encodeURIComponent(
-                referralCode
-            );
-    }
 
 
     /* =====================================================
