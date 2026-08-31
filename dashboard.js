@@ -198,18 +198,18 @@ const FINORA_API =
 
     function updateDashboardUser(user) {
 
-        const userName =
-            getElement("userName");
+        const fullName =
+            getElement("fullName");
 
 
-        if (!userName) {
+        if (!fullName) {
             return;
         }
 
 
         if (!user) {
 
-            userName.textContent =
+            fullName.textContent =
                 "Unable to load name";
 
             return;
@@ -236,7 +236,7 @@ const FINORA_API =
             String(name).trim()
         ) {
 
-            userName.textContent =
+            fullName.textContent =
                 String(name).trim();
 
         } else {
@@ -247,7 +247,7 @@ const FINORA_API =
                must come from the backend.
             */
 
-            userName.textContent =
+            fullName.textContent =
                 "Unable to load name";
         }
     }
