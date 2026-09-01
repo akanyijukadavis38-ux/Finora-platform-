@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#07050A">
 <meta name="description" content="FINORA — Invest • Grow • Earn">
-<title>FINORA | Invest • Grow • Earn</title>
-
-<style>
+<title>FINORA | Invest • Grow • Earn</title><style>
 
 :root{
     --pink:#EA3CFF;
@@ -272,6 +267,31 @@ header{
 }
 
 /* =====================================================
+   PROFESSIONAL ICONS
+   ===================================================== */
+
+.icon{
+    width:23px;
+    height:23px;
+    display:block;
+    flex-shrink:0;
+}
+
+.icon-sm{
+    width:18px;
+    height:18px;
+    display:block;
+    flex-shrink:0;
+}
+
+.icon-lg{
+    width:25px;
+    height:25px;
+    display:block;
+    flex-shrink:0;
+}
+
+/* =====================================================
    HERO
    ===================================================== */
 
@@ -400,9 +420,14 @@ header{
     margin-top:24px;
     color:#817787;
     font-size:12px;
+    display:flex;
+    align-items:center;
+    gap:7px;
 }
 
-.hero-note span{
+.hero-note .note-icon{
+    width:15px;
+    height:15px;
     color:var(--orange);
 }
 
@@ -510,7 +535,11 @@ header{
     background:rgba(245,166,35,.08);
     border:1px solid rgba(245,166,35,.22);
     color:var(--orange);
-    font-size:20px;
+}
+
+.card-icon svg{
+    width:21px;
+    height:21px;
 }
 
 .card-title{
@@ -730,7 +759,11 @@ section{
     background:rgba(234,60,255,.08);
     border:1px solid rgba(234,60,255,.20);
     color:var(--orange);
-    font-size:23px;
+}
+
+.feature-icon svg{
+    width:25px;
+    height:25px;
 }
 
 .feature-card h3{
@@ -901,6 +934,13 @@ section{
     color:var(--orange);
     font-size:70px;
     font-weight:900;
+    line-height:1;
+}
+
+.growth-symbol svg{
+    width:68px;
+    height:68px;
+    display:block;
 }
 
 /* =====================================================
@@ -1059,7 +1099,9 @@ footer{
     }
 
     .menu-btn{
-        display:block;
+        display:flex;
+        align-items:center;
+        justify-content:center;
     }
 
     .hero-grid{
@@ -1073,6 +1115,10 @@ footer{
     }
 
     .hero-buttons{
+        justify-content:center;
+    }
+
+    .hero-note{
         justify-content:center;
     }
 
@@ -1187,6 +1233,11 @@ footer{
         font-size:52px;
     }
 
+    .growth-symbol svg{
+        width:52px;
+        height:52px;
+    }
+
     .footer-inner{
         flex-direction:column;
         text-align:center;
@@ -1198,72 +1249,44 @@ footer{
     }
 }
 
-</style>
-</head>
-
-<body>
-
-<div class="bg-orb one"></div>
-<div class="bg-orb two"></div>
-
-<!-- =====================================================
+</style></head><body><div class="bg-orb one"></div>
+<div class="bg-orb two"></div><!-- =====================================================
      HEADER
-     ===================================================== -->
-
-<header>
-
-<div class="container">
-
-<nav class="navbar">
-
-<a href="index.html" class="brand">
-
-<!-- FINORA F MARK -->
-
-<svg
+     ===================================================== --><header><div class="container"><nav class="navbar"><a href="index.html" class="brand"><!-- FINORA F MARK --><svg
 class="finora-mark"
 viewBox="0 0 100 110"
 xmlns="http://www.w3.org/2000/svg"
 aria-label="FINORA logo"
->
 
-<defs>
+«»
 
-<linearGradient
+<defs><linearGradient
 id="finoraGold"
 x1="12"
 y1="5"
 x2="88"
 y2="105"
 gradientUnits="userSpaceOnUse"
->
+
+«»
 
 <stop offset="0" stop-color="#FFF0A8"/>
 <stop offset=".22" stop-color="#FFD35A"/>
 <stop offset=".55" stop-color="#F2B52F"/>
 <stop offset=".82" stop-color="#D88A12"/>
-<stop offset="1" stop-color="#A95E05"/>
-
-</linearGradient>
-
-<linearGradient
+<stop offset="1" stop-color="#A95E05"/></linearGradient><linearGradient
 id="finoraShine"
 x1="20"
 y1="4"
 x2="55"
 y2="70"
 gradientUnits="userSpaceOnUse"
->
+
+«»
 
 <stop offset="0" stop-color="#FFF8D0"/>
 <stop offset=".45" stop-color="#FFE27A"/>
-<stop offset="1" stop-color="#E9A51E"/>
-
-</linearGradient>
-
-</defs>
-
-<path
+<stop offset="1" stop-color="#E9A51E"/></linearGradient></defs><path
 class="finora-ribbon"
 d="
 M20 8
@@ -1298,7 +1321,8 @@ C34 18 27 21 21 27
 L16 32
 Z
 "
-></path>
+
+«</path>»
 
 <path
 class="finora-highlight"
@@ -1313,187 +1337,124 @@ L24 10
 C24 8 25 7 27 7
 Z
 "
-></path>
 
-</svg>
+«</path>»
 
-<div class="brand-text">
-
-<div class="brand-name">
+</svg><div class="brand-text"><div class="brand-name">
 <span class="fin">FIN</span><span class="ora">ORA</span>
-</div>
-
-<div class="brand-tagline">
+</div><div class="brand-tagline">
 INVEST • GROW • EARN
-</div>
-
-</div>
-
-</a>
-
-<div class="desktop-nav">
-
-<a href="#home">Home</a>
+</div></div></a><div class="desktop-nav"><a href="#home">Home</a>
 <a href="#why-finora">Why FINORA</a>
 <a href="#how-it-works">How It Works</a>
 <a href="#plans">Plans</a>
 
-</div>
-
-<div class="nav-actions">
-
-<a href="login.html" class="login-btn">
+</div><div class="nav-actions"><a href="login.html" class="login-btn">
 Login
-</a>
-
-<a href="register.html" class="register-btn">
+</a><a href="register.html" class="register-btn">
 Create Account
-</a>
+</a><button class="menu-btn" id="menuBtn" aria-label="Open menu"><svg
+class="icon"
+viewBox="0 0 24 24"
+fill="none"
+stroke="currentColor"
+stroke-width="2"
+stroke-linecap="round"
 
-<button class="menu-btn" id="menuBtn">
-☰
-</button>
+«»
 
-</div>
+<line x1="4" y1="7" x2="20" y2="7"></line>
+<line x1="4" y1="12" x2="20" y2="12"></line>
+<line x1="4" y1="17" x2="20" y2="17"></line>
 
-</nav>
-
-<div class="mobile-menu" id="mobileMenu">
-
-<a href="#home">Home</a>
+</svg></button></div></nav><div class="mobile-menu" id="mobileMenu"><a href="#home">Home</a>
 <a href="#why-finora">Why FINORA</a>
 <a href="#how-it-works">How It Works</a>
 <a href="#plans">Plans</a>
 <a href="login.html">Login</a>
 <a href="register.html">Create Account</a>
 
-</div>
-
-</div>
-
-</header>
-
-<!-- =====================================================
+</div></div></header><!-- =====================================================
      MAIN
-     ===================================================== -->
-
-<main>
-
-<!-- HERO -->
-
-<section class="hero" id="home">
-
-<div class="container">
-
-<div class="hero-grid">
-
-<div class="hero-content">
-
-<div class="eyebrow">
-
-<span class="eyebrow-dot"></span>
+     ===================================================== --><main><!-- HERO --><section class="hero" id="home"><div class="container"><div class="hero-grid"><div class="hero-content"><div class="eyebrow"><span class="eyebrow-dot"></span>
 
 WELCOME TO FINORA
 
-</div>
-
-<h1>
-
-<span class="white">
+</div><h1><span class="white">
 INVEST.
-</span>
-
-<br>
-
-<span class="pink">
+</span><br><span class="pink">
 GROW.
-</span>
-
-<br>
-
-<span class="white">
+</span><br><span class="white">
 EARN
-</span>
-
-<span class="orange">
+</span><span class="orange">
 SMART.
-</span>
-
-</h1>
-
-<p class="hero-description">
+</span></h1><p class="hero-description">
 A modern investment experience built
 to make your journey clearer, simpler
 and more engaging — all from one
 beautiful platform.
-</p>
+</p><div class="hero-buttons"><a href="register.html" class="primary-btn">
+START YOUR JOURNEY<svg
+class="icon-sm"
+viewBox="0 0 24 24"
+fill="none"
+stroke="currentColor"
+stroke-width="2.4"
+stroke-linecap="round"
+stroke-linejoin="round"
+aria-hidden="true"
 
-<div class="hero-buttons">
+«»
 
-<a href="register.html" class="primary-btn">
-START YOUR JOURNEY
-<span>→</span>
-</a>
+<path d="M5 12h13"></path>
+<path d="M13 6l6 6-6 6"></path>
 
-<a href="#how-it-works" class="secondary-btn">
+</svg></a><a href="#how-it-works" class="secondary-btn">
 EXPLORE FINORA
-</a>
+</a></div><div class="hero-note"><svg
+class="note-icon"
+viewBox="0 0 24 24"
+fill="currentColor"
+aria-hidden="true"
 
-</div>
+«»
 
-<div class="hero-note">
-<span>✦</span>
-Invest • Grow • Earn
-</div>
+<path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9L12 2z"></path>
+<path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z"></path>
 
-</div>
+</svg>Invest • Grow • Earn
 
-<!-- HERO VISUAL -->
-
-<div class="hero-visual">
-
-<div class="hero-glow"></div>
-
-<div class="hero-ring"></div>
-
-<div class="investment-card">
-
-<div class="card-top">
-
-<div class="card-label">
+</div></div><!-- HERO VISUAL --><div class="hero-visual"><div class="hero-glow"></div><div class="hero-ring"></div><div class="investment-card"><div class="card-top"><div class="card-label">
 FINORA INVESTMENT EXPERIENCE
-</div>
+</div><div class="card-icon"><svg
+viewBox="0 0 24 24"
+fill="none"
+stroke="currentColor"
+stroke-width="2"
+stroke-linecap="round"
+stroke-linejoin="round"
+aria-hidden="true"
 
-<div class="card-icon">
-↗
-</div>
+«»
 
-</div>
+<path d="M4 16l6-6 4 4 6-7"></path>
+<path d="M15 7h5v5"></path>
 
-<div class="card-title">
-
-Build your
+</svg></div></div><div class="card-title">Build your
 <span class="pink">future</span>
 with
 <span class="orange">purpose.</span>
 
-</div>
-
-<div class="chart-area">
-
-<div class="chart-grid">
-
-<span></span>
+</div><div class="chart-area"><div class="chart-grid"><span></span>
 <span></span>
 <span></span>
 <span></span>
 
-</div>
-
-<svg
+</div><svg
 viewBox="0 0 400 150"
 preserveAspectRatio="none"
->
+
+«»
 
 <path
 class="chart-line"
@@ -1505,391 +1466,220 @@ C195 103 207 72 237 77
 C267 84 282 48 312 58
 C345 69 362 31 400 12
 "
-></path>
+
+«</path>»
 
 <circle
 class="chart-point"
 cx="400"
 cy="12"
 r="5"
-></circle>
 
-</svg>
+«</circle>»
 
-</div>
-
-<div class="card-bottom">
-
-<div>
-
-<strong>FINORA</strong>
+</svg></div><div class="card-bottom"><div><strong>FINORA</strong>
 
 <small>
 INVEST • GROW • EARN
-</small>
-
-</div>
-
-<div class="growth-badge">
+</small></div><div class="growth-badge">
 GROWTH FOCUSED
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- BRAND STRIP -->
-
-<div class="brand-strip">
-
-<div class="container">
-
-<div class="brand-strip-content">
-
-<span>
+</div></div></div></div></div></div></section><!-- BRAND STRIP --><div class="brand-strip"><div class="container"><div class="brand-strip-content"><span>
 Built for
 <strong class="strip-pink">simplicity</strong>
-</span>
-
-<span>
+</span><span>
 Designed for
 <strong class="strip-orange">growth</strong>
-</span>
-
-<span>
+</span><span>
 Made for your
 <strong class="strip-pink">journey</strong>
-</span>
-
-<span>
+</span><span>
 One platform.
 <strong class="strip-orange">One experience.</strong>
-</span>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- WHY FINORA -->
-
-<section id="why-finora">
-
-<div class="container">
-
-<div class="section-heading">
-
-<div class="section-kicker">
+</span></div></div></div><!-- WHY FINORA --><section id="why-finora"><div class="container"><div class="section-heading"><div class="section-kicker">
 WHY FINORA
-</div>
-
-<h2>
+</div><h2>
 A better way to experience
 <span>investing.</span>
-</h2>
-
-<p>
+</h2><p>
 FINORA brings together a clean design,
 simple navigation and a focused
 investment experience.
-</p>
+</p></div><div class="features"><div class="feature-card"><div class="feature-icon"><!-- SIMPLE / DASHBOARD ICON --><svg
+viewBox="0 0 24 24"
+fill="none"
+stroke="currentColor"
+stroke-width="1.9"
+stroke-linecap="round"
+stroke-linejoin="round"
+aria-hidden="true"
 
-</div>
+«»
 
-<div class="features">
+<rect x="3" y="3" width="18" height="18" rx="4"></rect>
+<path d="M7 8h10"></path>
+<path d="M7 12h6"></path>
+<path d="M7 16h4"></path>
 
-<div class="feature-card">
-
-<div class="feature-icon">
-◈
-</div>
-
-<h3>
+</svg></div><h3>
 Simple
-</h3>
-
-<p>
+</h3><p>
 A clear interface designed to make
 your investment journey easier to
 understand and navigate.
-</p>
+</p></div><div class="feature-card"><div class="feature-icon"><!-- GROWTH / CHART ICON --><svg
+viewBox="0 0 24 24"
+fill="none"
+stroke="currentColor"
+stroke-width="1.9"
+stroke-linecap="round"
+stroke-linejoin="round"
+aria-hidden="true"
 
-</div>
+«»
 
-<div class="feature-card">
+<path d="M4 18V6"></path>
+<path d="M4 18h16"></path>
+<path d="M7 15l4-4 3 2 5-6"></path>
+<path d="M15 7h4v4"></path>
 
-<div class="feature-icon">
-↗
-</div>
-
-<h3>
+</svg></div><h3>
 Growth Focused
-</h3>
-
-<p>
+</h3><p>
 Keep your financial goals at the
 center while exploring the FINORA
 investment experience.
-</p>
+</p></div><div class="feature-card"><div class="feature-icon"><!-- CONNECTED / WALLET ICON --><svg
+viewBox="0 0 24 24"
+fill="none"
+stroke="currentColor"
+stroke-width="1.9"
+stroke-linecap="round"
+stroke-linejoin="round"
+aria-hidden="true"
 
-</div>
+«»
 
-<div class="feature-card">
+<path d="M5 7h13a3 3 0 0 1 3 3v7a2 2 0 0 1-2 2H5a3 3 0 0 1-3-3V6a2 2 0 0 1 2-2h13"></path>
+<path d="M16 13h5"></path>
+<circle cx="16" cy="13" r=".8" fill="currentColor"></circle>
 
-<div class="feature-icon">
-◉
-</div>
-
-<h3>
+</svg></div><h3>
 Connected
-</h3>
-
-<p>
+</h3><p>
 Access your account, investment
 activity and platform experience
 from one place.
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- HOW IT WORKS -->
-
-<section id="how-it-works">
-
-<div class="container">
-
-<div class="section-heading">
-
-<div class="section-kicker">
+</p></div></div></div></section><!-- HOW IT WORKS --><section id="how-it-works"><div class="container"><div class="section-heading"><div class="section-kicker">
 HOW IT WORKS
-</div>
-
-<h2>
+</div><h2>
 Your journey starts in
 <span>three steps.</span>
-</h2>
-
-<p>
+</h2><p>
 Getting started with FINORA is designed
 to be simple and straightforward.
-</p>
-
-</div>
-
-<div class="steps">
-
-<div class="step">
-
-<div class="step-number">
+</p></div><div class="steps"><div class="step"><div class="step-number">
 01
-</div>
-
-<h3>
+</div><h3>
 Create Your Account
-</h3>
-
-<p>
+</h3><p>
 Register your FINORA account and
 complete the required information.
-</p>
-
-</div>
-
-<div class="step">
-
-<div class="step-number">
+</p></div><div class="step"><div class="step-number">
 02
-</div>
-
-<h3>
+</div><h3>
 Explore Your Options
-</h3>
-
-<p>
+</h3><p>
 Discover the investment opportunities
 available through the FINORA platform.
-</p>
-
-</div>
-
-<div class="step">
-
-<div class="step-number">
+</p></div><div class="step"><div class="step-number">
 03
-</div>
-
-<h3>
+</div><h3>
 Track Your Journey
-</h3>
-
-<p>
+</h3><p>
 Manage your account and follow your
 investment activity from your dashboard.
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- PLANS -->
-
-<section id="plans">
-
-<div class="container">
-
-<div class="plan-card">
-
-<div>
-
-<div class="plan-badge">
+</p></div></div></div></section><!-- PLANS --><section id="plans"><div class="container"><div class="plan-card"><div><div class="plan-badge">
 FINORA PLANS
-</div>
-
-<h2>
+</div><h2>
 Give your money a
 <span>direction.</span>
-</h2>
-
-<p>
+</h2><p>
 Explore FINORA's investment options
 and discover a structured platform
 built around your investment journey.
-</p>
+</p><a href="register.html" class="primary-btn">
+EXPLORE PLANS<svg
+class="icon-sm"
+viewBox="0 0 24 24"
+fill="none"
+stroke="currentColor"
+stroke-width="2.4"
+stroke-linecap="round"
+stroke-linejoin="round"
+aria-hidden="true"
 
-<a href="register.html" class="primary-btn">
-EXPLORE PLANS
-<span>→</span>
-</a>
+«»
 
-</div>
+<path d="M5 12h13"></path>
+<path d="M13 6l6 6-6 6"></path>
 
-<div class="plan-visual">
-
-<div class="bars">
-
+</svg></a></div><div class="plan-visual"><div class="bars"><div class="bar"></div>
 <div class="bar"></div>
 <div class="bar"></div>
-<div class="bar"></div>
-<div class="bar"></div>
+<div class="bar"></div></div><div class="growth-symbol"><svg
+viewBox="0 0 24 24"
+fill="none"
+stroke="currentColor"
+stroke-width="1.8"
+stroke-linecap="round"
+stroke-linejoin="round"
+aria-hidden="true"
 
-</div>
+«»
 
-<div class="growth-symbol">
-↗
-</div>
+<path d="M5 18L19 5"></path>
+<path d="M10 5h9v9"></path>
 
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- FINAL CTA -->
-
-<section class="cta">
-
-<div class="container">
-
-<div class="cta-card">
-
-<div class="section-kicker">
+</svg></div></div></div></div></section><!-- FINAL CTA --><section class="cta"><div class="container"><div class="cta-card"><div class="section-kicker">
 WELCOME TO FINORA
-</div>
-
-<h2>
+</div><h2>
 Your journey toward
 <span>growth</span>
 starts here.
-</h2>
-
-<p>
+</h2><p>
 Create your FINORA account and
 discover a modern investment
 experience designed around
 simplicity and clarity.
-</p>
+</p><div class="cta-buttons"><a href="register.html" class="primary-btn">
+CREATE ACCOUNT<svg
+class="icon-sm"
+viewBox="0 0 24 24"
+fill="none"
+stroke="currentColor"
+stroke-width="2.4"
+stroke-linecap="round"
+stroke-linejoin="round"
+aria-hidden="true"
 
-<div class="cta-buttons">
+«»
 
-<a href="register.html" class="primary-btn">
-CREATE ACCOUNT
-<span>→</span>
-</a>
+<path d="M5 12h13"></path>
+<path d="M13 6l6 6-6 6"></path>
 
-<a href="login.html" class="secondary-btn">
+</svg></a><a href="login.html" class="secondary-btn">
 LOGIN
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-</main>
-
-<!-- FOOTER -->
-
-<footer>
-
-<div class="container">
-
-<div class="footer-inner">
-
-<div class="footer-copy">
-
-© 2026
+</a></div></div></div></section></main><!-- FOOTER --><footer><div class="container"><div class="footer-inner"><div class="footer-copy">© 2026
 <strong>FINORA</strong>
 • Invest • Grow • Earn
 
-</div>
-
-<div class="footer-links">
-
-<a href="#">
+</div><div class="footer-links"><a href="#">
 Privacy
-</a>
-
-<a href="#">
+</a><a href="#">
 Terms
-</a>
-
-<a href="#">
+</a><a href="#">
 Support
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-</footer>
-
-<script>
+</a></div></div></div></footer><script>
 
 /* =====================================================
    MOBILE MENU
@@ -1968,7 +1758,5 @@ mobileMenu.classList.remove("active");
 
 })();
 
-</script>
-
-</body>
+</script></body>
 </html>
