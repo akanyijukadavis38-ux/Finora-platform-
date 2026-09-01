@@ -1,21 +1,22 @@
 /* =========================================================
    FINORA REGISTER
    PREMIUM BRAND SYSTEM
-   MAGENTA • GOLD • WHITE • BLACK
+   MAGENTA • GOLD • WHITE • BLACK-CHOCOLATE
 ========================================================= */
 
 :root {
 
-    --black: #050507;
-    --black-soft: #09090C;
-    --charcoal: #101015;
-    --charcoal-light: #17171D;
+    /* BLACK-CHOCOLATE */
+    --black: #080507;
+    --black-soft: #10090D;
+    --charcoal: #160D12;
+    --charcoal-light: #21141A;
 
-    /* REAL FINORA MAGENTA */
-    --magenta: #E00072;
-    --magenta-bright: #F00083;
-    --magenta-light: #FF4AA4;
-    --magenta-dark: #A90056;
+    /* FINORA MAGENTA — DEEP, RICH, PREMIUM */
+    --magenta: #C0005A;
+    --magenta-bright: #D10063;
+    --magenta-light: #E00072;
+    --magenta-dark: #85003E;
 
     /* FINORA GOLD */
     --gold: #D4AF37;
@@ -35,7 +36,7 @@
     --border: rgba(255,255,255,.09);
 
     --shadow:
-        0 30px 90px rgba(0,0,0,.60);
+        0 30px 90px rgba(0,0,0,.65);
 }
 
 
@@ -74,7 +75,7 @@ body {
 
         radial-gradient(
             circle at 8% 12%,
-            rgba(224,0,114,.13),
+            rgba(192,0,90,.16),
             transparent 32%
         ),
 
@@ -86,9 +87,9 @@ body {
 
         linear-gradient(
             135deg,
-            #050507 0%,
-            #0B090D 50%,
-            #050507 100%
+            #080507 0%,
+            #160D12 48%,
+            #090507 100%
         );
 }
 
@@ -119,7 +120,7 @@ input {
 
 
 /* =========================================================
-   PREMIUM BACKGROUND LIGHT
+   PREMIUM MAGENTA BACKGROUND LIGHT
 ========================================================= */
 
 .page::before {
@@ -139,7 +140,7 @@ input {
     background:
         radial-gradient(
             circle,
-            rgba(224,0,114,.16),
+            rgba(192,0,90,.20),
             transparent 68%
         );
 
@@ -148,6 +149,10 @@ input {
     z-index: -1;
 }
 
+
+/* =========================================================
+   PREMIUM GOLD BACKGROUND LIGHT
+========================================================= */
 
 .page::after {
 
@@ -185,11 +190,11 @@ input {
     width: 100%;
 
     background:
-        rgba(5,5,7,.88);
+        rgba(8,5,7,.90);
 
     border-bottom:
         1px solid
-        rgba(224,0,114,.18);
+        rgba(192,0,90,.25);
 
     backdrop-filter:
         blur(18px);
@@ -273,11 +278,11 @@ input {
 
 .brand-name .ora {
 
-    color: var(--magenta-bright);
+    color: var(--magenta-light);
 
     text-shadow:
         0 0 18px
-        rgba(224,0,114,.28);
+        rgba(192,0,90,.38);
 }
 
 
@@ -310,7 +315,7 @@ input {
 
     margin-left: 5px;
 
-    color: var(--magenta-bright);
+    color: var(--magenta-light);
 
     font-weight: 800;
 
@@ -386,20 +391,22 @@ input {
 
         linear-gradient(
             145deg,
-            rgba(22,18,23,.97),
-            rgba(7,7,10,.99)
+            rgba(31,17,25,.97),
+            rgba(10,7,9,.99)
         );
 
     border:
         1px solid
-        rgba(224,0,114,.28);
+        rgba(192,0,90,.35);
 
     box-shadow:
         var(--shadow);
 }
 
 
-/* MAGENTA TOP ACCENT */
+/* =========================================================
+   MAGENTA TOP ACCENT
+========================================================= */
 
 .info-panel::before {
 
@@ -417,17 +424,19 @@ input {
         linear-gradient(
             90deg,
             var(--magenta),
-            var(--magenta-bright),
+            var(--magenta-light),
             transparent
         );
 
     box-shadow:
         0 0 18px
-        rgba(224,0,114,.60);
+        rgba(192,0,90,.65);
 }
 
 
-/* GOLD CORNER GLOW */
+/* =========================================================
+   GOLD CORNER GLOW
+========================================================= */
 
 .info-panel::after {
 
@@ -485,7 +494,7 @@ input {
 
     box-shadow:
         0 0 10px
-        rgba(224,0,114,.65);
+        rgba(192,0,90,.75);
 }
 
 
@@ -516,11 +525,11 @@ input {
 
 .info-panel h1 span {
 
-    color: var(--magenta-bright);
+    color: var(--magenta-light);
 
     text-shadow:
         0 0 25px
-        rgba(224,0,114,.20);
+        rgba(192,0,90,.30);
 }
 
 
@@ -565,7 +574,7 @@ input {
 
 
 /* =========================================================
-   PREMIUM SVG ICON
+   PREMIUM ICON CONTAINER
 ========================================================= */
 
 .benefit-icon {
@@ -588,13 +597,13 @@ input {
     background:
         linear-gradient(
             145deg,
-            rgba(224,0,114,.15),
-            rgba(212,175,55,.045)
+            rgba(192,0,90,.20),
+            rgba(212,175,55,.055)
         );
 
     border:
         1px solid
-        rgba(224,0,114,.35);
+        rgba(192,0,90,.45);
 
     box-shadow:
 
@@ -603,10 +612,10 @@ input {
         rgba(255,255,255,.08),
 
         0 8px 25px
-        rgba(0,0,0,.30),
+        rgba(0,0,0,.35),
 
         0 0 20px
-        rgba(224,0,114,.08);
+        rgba(192,0,90,.12);
 }
 
 
@@ -629,7 +638,7 @@ input {
     filter:
         drop-shadow(
             0 0 5px
-            rgba(212,175,55,.18)
+            rgba(212,175,55,.22)
         );
 }
 
@@ -651,11 +660,11 @@ input {
     border-radius: 50%;
 
     background:
-        var(--magenta-bright);
+        var(--magenta-light);
 
     box-shadow:
         0 0 8px
-        rgba(224,0,114,.70);
+        rgba(192,0,90,.80);
 }
 
 
@@ -702,8 +711,8 @@ input {
 
         linear-gradient(
             145deg,
-            rgba(20,20,25,.98),
-            rgba(8,8,11,.99)
+            rgba(29,18,24,.98),
+            rgba(10,7,9,.99)
         );
 
     border:
@@ -717,7 +726,9 @@ input {
 }
 
 
-/* PREMIUM MAGENTA/GOLD TOP LINE */
+/* =========================================================
+   PREMIUM MAGENTA / GOLD TOP LINE
+========================================================= */
 
 .form-card::before {
 
@@ -743,7 +754,7 @@ input {
 
     box-shadow:
         0 0 18px
-        rgba(224,0,114,.30);
+        rgba(192,0,90,.35);
 }
 
 
@@ -875,12 +886,12 @@ input {
         var(--magenta);
 
     background:
-        rgba(224,0,114,.035);
+        rgba(192,0,90,.045);
 
     box-shadow:
 
         0 0 0 3px
-        rgba(224,0,114,.08),
+        rgba(192,0,90,.10),
 
         0 8px 28px
         rgba(0,0,0,.20);
@@ -1152,7 +1163,7 @@ input {
 
         linear-gradient(
             135deg,
-            var(--magenta-bright) 0%,
+            var(--magenta-light) 0%,
             var(--magenta) 48%,
             var(--magenta-dark) 100%
         );
@@ -1169,7 +1180,7 @@ input {
     box-shadow:
 
         0 14px 35px
-        rgba(224,0,114,.24),
+        rgba(192,0,90,.28),
 
         inset
         0 1px 0
@@ -1216,10 +1227,10 @@ input {
     box-shadow:
 
         0 18px 45px
-        rgba(224,0,114,.34),
+        rgba(192,0,90,.40),
 
         0 0 20px
-        rgba(224,0,114,.10);
+        rgba(192,0,90,.14);
 }
 
 
@@ -1355,7 +1366,7 @@ input {
 
     border-top:
         1px solid
-        rgba(224,0,114,.12);
+        rgba(192,0,90,.18);
 
     color:
         var(--white-30);
