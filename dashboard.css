@@ -797,7 +797,7 @@ svg {
     right: 0;
     bottom: 0;
 
-    width: 62%;
+    width: 80%;
     height: 100%;
 
     overflow: hidden;
@@ -832,7 +832,7 @@ svg {
         saturate(1.04)
         contrast(1.04);
 
-    transform: scale0.70.7(0.98);
+    transform: scale0.70.70.8(0.88);
 
     transform-origin: right center;
 
