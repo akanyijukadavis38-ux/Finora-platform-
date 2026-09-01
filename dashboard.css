@@ -835,7 +835,8 @@ display: block;
 
 max-width: none;
 
-object-fit: cover;
+object-fit: contain;
+object-position: center center;
 
 opacity: 0.94;
 
@@ -1631,7 +1632,8 @@ height: 100%;
 
 display: block;
 
-object-fit: cover;
+object-fit: contain;
+object-position: center center;
 
 }
 
@@ -2424,7 +2426,8 @@ MOBILE
 
     display: block;
 
-    object-fit: cover;
+    object-fit: contain;
+    object-position: center center;
 
     opacity: 0.92;
 }
