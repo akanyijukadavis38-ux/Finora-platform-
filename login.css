@@ -1,7 +1,7 @@
 /* =========================================
    FINORA LOGIN CSS
    MASTER BRAND DESIGN
-   DEEP PINK • DEEP GOLD • WHITE • CHARCOAL
+   MAGENTA • GOLD • REAL WHITE • CHARCOAL
 ========================================= */
 
 
@@ -10,6 +10,8 @@
 ========================================= */
 
 :root {
+
+    /* BACKGROUNDS */
     --bg-dark: #0B0A0F;
     --bg-dark-2: #121116;
     --bg-dark-3: #18161D;
@@ -17,29 +19,54 @@
     --card: #17151B;
     --card-light: #201D25;
 
-    /* MAIN BRAND */
-    --pink: #EA2E83;
-    --pink-deep: #C9236D;
-    --pink-light: #F45A9C;
-    --pink-glow: #FF78AE;
 
-    /* PREMIUM GOLD */
-    --gold: #D4AF37;
-    --gold-deep: #B88916;
-    --gold-light: #E5C45A;
+    /* =====================================
+       MAIN BRAND — MAGENTA
+       FINORA DASHBOARD BRAND COLOR
+    ====================================== */
 
-    /* TEXT */
+    --pink: #D100FF;
+    --pink-deep: #9400BF;
+    --pink-light: #E044FF;
+    --pink-soft: #B500E6;
+    --pink-glow: #F06AFF;
+
+
+    /* =====================================
+       PREMIUM GOLD
+    ====================================== */
+
+    --gold: #C99A22;
+    --gold-deep: #A9790F;
+    --gold-light: #D9AE3A;
+    --gold-rich: #E0B94A;
+
+
+    /* =====================================
+       TEXT
+    ====================================== */
+
     --white: #FFFFFF;
-    --text: #F8F6F8;
+    --text: #FFFFFF;
     --muted: #A9A5AD;
 
     --dark-text: #0B0A0F;
 
-    /* BORDERS */
-    --pink-border: rgba(234, 46, 131, 0.22);
-    --gold-border: rgba(212, 175, 55, 0.24);
 
-    /* SHADOW */
+    /* =====================================
+       BORDERS
+    ====================================== */
+
+    --pink-border: rgba(209, 0, 255, 0.22);
+    --pink-border-strong: rgba(209, 0, 255, 0.36);
+
+    --gold-border: rgba(201, 154, 34, 0.24);
+
+
+    /* =====================================
+       SHADOW
+    ====================================== */
+
     --shadow:
         0 22px 60px
         rgba(0, 0, 0, 0.55);
@@ -66,22 +93,26 @@ html {
 }
 
 body {
+
     font-family:
         Arial,
         Helvetica,
         sans-serif;
 
     background:
+
         radial-gradient(
             circle at 12% 15%,
-            rgba(234, 46, 131, 0.07),
+            rgba(209, 0, 255, 0.07),
             transparent 34%
         ),
+
         radial-gradient(
             circle at 88% 85%,
-            rgba(212, 175, 55, 0.045),
+            rgba(201, 154, 34, 0.045),
             transparent 34%
         ),
+
         linear-gradient(
             180deg,
             #121116 0%,
@@ -110,22 +141,26 @@ input {
 ========================================= */
 
 .page {
+
     min-height: 100vh;
 
     display: flex;
     flex-direction: column;
 
     background:
+
         radial-gradient(
             circle at 15% 20%,
-            rgba(234, 46, 131, 0.06),
+            rgba(209, 0, 255, 0.06),
             transparent 35%
         ),
+
         radial-gradient(
             circle at 85% 80%,
-            rgba(212, 175, 55, 0.045),
+            rgba(201, 154, 34, 0.045),
             transparent 35%
         ),
+
         transparent;
 }
 
@@ -135,11 +170,12 @@ input {
 ========================================= */
 
 .header {
+
     width: 100%;
 
     border-bottom:
         1px solid
-        rgba(234, 46, 131, 0.16);
+        rgba(209, 0, 255, 0.16);
 
     background:
         rgba(8, 7, 11, 0.94);
@@ -149,6 +185,7 @@ input {
 }
 
 .header-inner {
+
     width:
         min(
             1180px,
@@ -160,7 +197,9 @@ input {
     min-height: 82px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
     gap: 25px;
@@ -172,7 +211,9 @@ input {
 ========================================= */
 
 .brand {
+
     display: flex;
+
     align-items: center;
 
     gap: 10px;
@@ -185,6 +226,7 @@ input {
 }
 
 .finora-mark {
+
     width: 42px;
     height: 48px;
 
@@ -195,12 +237,14 @@ input {
     filter:
         drop-shadow(
             0 5px 14px
-            rgba(234, 46, 131, 0.20)
+            rgba(209, 0, 255, 0.20)
         );
 }
 
 .brand-text {
+
     display: flex;
+
     flex-direction: column;
 
     min-width: 0;
@@ -209,11 +253,14 @@ input {
 
 /* =========================================
    FINORA WORDMARK
-   ALWAYS TIMES NEW ROMAN
+   FIN = REAL WHITE
+   ORA = GOLD
 ========================================= */
 
 .brand-name {
+
     display: flex;
+
     align-items: baseline;
 
     font-family:
@@ -232,15 +279,23 @@ input {
     white-space: nowrap;
 }
 
+
+/* FIN — REAL WHITE */
+
 .brand-name .fin {
-    color: var(--white);
+    color: #FFFFFF;
 }
+
+
+/* ORA — GOLD */
 
 .brand-name .ora {
-    color: var(--pink);
+    color: var(--gold);
 }
 
+
 .brand-tagline {
+
     margin-top: 6px;
 
     font-family:
@@ -254,13 +309,9 @@ input {
 
     letter-spacing: 2.3px;
 
-    color:
-        rgba(
-            255,
-            255,
-            255,
-            0.48
-        );
+    color: #FFFFFF;
+
+    opacity: 0.48;
 
     white-space: nowrap;
 }
@@ -271,18 +322,16 @@ input {
 ========================================= */
 
 .login-top {
+
     font-size: 13px;
 
-    color:
-        rgba(
-            255,
-            255,
-            255,
-            0.62
-        );
+    color: #FFFFFF;
+
+    opacity: 0.62;
 }
 
 .login-top a {
+
     margin-left: 5px;
 
     color: var(--pink);
@@ -290,9 +339,13 @@ input {
     text-decoration: none;
 
     font-weight: 700;
+
+    transition:
+        color 0.2s ease;
 }
 
 .login-top a:hover {
+
     color: var(--pink-light);
 }
 
@@ -302,6 +355,7 @@ input {
 ========================================= */
 
 .main {
+
     flex: 1;
 
     width: 100%;
@@ -309,6 +363,7 @@ input {
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     padding:
@@ -321,6 +376,7 @@ input {
 ========================================= */
 
 .login-wrapper {
+
     width:
         min(
             1050px,
@@ -344,10 +400,12 @@ input {
 ========================================= */
 
 .info-panel {
+
     max-width: 530px;
 }
 
 .info-kicker {
+
     display: inline-block;
 
     margin-bottom: 18px;
@@ -364,6 +422,7 @@ input {
 }
 
 .info-panel h1 {
+
     font-size:
         clamp(
             42px,
@@ -379,27 +438,35 @@ input {
 
     margin-bottom: 22px;
 
-    color: var(--white);
+    color: #FFFFFF;
 }
+
+
+/* =========================================
+   JOURNEY — MAGENTA
+========================================= */
 
 .info-panel h1 span {
+
     color: var(--pink);
+
+    text-shadow:
+        0 0 25px
+        rgba(209, 0, 255, 0.16);
 }
 
+
 .info-panel > p {
+
     max-width: 500px;
 
     font-size: 15px;
 
     line-height: 1.75;
 
-    color:
-        rgba(
-            248,
-            246,
-            248,
-            0.63
-        );
+    color: #FFFFFF;
+
+    opacity: 0.63;
 }
 
 
@@ -408,15 +475,18 @@ input {
 ========================================= */
 
 .benefits {
+
     margin-top: 34px;
 
     display: flex;
+
     flex-direction: column;
 
     gap: 20px;
 }
 
 .benefit {
+
     display: flex;
 
     align-items: flex-start;
@@ -424,14 +494,22 @@ input {
     gap: 14px;
 }
 
+
+/* =========================================
+   BENEFIT ICONS — MAGENTA
+========================================= */
+
 .benefit-icon {
+
     width: 34px;
     height: 34px;
 
     flex-shrink: 0;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     border-radius: 10px;
@@ -439,17 +517,17 @@ input {
     border:
         1px solid
         rgba(
-            234,
-            46,
-            131,
+            209,
+            0,
+            255,
             0.30
         );
 
     background:
         rgba(
-            234,
-            46,
-            131,
+            209,
+            0,
+            255,
             0.08
         );
 
@@ -460,33 +538,31 @@ input {
     box-shadow:
         0 0 16px
         rgba(
-            234,
-            46,
-            131,
+            209,
+            0,
+            255,
             0.06
         );
 }
 
 .benefit h3 {
+
     font-size: 14px;
 
     margin-bottom: 5px;
 
-    color: var(--white);
+    color: #FFFFFF;
 }
 
 .benefit p {
+
     font-size: 12px;
 
     line-height: 1.5;
 
-    color:
-        rgba(
-            248,
-            246,
-            248,
-            0.52
-        );
+    color: #FFFFFF;
+
+    opacity: 0.52;
 }
 
 
@@ -495,6 +571,7 @@ input {
 ========================================= */
 
 .form-card {
+
     width: 100%;
 
     padding: 34px;
@@ -502,6 +579,7 @@ input {
     border-radius: 22px;
 
     background:
+
         linear-gradient(
             145deg,
             rgba(
@@ -521,14 +599,16 @@ input {
     border:
         1px solid
         rgba(
-            234,
-            46,
-            131,
+            209,
+            0,
+            255,
             0.18
         );
 
     box-shadow:
+
         var(--shadow),
+
         inset
         0 1px 0
         rgba(
@@ -539,6 +619,7 @@ input {
         );
 
     backdrop-filter: blur(14px);
+
     -webkit-backdrop-filter: blur(14px);
 }
 
@@ -548,29 +629,28 @@ input {
 ========================================= */
 
 .form-header {
+
     margin-bottom: 28px;
 }
 
 .form-header h2 {
+
     font-size: 28px;
 
     margin-bottom: 8px;
 
-    color: var(--white);
+    color: #FFFFFF;
 }
 
 .form-header p {
+
     font-size: 13px;
 
     line-height: 1.6;
 
-    color:
-        rgba(
-            248,
-            246,
-            248,
-            0.55
-        );
+    color: #FFFFFF;
+
+    opacity: 0.55;
 }
 
 
@@ -579,10 +659,12 @@ input {
 ========================================= */
 
 .form-group {
+
     margin-bottom: 18px;
 }
 
 .form-group label {
+
     display: block;
 
     margin-bottom: 8px;
@@ -591,13 +673,9 @@ input {
 
     font-weight: 600;
 
-    color:
-        rgba(
-            255,
-            255,
-            255,
-            0.82
-        );
+    color: #FFFFFF;
+
+    opacity: 0.82;
 }
 
 
@@ -606,6 +684,7 @@ input {
 ========================================= */
 
 .form-input {
+
     width: 100%;
 
     height: 48px;
@@ -634,32 +713,33 @@ input {
             0.25
         );
 
-    color: var(--white);
+    color: #FFFFFF;
 
     font-size: 14px;
 
     transition:
+
         border-color 0.2s ease,
+
         box-shadow 0.2s ease,
+
         background 0.2s ease;
 }
 
 .form-input::placeholder {
-    color:
-        rgba(
-            255,
-            255,
-            255,
-            0.30
-        );
+
+    color: #FFFFFF;
+
+    opacity: 0.30;
 }
 
 .form-input:focus {
+
     border-color:
         rgba(
-            234,
-            46,
-            131,
+            209,
+            0,
+            255,
             0.70
         );
 
@@ -672,11 +752,12 @@ input {
         );
 
     box-shadow:
+
         0 0 0 3px
         rgba(
-            234,
-            46,
-            131,
+            209,
+            0,
+            255,
             0.09
         );
 }
@@ -687,10 +768,12 @@ input {
 ========================================= */
 
 .input-wrapper {
+
     position: relative;
 }
 
 .password-input {
+
     padding-right: 50px;
 }
 
@@ -700,6 +783,7 @@ input {
 ========================================= */
 
 .toggle-password {
+
     position: absolute;
 
     top: 50%;
@@ -715,21 +799,47 @@ input {
 
     background: transparent;
 
-    color:
-        rgba(
-            255,
-            255,
-            255,
-            0.58
-        );
+    color: #FFFFFF;
+
+    opacity: 0.58;
 
     cursor: pointer;
 
     font-size: 16px;
+
+    transition:
+        color 0.2s ease,
+        opacity 0.2s ease;
 }
 
 .toggle-password:hover {
+
     color: var(--pink);
+
+    opacity: 1;
+}
+
+
+/* =========================================
+   PASSWORD LABEL ROW
+========================================= */
+
+.password-label-row {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-bottom: 8px;
+}
+
+.password-label-row label {
+
+    margin-bottom: 0;
 }
 
 
@@ -738,16 +848,7 @@ input {
 ========================================= */
 
 .forgot-password {
-    display: flex;
 
-    justify-content: flex-end;
-
-    margin-top: -7px;
-
-    margin-bottom: 20px;
-}
-
-.forgot-password a {
     font-size: 12px;
 
     color: var(--pink);
@@ -755,12 +856,75 @@ input {
     text-decoration: none;
 
     font-weight: 600;
+
+    transition:
+        color 0.2s ease;
 }
 
-.forgot-password a:hover {
+.forgot-password:hover {
+
     color: var(--pink-light);
 
     text-decoration: underline;
+}
+
+
+/* =========================================
+   FIELD MESSAGE
+========================================= */
+
+.field-message {
+
+    min-height: 0;
+
+    margin-top: 5px;
+
+    font-size: 11px;
+
+    line-height: 1.4;
+}
+
+.field-message.error {
+
+    color: #FFFFFF;
+
+    opacity: 0.85;
+}
+
+
+/* =========================================
+   REMEMBER ME
+========================================= */
+
+.remember-me {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    margin-top: 2px;
+
+    margin-bottom: 18px;
+
+    color: #FFFFFF;
+
+    opacity: 0.72;
+
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+.remember-me input {
+
+    width: 15px;
+    height: 15px;
+
+    accent-color: var(--pink);
+
+    cursor: pointer;
 }
 
 
@@ -769,6 +933,7 @@ input {
 ========================================= */
 
 .form-status {
+
     min-height: 20px;
 
     margin-bottom: 14px;
@@ -781,20 +946,25 @@ input {
 }
 
 .form-status.error {
-    color: #F18B8B;
+
+    color: #FFFFFF;
+
+    opacity: 0.90;
 }
 
 .form-status.success {
-    color: #72D6A1;
+
+    color: var(--gold-light);
 }
 
 
 /* =========================================
    LOGIN BUTTON
-   DEEP GOLD — PREMIUM ACTION
+   PREMIUM GOLD
 ========================================= */
 
 .login-button {
+
     width: 100%;
 
     height: 50px;
@@ -806,14 +976,15 @@ input {
     cursor: pointer;
 
     background:
+
         linear-gradient(
             135deg,
-            #E5C45A,
-            #D4AF37 55%,
-            #B88916
+            #E0B94A,
+            #C99A22 55%,
+            #A9790F
         );
 
-    color: #17120A;
+    color: #0B0A0F;
 
     font-size: 12px;
 
@@ -822,40 +993,53 @@ input {
     letter-spacing: 1px;
 
     box-shadow:
+
         0 10px 30px
         rgba(
-            212,
-            175,
-            55,
+            201,
+            154,
+            34,
             0.16
         );
 
     transition:
+
         transform 0.2s ease,
+
         box-shadow 0.2s ease,
+
+        filter 0.2s ease,
+
         opacity 0.2s ease;
 }
 
 .login-button:hover {
+
     transform:
         translateY(-1px);
 
+    filter:
+        brightness(1.06);
+
     box-shadow:
+
         0 14px 35px
         rgba(
-            212,
-            175,
-            55,
+            201,
+            154,
+            34,
             0.25
         );
 }
 
 .login-button:active {
+
     transform:
         translateY(0);
 }
 
 .login-button:disabled {
+
     cursor: not-allowed;
 
     opacity: 0.65;
@@ -868,7 +1052,8 @@ input {
    BOTTOM REGISTER
 ========================================= */
 
-.bottom-register {
+.bottom-login {
+
     margin-top: 23px;
 
     padding-top: 20px;
@@ -886,24 +1071,25 @@ input {
 
     font-size: 12px;
 
-    color:
-        rgba(
-            255,
-            255,
-            255,
-            0.50
-        );
+    color: #FFFFFF;
+
+    opacity: 0.50;
 }
 
-.bottom-register a {
+.bottom-login a {
+
     color: var(--pink);
 
     text-decoration: none;
 
     font-weight: 700;
+
+    transition:
+        color 0.2s ease;
 }
 
-.bottom-register a:hover {
+.bottom-login a:hover {
+
     color: var(--pink-light);
 }
 
@@ -913,6 +1099,7 @@ input {
 ========================================= */
 
 .footer {
+
     padding:
         22px 15px;
 
@@ -921,19 +1108,15 @@ input {
     border-top:
         1px solid
         rgba(
-            234,
-            46,
-            131,
+            209,
+            0,
+            255,
             0.12
         );
 
-    color:
-        rgba(
-            255,
-            255,
-            255,
-            0.35
-        );
+    color: #FFFFFF;
+
+    opacity: 0.35;
 
     font-size: 10px;
 
@@ -948,6 +1131,7 @@ input {
 button:focus-visible,
 a:focus-visible,
 input:focus-visible {
+
     outline:
         2px solid
         var(--pink);
@@ -957,23 +1141,26 @@ input:focus-visible {
 
 
 /* =========================================
-   TABLET / MOBILE
+   TABLET
 ========================================= */
 
 @media (max-width: 850px) {
 
     .main {
+
         padding:
             35px 18px 45px;
     }
 
     .login-wrapper {
+
         grid-template-columns: 1fr;
 
         gap: 35px;
     }
 
     .info-panel {
+
         max-width: 600px;
 
         text-align: center;
@@ -983,14 +1170,15 @@ input:focus-visible {
     }
 
     .info-panel > p {
+
         margin:
             0 auto;
     }
 
     .benefits {
+
         text-align: left;
     }
-
 }
 
 
@@ -1001,36 +1189,43 @@ input:focus-visible {
 @media (max-width: 520px) {
 
     .header-inner {
+
         min-height: 70px;
     }
 
     .login-top {
+
         font-size: 11px;
     }
 
     .brand-name {
+
         font-size: 24px;
 
         letter-spacing: -0.8px;
     }
 
     .brand-tagline {
+
         font-size: 7px;
 
         letter-spacing: 1.8px;
     }
 
     .finora-mark {
+
         width: 36px;
         height: 42px;
     }
 
     .main {
+
         padding:
             25px 13px 35px;
     }
 
     .form-card {
+
         padding:
             24px 18px;
 
@@ -1038,13 +1233,14 @@ input:focus-visible {
     }
 
     .form-header h2 {
+
         font-size: 24px;
     }
 
     .info-panel h1 {
+
         font-size: 42px;
     }
-
 }
 
 
@@ -1055,6 +1251,7 @@ input:focus-visible {
 @media (max-width: 390px) {
 
     .header-inner {
+
         width:
             calc(
                 100% - 20px
@@ -1062,38 +1259,44 @@ input:focus-visible {
     }
 
     .brand-name {
+
         font-size: 21px;
     }
 
     .brand-tagline {
+
         font-size: 6px;
 
         letter-spacing: 1.5px;
     }
 
     .finora-mark {
+
         width: 32px;
         height: 38px;
     }
 
     .login-top {
+
         font-size: 10px;
     }
 
     .main {
+
         padding:
             22px 10px 30px;
     }
 
     .form-card {
+
         padding:
             21px 15px;
     }
 
     .info-panel h1 {
+
         font-size: 38px;
     }
-
 }
 
 
@@ -1104,12 +1307,14 @@ input:focus-visible {
 @media (prefers-reduced-motion: reduce) {
 
     html {
+
         scroll-behavior: auto;
     }
 
     *,
     *::before,
     *::after {
+
         transition-duration:
             0.01ms !important;
 
