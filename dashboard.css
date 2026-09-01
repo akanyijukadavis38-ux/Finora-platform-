@@ -456,6 +456,14 @@ svg {
     overflow: hidden;
 
     margin-bottom: 34px;
+
+    /*
+       IMPORTANT:
+       The carousel itself owns the full available width.
+       This prevents banners from shifting outside their
+       intended position.
+    */
+    isolation: isolate;
 }
 
 
@@ -467,6 +475,12 @@ svg {
     display: flex;
 
     width: 100%;
+
+    /*
+       Prevent flex children from shrinking and make every
+       slide exactly the width of the visible carousel.
+    */
+    flex-wrap: nowrap;
 
     transform: translate3d(0, 0, 0);
 
@@ -482,25 +496,41 @@ svg {
     will-change: transform;
 
     touch-action: pan-y;
+
+    /*
+       Avoid accidental horizontal spacing between slides.
+    */
+    gap: 0;
 }
 
 
 /* =========================================================
    INDIVIDUAL BANNER
-   IMPORTANT:
-   Every banner is exactly one full carousel width.
+   EXACTLY ONE FULL CAROUSEL WIDTH
    ========================================================= */
 
 .dashboard-banner {
     position: relative;
 
+    /*
+       Critical carousel positioning.
+       Each banner occupies exactly one slide width.
+    */
     flex:
         0 0 100%;
 
     width: 100%;
     min-width: 100%;
+    max-width: 100%;
 
-    height: 280px;
+    /*
+       Desktop banner height.
+       Kept large enough for artwork while avoiding an
+       excessively tall dashboard.
+    */
+    height: 285px;
+
+    min-height: 285px;
 
     overflow: hidden;
 
@@ -521,6 +551,12 @@ svg {
     box-shadow: var(--shadow);
 
     isolation: isolate;
+
+    /*
+       Prevent the banner from participating in any
+       unwanted flex shrinking.
+    */
+    flex-shrink: 0;
 }
 
 
@@ -555,7 +591,6 @@ svg {
 
 /* =========================================================
    FIVE BANNER BACKGROUNDS
-   These are the base colors behind the artwork.
    ========================================================= */
 
 .banner-invest {
@@ -598,13 +633,6 @@ svg {
         );
 }
 
-
-/*
-   Optional fifth banner class.
-   If the fifth banner uses a different class in HTML,
-   we will match it when we inspect the HTML.
-*/
-
 .banner-community {
     background:
         linear-gradient(
@@ -621,7 +649,13 @@ svg {
    ========================================================= */
 
 .banner-content {
-    width: 57%;
+    /*
+       Keep the text safely inside the left side.
+       Artwork remains on the right.
+    */
+    width: 56%;
+
+    min-width: 0;
 
     position: relative;
 
@@ -629,9 +663,9 @@ svg {
 
     padding:
         30px
-        25px
         28px
-        34px;
+        28px
+        36px;
 
     display: flex;
 
@@ -783,8 +817,14 @@ svg {
 
     top: 0;
     right: 0;
+    bottom: 0;
 
-    width: 52%;
+    /*
+       Artwork occupies the right side without changing
+       the banner's actual dimensions.
+    */
+    width: 53%;
+
     height: 100%;
 
     overflow: hidden;
@@ -803,17 +843,25 @@ svg {
     width: 100%;
     height: 100%;
 
+    /*
+       Cover ensures the artwork completely fills its
+       allocated visual area without leaving empty gaps.
+    */
     object-fit: cover;
 
+    /*
+       Right-biased positioning keeps the important visual
+       subject visible beside the HTML text overlay.
+    */
     object-position: center center;
 
-    opacity: 0.92;
+    opacity: 0.94;
 
     filter:
-        saturate(1.02)
+        saturate(1.04)
         contrast(1.04);
 
-    transform: scale(1.02);
+    transform: scale(1.015);
 
     transition:
         transform 0.7s ease,
@@ -823,7 +871,6 @@ svg {
 
 /* =========================================================
    ARTWORK LEFT BLEND
-   Keeps text readable while allowing artwork to remain visible.
    ========================================================= */
 
 .banner-artwork::before {
@@ -839,9 +886,10 @@ svg {
         linear-gradient(
             90deg,
             rgba(22, 6, 15, 1) 0%,
-            rgba(22, 6, 15, 0.92) 12%,
-            rgba(22, 6, 15, 0.65) 30%,
-            rgba(22, 6, 15, 0.22) 55%,
+            rgba(22, 6, 15, 0.94) 10%,
+            rgba(22, 6, 15, 0.70) 27%,
+            rgba(22, 6, 15, 0.32) 48%,
+            rgba(22, 6, 15, 0.08) 68%,
             rgba(22, 6, 15, 0) 100%
         );
 
@@ -1016,11 +1064,6 @@ svg {
     font-size: 12px;
 }
 
-
-/* =========================================================
-   MAGENTA ICONS
-   ========================================================= */
-
 .wallet-icon {
     width: 54px;
     height: 54px;
@@ -1066,11 +1109,6 @@ svg {
     width: 30px;
     height: 30px;
 }
-
-
-/* =========================================================
-   WALLET ACTIONS
-   ========================================================= */
 
 .wallet-actions {
     display: grid;
@@ -1176,11 +1214,6 @@ svg {
             0.32
         );
 }
-
-
-/* =========================================================
-   SUMMARY ICONS
-   ========================================================= */
 
 .summary-icon {
     width: 48px;
@@ -1374,11 +1407,6 @@ svg {
             0.42
         );
 }
-
-
-/* =========================================================
-   QUICK ACTION ICONS
-   ========================================================= */
 
 .quick-action-icon {
     width: 65px;
@@ -1672,11 +1700,6 @@ svg {
         1px solid var(--border);
 }
 
-
-/* =========================================================
-   OVERVIEW ICONS
-   ========================================================= */
-
 .overview-icon {
     width: 56px;
     height: 56px;
@@ -1808,11 +1831,6 @@ svg {
 .community-card:hover {
     transform: translateY(-3px);
 }
-
-
-/* =========================================================
-   COMMUNITY ICON
-   ========================================================= */
 
 .community-icon {
     width: 58px;
@@ -2152,18 +2170,32 @@ svg {
         grid-template-columns: 1fr;
     }
 
-    /* MAIN CAROUSEL */
+
+    /* =====================================================
+       MAIN CAROUSEL — TABLET
+       ===================================================== */
 
     .dashboard-banner {
         height: 265px;
+        min-height: 265px;
     }
 
     .banner-content {
         width: 60%;
+
+        padding:
+            27px
+            22px
+            27px
+            28px;
     }
 
     .banner-artwork {
-        width: 48%;
+        width: 50%;
+    }
+
+    .banner-image {
+        object-position: center center;
     }
 
 }
@@ -2261,20 +2293,38 @@ svg {
        MAIN BANNERS — MOBILE
        ===================================================== */
 
+    .banner-section {
+        width: 100%;
+
+        overflow: hidden;
+
+        margin-bottom: 30px;
+    }
+
     .dashboard-banner {
-        height: 225px;
+        /*
+           Mobile banner is intentionally shorter than desktop,
+           but still tall enough to display the artwork properly.
+        */
+        height: 230px;
+
+        min-height: 230px;
 
         border-radius: 19px;
     }
 
     .banner-content {
-        width: 66%;
+        /*
+           Text gets slightly more room than the artwork so
+           headings/buttons remain readable.
+        */
+        width: 67%;
 
         padding:
-            22px
-            12px
+            21px
+            10px
             20px
-            20px;
+            19px;
     }
 
     .banner-label {
@@ -2327,13 +2377,27 @@ svg {
     }
 
     .banner-artwork {
-        width: 50%;
+        /*
+           Keep the artwork on the right and vertically
+           centered inside the exact banner height.
+        */
+        width: 52%;
+
+        height: 100%;
+
+        top: 0;
+        right: 0;
     }
 
     .banner-image {
+        width: 100%;
+        height: 100%;
+
         object-position: center center;
 
-        opacity: 0.90;
+        opacity: 0.92;
+
+        transform: scale(1.015);
     }
 
     .banner-artwork::before {
@@ -2341,11 +2405,36 @@ svg {
             linear-gradient(
                 90deg,
                 rgba(22, 6, 15, 1) 0%,
-                rgba(22, 6, 15, 0.88) 18%,
-                rgba(22, 6, 15, 0.48) 42%,
-                rgba(22, 6, 15, 0.08) 78%,
-                transparent 100%
+                rgba(22, 6, 15, 0.90) 15%,
+                rgba(22, 6, 15, 0.52) 38%,
+                rgba(22, 6, 15, 0.16) 67%,
+                rgba(22, 6, 15, 0) 100%
             );
+    }
+
+    .banner-artwork::after {
+        background:
+            linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0.06),
+                transparent 40%,
+                rgba(0, 0, 0, 0.16)
+            );
+    }
+
+    .banner-indicators {
+        margin-top: 11px;
+
+        gap: 6px;
+    }
+
+    .banner-dot {
+        width: 7px;
+        height: 7px;
+    }
+
+    .banner-dot.active {
+        width: 22px;
     }
 
 
@@ -2582,17 +2671,25 @@ svg {
        ===================================================== */
 
     .dashboard-banner {
-        height: 215px;
+        height: 218px;
+
+        min-height: 218px;
     }
 
     .banner-content {
-        width: 68%;
+        width: 69%;
 
-        padding-left: 16px;
+        padding:
+            19px
+            8px
+            18px
+            16px;
     }
 
     .banner-content h2 {
         font-size: 22px;
+
+        max-width: 190px;
     }
 
     .banner-content p {
@@ -2600,11 +2697,26 @@ svg {
     }
 
     .banner-artwork {
-        width: 48%;
+        width: 50%;
+
+        height: 100%;
     }
 
     .banner-image {
         object-position: center center;
+    }
+
+    .banner-button {
+        margin-top: 9px;
+
+        padding:
+            7px 10px;
+
+        font-size: 7.5px;
+    }
+
+    .banner-indicators {
+        margin-top: 10px;
     }
 
     .quick-actions {
