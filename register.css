@@ -1,73 +1,41 @@
 /* =========================================================
-   FINORA — REGISTER PAGE
-   MASTER PREMIUM BRAND SYSTEM
-
-   BRAND:
-   • MAGENTA
-   • GOLD
-   • PURE WHITE
-   • DEEP CHARCOAL / BLACK
-
-   NO PURPLE
-   NO ORANGE
-   NO CHEAP ICONS
-========================================================= */
-
-
-/* =========================================================
-   ROOT
+   FINORA REGISTER
+   PREMIUM BRAND SYSTEM
+   MAGENTA • GOLD • WHITE • BLACK
 ========================================================= */
 
 :root {
 
-    /* BACKGROUND */
     --black: #050507;
-    --black-2: #08080B;
-    --charcoal: #0D0D11;
-    --charcoal-2: #131318;
-    --card: #111116;
-    --card-2: #17171D;
+    --black-soft: #09090C;
+    --charcoal: #101015;
+    --charcoal-light: #17171D;
 
-    /* PRIMARY MAGENTA */
-    --magenta: #E6007E;
-    --magenta-deep: #B80063;
-    --magenta-light: #FF3FA5;
-    --magenta-bright: #FF5BB5;
+    /* REAL FINORA MAGENTA */
+    --magenta: #E00072;
+    --magenta-bright: #F00083;
+    --magenta-light: #FF4AA4;
+    --magenta-dark: #A90056;
 
-    /* PREMIUM GOLD */
+    /* FINORA GOLD */
     --gold: #D4AF37;
-    --gold-light: #F0D56A;
-    --gold-deep: #A77C12;
+    --gold-light: #F3D76B;
+    --gold-dark: #A77B12;
 
-    /* WHITE */
+    /* PURE WHITE */
     --white: #FFFFFF;
-    --white-soft: rgba(255,255,255,.88);
-    --white-muted: rgba(255,255,255,.62);
-    --white-faint: rgba(255,255,255,.42);
+    --white-90: rgba(255,255,255,.90);
+    --white-70: rgba(255,255,255,.70);
+    --white-50: rgba(255,255,255,.50);
+    --white-30: rgba(255,255,255,.30);
 
-    /* STATUS */
-    --success: #62E6AA;
-    --danger: #FF6B86;
+    --success: #62E6A5;
+    --danger: #FF6682;
 
-    /* BORDERS */
-    --border:
-        rgba(255,255,255,.085);
+    --border: rgba(255,255,255,.09);
 
-    --magenta-border:
-        rgba(230,0,126,.28);
-
-    --gold-border:
-        rgba(212,175,55,.25);
-
-    /* SHADOWS */
     --shadow:
-        0 30px 90px rgba(0,0,0,.58);
-
-    --magenta-shadow:
-        0 15px 45px rgba(230,0,126,.20);
-
-    --gold-shadow:
-        0 15px 45px rgba(212,175,55,.16);
+        0 30px 90px rgba(0,0,0,.60);
 }
 
 
@@ -97,7 +65,6 @@ body {
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
-        Roboto,
         Arial,
         sans-serif;
 
@@ -106,23 +73,33 @@ body {
     background:
 
         radial-gradient(
-            circle at 8% 8%,
-            rgba(230,0,126,.11),
+            circle at 8% 12%,
+            rgba(224,0,114,.13),
             transparent 32%
         ),
 
         radial-gradient(
-            circle at 92% 90%,
-            rgba(212,175,55,.065),
+            circle at 92% 86%,
+            rgba(212,175,55,.055),
             transparent 30%
         ),
 
         linear-gradient(
             135deg,
             #050507 0%,
-            #0A090D 48%,
+            #0B090D 50%,
             #050507 100%
         );
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input {
+    font-family: inherit;
 }
 
 
@@ -138,13 +115,11 @@ body {
     flex-direction: column;
 
     position: relative;
-
-    isolation: isolate;
 }
 
 
 /* =========================================================
-   BACKGROUND LIGHT
+   PREMIUM BACKGROUND LIGHT
 ========================================================= */
 
 .page::before {
@@ -153,18 +128,18 @@ body {
 
     position: fixed;
 
-    width: 520px;
-    height: 520px;
+    width: 500px;
+    height: 500px;
 
     top: -300px;
-    left: -220px;
+    left: -230px;
 
     border-radius: 50%;
 
     background:
         radial-gradient(
             circle,
-            rgba(230,0,126,.13),
+            rgba(224,0,114,.16),
             transparent 68%
         );
 
@@ -180,18 +155,18 @@ body {
 
     position: fixed;
 
-    width: 450px;
-    height: 450px;
+    width: 420px;
+    height: 420px;
 
-    right: -250px;
-    bottom: -260px;
+    right: -240px;
+    bottom: -250px;
 
     border-radius: 50%;
 
     background:
         radial-gradient(
             circle,
-            rgba(212,175,55,.075),
+            rgba(212,175,55,.08),
             transparent 68%
         );
 
@@ -209,24 +184,19 @@ body {
 
     width: 100%;
 
-    border-bottom:
-        1px solid
-        rgba(230,0,126,.14);
-
     background:
         rgba(5,5,7,.88);
+
+    border-bottom:
+        1px solid
+        rgba(224,0,114,.18);
 
     backdrop-filter:
         blur(18px);
 
     -webkit-backdrop-filter:
         blur(18px);
-
-    position: relative;
-
-    z-index: 10;
 }
-
 
 .header-inner {
 
@@ -261,27 +231,16 @@ body {
 
     align-items: center;
 
+    color: var(--white);
+
     text-decoration: none;
-
-    color: inherit;
-
-    min-width: 0;
 }
-
-
-/*
-   The old SVG logo has been removed from HTML.
-   This keeps the wordmark clean until the final
-   FINORA logo is selected.
-*/
 
 .brand-text {
 
     display: flex;
 
     flex-direction: column;
-
-    min-width: 0;
 }
 
 
@@ -293,8 +252,6 @@ body {
 
     display: flex;
 
-    align-items: baseline;
-
     font-family:
         "Times New Roman",
         Times,
@@ -302,29 +259,25 @@ body {
 
     font-size: 30px;
 
+    line-height: .9;
+
     font-weight: 700;
 
     letter-spacing: -1px;
-
-    line-height: .9;
-
-    white-space: nowrap;
 }
-
 
 .brand-name .fin {
 
     color: var(--white);
 }
 
-
 .brand-name .ora {
 
-    color: var(--magenta);
+    color: var(--magenta-bright);
 
     text-shadow:
         0 0 18px
-        rgba(230,0,126,.22);
+        rgba(224,0,114,.28);
 }
 
 
@@ -332,16 +285,13 @@ body {
 
     margin-top: 7px;
 
-    color:
-        var(--gold);
+    color: var(--gold);
 
     font-size: 7px;
 
     font-weight: 800;
 
-    letter-spacing: 2.6px;
-
-    white-space: nowrap;
+    letter-spacing: 2.5px;
 }
 
 
@@ -351,39 +301,26 @@ body {
 
 .login-top {
 
-    color:
-        var(--white-muted);
+    color: var(--white-50);
 
     font-size: 13px;
-
-    white-space: nowrap;
 }
-
 
 .login-top a {
 
     margin-left: 5px;
 
-    color:
-        var(--magenta-light);
+    color: var(--magenta-bright);
 
     font-weight: 800;
 
-    text-decoration: none;
-
     transition:
-        color .2s ease,
-        text-shadow .2s ease;
+        color .2s ease;
 }
-
 
 .login-top a:hover {
 
     color: var(--white);
-
-    text-shadow:
-        0 0 14px
-        rgba(230,0,126,.45);
 }
 
 
@@ -395,8 +332,6 @@ body {
 
     flex: 1;
 
-    width: 100%;
-
     display: flex;
 
     align-items: center;
@@ -404,12 +339,12 @@ body {
     justify-content: center;
 
     padding:
-        58px 20px 72px;
+        55px 20px 70px;
 }
 
 
 /* =========================================================
-   REGISTER WRAPPER
+   REGISTER LAYOUT
 ========================================================= */
 
 .register-wrapper {
@@ -423,10 +358,10 @@ body {
     display: grid;
 
     grid-template-columns:
-        minmax(0,.88fr)
-        minmax(400px,1.12fr);
+        .88fr
+        1.12fr;
 
-    gap: 46px;
+    gap: 48px;
 
     align-items: center;
 }
@@ -443,36 +378,28 @@ body {
     overflow: hidden;
 
     padding:
-        46px 40px;
+        48px 42px;
 
     border-radius: 26px;
 
     background:
 
-        radial-gradient(
-            circle at 10% 0%,
-            rgba(230,0,126,.12),
-            transparent 40%
-        ),
-
         linear-gradient(
             145deg,
-            rgba(22,16,22,.98),
-            rgba(8,8,11,.98)
+            rgba(22,18,23,.97),
+            rgba(7,7,10,.99)
         );
 
     border:
         1px solid
-        var(--magenta-border);
+        rgba(224,0,114,.28);
 
     box-shadow:
         var(--shadow);
-
-    isolation: isolate;
 }
 
 
-/* MAGENTA EDGE LIGHT */
+/* MAGENTA TOP ACCENT */
 
 .info-panel::before {
 
@@ -481,26 +408,26 @@ body {
     position: absolute;
 
     top: 0;
-    left: 0;
+    left: 35px;
 
-    width: 90px;
-    height: 1px;
+    width: 100px;
+    height: 2px;
 
     background:
         linear-gradient(
             90deg,
-            transparent,
             var(--magenta),
+            var(--magenta-bright),
             transparent
         );
 
     box-shadow:
         0 0 18px
-        rgba(230,0,126,.65);
+        rgba(224,0,114,.60);
 }
 
 
-/* GOLD ATMOSPHERE */
+/* GOLD CORNER GLOW */
 
 .info-panel::after {
 
@@ -511,8 +438,8 @@ body {
     width: 220px;
     height: 220px;
 
-    right: -130px;
-    bottom: -130px;
+    right: -150px;
+    bottom: -150px;
 
     border-radius: 50%;
 
@@ -522,10 +449,6 @@ body {
             rgba(212,175,55,.12),
             transparent 70%
         );
-
-    pointer-events: none;
-
-    z-index: -1;
 }
 
 
@@ -535,42 +458,34 @@ body {
 
 .info-kicker {
 
-    display: inline-flex;
+    display: flex;
 
     align-items: center;
 
     gap: 9px;
 
-    color:
-        var(--gold);
+    color: var(--gold);
 
     font-size: 10px;
 
     font-weight: 900;
 
     letter-spacing: 2.2px;
-
-    text-transform: uppercase;
 }
-
 
 .info-kicker::before {
 
     content: "";
 
-    width: 25px;
+    width: 28px;
     height: 1px;
 
     background:
-        linear-gradient(
-            90deg,
-            var(--magenta),
-            var(--gold)
-        );
+        var(--magenta);
 
     box-shadow:
-        0 0 8px
-        rgba(230,0,126,.35);
+        0 0 10px
+        rgba(224,0,114,.65);
 }
 
 
@@ -580,33 +495,32 @@ body {
 
 .info-panel h1 {
 
-    margin-top: 19px;
+    margin-top: 20px;
 
     color: var(--white);
 
     font-size:
         clamp(
-            39px,
+            40px,
             4.5vw,
-            58px
+            60px
         );
 
     line-height: .98;
 
     font-weight: 800;
 
-    letter-spacing: -2.5px;
+    letter-spacing: -2.6px;
 }
 
 
 .info-panel h1 span {
 
-    color:
-        var(--magenta);
+    color: var(--magenta-bright);
 
     text-shadow:
         0 0 25px
-        rgba(230,0,126,.18);
+        rgba(224,0,114,.20);
 }
 
 
@@ -614,10 +528,9 @@ body {
 
     max-width: 500px;
 
-    margin-top: 21px;
+    margin-top: 22px;
 
-    color:
-        var(--white-muted);
+    color: var(--white-70);
 
     font-size: 14px;
 
@@ -637,7 +550,7 @@ body {
 
     flex-direction: column;
 
-    gap: 21px;
+    gap: 22px;
 }
 
 
@@ -652,17 +565,17 @@ body {
 
 
 /* =========================================================
-   PREMIUM ICON BADGE
+   PREMIUM SVG ICON
 ========================================================= */
 
 .benefit-icon {
 
     position: relative;
 
-    width: 42px;
-    height: 42px;
+    width: 43px;
+    height: 43px;
 
-    flex: 0 0 42px;
+    flex: 0 0 43px;
 
     display: flex;
 
@@ -673,16 +586,15 @@ body {
     border-radius: 13px;
 
     background:
-
         linear-gradient(
             145deg,
-            rgba(230,0,126,.16),
-            rgba(212,175,55,.055)
+            rgba(224,0,114,.15),
+            rgba(212,175,55,.045)
         );
 
     border:
         1px solid
-        rgba(230,0,126,.30);
+        rgba(224,0,114,.35);
 
     box-shadow:
 
@@ -691,46 +603,38 @@ body {
         rgba(255,255,255,.08),
 
         0 8px 25px
-        rgba(0,0,0,.28),
+        rgba(0,0,0,.30),
 
-        0 0 18px
-        rgba(230,0,126,.07);
+        0 0 20px
+        rgba(224,0,114,.08);
+}
 
-    color:
+
+.benefit-icon svg {
+
+    width: 20px;
+    height: 20px;
+
+    fill: none;
+
+    stroke:
         var(--gold);
 
-    font-size: 0;
+    stroke-width: 1.8;
 
-    overflow: hidden;
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+
+    filter:
+        drop-shadow(
+            0 0 5px
+            rgba(212,175,55,.18)
+        );
 }
 
 
-/* PREMIUM INNER FRAME */
-
-.benefit-icon::before {
-
-    content: "";
-
-    position: absolute;
-
-    width: 19px;
-    height: 19px;
-
-    border:
-        1px solid
-        rgba(212,175,55,.72);
-
-    border-radius: 6px;
-
-    transform: rotate(45deg);
-
-    box-shadow:
-        0 0 12px
-        rgba(212,175,55,.12);
-}
-
-
-/* SMALL MAGENTA CENTER */
+/* MAGENTA INNER DOT */
 
 .benefit-icon::after {
 
@@ -738,154 +642,20 @@ body {
 
     position: absolute;
 
-    width: 6px;
-    height: 6px;
+    width: 4px;
+    height: 4px;
+
+    right: 7px;
+    bottom: 7px;
 
     border-radius: 50%;
 
     background:
-        var(--magenta);
-
-    box-shadow:
-        0 0 10px
-        rgba(230,0,126,.65);
-}
-
-
-/*
-   Each icon gets a different premium treatment.
-   The original text symbols remain hidden.
-*/
-
-
-.benefit:nth-child(1)
-.benefit-icon {
-
-    border-color:
-        rgba(212,175,55,.35);
-}
-
-
-.benefit:nth-child(1)
-.benefit-icon::before {
-
-    width: 17px;
-    height: 9px;
-
-    border:
-        0 0 2px 2px
-        solid var(--gold);
-
-    border-radius: 0;
-
-    transform:
-        rotate(-45deg)
-        translate(1px,-1px);
-
-    box-shadow: none;
-}
-
-
-.benefit:nth-child(1)
-.benefit-icon::after {
-
-    width: 3px;
-    height: 3px;
-
-    background:
-        var(--gold);
+        var(--magenta-bright);
 
     box-shadow:
         0 0 8px
-        rgba(212,175,55,.65);
-}
-
-
-/* SECOND ICON */
-
-.benefit:nth-child(2)
-.benefit-icon::before {
-
-    width: 18px;
-    height: 18px;
-
-    border:
-        1px solid
-        var(--magenta);
-
-    border-radius: 50%;
-
-    transform: none;
-}
-
-
-.benefit:nth-child(2)
-.benefit-icon::after {
-
-    width: 7px;
-    height: 7px;
-
-    background:
-        var(--gold);
-
-    box-shadow:
-        0 0 12px
-        rgba(212,175,55,.55);
-}
-
-
-/* THIRD ICON */
-
-.benefit:nth-child(3)
-.benefit-icon {
-
-    border-color:
-        rgba(212,175,55,.32);
-}
-
-
-.benefit:nth-child(3)
-.benefit-icon::before {
-
-    width: 18px;
-    height: 18px;
-
-    border:
-        2px solid
-        var(--gold);
-
-    border-left-color:
-        transparent;
-
-    border-bottom-color:
-        transparent;
-
-    border-radius: 3px;
-
-    transform:
-        rotate(45deg);
-
-    box-shadow: none;
-}
-
-
-.benefit:nth-child(3)
-.benefit-icon::after {
-
-    width: 18px;
-    height: 2px;
-
-    border-radius: 5px;
-
-    background:
-        var(--magenta);
-
-    transform:
-        rotate(-45deg);
-
-    box-shadow:
-        0 0 8px
-        rgba(230,0,126,.45);
+        rgba(224,0,114,.70);
 }
 
 
@@ -895,21 +665,19 @@ body {
 
 .benefit h3 {
 
-    color:
-        var(--white);
+    color: var(--white);
 
     font-size: 14px;
 
     font-weight: 750;
 
-    margin-bottom: 4px;
+    margin-bottom: 5px;
 }
 
 
 .benefit p {
 
-    color:
-        var(--white-faint);
+    color: var(--white-50);
 
     font-size: 12px;
 
@@ -925,7 +693,8 @@ body {
 
     position: relative;
 
-    padding: 39px;
+    padding:
+        40px;
 
     border-radius: 26px;
 
@@ -933,13 +702,13 @@ body {
 
         linear-gradient(
             145deg,
-            rgba(22,22,27,.98),
-            rgba(9,9,12,.99)
+            rgba(20,20,25,.98),
+            rgba(8,8,11,.99)
         );
 
     border:
         1px solid
-        var(--border);
+        rgba(255,255,255,.09);
 
     box-shadow:
         var(--shadow);
@@ -948,7 +717,7 @@ body {
 }
 
 
-/* TOP MAGENTA LINE */
+/* PREMIUM MAGENTA/GOLD TOP LINE */
 
 .form-card::before {
 
@@ -957,10 +726,10 @@ body {
     position: absolute;
 
     top: 0;
-    left: 12%;
+    left: 8%;
 
-    width: 76%;
-    height: 1px;
+    width: 84%;
+    height: 2px;
 
     background:
         linear-gradient(
@@ -968,12 +737,13 @@ body {
             transparent,
             var(--magenta),
             var(--gold),
+            var(--magenta),
             transparent
         );
 
     box-shadow:
-        0 0 15px
-        rgba(230,0,126,.32);
+        0 0 18px
+        rgba(224,0,114,.30);
 }
 
 
@@ -983,22 +753,21 @@ body {
 
 .form-header {
 
-    margin-bottom: 29px;
+    margin-bottom: 30px;
 }
 
 
 .form-header h2 {
 
-    color:
-        var(--white);
+    color: var(--white);
 
-    font-size: 29px;
+    font-size: 30px;
 
     line-height: 1.1;
 
     font-weight: 800;
 
-    letter-spacing: -.7px;
+    letter-spacing: -.8px;
 }
 
 
@@ -1006,8 +775,7 @@ body {
 
     margin-top: 9px;
 
-    color:
-        var(--white-faint);
+    color: var(--white-50);
 
     font-size: 13px;
 
@@ -1031,32 +799,24 @@ body {
 
     margin-bottom: 8px;
 
-    color:
-        var(--white-soft);
+    color: var(--white-90);
 
     font-size: 11px;
 
     font-weight: 700;
-
-    letter-spacing: .1px;
 }
 
 
-/* OPTIONAL LABEL */
-
 .optional {
 
-    color:
-        var(--gold);
+    color: var(--gold);
 
     font-size: 9px;
-
-    font-weight: 600;
 }
 
 
 /* =========================================================
-   INPUT WRAPPER
+   INPUT
 ========================================================= */
 
 .input-wrapper,
@@ -1065,10 +825,6 @@ body {
     position: relative;
 }
 
-
-/* =========================================================
-   INPUT
-========================================================= */
 
 .form-input {
 
@@ -1090,65 +846,58 @@ body {
     background:
         rgba(255,255,255,.025);
 
-    color:
-        var(--white);
+    color: var(--white);
 
     font-size: 14px;
 
     transition:
-        border-color .22s ease,
-        background .22s ease,
-        box-shadow .22s ease,
-        transform .22s ease;
+        .22s ease;
 }
 
 
 .form-input::placeholder {
 
     color:
-        rgba(255,255,255,.28);
+        rgba(255,255,255,.27);
 }
 
 
 .form-input:hover {
 
     border-color:
-        rgba(255,255,255,.16);
+        rgba(255,255,255,.17);
 }
 
 
 .form-input:focus {
 
     border-color:
-        rgba(230,0,126,.72);
+        var(--magenta);
 
     background:
-        rgba(230,0,126,.025);
+        rgba(224,0,114,.035);
 
     box-shadow:
-        0 0 0 3px
-        rgba(230,0,126,.075),
 
-        0 8px 25px
-        rgba(0,0,0,.18);
+        0 0 0 3px
+        rgba(224,0,114,.08),
+
+        0 8px 28px
+        rgba(0,0,0,.20);
 }
 
 
 .form-input.valid {
 
     border-color:
-        rgba(98,230,170,.48);
+        rgba(98,230,165,.48);
 }
 
 
 .form-input.invalid {
 
     border-color:
-        rgba(255,107,134,.65);
-
-    box-shadow:
-        0 0 0 3px
-        rgba(255,107,134,.055);
+        rgba(255,102,130,.65);
 }
 
 
@@ -1158,13 +907,9 @@ body {
 
 .password-input {
 
-    padding-right: 54px;
+    padding-right: 55px;
 }
 
-
-/* =========================================================
-   PASSWORD TOGGLE
-========================================================= */
 
 .toggle-password {
 
@@ -1179,29 +924,19 @@ body {
     width: 36px;
     height: 36px;
 
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
     border: 0;
 
     border-radius: 9px;
 
-    background:
-        transparent;
+    background: transparent;
 
     color:
-        rgba(255,255,255,.46);
+        var(--white-50);
 
     cursor: pointer;
 
-    font-size: 16px;
-
     transition:
-        color .2s ease,
-        background .2s ease,
-        transform .2s ease;
+        .2s ease;
 }
 
 
@@ -1212,15 +947,11 @@ body {
 
     background:
         rgba(212,175,55,.07);
-
-    transform:
-        translateY(-50%)
-        scale(1.04);
 }
 
 
 /* =========================================================
-   FIELD MESSAGE
+   FIELD MESSAGES
 ========================================================= */
 
 .field-message {
@@ -1261,7 +992,7 @@ body {
 
 .password-strength {
 
-    margin-top: 10px;
+    margin-top: 9px;
 
     display: none;
 }
@@ -1290,10 +1021,7 @@ body {
     border-radius: 20px;
 
     background:
-        rgba(255,255,255,.075);
-
-    transition:
-        .25s ease;
+        rgba(255,255,255,.08);
 }
 
 
@@ -1302,7 +1030,7 @@ body {
     margin-top: 6px;
 
     color:
-        var(--white-faint);
+        var(--white-30);
 
     font-size: 9px;
 }
@@ -1365,7 +1093,7 @@ body {
     margin-top: 7px;
 
     color:
-        var(--white-faint);
+        var(--white-50);
 
     font-size: 10px;
 
@@ -1378,9 +1106,9 @@ body {
     width: 14px;
     height: 14px;
 
-    flex-shrink: 0;
-
     margin-top: 2px;
+
+    flex-shrink: 0;
 
     accent-color:
         var(--magenta);
@@ -1393,24 +1121,12 @@ body {
         var(--gold);
 
     font-weight: 700;
-
-    text-decoration: none;
-
-    transition:
-        color .2s ease;
-}
-
-
-.terms a:hover {
-
-    color:
-        var(--magenta-light);
 }
 
 
 /* =========================================================
    CREATE ACCOUNT BUTTON
-   PREMIUM MAGENTA → GOLD EDGE
+   STRONG FINORA MAGENTA
 ========================================================= */
 
 .create-button {
@@ -1423,7 +1139,8 @@ body {
 
     margin-top: 22px;
 
-    border: 0;
+    border: 1px solid
+        rgba(255,255,255,.08);
 
     border-radius: 12px;
 
@@ -1435,9 +1152,9 @@ body {
 
         linear-gradient(
             135deg,
-            #FF2997 0%,
-            var(--magenta) 45%,
-            var(--magenta-deep) 100%
+            var(--magenta-bright) 0%,
+            var(--magenta) 48%,
+            var(--magenta-dark) 100%
         );
 
     color:
@@ -1450,16 +1167,18 @@ body {
     letter-spacing: 1px;
 
     box-shadow:
-        var(--magenta-shadow);
+
+        0 14px 35px
+        rgba(224,0,114,.24),
+
+        inset
+        0 1px 0
+        rgba(255,255,255,.18);
 
     transition:
-        transform .22s ease,
-        box-shadow .22s ease,
-        filter .22s ease;
+        .25s ease;
 }
 
-
-/* GOLD SHINE */
 
 .create-button::before {
 
@@ -1470,14 +1189,14 @@ body {
     top: 0;
     left: -120%;
 
-    width: 70%;
+    width: 65%;
     height: 100%;
 
     background:
         linear-gradient(
             90deg,
             transparent,
-            rgba(255,255,255,.20),
+            rgba(255,255,255,.25),
             transparent
         );
 
@@ -1495,11 +1214,12 @@ body {
         translateY(-2px);
 
     box-shadow:
-        0 18px 45px
-        rgba(230,0,126,.30);
 
-    filter:
-        brightness(1.06);
+        0 18px 45px
+        rgba(224,0,114,.34),
+
+        0 0 20px
+        rgba(224,0,114,.10);
 }
 
 
@@ -1561,25 +1281,25 @@ body {
         #FFB0BD;
 
     background:
-        rgba(255,107,134,.065);
+        rgba(255,102,130,.065);
 
     border:
         1px solid
-        rgba(255,107,134,.17);
+        rgba(255,102,130,.18);
 }
 
 
 .form-status.success {
 
     color:
-        #A4F5CE;
+        #A7F3CE;
 
     background:
-        rgba(98,230,170,.065);
+        rgba(98,230,165,.065);
 
     border:
         1px solid
-        rgba(98,230,170,.17);
+        rgba(98,230,165,.18);
 }
 
 
@@ -1591,16 +1311,16 @@ body {
 
     margin-top: 24px;
 
-    padding-top: 19px;
+    padding-top: 20px;
 
     border-top:
         1px solid
-        rgba(255,255,255,.065);
+        rgba(255,255,255,.07);
 
     text-align: center;
 
     color:
-        var(--white-faint);
+        var(--white-50);
 
     font-size: 11px;
 }
@@ -1612,12 +1332,6 @@ body {
         var(--magenta-light);
 
     font-weight: 800;
-
-    text-decoration: none;
-
-    transition:
-        color .2s ease,
-        text-shadow .2s ease;
 }
 
 
@@ -1625,10 +1339,6 @@ body {
 
     color:
         var(--white);
-
-    text-shadow:
-        0 0 13px
-        rgba(230,0,126,.45);
 }
 
 
@@ -1645,10 +1355,10 @@ body {
 
     border-top:
         1px solid
-        rgba(230,0,126,.10);
+        rgba(224,0,114,.12);
 
     color:
-        rgba(255,255,255,.30);
+        var(--white-30);
 
     font-size: 9px;
 
@@ -1657,7 +1367,7 @@ body {
 
 
 /* =========================================================
-   ACCESSIBILITY
+   FOCUS
 ========================================================= */
 
 button:focus-visible,
@@ -1684,7 +1394,6 @@ input:focus-visible {
             40px 18px 55px;
     }
 
-
     .register-wrapper {
 
         grid-template-columns: 1fr;
@@ -1694,13 +1403,11 @@ input:focus-visible {
         gap: 25px;
     }
 
-
     .info-panel {
 
         padding:
             38px 34px;
     }
-
 
     .benefits {
 
@@ -1728,26 +1435,22 @@ input:focus-visible {
         min-height: 70px;
     }
 
-
     .brand-name {
 
-        font-size: 26px;
+        font-size: 27px;
     }
-
 
     .brand-tagline {
 
         font-size: 6px;
 
-        letter-spacing: 1.8px;
+        letter-spacing: 1.7px;
     }
-
 
     .login-top {
 
         font-size: 11px;
     }
-
 
     .main {
 
@@ -1755,55 +1458,25 @@ input:focus-visible {
             25px 13px 45px;
     }
 
-
-    .register-wrapper {
-
-        gap: 18px;
-    }
-
-
     .info-panel {
 
         padding:
-            29px 23px;
+            30px 23px;
 
         border-radius: 21px;
     }
 
-
     .info-panel h1 {
 
         font-size: 39px;
-
-        letter-spacing:
-            -1.8px;
     }
-
-
-    .info-panel > p {
-
-        font-size: 13px;
-    }
-
 
     .benefits {
 
         display: flex;
 
         gap: 18px;
-
-        margin-top: 30px;
     }
-
-
-    .benefit-icon {
-
-        width: 39px;
-        height: 39px;
-
-        flex-basis: 39px;
-    }
-
 
     .form-card {
 
@@ -1813,22 +1486,9 @@ input:focus-visible {
         border-radius: 21px;
     }
 
-
     .form-header h2 {
 
         font-size: 26px;
-    }
-
-
-    .form-input {
-
-        height: 51px;
-    }
-
-
-    .create-button {
-
-        height: 54px;
     }
 }
 
@@ -1845,12 +1505,10 @@ input:focus-visible {
             calc(100% - 20px);
     }
 
-
     .brand-name {
 
         font-size: 23px;
     }
-
 
     .brand-tagline {
 
@@ -1859,12 +1517,10 @@ input:focus-visible {
         letter-spacing: 1.4px;
     }
 
-
     .login-top {
 
         font-size: 10px;
     }
-
 
     .main {
 
@@ -1872,19 +1528,16 @@ input:focus-visible {
             20px 10px 35px;
     }
 
-
     .info-panel {
 
         padding:
             25px 18px;
     }
 
-
     .info-panel h1 {
 
         font-size: 35px;
     }
-
 
     .form-card {
 
@@ -1901,22 +1554,17 @@ input:focus-visible {
 @media (prefers-reduced-motion: reduce) {
 
     html {
-
         scroll-behavior: auto;
     }
-
 
     *,
     *::before,
     *::after {
 
-        animation-duration:
+        transition-duration:
             .01ms !important;
 
-        animation-iteration-count:
-            1 !important;
-
-        transition-duration:
+        animation-duration:
             .01ms !important;
     }
 }
