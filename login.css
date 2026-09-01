@@ -136,7 +136,6 @@ input {
 
 /* =========================================================
    FINORA BRAND
-   NO IMAGE / NO LOGO
    TEXT-BASED WORDMARK
    ========================================================= */
 
@@ -378,45 +377,66 @@ input {
 
 /* =========================================================
    IMPROVED BENEFIT ICONS
+   IMPORTANT:
+   FORCE ICONS TO MAGENTA
+   PREVENT BLACK/EMOJI COLORS
    ========================================================= */
 
 .benefit-icon {
-    position: relative;
 
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
 
-    flex: 0 0 42px;
+    flex: 0 0 44px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 12px;
+    position: relative;
+
+    border-radius: 13px;
 
     border:
         1px solid
-        rgba(209, 0, 255, 0.38);
+        rgba(209, 0, 255, 0.55);
 
     background:
         linear-gradient(
             145deg,
-            rgba(209, 0, 255, 0.14),
+            rgba(209, 0, 255, 0.16),
             rgba(209, 0, 255, 0.035)
         );
 
-    color: var(--magenta);
+    /* VERY IMPORTANT */
+    color: #D100FF !important;
 
-    font-size: 17px;
+    font-family:
+        "Times New Roman",
+        Times,
+        serif;
+
+    font-size: 21px;
+
     font-weight: 700;
+
+    line-height: 1;
+
+    text-align: center;
+
+    -webkit-text-fill-color: #D100FF;
+
+    text-shadow:
+        0 0 10px
+        rgba(209, 0, 255, 0.45);
 
     box-shadow:
         0 0 22px
-        rgba(209, 0, 255, 0.07),
+        rgba(209, 0, 255, 0.10),
 
         inset
         0 1px 0
-        rgba(255, 255, 255, 0.06);
+        rgba(255, 255, 255, 0.07);
 
     transition:
         transform 0.2s ease,
@@ -425,7 +445,9 @@ input {
 }
 
 
-/* glowing inner ring */
+/* =========================================================
+   ICON INNER FRAME
+   ========================================================= */
 
 .benefit-icon::before {
     content: "";
@@ -438,23 +460,68 @@ input {
 
     border:
         1px solid
-        rgba(209, 0, 255, 0.10);
+        rgba(209, 0, 255, 0.18);
 
     pointer-events: none;
 }
 
 
-/* icon hover */
+/* =========================================================
+   ICON CENTER GLOW
+   ========================================================= */
 
-.benefit:hover .benefit-icon {
-    transform: translateY(-2px);
+.benefit-icon::after {
+    content: "";
 
-    border-color:
-        rgba(209, 0, 255, 0.65);
+    position: absolute;
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(209, 0, 255, 0.20);
 
     box-shadow:
-        0 0 25px
-        rgba(209, 0, 255, 0.15);
+        0 0 14px
+        rgba(209, 0, 255, 0.30);
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   MAKE THE ACTUAL ICON TEXT SIT ABOVE GLOW
+   ========================================================= */
+
+.benefit-icon {
+    isolation: isolate;
+}
+
+.benefit-icon {
+    z-index: 1;
+}
+
+
+/* =========================================================
+   BENEFIT HOVER
+   ========================================================= */
+
+.benefit:hover .benefit-icon {
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(209, 0, 255, 0.85);
+
+    box-shadow:
+        0 0 30px
+        rgba(209, 0, 255, 0.18),
+
+        inset
+        0 1px 0
+        rgba(255, 255, 255, 0.09);
 }
 
 
@@ -639,16 +706,18 @@ input {
 
 /* =========================================================
    PASSWORD TOGGLE
+   FIXED WHITE ICON
    ========================================================= */
 
 .toggle-password {
+
     position: absolute;
 
     top: 50%;
     right: 10px;
 
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
 
     transform:
         translateY(-50%);
@@ -664,13 +733,21 @@ input {
     background:
         transparent;
 
-    color: #FFFFFF;
+    color: #FFFFFF !important;
 
-    opacity: 0.55;
+    -webkit-text-fill-color: #FFFFFF;
+
+    opacity: 0.75;
 
     cursor: pointer;
 
-    font-size: 16px;
+    font-size: 17px;
+
+    line-height: 1;
+
+    text-shadow:
+        0 0 8px
+        rgba(255, 255, 255, 0.20);
 
     transition:
         color 0.2s ease,
@@ -679,12 +756,18 @@ input {
 }
 
 .toggle-password:hover {
-    color: var(--magenta);
+    color: var(--magenta) !important;
+
+    -webkit-text-fill-color: var(--magenta);
 
     background:
         rgba(209, 0, 255, 0.08);
 
     opacity: 1;
+
+    text-shadow:
+        0 0 10px
+        rgba(209, 0, 255, 0.40);
 }
 
 
@@ -1044,6 +1127,8 @@ input:focus-visible {
         height: 40px;
 
         flex-basis: 40px;
+
+        font-size: 19px;
     }
 }
 
@@ -1092,6 +1177,8 @@ input:focus-visible {
         height: 38px;
 
         flex-basis: 38px;
+
+        font-size: 18px;
     }
 }
 
