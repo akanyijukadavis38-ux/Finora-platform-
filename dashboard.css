@@ -827,7 +827,7 @@ svg {
 
     max-width: none;
 
-    object-fit: cover;
+    object-fit: contain;
 
     /*
        Keep the important artwork toward the right side.
