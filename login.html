@@ -22,6 +22,7 @@
 
     <title>FINORA | Login</title>
 
+
     <!-- =========================================
          HIDE PAGE BEFORE CSS LOADS
          PREVENTS UNSTYLED PAGE FLASH
@@ -51,9 +52,11 @@
     <noscript>
 
         <style>
+
             html {
                 visibility: visible;
             }
+
         </style>
 
     </noscript>
@@ -75,147 +78,15 @@
         <div class="header-inner">
 
 
-            <!-- FINORA BRAND -->
+            <!-- =================================
+                 FINORA BRAND
+                 NO LOGO
+            ================================== -->
 
             <a
                 href="index.html"
                 class="brand"
             >
-
-
-                <!-- FINORA LOGO -->
-
-                <svg
-                    class="finora-mark"
-                    viewBox="0 0 100 110"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-label="FINORA logo"
-                >
-
-                    <defs>
-
-                        <linearGradient
-                            id="finoraGold"
-                            x1="12"
-                            y1="5"
-                            x2="88"
-                            y2="105"
-                            gradientUnits="userSpaceOnUse"
-                        >
-
-                            <stop
-                                offset="0"
-                                stop-color="#FFF0A8"
-                            />
-
-                            <stop
-                                offset=".22"
-                                stop-color="#FFD35A"
-                            />
-
-                            <stop
-                                offset=".55"
-                                stop-color="#F2B52F"
-                            />
-
-                            <stop
-                                offset=".82"
-                                stop-color="#D88A12"
-                            />
-
-                            <stop
-                                offset="1"
-                                stop-color="#A95E05"
-                            />
-
-                        </linearGradient>
-
-
-                        <linearGradient
-                            id="finoraShine"
-                            x1="20"
-                            y1="4"
-                            x2="55"
-                            y2="70"
-                            gradientUnits="userSpaceOnUse"
-                        >
-
-                            <stop
-                                offset="0"
-                                stop-color="#FFF8D0"
-                            />
-
-                            <stop
-                                offset=".45"
-                                stop-color="#FFE27A"
-                            />
-
-                            <stop
-                                offset="1"
-                                stop-color="#E9A51E"
-                            />
-
-                        </linearGradient>
-
-                    </defs>
-
-
-                    <path
-                        fill="url(#finoraGold)"
-                        d="
-                            M20 8
-                            C21 5 24 3 28 3
-                            H82
-                            C85 3 87 5 85 8
-                            L78 19
-                            C77 21 75 22 72 22
-                            H46
-                            C39 22 34 24 29 27
-                            C25 30 22 33 20 37
-                            L15 49
-                            C14 52 16 54 19 52
-                            L28 46
-                            C33 42 39 40 45 40
-                            H67
-                            C70 40 72 42 70 45
-                            L63 56
-                            C62 58 60 59 57 59
-                            H46
-                            C40 59 36 62 33 67
-                            C30 72 27 80 24 88
-                            L20 101
-                            H5
-                            L18 56
-                            C20 49 23 42 27 37
-                            C32 30 39 27 47 26
-                            H72
-                            L77 18
-                            H43
-                            C34 18 27 21 21 27
-                            L16 32
-                            Z
-                        "
-                    ></path>
-
-
-                    <path
-                        fill="url(#finoraShine)"
-                        opacity=".72"
-                        d="
-                            M27 7
-                            H79
-                            L75 13
-                            H45
-                            C36 13 29 16 23 21
-                            L20 23
-                            L24 10
-                            C24 8 25 7 27 7
-                            Z
-                        "
-                    ></path>
-
-                </svg>
-
 
                 <div class="brand-text">
 
@@ -241,7 +112,9 @@
             </a>
 
 
-            <!-- REGISTER LINK -->
+            <!-- =================================
+                 REGISTER LINK
+            ================================== -->
 
             <div class="login-top">
 
@@ -300,10 +173,14 @@
                 </p>
 
 
-                <!-- BENEFITS -->
+                <!-- =================================
+                     BENEFITS
+                ================================== -->
 
                 <div class="benefits">
 
+
+                    <!-- SECURE ACCESS -->
 
                     <div class="benefit">
 
@@ -327,6 +204,8 @@
                     </div>
 
 
+                    <!-- ACCOUNT TRACKING -->
+
                     <div class="benefit">
 
                         <div class="benefit-icon">
@@ -349,6 +228,8 @@
                     </div>
 
 
+                    <!-- GROWTH -->
+
                     <div class="benefit">
 
                         <div class="benefit-icon">
@@ -369,6 +250,7 @@
                         </div>
 
                     </div>
+
 
                 </div>
 
@@ -400,7 +282,9 @@
 
 
 
-                <!-- LOGIN FORM -->
+                <!-- =================================
+                     LOGIN FORM
+                ================================== -->
 
                 <form
                     id="loginForm"
@@ -506,18 +390,15 @@
 
                     <label class="remember-me">
 
-
                         <input
                             type="checkbox"
                             id="rememberMe"
                             name="rememberMe"
                         >
 
-
                         <span>
                             Remember me
                         </span>
-
 
                     </label>
 
@@ -600,10 +481,9 @@
 <script src="login.js?v=1"></script>
 
 
+
 <!-- =========================================
      CSS FALLBACK
-     If CSS fails to load, reveal page after
-     a short delay instead of leaving it blank.
 ========================================== -->
 
 <script>
