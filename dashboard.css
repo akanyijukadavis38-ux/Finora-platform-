@@ -2,65 +2,97 @@
 
     /* =====================================================
        FINORA — MASTER BRAND PALETTE
-       DEEP PINK • DEEP GOLD • CREAM • WHITE • CHARCOAL
+       MAGENTA • GOLD • WHITE • DARK
        ===================================================== */
 
-    /* BACKGROUNDS */
+    /* BACKGROUNDS — UNCHANGED */
     --bg-dark: #0B0A0F;
     --bg-dark-2: #121116;
     --bg-dark-3: #18141A;
 
-    /* DEEP PINK ATMOSPHERE */
+    /* DARK ATMOSPHERE — UNCHANGED */
     --bg-pink: #190912;
     --bg-pink-2: #230A17;
     --bg-pink-3: #2D0B1D;
 
-    /* CARDS */
+    /* CARDS — UNCHANGED */
     --card: #171218;
     --card-light: #211820;
 
-    /* MAIN BRAND COLOR — DEEP PINK */
-    --pink: #C2185B;
-    --pink-light: #D62B6F;
-    --pink-soft: #A9144E;
-    --pink-deep: #8F1042;
-    --pink-glow: #E23B7A;
 
-    /* PREMIUM ACCENT — DEEP GOLD */
+    /* =====================================================
+       ⭐ MAIN BRAND COLOR — MAGENTA
+       ===================================================== */
+
+    --pink: #D100FF;
+    --pink-light: #E044FF;
+    --pink-soft: #B500E6;
+    --pink-deep: #9400BF;
+    --pink-glow: #F06AFF;
+
+
+    /* =====================================================
+       PREMIUM ACCENT — GOLD
+       ===================================================== */
+
     --gold: #C99A22;
     --gold-deep: #A9790F;
     --gold-light: #D9AE3A;
     --gold-rich: #E0B94A;
 
-    /* CREAM */
+
+    /* =====================================================
+       CREAM
+       ===================================================== */
+
     --cream: #F1DFB0;
     --cream-light: #F6E9C9;
 
-    /* TEXT */
+
+    /* =====================================================
+       TEXT
+       REAL WHITE = #FFFFFF
+       ===================================================== */
+
     --white: #FFFFFF;
-    --text: #F8F6F8;
+    --text: #FFFFFF;
     --muted: #A9A5AD;
 
-    /* DARK TEXT */
     --dark-text: #0B0A0F;
 
-    /* BORDERS */
-    --border: rgba(194, 24, 91, 0.20);
-    --border-strong: rgba(194, 24, 91, 0.32);
+
+    /* =====================================================
+       MAGENTA BORDERS
+       ===================================================== */
+
+    --border: rgba(209, 0, 255, 0.20);
+    --border-strong: rgba(209, 0, 255, 0.32);
 
     --gold-border: rgba(201, 154, 34, 0.28);
 
-    /* SHADOW */
+
+    /* =====================================================
+       SHADOW
+       ===================================================== */
+
     --shadow:
         0 18px 45px
         rgba(0, 0, 0, 0.55);
 
-    /* RADII */
+
+    /* =====================================================
+       RADII
+       ===================================================== */
+
     --radius-lg: 24px;
     --radius-md: 18px;
     --radius-sm: 14px;
 
-    /* CONTAINER */
+
+    /* =====================================================
+       CONTAINER
+       ===================================================== */
+
     --container: 1180px;
 }
 
@@ -165,7 +197,7 @@ svg {
 
     border-bottom:
         1px solid
-        rgba(194, 24, 91, 0.20);
+        rgba(209, 0, 255, 0.20);
 
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
@@ -184,8 +216,6 @@ svg {
 
 /* =========================================================
    FINORA BRAND
-   IMPORTANT:
-   FONT REMAINS TIMES NEW ROMAN
    ========================================================= */
 
 .finora-brand {
@@ -209,7 +239,7 @@ svg {
     filter:
         drop-shadow(
             0 5px 14px
-            rgba(194, 24, 91, 0.28)
+            rgba(209, 0, 255, 0.28)
         );
 }
 
@@ -227,7 +257,6 @@ svg {
 
     gap: 0;
 
-    /* ORIGINAL FONT */
     font-family:
         "Times New Roman",
         Times,
@@ -246,15 +275,25 @@ svg {
 }
 
 
-/* FINORA WORDMARK */
+/* =========================================================
+   FINORA WORDMARK
+   FIN = WHITE
+   ORA = GOLD
+   ========================================================= */
 
 .finora-fin {
-    color: var(--white);
+    color: #FFFFFF;
 }
 
 .finora-ora {
     color: var(--gold);
 }
+
+
+/* =========================================================
+   FINORA TAGLINE
+   MAGENTA
+   ========================================================= */
 
 .finora-tagline {
     margin-top: 7px;
@@ -265,7 +304,7 @@ svg {
 
     letter-spacing: 3px;
 
-    color: var(--cream);
+    color: var(--pink);
 
     white-space: nowrap;
 }
@@ -298,7 +337,7 @@ svg {
 
     border:
         1px solid
-        rgba(194, 24, 91, 0.30);
+        rgba(209, 0, 255, 0.30);
 
     border-radius: 50%;
 
@@ -322,7 +361,7 @@ svg {
     transform: translateY(-2px);
 
     background:
-        rgba(194, 24, 91, 0.12);
+        rgba(209, 0, 255, 0.12);
 }
 
 .header-icon {
@@ -345,7 +384,7 @@ svg {
 
     background: var(--pink);
 
-    color: white;
+    color: #FFFFFF;
 
     font-size: 10px;
 
@@ -371,7 +410,7 @@ svg {
 
 .welcome-kicker,
 .section-kicker {
-    color: var(--gold);
+    color: var(--pink);
 
     font-size: 11px;
 
@@ -392,11 +431,11 @@ svg {
 
     font-weight: 800;
 
-    color: var(--white);
+    color: #FFFFFF;
 }
 
 .welcome-section h1 span {
-    color: var(--gold);
+    color: var(--pink);
 }
 
 .welcome-section p {
@@ -476,8 +515,6 @@ svg {
 
 /* =========================================================
    BANNER BACKGROUNDS
-   DEEP PINK REMAINS THE ATMOSPHERE
-   GOLD IS THE PREMIUM ACCENT
    ========================================================= */
 
 .banner-invest {
@@ -565,13 +602,13 @@ svg {
 
     font-weight: 800;
 
-    color: var(--white);
+    color: #FFFFFF;
 
     max-width: 470px;
 }
 
 .banner-content h2 span {
-    color: var(--gold-rich);
+    color: var(--pink);
 }
 
 .banner-subtitle {
@@ -593,8 +630,8 @@ svg {
 
     color:
         rgba(
-            250,
-            247,
+            255,
+            255,
             255,
             0.76
         );
@@ -607,7 +644,7 @@ svg {
 
 /* =========================================================
    BANNER BUTTON
-   DEEP PINK — NOT PALE PINK
+   MAGENTA
    ========================================================= */
 
 .banner-button {
@@ -626,7 +663,7 @@ svg {
 
     background: var(--pink);
 
-    color: white;
+    color: #FFFFFF;
 
     font-size: 10px;
 
@@ -751,7 +788,7 @@ svg {
 
     border-radius: 999px;
 
-    background: var(--gold);
+    background: var(--pink);
 }
 
 
@@ -818,7 +855,7 @@ svg {
 .wallet-card h2 {
     margin-top: 8px;
 
-    color: var(--white);
+    color: #FFFFFF;
 
     font-size:
         clamp(27px, 3vw, 38px);
@@ -836,7 +873,7 @@ svg {
 
 
 /* =========================================================
-   PINK ICONS
+   MAGENTA ICONS
    ========================================================= */
 
 .wallet-icon {
@@ -855,27 +892,27 @@ svg {
 
     background:
         rgba(
-            194,
-            24,
-            91,
+            209,
+            0,
+            255,
             0.12
         );
 
     border:
         1px solid
         rgba(
-            194,
-            24,
-            91,
+            209,
+            0,
+            255,
             0.30
         );
 
     box-shadow:
         0 0 18px
         rgba(
-            194,
-            24,
-            91,
+            209,
+            0,
+            255,
             0.08
         );
 }
@@ -921,7 +958,7 @@ svg {
 .wallet-deposit-button {
     background: var(--pink);
 
-    color: white;
+    color: #FFFFFF;
 }
 
 .wallet-withdraw-button {
@@ -936,13 +973,13 @@ svg {
     border:
         1px solid
         rgba(
-            194,
-            24,
-            91,
+            209,
+            0,
+            255,
             0.32
         );
 
-    color: var(--pink-light);
+    color: var(--pink);
 }
 
 
@@ -997,7 +1034,7 @@ svg {
 
 
 /* =========================================================
-   SUMMARY ICONS — DEEP PINK
+   SUMMARY ICONS — MAGENTA
    ========================================================= */
 
 .summary-icon {
@@ -1014,9 +1051,9 @@ svg {
 
     background:
         rgba(
-            194,
-            24,
-            91,
+            209,
+            0,
+            255,
             0.12
         );
 
@@ -1025,18 +1062,18 @@ svg {
     border:
         1px solid
         rgba(
-            194,
-            24,
-            91,
+            209,
+            0,
+            255,
             0.28
         );
 
     box-shadow:
         0 0 15px
         rgba(
-            194,
-            24,
-            91,
+            209,
+            0,
+            255,
             0.07
         );
 }
@@ -1051,7 +1088,7 @@ svg {
 
     margin-top: 6px;
 
-    color: white;
+    color: #FFFFFF;
 
     font-size: 19px;
 
@@ -1086,7 +1123,7 @@ svg {
 }
 
 .section-row h2 {
-    color: white;
+    color: #FFFFFF;
 
     font-size:
         clamp(23px, 3vw, 31px);
@@ -1171,9 +1208,9 @@ svg {
         linear-gradient(
             145deg,
             rgba(
-                194,
-                24,
-                91,
+                209,
+                0,
+                255,
                 0.14
             ),
             rgba(
@@ -1186,16 +1223,16 @@ svg {
 
     border-color:
         rgba(
-            194,
-            24,
-            91,
+            209,
+            0,
+            255,
             0.42
         );
 }
 
 
 /* =========================================================
-   QUICK ACTION ICONS — DEEP PINK
+   QUICK ACTION ICONS — MAGENTA
    ========================================================= */
 
 .quick-action-icon {
@@ -1212,18 +1249,18 @@ svg {
 
     background:
         rgba(
-            194,
-            24,
-            91,
+            209,
+            0,
+            255,
             0.13
         );
 
     border:
         1px solid
         rgba(
-            194,
-            24,
-            91,
+            209,
+            0,
+            255,
             0.30
         );
 
@@ -1232,9 +1269,9 @@ svg {
     box-shadow:
         0 0 18px
         rgba(
-            194,
-            24,
-            91,
+            209,
+            0,
+            255,
             0.07
         );
 }
@@ -1245,7 +1282,7 @@ svg {
 }
 
 .quick-action strong {
-    color: white;
+    color: #FFFFFF;
 
     font-size: 14px;
 
@@ -1263,7 +1300,6 @@ svg {
 
 /* =========================================================
    PREMIUM BANNER
-   GOLD + CREAM + DEEP PINK
    ========================================================= */
 
 .premium-section {
@@ -1343,7 +1379,7 @@ svg {
 .premium-content h2 {
     margin-top: 12px;
 
-    color: white;
+    color: #FFFFFF;
 
     font-size:
         clamp(26px, 4vw, 42px);
@@ -1352,7 +1388,7 @@ svg {
 }
 
 .premium-content h2 span {
-    color: var(--gold-rich);
+    color: var(--pink);
 }
 
 .premium-content p {
@@ -1378,7 +1414,7 @@ svg {
 
     background: var(--pink);
 
-    color: white;
+    color: #FFFFFF;
 
     font-size: 10px;
 
@@ -1493,7 +1529,7 @@ svg {
 
 
 /* =========================================================
-   OVERVIEW ICONS — DEEP PINK
+   OVERVIEW ICONS — MAGENTA
    ========================================================= */
 
 .overview-icon {
@@ -1510,9 +1546,9 @@ svg {
 
     background:
         rgba(
-            194,
-            24,
-            91,
+            209,
+            0,
+            255,
             0.13
         );
 
@@ -1521,18 +1557,18 @@ svg {
     border:
         1px solid
         rgba(
-            194,
-            24,
-            91,
+            209,
+            0,
+            255,
             0.28
         );
 
     box-shadow:
         0 0 17px
         rgba(
-            194,
-            24,
-            91,
+            209,
+            0,
+            255,
             0.07
         );
 }
@@ -1567,7 +1603,7 @@ svg {
 
     margin-top: 8px;
 
-    color: white;
+    color: #FFFFFF;
 
     font-size: 20px;
 }
@@ -1604,9 +1640,9 @@ svg {
         linear-gradient(
             100deg,
             rgba(
-                194,
-                24,
-                91,
+                209,
+                0,
+                255,
                 0.10
             ),
             rgba(
@@ -1648,7 +1684,7 @@ svg {
 
     background: #229ed9;
 
-    color: white;
+    color: #FFFFFF;
 }
 
 .community-icon svg {
@@ -1671,7 +1707,7 @@ svg {
 
     margin-top: 4px;
 
-    color: white;
+    color: #FFFFFF;
 
     font-size: 15px;
 }
@@ -1736,9 +1772,9 @@ svg {
     border-bottom:
         1px solid
         rgba(
-            194,
-            24,
-            91,
+            209,
+            0,
+            255,
             0.15
         );
 
@@ -1797,9 +1833,9 @@ svg {
     border-top:
         1px solid
         rgba(
-            194,
-            24,
-            91,
+            209,
+            0,
+            255,
             0.14
         );
 }
@@ -1865,9 +1901,9 @@ svg {
     border:
         1px solid
         rgba(
-            194,
-            24,
-            91,
+            209,
+            0,
+            255,
             0.28
         );
 
@@ -1937,9 +1973,9 @@ svg {
 .bottom-nav-item.active {
     background:
         rgba(
-            194,
-            24,
-            91,
+            209,
+            0,
+            255,
             0.17
         );
 
@@ -1948,9 +1984,9 @@ svg {
     box-shadow:
         inset 0 0 0 1px
         rgba(
-            194,
-            24,
-            91,
+            209,
+            0,
+            255,
             0.14
         );
 }
@@ -2049,7 +2085,6 @@ svg {
     }
 
     .finora-name {
-        /* STILL TIMES NEW ROMAN */
         font-family:
             "Times New Roman",
             Times,
@@ -2066,6 +2101,8 @@ svg {
         letter-spacing: 2px;
 
         margin-top: 5px;
+
+        color: var(--pink);
     }
 
 
