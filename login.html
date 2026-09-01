@@ -1,261 +1,356 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 
-<head>
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <meta charset="UTF-8">
+<meta
+    name="theme-color"
+    content="#07050A"
+>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+    name="description"
+    content="Login to your FINORA investment account."
+>
 
-    <meta
-        name="theme-color"
-        content="#07050A"
-    >
-
-    <meta
-        name="description"
-        content="Login to your FINORA investment account."
-    >
-
-    <title>FINORA | Login</title>
+<title>FINORA | Login</title>
 
 
-    <!-- =========================================
-         HIDE PAGE BEFORE CSS LOADS
-         PREVENTS UNSTYLED PAGE FLASH
-    ========================================== -->
+<!-- =========================================
+     PREVENT UNSTYLED PAGE FLASH
+========================================== -->
+
+<style>
+
+    html {
+        visibility: hidden;
+    }
+
+    html.css-loaded {
+        visibility: visible;
+    }
+
+</style>
+
+
+<!-- =========================================
+     FINORA LOGIN CSS
+========================================== -->
+
+<link
+    rel="stylesheet"
+    href="login.css"
+    onload="document.documentElement.classList.add('css-loaded')"
+>
+
+<noscript>
 
     <style>
 
         html {
-            visibility: hidden;
-        }
-
-        html.css-loaded {
             visibility: visible;
         }
 
     </style>
 
+</noscript>
 
-    <!-- FINORA LOGIN CSS -->
+</head><body><div class="page"><!-- =========================================
+     HEADER
+========================================== -->
 
-    <link
-        rel="stylesheet"
-        href="login.css"
-        onload="document.documentElement.classList.add('css-loaded')"
-    >
+<header class="header">
 
-    <noscript>
-
-        <style>
-
-            html {
-                visibility: visible;
-            }
-
-        </style>
-
-    </noscript>
-
-</head>
+    <div class="header-inner">
 
 
-<body>
+        <!-- =================================
+             FINORA WORDMARK
+             NO LOGO
+        ================================== -->
 
-<div class="page">
+        <a
+            href="index.html"
+            class="brand"
+            aria-label="FINORA Home"
+        >
 
+            <div class="brand-text">
 
-    <!-- =========================================
-         HEADER
-    ========================================== -->
+                <div class="brand-name">
 
-    <header class="header">
+                    <span class="fin">
+                        FIN
+                    </span>
 
-        <div class="header-inner">
-
-
-            <!-- =================================
-                 FINORA BRAND
-                 NO LOGO
-            ================================== -->
-
-            <a
-                href="index.html"
-                class="brand"
-            >
-
-                <div class="brand-text">
-
-                    <div class="brand-name">
-
-                        <span class="fin">
-                            FIN
-                        </span>
-
-                        <span class="ora">
-                            ORA
-                        </span>
-
-                    </div>
-
-
-                    <div class="brand-tagline">
-                        INVEST • GROW • EARN
-                    </div>
+                    <span class="ora">
+                        ORA
+                    </span>
 
                 </div>
 
-            </a>
-
-
-            <!-- =================================
-                 REGISTER LINK
-            ================================== -->
-
-            <div class="login-top">
-
-                Don't have an account?
-
-                <a href="register.html">
-                    <strong>Create Account</strong>
-                </a>
+                <div class="brand-tagline">
+                    INVEST • GROW • EARN
+                </div>
 
             </div>
 
+        </a>
+
+
+        <!-- =================================
+             REGISTER LINK
+        ================================== -->
+
+        <div class="login-top">
+
+            Don't have an account?
+
+            <a href="register.html">
+                <strong>Create Account</strong>
+            </a>
+
         </div>
 
-    </header>
+    </div>
+
+</header>
 
 
 
-    <!-- =========================================
-         MAIN
-    ========================================== -->
+<!-- =========================================
+     MAIN
+========================================== -->
 
-    <main class="main">
+<main class="main">
 
-        <div class="login-wrapper">
+    <div class="login-wrapper">
+
+
+        <!-- =================================
+             INFORMATION PANEL
+        ================================== -->
+
+        <section class="info-panel">
+
+
+            <div class="info-kicker">
+                WELCOME BACK
+            </div>
+
+
+            <h1>
+
+                Continue your
+
+                <span>
+                    journey.
+                </span>
+
+            </h1>
+
+
+            <p>
+
+                Sign in to your FINORA account and
+                continue managing your investment
+                journey from one secure place.
+
+            </p>
 
 
             <!-- =================================
-                 INFORMATION PANEL
+                 BENEFITS
             ================================== -->
 
-            <section class="info-panel">
-
-
-                <div class="info-kicker">
-                    WELCOME BACK
-                </div>
-
-
-                <h1>
-
-                    Continue your
-
-                    <span>
-                        journey.
-                    </span>
-
-                </h1>
-
-
-                <p>
-
-                    Sign in to your FINORA account and
-                    continue managing your investment
-                    journey from one secure place.
-
-                </p>
+            <div class="benefits">
 
 
                 <!-- =================================
-                     BENEFITS
+                     SECURE ACCESS
                 ================================== -->
 
-                <div class="benefits">
+                <div class="benefit">
 
+                    <div
+                        class="benefit-icon"
+                        aria-hidden="true"
+                    >
 
-                    <!-- SECURE ACCESS -->
+                        <svg
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
 
-                    <div class="benefit">
+                            <path
+                                d="M12 3L19 6V11C19 16 16 19.5 12 21C8 19.5 5 16 5 11V6L12 3Z"
+                            />
 
-                        <div class="benefit-icon">
-                            ✓
-                        </div>
+                            <path
+                                d="M9 12L11 14L15 10"
+                            />
 
-                        <div>
-
-                            <h3>
-                                Secure Access
-                            </h3>
-
-                            <p>
-                                Access your personal FINORA
-                                account securely.
-                            </p>
-
-                        </div>
+                        </svg>
 
                     </div>
 
 
-                    <!-- ACCOUNT TRACKING -->
+                    <div>
 
-                    <div class="benefit">
+                        <h3>
+                            Secure Access
+                        </h3>
 
-                        <div class="benefit-icon">
-                            ◈
-                        </div>
-
-                        <div>
-
-                            <h3>
-                                Track Your Account
-                            </h3>
-
-                            <p>
-                                View your balance, activity
-                                and investment information.
-                            </p>
-
-                        </div>
+                        <p>
+                            Access your personal FINORA
+                            account securely.
+                        </p>
 
                     </div>
-
-
-                    <!-- GROWTH -->
-
-                    <div class="benefit">
-
-                        <div class="benefit-icon">
-                            ↗
-                        </div>
-
-                        <div>
-
-                            <h3>
-                                Grow With FINORA
-                            </h3>
-
-                            <p>
-                                Continue building your
-                                investment journey.
-                            </p>
-
-                        </div>
-
-                    </div>
-
 
                 </div>
 
 
-            </section>
+
+                <!-- =================================
+                     TRACK ACCOUNT
+                ================================== -->
+
+                <div class="benefit">
+
+                    <div
+                        class="benefit-icon"
+                        aria-hidden="true"
+                    >
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+
+                            <rect
+                                x="4"
+                                y="4"
+                                width="16"
+                                height="16"
+                                rx="3"
+                            />
+
+                            <path
+                                d="M8 16V13"
+                            />
+
+                            <path
+                                d="M12 16V10"
+                            />
+
+                            <path
+                                d="M16 16V7"
+                            />
+
+                            <path
+                                d="M7 18H17"
+                            />
+
+                        </svg>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Track Your Account
+                        </h3>
+
+                        <p>
+                            View your balance, activity
+                            and investment information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================
+                     GROW WITH FINORA
+                ================================== -->
+
+                <div class="benefit">
+
+                    <div
+                        class="benefit-icon"
+                        aria-hidden="true"
+                    >
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+
+                            <path
+                                d="M5 17L17 5"
+                            />
+
+                            <path
+                                d="M9 5H17V13"
+                            />
+
+                            <path
+                                d="M5 19H19"
+                            />
+
+                        </svg>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Grow With FINORA
+                        </h3>
+
+                        <p>
+                            Continue building your
+                            investment journey.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================
+             LOGIN FORM
+        ================================== -->
+
+        <section class="form-card">
+
+
+            <!-- FORM HEADER -->
+
+            <div class="form-header">
+
+                <h2>
+                    Welcome Back
+                </h2>
+
+                <p>
+                    Login to your FINORA account.
+                </p>
+
+            </div>
 
 
 
@@ -263,230 +358,186 @@
                  LOGIN FORM
             ================================== -->
 
-            <section class="form-card">
+            <form
+                id="loginForm"
+                novalidate
+            >
 
 
-                <!-- FORM HEADER -->
+                <!-- PHONE / EMAIL -->
 
-                <div class="form-header">
+                <div class="form-group">
 
-                    <h2>
-                        Welcome Back
-                    </h2>
+                    <label for="loginIdentifier">
 
-                    <p>
-                        Login to your FINORA account.
-                    </p>
-
-                </div>
-
-
-
-                <!-- =================================
-                     LOGIN FORM
-                ================================== -->
-
-                <form
-                    id="loginForm"
-                    novalidate
-                >
-
-
-                    <!-- =================================
-                         PHONE / EMAIL
-                    ================================== -->
-
-                    <div class="form-group">
-
-                        <label for="loginIdentifier">
-
-                            Phone Number or Email
-
-                        </label>
-
-
-                        <input
-                            type="text"
-                            id="loginIdentifier"
-                            name="loginIdentifier"
-                            class="form-input"
-                            placeholder="Enter phone number or email"
-                            autocomplete="username"
-                            required
-                        >
-
-
-                        <div
-                            id="identifierMessage"
-                            class="field-message"
-                        ></div>
-
-                    </div>
-
-
-
-                    <!-- =================================
-                         PASSWORD
-                    ================================== -->
-
-                    <div class="form-group">
-
-
-                        <div class="password-label-row">
-
-                            <label for="loginPassword">
-                                Password
-                            </label>
-
-
-                            <a
-                                href="forgot-password.html"
-                                class="forgot-password"
-                            >
-                                Forgot Password?
-                            </a>
-
-                        </div>
-
-
-                        <div class="input-wrapper">
-
-
-                            <input
-                                type="password"
-                                id="loginPassword"
-                                name="password"
-                                class="form-input password-input"
-                                placeholder="Enter your password"
-                                autocomplete="current-password"
-                                required
-                            >
-
-
-                            <button
-                                type="button"
-                                class="toggle-password"
-                                data-target="loginPassword"
-                                aria-label="Show password"
-                            >
-                                👁
-                            </button>
-
-                        </div>
-
-
-                        <div
-                            id="passwordMessage"
-                            class="field-message"
-                        ></div>
-
-                    </div>
-
-
-
-                    <!-- =================================
-                         REMEMBER LOGIN
-                    ================================== -->
-
-                    <label class="remember-me">
-
-                        <input
-                            type="checkbox"
-                            id="rememberMe"
-                            name="rememberMe"
-                        >
-
-                        <span>
-                            Remember me
-                        </span>
+                        Phone Number or Email
 
                     </label>
 
 
-
-                    <!-- =================================
-                         FORM STATUS
-                    ================================== -->
-
-                    <div
-                        id="formStatus"
-                        class="form-status"
-                        role="alert"
-                        aria-live="polite"
-                    ></div>
-
-
-
-                    <!-- =================================
-                         LOGIN BUTTON
-                    ================================== -->
-
-                    <button
-                        type="submit"
-                        class="login-button"
-                        id="loginButton"
+                    <input
+                        type="text"
+                        id="loginIdentifier"
+                        name="loginIdentifier"
+                        class="form-input"
+                        placeholder="Enter phone number or email"
+                        autocomplete="username"
+                        required
                     >
 
-                        LOGIN TO FINORA
 
-                    </button>
-
-
-                </form>
-
-
-
-                <!-- =================================
-                     REGISTER
-                ================================== -->
-
-                <div class="bottom-login">
-
-                    Don't have a FINORA account?
-
-                    <a href="register.html">
-                        Create your account
-                    </a>
+                    <div
+                        id="identifierMessage"
+                        class="field-message"
+                    ></div>
 
                 </div>
 
 
-            </section>
 
-        </div>
+                <!-- PASSWORD -->
 
-    </main>
-
+                <div class="form-group">
 
 
-    <!-- =========================================
-         FOOTER
-    ========================================== -->
+                    <div class="password-label-row">
 
-    <footer class="footer">
-
-        © 2026 FINORA • Invest • Grow • Earn
-
-    </footer>
+                        <label for="loginPassword">
+                            Password
+                        </label>
 
 
-</div>
+                        <a
+                            href="forgot-password.html"
+                            class="forgot-password"
+                        >
+                            Forgot Password?
+                        </a>
+
+                    </div>
+
+
+                    <div class="input-wrapper">
+
+
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            name="password"
+                            class="form-input password-input"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            data-target="loginPassword"
+                            aria-label="Show password"
+                        >
+
+                            👁
+
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="passwordMessage"
+                        class="field-message"
+                    ></div>
+
+                </div>
+
+
+
+                <!-- REMEMBER ME -->
+
+                <label class="remember-me">
+
+                    <input
+                        type="checkbox"
+                        id="rememberMe"
+                        name="rememberMe"
+                    >
+
+                    <span>
+                        Remember me
+                    </span>
+
+                </label>
+
+
+
+                <!-- FORM STATUS -->
+
+                <div
+                    id="formStatus"
+                    class="form-status"
+                    role="alert"
+                    aria-live="polite"
+                ></div>
+
+
+
+                <!-- LOGIN BUTTON -->
+
+                <button
+                    type="submit"
+                    class="login-button"
+                    id="loginButton"
+                >
+
+                    LOGIN TO FINORA
+
+                </button>
+
+
+            </form>
+
+
+
+            <!-- =================================
+                 REGISTER
+            ================================== -->
+
+            <div class="bottom-login">
+
+                Don't have a FINORA account?
+
+                <a href="register.html">
+                    Create your account
+                </a>
+
+            </div>
+
+
+        </section>
+
+    </div>
+
+</main>
 
 
 
 <!-- =========================================
-     FINORA LOGIN JAVASCRIPT
+     FOOTER
 ========================================== -->
 
-<script src="login.js?v=1"></script>
+<footer class="footer">
 
+    © 2026 FINORA • Invest • Grow • Earn
 
+</footer>
 
-<!-- =========================================
+</div><!-- =========================================
+     LOGIN JAVASCRIPT
+========================================== --><script src="login.js?v=1"></script><!-- =========================================
      CSS FALLBACK
-========================================== -->
-
-<script>
+========================================== --><script>
 
     window.addEventListener(
         "load",
@@ -499,8 +550,4 @@
         }
     );
 
-</script>
-
-
-</body>
-</html>
+</script></body></html>
