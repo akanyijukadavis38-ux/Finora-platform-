@@ -21,7 +21,7 @@
 
 
     /* =====================================================
-       ⭐ MAIN BRAND COLOR — MAGENTA
+       MAIN BRAND COLOR — MAGENTA
        ===================================================== */
 
     --pink: #D100FF;
@@ -51,7 +51,6 @@
 
     /* =====================================================
        TEXT
-       REAL WHITE = #FFFFFF
        ===================================================== */
 
     --white: #FFFFFF;
@@ -62,7 +61,7 @@
 
 
     /* =====================================================
-       MAGENTA BORDERS
+       BORDERS
        ===================================================== */
 
     --border: rgba(209, 0, 255, 0.20);
@@ -277,8 +276,6 @@ svg {
 
 /* =========================================================
    FINORA WORDMARK
-   FIN = WHITE
-   ORA = GOLD
    ========================================================= */
 
 .finora-fin {
@@ -292,7 +289,6 @@ svg {
 
 /* =========================================================
    FINORA TAGLINE
-   MAGENTA
    ========================================================= */
 
 .finora-tagline {
@@ -448,7 +444,8 @@ svg {
 
 
 /* =========================================================
-   BANNER SECTION
+   MAIN BANNER CAROUSEL
+   FIVE BANNERS
    ========================================================= */
 
 .banner-section {
@@ -461,12 +458,17 @@ svg {
     margin-bottom: 34px;
 }
 
+
+/* =========================================================
+   BANNER TRACK
+   ========================================================= */
+
 .banner-track {
     display: flex;
 
     width: 100%;
 
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
 
     transition:
         transform 0.65s
@@ -478,9 +480,20 @@ svg {
         );
 
     will-change: transform;
+
+    touch-action: pan-y;
 }
 
+
+/* =========================================================
+   INDIVIDUAL BANNER
+   IMPORTANT:
+   Every banner is exactly one full carousel width.
+   ========================================================= */
+
 .dashboard-banner {
+    position: relative;
+
     flex:
         0 0 100%;
 
@@ -488,8 +501,6 @@ svg {
     min-width: 100%;
 
     height: 280px;
-
-    position: relative;
 
     overflow: hidden;
 
@@ -514,7 +525,37 @@ svg {
 
 
 /* =========================================================
-   BANNER BACKGROUNDS
+   BANNER BACKGROUND BASE
+   ========================================================= */
+
+.dashboard-banner::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 0;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at 80% 45%,
+            rgba(
+                209,
+                0,
+                255,
+                0.08
+            ),
+            transparent 38%
+        );
+}
+
+
+/* =========================================================
+   FIVE BANNER BACKGROUNDS
+   These are the base colors behind the artwork.
    ========================================================= */
 
 .banner-invest {
@@ -558,15 +599,33 @@ svg {
 }
 
 
+/*
+   Optional fifth banner class.
+   If the fifth banner uses a different class in HTML,
+   we will match it when we inspect the HTML.
+*/
+
+.banner-community {
+    background:
+        linear-gradient(
+            105deg,
+            #15060E 0%,
+            #390A20 50%,
+            #64102E 100%
+        );
+}
+
+
 /* =========================================================
-   BANNER CONTENT
+   BANNER CONTENT AREA
    ========================================================= */
 
 .banner-content {
     width: 57%;
 
     position: relative;
-    z-index: 3;
+
+    z-index: 5;
 
     padding:
         30px
@@ -575,12 +634,18 @@ svg {
         34px;
 
     display: flex;
+
     flex-direction: column;
 
     justify-content: center;
 
     align-items: flex-start;
 }
+
+
+/* =========================================================
+   BANNER LABEL
+   ========================================================= */
 
 .banner-label {
     color: var(--gold);
@@ -593,6 +658,11 @@ svg {
 
     margin-bottom: 8px;
 }
+
+
+/* =========================================================
+   BANNER HEADING
+   ========================================================= */
 
 .banner-content h2 {
     font-size:
@@ -611,6 +681,11 @@ svg {
     color: var(--pink);
 }
 
+
+/* =========================================================
+   BANNER SUBTITLE
+   ========================================================= */
+
 .banner-subtitle {
     margin-top: 10px;
 
@@ -622,6 +697,11 @@ svg {
 
     letter-spacing: 1.7px;
 }
+
+
+/* =========================================================
+   BANNER DESCRIPTION
+   ========================================================= */
 
 .banner-content p {
     max-width: 450px;
@@ -644,13 +724,13 @@ svg {
 
 /* =========================================================
    BANNER BUTTON
-   MAGENTA
    ========================================================= */
 
 .banner-button {
     margin-top: 16px;
 
     display: inline-flex;
+
     align-items: center;
 
     gap: 12px;
@@ -695,6 +775,7 @@ svg {
 
 /* =========================================================
    BANNER ARTWORK
+   VISUAL-ONLY IMAGE AREA
    ========================================================= */
 
 .banner-artwork {
@@ -703,13 +784,20 @@ svg {
     top: 0;
     right: 0;
 
-    width: 48%;
+    width: 52%;
     height: 100%;
 
     overflow: hidden;
 
     z-index: 1;
+
+    pointer-events: none;
 }
+
+
+/* =========================================================
+   BANNER IMAGE
+   ========================================================= */
 
 .banner-image {
     width: 100%;
@@ -717,13 +805,26 @@ svg {
 
     object-fit: cover;
 
-    object-position: center;
+    object-position: center center;
 
-    opacity: 0.88;
+    opacity: 0.92;
 
     filter:
-        saturate(0.88);
+        saturate(1.02)
+        contrast(1.04);
+
+    transform: scale(1.02);
+
+    transition:
+        transform 0.7s ease,
+        opacity 0.4s ease;
 }
+
+
+/* =========================================================
+   ARTWORK LEFT BLEND
+   Keeps text readable while allowing artwork to remain visible.
+   ========================================================= */
 
 .banner-artwork::before {
     content: "";
@@ -738,10 +839,38 @@ svg {
         linear-gradient(
             90deg,
             rgba(22, 6, 15, 1) 0%,
-            rgba(22, 6, 15, 0.70) 18%,
-            rgba(22, 6, 15, 0.14) 58%,
+            rgba(22, 6, 15, 0.92) 12%,
+            rgba(22, 6, 15, 0.65) 30%,
+            rgba(22, 6, 15, 0.22) 55%,
             rgba(22, 6, 15, 0) 100%
         );
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   ARTWORK TOP/BOTTOM DARKENING
+   ========================================================= */
+
+.banner-artwork::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 3;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.08),
+            transparent 35%,
+            rgba(0, 0, 0, 0.18)
+        );
+
+    pointer-events: none;
 }
 
 
@@ -753,6 +882,7 @@ svg {
     display: flex;
 
     justify-content: center;
+
     align-items: center;
 
     gap: 7px;
@@ -763,6 +893,8 @@ svg {
 .banner-dot {
     width: 8px;
     height: 8px;
+
+    padding: 0;
 
     border: none;
 
@@ -780,7 +912,20 @@ svg {
 
     transition:
         width 0.25s ease,
-        background 0.25s ease;
+        background 0.25s ease,
+        transform 0.25s ease;
+}
+
+.banner-dot:hover {
+    transform: scale(1.15);
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.50
+        );
 }
 
 .banner-dot.active {
@@ -1034,7 +1179,7 @@ svg {
 
 
 /* =========================================================
-   SUMMARY ICONS — MAGENTA
+   SUMMARY ICONS
    ========================================================= */
 
 .summary-icon {
@@ -1232,7 +1377,7 @@ svg {
 
 
 /* =========================================================
-   QUICK ACTION ICONS — MAGENTA
+   QUICK ACTION ICONS
    ========================================================= */
 
 .quick-action-icon {
@@ -1529,7 +1674,7 @@ svg {
 
 
 /* =========================================================
-   OVERVIEW ICONS — MAGENTA
+   OVERVIEW ICONS
    ========================================================= */
 
 .overview-icon {
@@ -1667,7 +1812,6 @@ svg {
 
 /* =========================================================
    COMMUNITY ICON
-   ORIGINAL BLUE KEPT
    ========================================================= */
 
 .community-icon {
@@ -2008,6 +2152,8 @@ svg {
         grid-template-columns: 1fr;
     }
 
+    /* MAIN CAROUSEL */
+
     .dashboard-banner {
         height: 265px;
     }
@@ -2017,15 +2163,7 @@ svg {
     }
 
     .banner-artwork {
-        width: 46%;
-    }
-
-    .overview-grid {
-        grid-template-columns:
-            repeat(
-                3,
-                1fr
-            );
+        width: 48%;
     }
 
 }
@@ -2120,7 +2258,7 @@ svg {
 
 
     /* =====================================================
-       BANNERS
+       MAIN BANNERS — MOBILE
        ===================================================== */
 
     .dashboard-banner {
@@ -2130,7 +2268,7 @@ svg {
     }
 
     .banner-content {
-        width: 65%;
+        width: 66%;
 
         padding:
             22px
@@ -2143,12 +2281,16 @@ svg {
         font-size: 8px;
 
         letter-spacing: 1.3px;
+
+        margin-bottom: 7px;
     }
 
     .banner-content h2 {
         font-size: 25px;
 
         line-height: 1.02;
+
+        max-width: 230px;
     }
 
     .banner-subtitle {
@@ -2185,7 +2327,13 @@ svg {
     }
 
     .banner-artwork {
-        width: 45%;
+        width: 50%;
+    }
+
+    .banner-image {
+        object-position: center center;
+
+        opacity: 0.90;
     }
 
     .banner-artwork::before {
@@ -2193,8 +2341,9 @@ svg {
             linear-gradient(
                 90deg,
                 rgba(22, 6, 15, 1) 0%,
-                rgba(22, 6, 15, 0.72) 20%,
-                rgba(22, 6, 15, 0.10) 70%,
+                rgba(22, 6, 15, 0.88) 18%,
+                rgba(22, 6, 15, 0.48) 42%,
+                rgba(22, 6, 15, 0.08) 78%,
                 transparent 100%
             );
     }
@@ -2427,6 +2576,11 @@ svg {
         height: 37px;
     }
 
+
+    /* =====================================================
+       MAIN BANNERS — VERY SMALL PHONES
+       ===================================================== */
+
     .dashboard-banner {
         height: 215px;
     }
@@ -2446,7 +2600,11 @@ svg {
     }
 
     .banner-artwork {
-        width: 43%;
+        width: 48%;
+    }
+
+    .banner-image {
+        object-position: center center;
     }
 
     .quick-actions {
