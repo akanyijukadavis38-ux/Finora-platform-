@@ -376,59 +376,54 @@ input {
 
 
 /* =========================================================
-   IMPROVED BENEFIT ICONS
-   IMPORTANT:
-   FORCE ICONS TO MAGENTA
-   PREVENT BLACK/EMOJI COLORS
+   BENEFIT ICON CONTAINER
    ========================================================= */
 
 .benefit-icon {
-
     width: 44px;
     height: 44px;
 
     flex: 0 0 44px;
 
+    position: relative;
+
     display: flex;
     align-items: center;
     justify-content: center;
-
-    position: relative;
 
     border-radius: 13px;
 
     border:
         1px solid
-        rgba(209, 0, 255, 0.55);
+        rgba(209, 0, 255, 0.60);
 
     background:
         linear-gradient(
             145deg,
-            rgba(209, 0, 255, 0.16),
+            rgba(209, 0, 255, 0.17),
             rgba(209, 0, 255, 0.035)
         );
 
-    /* VERY IMPORTANT */
+    /*
+       FORCE THE ICON COLOR
+    */
     color: #D100FF !important;
 
-    font-family:
-        "Times New Roman",
-        Times,
-        serif;
+    -webkit-text-fill-color: #D100FF !important;
 
     font-size: 21px;
-
     font-weight: 700;
 
     line-height: 1;
 
     text-align: center;
 
-    -webkit-text-fill-color: #D100FF;
-
     text-shadow:
-        0 0 10px
-        rgba(209, 0, 255, 0.45);
+        0 0 8px
+        rgba(209, 0, 255, 0.55),
+
+        0 0 18px
+        rgba(209, 0, 255, 0.25);
 
     box-shadow:
         0 0 22px
@@ -438,10 +433,78 @@ input {
         0 1px 0
         rgba(255, 255, 255, 0.07);
 
+    isolation: isolate;
+
     transition:
         transform 0.2s ease,
         border-color 0.2s ease,
         box-shadow 0.2s ease;
+}
+
+
+/* =========================================================
+   FORCE CHILD ICONS MAGENTA
+   IMPORTANT FIX
+   ========================================================= */
+
+.benefit-icon *,
+.benefit-icon i,
+.benefit-icon svg,
+.benefit-icon span,
+.benefit-icon img {
+    color: #D100FF !important;
+
+    fill: #D100FF !important;
+
+    stroke: #D100FF !important;
+
+    -webkit-text-fill-color: #D100FF !important;
+}
+
+
+/* =========================================================
+   SVG ICON FIX
+   ========================================================= */
+
+.benefit-icon svg {
+    width: 20px;
+    height: 20px;
+
+    display: block;
+
+    color: #D100FF !important;
+
+    fill: none !important;
+
+    stroke: #D100FF !important;
+
+    stroke-width: 2;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    position: relative;
+
+    z-index: 3;
+}
+
+
+/* =========================================================
+   FONT ICON FIX
+   ========================================================= */
+
+.benefit-icon i {
+    position: relative;
+
+    z-index: 3;
+
+    color: #D100FF !important;
+
+    -webkit-text-fill-color: #D100FF !important;
+
+    font-style: normal;
+
+    font-size: 20px;
 }
 
 
@@ -463,11 +526,13 @@ input {
         rgba(209, 0, 255, 0.18);
 
     pointer-events: none;
+
+    z-index: 1;
 }
 
 
 /* =========================================================
-   ICON CENTER GLOW
+   ICON GLOW
    ========================================================= */
 
 .benefit-icon::after {
@@ -475,37 +540,26 @@ input {
 
     position: absolute;
 
-    width: 7px;
-    height: 7px;
+    width: 8px;
+    height: 8px;
 
     border-radius: 50%;
 
     background:
-        rgba(209, 0, 255, 0.20);
+        rgba(209, 0, 255, 0.12);
 
     box-shadow:
-        0 0 14px
-        rgba(209, 0, 255, 0.30);
+        0 0 15px
+        rgba(209, 0, 255, 0.35);
 
     pointer-events: none;
+
+    z-index: 0;
 }
 
 
 /* =========================================================
-   MAKE THE ACTUAL ICON TEXT SIT ABOVE GLOW
-   ========================================================= */
-
-.benefit-icon {
-    isolation: isolate;
-}
-
-.benefit-icon {
-    z-index: 1;
-}
-
-
-/* =========================================================
-   BENEFIT HOVER
+   HOVER
    ========================================================= */
 
 .benefit:hover .benefit-icon {
@@ -513,11 +567,11 @@ input {
         translateY(-2px);
 
     border-color:
-        rgba(209, 0, 255, 0.85);
+        rgba(209, 0, 255, 0.90);
 
     box-shadow:
         0 0 30px
-        rgba(209, 0, 255, 0.18),
+        rgba(209, 0, 255, 0.20),
 
         inset
         0 1px 0
@@ -667,6 +721,7 @@ input {
 
 .form-input::placeholder {
     color: #FFFFFF;
+
     opacity: 0.29;
 }
 
@@ -706,11 +761,10 @@ input {
 
 /* =========================================================
    PASSWORD TOGGLE
-   FIXED WHITE ICON
+   MAGENTA / WHITE SAFE FIX
    ========================================================= */
 
 .toggle-password {
-
     position: absolute;
 
     top: 50%;
@@ -733,11 +787,11 @@ input {
     background:
         transparent;
 
-    color: #FFFFFF !important;
+    color: #D100FF !important;
 
-    -webkit-text-fill-color: #FFFFFF;
+    -webkit-text-fill-color: #D100FF !important;
 
-    opacity: 0.75;
+    opacity: 0.85;
 
     cursor: pointer;
 
@@ -747,7 +801,7 @@ input {
 
     text-shadow:
         0 0 8px
-        rgba(255, 255, 255, 0.20);
+        rgba(209, 0, 255, 0.35);
 
     transition:
         color 0.2s ease,
@@ -755,10 +809,44 @@ input {
         opacity 0.2s ease;
 }
 
-.toggle-password:hover {
-    color: var(--magenta) !important;
 
-    -webkit-text-fill-color: var(--magenta);
+/* Child elements inside eye icon */
+
+.toggle-password *,
+.toggle-password i,
+.toggle-password svg,
+.toggle-password span {
+    color: #D100FF !important;
+
+    fill: #D100FF !important;
+
+    stroke: #D100FF !important;
+
+    -webkit-text-fill-color: #D100FF !important;
+}
+
+
+/* SVG eye */
+
+.toggle-password svg {
+    width: 18px;
+    height: 18px;
+
+    fill: none !important;
+
+    stroke: #D100FF !important;
+
+    stroke-width: 2;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+.toggle-password:hover {
+    color: #E044FF !important;
+
+    -webkit-text-fill-color: #E044FF !important;
 
     background:
         rgba(209, 0, 255, 0.08);
@@ -767,7 +855,7 @@ input {
 
     text-shadow:
         0 0 10px
-        rgba(209, 0, 255, 0.40);
+        rgba(209, 0, 255, 0.50);
 }
 
 
@@ -1130,6 +1218,11 @@ input:focus-visible {
 
         font-size: 19px;
     }
+
+    .benefit-icon svg {
+        width: 19px;
+        height: 19px;
+    }
 }
 
 
@@ -1179,6 +1272,11 @@ input:focus-visible {
         flex-basis: 38px;
 
         font-size: 18px;
+    }
+
+    .benefit-icon svg {
+        width: 18px;
+        height: 18px;
     }
 }
 
