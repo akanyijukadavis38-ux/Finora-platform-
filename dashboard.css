@@ -797,7 +797,7 @@ svg {
     right: 0;
     bottom: 0;
 
-    width: 55%;
+    width: 62%;
     height: 100%;
 
     overflow: hidden;
@@ -808,11 +808,6 @@ svg {
 
     display: block;
 }
-
-
-/* =========================================================
-   BANNER IMAGE
-   ========================================================= */
 
 .banner-image {
     position: absolute;
@@ -829,12 +824,7 @@ svg {
 
     object-fit: cover;
 
-    /*
-       Keep the important artwork toward the right side.
-       This prevents the visual subject from being hidden
-       underneath the HTML text.
-    */
-    object-position: 68% center;
+    object-position: right center;
 
     opacity: 0.94;
 
@@ -842,16 +832,14 @@ svg {
         saturate(1.04)
         contrast(1.04);
 
-    transform:
-        scale(1.015);
+    transform: scale(0.88);
 
-    transform-origin: center center;
+    transform-origin: right center;
 
     transition:
         transform 0.7s ease,
         opacity 0.4s ease;
 }
-
 
 /* =========================================================
    ARTWORK LEFT BLEND
