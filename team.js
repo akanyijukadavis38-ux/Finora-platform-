@@ -7,16 +7,22 @@
    NO LOCAL STORAGE
    NO FAKE TEAM DATA
 
-   CURRENT BACKEND CONNECTION:
+   BACKEND CONNECTIONS:
    GET /api/users/me
+   GET /api/users/team
 
    TEAM DATA:
-   Not connected to a team-members backend route yet.
+   Loaded from the real FINORA backend.
 
-   Therefore:
-   - No fake members
-   - No fake earnings
-   - No invented API routes
+   LEVELS:
+   Level 1 = Direct referrals
+   Level 2 = Referrals of Level 1
+   Level 3 = Referrals of Level 2
+
+   COMMISSION RATES:
+   Level 1 = 15%
+   Level 2 = 5%
+   Level 3 = 2%
 ========================================================= */
 
 
@@ -141,11 +147,10 @@ document.addEventListener(
 
         /* =================================================
            TEAM DATA
-
-           This remains empty until the backend team
-           endpoint is created.
-
-           We DO NOT invent members.
+           
+           This is populated ONLY from the backend.
+           No localStorage.
+           No fake members.
         ================================================= */
 
         let teamMembers =
@@ -366,6 +371,317 @@ document.addEventListener(
 
 
         /* =================================================
+           LOAD REAL TEAM MEMBERS
+        ================================================= */
+
+        async function loadTeamMembers() {
+
+            try {
+
+                console.log(
+                    "FINORA TEAM: Loading real team members..."
+                );
+
+
+                const response =
+                    await fetch(
+                        `${FINORA_API}/api/users/team`,
+                        {
+                            method: "GET",
+
+                            credentials: "include",
+
+                            headers: {
+                                "Accept":
+                                    "application/json"
+                            }
+                        }
+                    );
+
+
+                console.log(
+                    "FINORA TEAM MEMBERS STATUS:",
+                    response.status
+                );
+
+
+                /* =================================================
+                   NO SESSION
+                ================================================= */
+
+                if (
+                    response.status === 401
+                ) {
+
+                    console.warn(
+                        "FINORA TEAM: No authenticated session for team request."
+                    );
+
+
+                    teamMembers =
+                        [];
+
+
+                    updateTeamSummary();
+
+
+                    renderTeamMembers();
+
+
+                    return false;
+
+                }
+
+
+                /* =================================================
+                   FROZEN ACCOUNT
+                ================================================= */
+
+                if (
+                    response.status === 403
+                ) {
+
+                    let frozenData =
+                        null;
+
+
+                    try {
+
+                        frozenData =
+                            await response.json();
+
+                    } catch (error) {
+
+                        frozenData =
+                            null;
+
+                    }
+
+
+                    const message =
+                        frozenData &&
+                        frozenData.message
+                            ? frozenData.message
+                            : "Your FINORA account has been frozen.";
+
+
+                    showToast(
+                        message
+                    );
+
+
+                    teamMembers =
+                        [];
+
+
+                    updateTeamSummary();
+
+
+                    renderTeamMembers();
+
+
+                    return false;
+
+                }
+
+
+                /* =================================================
+                   OTHER SERVER ERROR
+                ================================================= */
+
+                if (!response.ok) {
+
+                    console.error(
+                        "FINORA TEAM: Team request failed.",
+                        response.status
+                    );
+
+
+                    teamMembers =
+                        [];
+
+
+                    updateTeamSummary();
+
+
+                    renderTeamMembers();
+
+
+                    showToast(
+                        "Unable to load your FINORA team."
+                    );
+
+
+                    return false;
+
+                }
+
+
+                /* =================================================
+                   RESPONSE
+                ================================================= */
+
+                const data =
+                    await response.json();
+
+
+                console.log(
+                    "FINORA TEAM MEMBERS RESPONSE:",
+                    data
+                );
+
+
+                if (
+                    !data ||
+                    data.success !== true
+                ) {
+
+                    console.warn(
+                        "FINORA TEAM: Invalid team response."
+                    );
+
+
+                    teamMembers =
+                        [];
+
+
+                    updateTeamSummary();
+
+
+                    renderTeamMembers();
+
+
+                    showToast(
+                        "FINORA team information is unavailable."
+                    );
+
+
+                    return false;
+
+                }
+
+
+                /* =================================================
+                   ACCEPT BACKEND TEAM ARRAY
+                ================================================= */
+
+                const backendMembers =
+                    Array.isArray(
+                        data.members
+                    )
+                        ? data.members
+                        : (
+                            Array.isArray(
+                                data.team
+                            )
+                                ? data.team
+                                : []
+                        );
+
+
+                /*
+                   The backend is the only source of team data.
+                   We do not create members here.
+                */
+
+                teamMembers =
+                    backendMembers.map(
+                        member => ({
+
+                            ...member,
+
+                            name:
+                                member.name ||
+                                member.fullName ||
+                                member.full_name ||
+                                "FINORA Member",
+
+                            fullName:
+                                member.fullName ||
+                                member.full_name ||
+                                member.name ||
+                                "FINORA Member",
+
+                            level:
+                                member.level,
+
+                            status:
+                                member.status ||
+                                "active",
+
+                            createdAt:
+                                member.createdAt
+
+                        })
+                    );
+
+
+                console.log(
+                    "FINORA TEAM: Real members loaded:",
+                    teamMembers.length
+                );
+
+
+                if (data.summary) {
+
+                    console.log(
+                        "FINORA TEAM SUMMARY:",
+                        data.summary
+                    );
+
+                }
+
+
+                if (data.commissionRates) {
+
+                    console.log(
+                        "FINORA TEAM COMMISSION RATES:",
+                        data.commissionRates
+                    );
+
+                }
+
+
+                updateTeamSummary();
+
+
+                renderTeamMembers();
+
+
+                return true;
+
+
+            } catch (error) {
+
+                console.error(
+                    "❌ FINORA TEAM MEMBERS REQUEST ERROR:",
+                    error
+                );
+
+
+                teamMembers =
+                    [];
+
+
+                updateTeamSummary();
+
+
+                renderTeamMembers();
+
+
+                showToast(
+                    "FINORA could not load your team."
+                );
+
+
+                return false;
+
+            }
+
+        }
+
+
+        /* =================================================
            REFERRAL INFORMATION
         ================================================= */
 
@@ -489,6 +805,13 @@ document.addEventListener(
 
         /* =================================================
            FINANCIAL INFORMATION
+           
+           IMPORTANT:
+           We preserve the existing financial display.
+           No fake referral earnings are calculated here.
+           
+           The User model currently does not contain
+           level-specific referral-income fields.
         ================================================= */
 
         function updateFinancialInformation(user) {
@@ -1729,10 +2052,10 @@ document.addEventListener(
         function initializeTeamData() {
 
             /*
-               The backend team-members route does not exist
-               yet.
+               Start with an empty array while the backend
+               request is loading.
 
-               Therefore this intentionally remains empty.
+               This does NOT create fake members.
             */
 
             teamMembers =
@@ -1801,7 +2124,26 @@ document.addEventListener(
             initializeTeamData();
 
 
-            await loadCurrentUser();
+            /*
+               First authenticate and load the current user.
+            */
+
+            const authenticatedUser =
+                await loadCurrentUser();
+
+
+            /*
+               Only attempt to load the team after the
+               authenticated user has been loaded.
+            */
+
+            if (
+                authenticatedUser
+            ) {
+
+                await loadTeamMembers();
+
+            }
 
 
             console.log(
