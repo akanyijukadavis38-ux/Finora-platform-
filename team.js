@@ -1543,19 +1543,20 @@ document.addEventListener(
                 "click",
                 () => {
 
-                    if (
-                        window.history.length >
-                        1
-                    ) {
+                    /*
+                       Do NOT use window.history.back()
+                       here.
 
-                        window.history.back();
+                       History can restore an old Dashboard
+                       page with its previous navigation state.
 
-                    } else {
+                       Going directly to Dashboard allows the
+                       Dashboard navigation system to initialize
+                       Home as the active page.
+                    */
 
-                        window.location.href =
-                            "dashboard.html";
-
-                    }
+                    window.location.href =
+                        "dashboard.html";
 
                 }
             );
