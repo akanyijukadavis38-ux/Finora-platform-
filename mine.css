@@ -103,7 +103,6 @@ width: min(
 margin: 0 auto;
 }
 
-
 /* =========================================
 HEADER
 ========================================= */
@@ -163,6 +162,7 @@ justify-content: center;
 cursor: pointer;
 
 position: absolute;
+
 left: 0;
 top: 50%;
 
@@ -210,7 +210,10 @@ justify-content: center;
 gap: 3px;
 
 position: relative;
+
 left: 38px;
+
+z-index: 2;
 }
 
 .finora-name {
@@ -248,7 +251,6 @@ margin-left: 2px;
 
 white-space: nowrap;
 }
-
 
 /* =========================================
 INTRO
