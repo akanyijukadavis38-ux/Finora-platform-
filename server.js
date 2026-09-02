@@ -8,7 +8,7 @@ const MongoStore = require("connect-mongo");
 const { connectDB, mongoose } = require("./database");
 const User = require("./user");
 const userRoutes = require("./userRoutes");
-
+const investmentRoutes = require("./investmentRoutes");
 const app = express();
 
 const PORT = process.env.PORT || 8080;
@@ -165,7 +165,10 @@ app.use(
     "/api/users",
     userRoutes
 );
-
+app.use(
+    "/api/investments",
+    investmentRoutes
+);
 
 /* =========================================================
    CURRENT USER
