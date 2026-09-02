@@ -36,6 +36,32 @@
 
         <div class="mine-container mine-top-header">
 
+            <!-- BACK BUTTON -->
+            <button
+                type="button"
+                class="page-back-button"
+                aria-label="Go back"
+                onclick="goBack()">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true">
+
+                    <path d="M19 12H5"></path>
+
+                    <path d="M12 19l-7-7 7-7"></path>
+
+                </svg>
+
+            </button>
+
+
+            <!-- FINORA BRAND -->
             <a
                 href="dashboard.html"
                 class="finora-brand"
@@ -50,41 +76,6 @@
                 </div>
 
             </a>
-
-
-            <div class="header-actions">
-
-                <button
-                    type="button"
-                    class="notification-button"
-                    aria-label="Notifications"
-                    id="notificationButton">
-
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true">
-
-                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
-
-                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-
-                    </svg>
-
-                    <span
-                        class="notification-count"
-                        id="notificationCount"
-                        hidden>
-                        0
-                    </span>
-
-                </button>
-
-            </div>
 
         </div>
 
@@ -495,6 +486,26 @@
 
     const FINORA_API =
         "https://finora-platform-production.up.railway.app";
+
+
+    /* -----------------------------------------
+       BACK BUTTON
+       ----------------------------------------- */
+
+    function goBack() {
+
+        if (window.history.length > 1) {
+
+            window.history.back();
+
+        } else {
+
+            window.location.href =
+                "dashboard.html";
+
+        }
+
+    }
 
 
     /* -----------------------------------------
@@ -1274,42 +1285,10 @@
 
 
     /* -----------------------------------------
-       NOTIFICATION BUTTON
-       ----------------------------------------- */
-
-    function initializeNotifications() {
-
-        const button =
-            document.getElementById(
-                "notificationButton"
-            );
-
-
-        if (!button) return;
-
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                console.log(
-                    "FINORA notifications opened."
-                );
-
-            }
-        );
-
-    }
-
-
-    /* -----------------------------------------
        INITIALIZE PAGE
        ----------------------------------------- */
 
     function initializeMine() {
-
-        initializeNotifications();
-
 
         /*
          * The page structure appears immediately.
