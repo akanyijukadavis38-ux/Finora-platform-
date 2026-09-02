@@ -129,11 +129,10 @@ backdrop-filter: blur(14px);
 .mine-top-header {
 min-height: 105px;
 
-display: grid;
-
-grid-template-columns: 48px 1fr 48px;
+display: flex;
 
 align-items: center;
+justify-content: center;
 
 position: relative;
 }
@@ -163,7 +162,11 @@ justify-content: center;
 
 cursor: pointer;
 
-justify-self: start;
+position: absolute;
+left: 0;
+top: 50%;
+
+transform: translateY(-50%);
 
 transition:
     background 0.2s ease,
@@ -178,7 +181,7 @@ background:
 border-color:
     rgba(209, 0, 255, 0.48);
 
-transform: translateY(-1px);
+transform: translateY(calc(-50% - 1px));
 }
 
 .page-back-button svg {
@@ -188,16 +191,6 @@ height: 22px;
 display: block;
 
 flex-shrink: 0;
-}
-
-
-/* HEADER SPACER */
-
-.header-spacer {
-width: 48px;
-height: 48px;
-
-justify-self: end;
 }
 
 
@@ -216,7 +209,8 @@ justify-content: center;
 
 gap: 3px;
 
-justify-self: center;
+position: relative;
+left: 38px;
 }
 
 .finora-name {
@@ -1051,6 +1045,8 @@ MOBILE
 
 .finora-brand {
     gap: 3px;
+
+    left: 20px;
 }
 
 .finora-name {
@@ -1165,6 +1161,8 @@ SMALL PHONES
 
 .finora-brand {
     gap: 3px;
+
+    left: 15px;
 }
 
 .finora-tagline {
