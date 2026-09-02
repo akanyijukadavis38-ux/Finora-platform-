@@ -1,0 +1,1107 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8"><meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+<meta
+    name="theme-color"
+    content="#0B0A0F">
+
+<meta
+    name="description"
+    content="FINORA — My Investments">
+
+<title>FINORA | My Investments</title>
+
+<link rel="stylesheet" href="mine.css">
+
+</head><body><!-- =========================================
+     FINORA MINE PAGE
+     ========================================= -->
+
+<div class="mine-page">
+
+    <!-- HEADER -->
+    <header class="mine-header">
+        <div class="mine-container mine-top-header">
+
+            <a href="dashboard.html" class="finora-brand" aria-label="FINORA Home">
+                <div class="finora-name">
+                    <span class="fin-fin">FIN</span><span class="fin-ora">ORA</span>
+                </div>
+
+                <div class="finora-tagline">
+                    INVEST • GROW • EARN
+                </div>
+            </a>
+
+            <div class="header-actions">
+                <button
+                    type="button"
+                    class="notification-button"
+                    aria-label="Notifications"
+                    id="notificationButton">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+
+                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+
+                    </svg>
+
+                    <span
+                        class="notification-count"
+                        id="notificationCount"
+                        hidden>
+                        0
+                    </span>
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="mine-container mine-main">
+
+        <!-- PAGE INTRO -->
+        <section class="mine-intro">
+
+            <div class="mine-kicker">
+                MY PORTFOLIO
+            </div>
+
+            <h1>
+                My <span>Investments</span>
+            </h1>
+
+            <p>
+                Track your active investments and completed investment history.
+            </p>
+
+        </section>
+
+
+        <!-- PORTFOLIO SUMMARY -->
+        <section class="portfolio-summary">
+
+            <div class="summary-card primary-summary">
+
+                <div class="summary-label">
+                    TOTAL INVESTED
+                </div>
+
+                <div
+                    class="summary-value"
+                    id="totalInvested">
+                    UGX 0
+                </div>
+
+                <div class="summary-note">
+                    Your investment portfolio
+                </div>
+
+            </div>
+
+
+            <div class="summary-grid">
+
+                <div class="summary-card">
+                    <div class="summary-label">
+                        ACTIVE
+                    </div>
+
+                    <div
+                        class="summary-small-value"
+                        id="activeInvestmentCount">
+                        0
+                    </div>
+
+                    <div class="summary-note">
+                        Investments
+                    </div>
+                </div>
+
+
+                <div class="summary-card">
+                    <div class="summary-label">
+                        PORTFOLIO EARNINGS
+                    </div>
+
+                    <div
+                        class="summary-small-value gold-value"
+                        id="portfolioEarnings">
+                        UGX 0
+                    </div>
+
+                    <div class="summary-note">
+                        Earned so far
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ACTIVE INVESTMENTS -->
+        <section class="investment-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <div class="section-kicker">
+                        CURRENT PORTFOLIO
+                    </div>
+
+                    <h2>
+                        Active Investments
+                    </h2>
+                </div>
+
+                <span
+                    class="section-count"
+                    id="activeCountBadge">
+                    0 Active
+                </span>
+
+            </div>
+
+
+            <div
+                class="investment-list"
+                id="activeInvestments">
+
+                <!-- Real investment cards are inserted here -->
+
+            </div>
+
+        </section>
+
+
+        <!-- COMPLETED INVESTMENTS -->
+        <section class="investment-section completed-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <div class="section-kicker">
+                        INVESTMENT HISTORY
+                    </div>
+
+                    <h2>
+                        Completed Investments
+                    </h2>
+                </div>
+
+                <span
+                    class="section-count muted-count"
+                    id="completedCountBadge">
+                    0 Completed
+                </span>
+
+            </div>
+
+
+            <div
+                class="completed-list"
+                id="completedInvestments">
+
+                <!-- Completed investments are inserted here -->
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav
+        class="bottom-navigation"
+        aria-label="Main navigation">
+
+        <a
+            href="dashboard.html"
+            class="bottom-nav-item"
+            data-page="home">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true">
+
+                <path d="M3 10.5 12 3l9 7.5"></path>
+                <path d="M5 9.5V21h14V9.5"></path>
+                <path d="M9 21v-6h6v6"></path>
+
+            </svg>
+
+            <span>Home</span>
+        </a>
+
+
+        <a
+            href="team.html"
+            class="bottom-nav-item"
+            data-page="team">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true">
+
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+
+            </svg>
+
+            <span>Team</span>
+        </a>
+
+
+        <a
+            href="rates.html"
+            class="bottom-nav-item"
+            data-page="rates">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true">
+
+                <path d="M4 19V5"></path>
+                <path d="M4 19h16"></path>
+                <path d="m7 15 4-4 3 2 6-7"></path>
+
+            </svg>
+
+            <span>Rates</span>
+        </a>
+
+
+        <a
+            href="mine.html"
+            class="bottom-nav-item active"
+            data-page="mine"
+            aria-current="page">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true">
+
+                <rect
+                    x="3"
+                    y="5"
+                    width="18"
+                    height="14"
+                    rx="2">
+                </rect>
+
+                <path d="M3 10h18"></path>
+                <path d="M7 15h3"></path>
+
+            </svg>
+
+            <span>Mine</span>
+        </a>
+
+
+        <a
+            href="profile.html"
+            class="bottom-nav-item"
+            data-page="profile">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true">
+
+                <circle cx="12" cy="8" r="4"></circle>
+                <path d="M4 21a8 8 0 0 1 16 0"></path>
+
+            </svg>
+
+            <span>Profile</span>
+        </a>
+
+    </nav>
+
+</div>
+
+
+<!-- =========================================
+     JAVASCRIPT
+     ========================================= -->
+
+<script>
+
+    const FINORA_API =
+        "https://finora-platform-production.up.railway.app";
+
+
+    /* -----------------------------------------
+       FORMAT MONEY
+       ----------------------------------------- */
+
+    function formatMoney(amount) {
+
+        const value = Number(amount) || 0;
+
+        return "UGX " + value.toLocaleString("en-UG");
+
+    }
+
+
+    /* -----------------------------------------
+       SAFE NUMBER
+       ----------------------------------------- */
+
+    function numberValue(value) {
+
+        const number = Number(value);
+
+        return Number.isFinite(number) ? number : 0;
+
+    }
+
+
+    /* -----------------------------------------
+       ESCAPE HTML
+       ----------------------------------------- */
+
+    function escapeHTML(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* -----------------------------------------
+       DATE FORMAT
+       ----------------------------------------- */
+
+    function formatDate(dateValue) {
+
+        if (!dateValue) {
+            return "—";
+        }
+
+        const date = new Date(dateValue);
+
+        if (Number.isNaN(date.getTime())) {
+            return "—";
+        }
+
+        return date.toLocaleDateString("en-UG", {
+            day: "numeric",
+            month: "short",
+            year: "numeric"
+        });
+
+    }
+
+
+    /* -----------------------------------------
+       EMPTY ACTIVE STATE
+       ----------------------------------------- */
+
+    function renderActiveEmpty() {
+
+        const container =
+            document.getElementById("activeInvestments");
+
+        if (!container) return;
+
+        container.innerHTML = `
+            <div class="empty-investments">
+                <div class="empty-icon">
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+
+                        <rect
+                            x="3"
+                            y="5"
+                            width="18"
+                            height="14"
+                            rx="2">
+                        </rect>
+
+                        <path d="M3 10h18"></path>
+                        <path d="M7 15h3"></path>
+                    </svg>
+                </div>
+
+                <h3>No Active Investments</h3>
+
+                <p>
+                    Your active investments will appear here once you make an investment.
+                </p>
+            </div>
+        `;
+
+    }
+
+
+    /* -----------------------------------------
+       EMPTY COMPLETED STATE
+       ----------------------------------------- */
+
+    function renderCompletedEmpty() {
+
+        const container =
+            document.getElementById("completedInvestments");
+
+        if (!container) return;
+
+        container.innerHTML = `
+            <div class="empty-history">
+                <div class="history-icon">
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+
+                        <path d="M3 12a9 9 0 1 0 18 0"></path>
+                        <path d="M3 12h4"></path>
+                        <path d="M3 12a9 9 0 0 1 9-9"></path>
+                        <path d="M12 7v5l3 2"></path>
+
+                    </svg>
+                </div>
+
+                <div>
+                    <h3>No Completed Investments</h3>
+
+                    <p>
+                        Completed investments will appear here after their full investment period.
+                    </p>
+                </div>
+            </div>
+        `;
+
+    }
+
+
+    /* -----------------------------------------
+       NORMALIZE INVESTMENT DATA
+       ----------------------------------------- */
+
+    function normalizeInvestment(item) {
+
+        const investment = item || {};
+
+        const amount =
+            numberValue(
+                investment.amount ??
+                investment.investmentAmount ??
+                investment.investment_amount ??
+                investment.principal
+            );
+
+        const dailyEarnings =
+            numberValue(
+                investment.dailyEarnings ??
+                investment.daily_earnings ??
+                investment.dailyIncome ??
+                investment.daily_income
+            );
+
+        const earned =
+            numberValue(
+                investment.earned ??
+                investment.totalEarned ??
+                investment.total_earned ??
+                investment.earnings
+            );
+
+        const duration =
+            numberValue(
+                investment.duration ??
+                investment.durationDays ??
+                investment.duration_days
+            ) || 20;
+
+        const daysCompleted =
+            numberValue(
+                investment.daysCompleted ??
+                investment.days_completed ??
+                investment.completedDays
+            );
+
+        const daysRemaining =
+            numberValue(
+                investment.daysRemaining ??
+                investment.days_remaining
+            );
+
+        const startDate =
+            investment.startDate ??
+            investment.start_date ??
+            investment.createdAt ??
+            investment.created_at;
+
+        const endDate =
+            investment.endDate ??
+            investment.end_date ??
+            investment.completedAt ??
+            investment.completed_at;
+
+        const status =
+            String(investment.status || "active").toLowerCase();
+
+        return {
+            id: investment._id || investment.id || "",
+            amount,
+            dailyEarnings,
+            earned,
+            duration,
+            daysCompleted,
+            daysRemaining,
+            startDate,
+            endDate,
+            status
+        };
+
+    }
+
+
+    /* -----------------------------------------
+       ACTIVE INVESTMENT CARD
+       ----------------------------------------- */
+
+    function createActiveInvestmentCard(rawInvestment) {
+
+        const investment =
+            normalizeInvestment(rawInvestment);
+
+        const progress =
+            Math.max(
+                0,
+                Math.min(
+                    100,
+                    (investment.daysCompleted /
+                        investment.duration) * 100
+                )
+            );
+
+        const remaining =
+            investment.daysRemaining > 0
+                ? investment.daysRemaining
+                : Math.max(
+                    0,
+                    investment.duration -
+                    investment.daysCompleted
+                );
+
+        return `
+            <article class="investment-card">
+
+                <div class="investment-card-top">
+
+                    <div>
+                        <div class="investment-label">
+                            INVESTMENT
+                        </div>
+
+                        <div class="investment-amount">
+                            ${formatMoney(investment.amount)}
+                        </div>
+                    </div>
+
+                    <span class="status-badge">
+                        ACTIVE
+                    </span>
+
+                </div>
+
+
+                <div class="investment-divider"></div>
+
+
+                <div class="investment-metrics">
+
+                    <div class="investment-metric">
+                        <span>Daily Earnings</span>
+                        <strong>
+                            ${formatMoney(investment.dailyEarnings)}
+                        </strong>
+                    </div>
+
+                    <div class="investment-metric">
+                        <span>Earned So Far</span>
+                        <strong class="gold-text">
+                            ${formatMoney(investment.earned)}
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <div class="progress-area">
+
+                    <div class="progress-header">
+
+                        <span>
+                            Investment Progress
+                        </span>
+
+                        <strong>
+                            Day ${investment.daysCompleted}
+                            / ${investment.duration}
+                        </strong>
+
+                    </div>
+
+                    <div class="progress-track">
+                        <div
+                            class="progress-fill"
+                            style="width:${progress}%">
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="investment-footer">
+
+                    <div>
+                        <span>Started</span>
+                        <strong>
+                            ${formatDate(investment.startDate)}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>Remaining</span>
+                        <strong>
+                            ${remaining} days
+                        </strong>
+                    </div>
+
+                </div>
+
+            </article>
+        `;
+
+    }
+
+
+    /* -----------------------------------------
+       COMPLETED INVESTMENT ROW
+       ----------------------------------------- */
+
+    function createCompletedInvestment(rawInvestment) {
+
+        const investment =
+            normalizeInvestment(rawInvestment);
+
+        return `
+            <article class="completed-investment">
+
+                <div class="completed-main">
+
+                    <div class="completed-symbol">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <div class="completed-amount">
+                            ${formatMoney(investment.amount)}
+                        </div>
+
+                        <div class="completed-date">
+                            Completed
+                            ${formatDate(investment.endDate)}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="completed-earnings">
+
+                    <span>Total Earned</span>
+
+                    <strong>
+                        ${formatMoney(investment.earned)}
+                    </strong>
+
+                </div>
+
+            </article>
+        `;
+
+    }
+
+
+    /* -----------------------------------------
+       RENDER INVESTMENTS
+       ----------------------------------------- */
+
+    function renderInvestments(investments) {
+
+        const activeContainer =
+            document.getElementById("activeInvestments");
+
+        const completedContainer =
+            document.getElementById("completedInvestments");
+
+        const active =
+            investments.filter(item => {
+
+                const status =
+                    String(
+                        item.status || "active"
+                    ).toLowerCase();
+
+                return ![
+                    "completed",
+                    "complete",
+                    "expired",
+                    "finished"
+                ].includes(status);
+
+            });
+
+        const completed =
+            investments.filter(item => {
+
+                const status =
+                    String(
+                        item.status || ""
+                    ).toLowerCase();
+
+                return [
+                    "completed",
+                    "complete",
+                    "expired",
+                    "finished"
+                ].includes(status);
+
+            });
+
+
+        if (activeContainer) {
+
+            if (active.length) {
+
+                activeContainer.innerHTML =
+                    active
+                        .map(createActiveInvestmentCard)
+                        .join("");
+
+            } else {
+
+                renderActiveEmpty();
+
+            }
+
+        }
+
+
+        if (completedContainer) {
+
+            if (completed.length) {
+
+                completedContainer.innerHTML =
+                    completed
+                        .map(createCompletedInvestment)
+                        .join("");
+
+            } else {
+
+                renderCompletedEmpty();
+
+            }
+
+        }
+
+
+        updatePortfolioSummary(
+            active,
+            completed
+        );
+
+    }
+
+
+    /* -----------------------------------------
+       UPDATE SUMMARY
+       ----------------------------------------- */
+
+    function updatePortfolioSummary(
+        active,
+        completed
+    ) {
+
+        const all =
+            [...active, ...completed]
+                .map(normalizeInvestment);
+
+
+        const totalInvested =
+            all.reduce(
+                (sum, investment) =>
+                    sum + investment.amount,
+                0
+            );
+
+
+        const portfolioEarnings =
+            all.reduce(
+                (sum, investment) =>
+                    sum + investment.earned,
+                0
+            );
+
+
+        const totalInvestedElement =
+            document.getElementById("totalInvested");
+
+        const activeCountElement =
+            document.getElementById("activeInvestmentCount");
+
+        const earningsElement =
+            document.getElementById("portfolioEarnings");
+
+        const activeBadge =
+            document.getElementById("activeCountBadge");
+
+        const completedBadge =
+            document.getElementById("completedCountBadge");
+
+
+        if (totalInvestedElement) {
+
+            totalInvestedElement.textContent =
+                formatMoney(totalInvested);
+
+        }
+
+
+        if (activeCountElement) {
+
+            activeCountElement.textContent =
+                active.length;
+
+        }
+
+
+        if (earningsElement) {
+
+            earningsElement.textContent =
+                formatMoney(portfolioEarnings);
+
+        }
+
+
+        if (activeBadge) {
+
+            activeBadge.textContent =
+                `${active.length} Active`;
+
+        }
+
+
+        if (completedBadge) {
+
+            completedBadge.textContent =
+                `${completed.length} Completed`;
+
+        }
+
+    }
+
+
+    /* -----------------------------------------
+       LOAD REAL INVESTMENTS
+       ----------------------------------------- */
+
+    async function loadInvestments() {
+
+        try {
+
+            const response =
+                await fetch(
+                    `${FINORA_API}/api/investments/mine`,
+                    {
+                        method: "GET",
+                        credentials: "include",
+                        headers: {
+                            "Accept": "application/json"
+                        }
+                    }
+                );
+
+
+            if (response.status === 401) {
+
+                console.warn(
+                    "FINORA: Investment session is not authenticated."
+                );
+
+                return;
+
+            }
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    `Investment request failed: ${response.status}`
+                );
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            const investments =
+                Array.isArray(data)
+                    ? data
+                    : (
+                        Array.isArray(data.investments)
+                            ? data.investments
+                            : []
+                    );
+
+
+            renderInvestments(investments);
+
+
+            console.log(
+                "FINORA: Investment data updated."
+            );
+
+        } catch (error) {
+
+            console.error(
+                "❌ FINORA INVESTMENTS LOAD ERROR:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* -----------------------------------------
+       NOTIFICATION BUTTON
+       ----------------------------------------- */
+
+    function initializeNotifications() {
+
+        const button =
+            document.getElementById(
+                "notificationButton"
+            );
+
+        if (!button) return;
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                console.log(
+                    "FINORA notifications opened."
+                );
+
+            }
+        );
+
+    }
+
+
+    /* -----------------------------------------
+       INITIALIZE PAGE
+       ----------------------------------------- */
+
+    function initializeMine() {
+
+        initializeNotifications();
+
+        /*
+         * The page structure appears immediately.
+         * Investment data is requested in the
+         * background and silently updates the UI.
+         */
+
+        loadInvestments()
+            .then(() => {
+
+                console.log(
+                    "FINORA MINE DATA READY"
+                );
+
+            })
+            .catch((error) => {
+
+                console.error(
+                    "❌ FINORA BACKGROUND MINE ERROR:",
+                    error
+                );
+
+            });
+
+    }
+
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        initializeMine
+    );
+
+</script>
+
+</body>
+</html>
