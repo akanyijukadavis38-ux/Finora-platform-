@@ -159,11 +159,14 @@ a {
 
 .team-page {
 
-    min-height: 100vh;
+    min-height:
+        100vh;
 
-    position: relative;
+    position:
+        relative;
 
-    overflow-x: hidden;
+    overflow-x:
+        hidden;
 
 }
 
@@ -202,7 +205,7 @@ a {
         1000;
 
     min-height:
-        72px;
+        78px;
 
     display:
         grid;
@@ -214,10 +217,10 @@ a {
         center;
 
     padding:
-        10px 16px;
+        9px 16px;
 
     background:
-        rgba(11, 10, 15, 0.91);
+        rgba(11, 10, 15, 0.94);
 
     border-bottom:
         1px solid
@@ -231,6 +234,10 @@ a {
 
 }
 
+
+/* =========================================================
+   HEADER BUTTON
+========================================================= */
 
 .header-button {
 
@@ -307,7 +314,26 @@ a {
 }
 
 
+/* =========================================================
+   CENTER FINORA HEADER
+========================================================= */
+
 .team-header-title {
+
+    min-width:
+        0;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
 
     text-align:
         center;
@@ -315,83 +341,135 @@ a {
 }
 
 
-.team-eyebrow {
+.finora-header-name {
 
     display:
-        block;
+        inline-flex;
 
-    margin-bottom:
-        3px;
+    align-items:
+        center;
 
-    color:
-        var(--magenta-light);
+    justify-content:
+        center;
+
+    gap:
+        0;
+
+    margin:
+        0;
+
+    padding:
+        0;
+
+    font-family:
+        "Times New Roman",
+        Times,
+        serif;
 
     font-size:
-        9px;
+        clamp(32px, 8vw, 45px);
+
+    line-height:
+        .86;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        -2.2px;
+
+    white-space:
+        nowrap;
+
+}
+
+
+.finora-fin,
+.finora-ora {
+
+    display:
+        inline;
+
+    margin:
+        0;
+
+    padding:
+        0;
+
+    letter-spacing:
+        -2.2px;
+
+}
+
+
+.finora-fin {
+
+    color:
+        var(--white);
+
+}
+
+
+.finora-ora {
+
+    color:
+        var(--gold-light);
+
+}
+
+
+.finora-header-tagline {
+
+    margin-top:
+        5px;
+
+    color:
+        var(--magenta);
+
+    font-size:
+        8px;
+
+    line-height:
+        1;
 
     font-weight:
         800;
 
     letter-spacing:
-        2.2px;
+        1.9px;
+
+    text-transform:
+        uppercase;
+
+    white-space:
+        nowrap;
 
 }
 
 
-.team-header-title h1 {
-
-    color:
-        var(--white);
-
-    font-size:
-        20px;
-
-    line-height:
-        1.15;
-
-    font-weight:
-        750;
-
-    letter-spacing:
-        -.3px;
-
-}
-
+/* =========================================================
+   HIDDEN NOTIFICATION
+   Kept in DOM for team.js compatibility.
+========================================================= */
 
 .notification-button {
 
-    position:
-        relative;
+    visibility:
+        hidden;
+
+    opacity:
+        0;
+
+    pointer-events:
+        none;
 
 }
 
 
 .notification-dot {
 
-    position:
-        absolute;
-
-    top:
-        9px;
-
-    right:
-        9px;
-
-    width:
-        6px;
-
-    height:
-        6px;
-
-    border-radius:
-        50%;
-
-    background:
-        var(--magenta);
-
-    box-shadow:
-        0 0 12px
-        rgba(209,0,255,.75);
+    display:
+        none;
 
 }
 
@@ -648,13 +726,6 @@ a {
         rgba(255,255,255,.035);
 
 }
-
-
-/*
-   The badge space is intentionally empty in HTML.
-   The actual badge/icon can be added later through
-   CSS or JavaScript without changing the layout.
-*/
 
 
 .user-phone-number {
@@ -2258,7 +2329,7 @@ a {
 
 
 /* =========================================================
-   FOOTER
+   CURRENT FINORA FOOTER
 ========================================================= */
 
 .team-footer {
@@ -2267,8 +2338,8 @@ a {
         34px;
 
     padding:
-        25px 15px
-        20px;
+        30px 15px
+        22px;
 
     border-top:
         1px solid
@@ -2282,17 +2353,77 @@ a {
 
 .footer-brand {
 
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        0;
+
+    margin:
+        0;
+
+    padding:
+        0;
+
+    font-family:
+        "Times New Roman",
+        Times,
+        serif;
+
+    font-size:
+        35px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        -2px;
+
+    line-height:
+        1;
+
+    white-space:
+        nowrap;
+
+}
+
+
+.footer-brand .fin,
+.footer-brand .ora {
+
+    display:
+        inline;
+
+    margin:
+        0;
+
+    padding:
+        0;
+
+    letter-spacing:
+        -2px;
+
+}
+
+
+.footer-brand .fin {
+
     color:
         var(--white);
 
-    font-size:
-        16px;
+}
 
-    font-weight:
-        900;
 
-    letter-spacing:
-        3px;
+.footer-brand .ora {
+
+    color:
+        var(--gold-light);
 
 }
 
@@ -2306,7 +2437,7 @@ a {
         var(--magenta);
 
     font-size:
-        8px;
+        9px;
 
     font-weight:
         800;
@@ -2314,16 +2445,39 @@ a {
     letter-spacing:
         1.8px;
 
+    line-height:
+        1.1;
+
 }
 
 
-.team-footer p {
+.footer-text {
 
-    margin-top:
-        9px;
+    max-width:
+        350px;
+
+    margin:
+        12px auto 0;
 
     color:
         var(--muted);
+
+    font-size:
+        9px;
+
+    line-height:
+        1.55;
+
+}
+
+
+.footer-copy {
+
+    margin-top:
+        10px;
+
+    color:
+        rgba(169,165,173,.78);
 
     font-size:
         9px;
@@ -2775,6 +2929,37 @@ a {
     }
 
 
+    .finora-header-name {
+
+        font-size:
+            30px;
+
+        letter-spacing:
+            -2px;
+
+    }
+
+
+    .finora-fin,
+    .finora-ora {
+
+        letter-spacing:
+            -2px;
+
+    }
+
+
+    .finora-header-tagline {
+
+        font-size:
+            7px;
+
+        letter-spacing:
+            1.5px;
+
+    }
+
+
     .team-intro h2 {
 
         font-size:
@@ -2840,6 +3025,22 @@ a {
 
         font-size:
             11px;
+
+    }
+
+
+    .footer-brand {
+
+        font-size:
+            31px;
+
+    }
+
+
+    .footer-tagline {
+
+        font-size:
+            8px;
 
     }
 
