@@ -129,11 +129,75 @@ backdrop-filter: blur(14px);
 .mine-top-header {
 min-height: 105px;
 
+display: grid;
+
+grid-template-columns: 48px 1fr 48px;
+
+align-items: center;
+
+position: relative;
+}
+
+
+/* BACK BUTTON */
+
+.page-back-button {
+width: 48px;
+height: 48px;
+
+padding: 0;
+
+border-radius: 50%;
+
+border:
+    1px solid rgba(209, 0, 255, 0.32);
+
+background:
+    rgba(7, 6, 9, 0.72);
+
+color: var(--pink);
+
 display: flex;
 align-items: center;
 justify-content: center;
 
-position: relative;
+cursor: pointer;
+
+justify-self: start;
+
+transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.page-back-button:hover {
+background:
+    rgba(209, 0, 255, 0.10);
+
+border-color:
+    rgba(209, 0, 255, 0.48);
+
+transform: translateY(-1px);
+}
+
+.page-back-button svg {
+width: 22px;
+height: 22px;
+
+display: block;
+
+flex-shrink: 0;
+}
+
+
+/* HEADER SPACER */
+
+.header-spacer {
+width: 48px;
+height: 48px;
+
+justify-self: end;
 }
 
 
@@ -147,10 +211,12 @@ display: flex;
 
 flex-direction: column;
 
-align-items: flex-start;
+align-items: center;
 justify-content: center;
 
 gap: 3px;
+
+justify-self: center;
 }
 
 .finora-name {
@@ -187,96 +253,6 @@ letter-spacing: 3px;
 margin-left: 2px;
 
 white-space: nowrap;
-}
-
-
-/* HEADER ACTIONS */
-
-.header-actions {
-position: absolute;
-right: 0;
-
-display: flex;
-align-items: center;
-justify-content: center;
-}
-
-
-/* NOTIFICATION BUTTON */
-
-.notification-button {
-width: 48px;
-height: 48px;
-
-padding: 0;
-
-border-radius: 50%;
-
-border:
-    1px solid rgba(209, 0, 255, 0.32);
-
-background:
-    rgba(7, 6, 9, 0.72);
-
-color: var(--pink);
-
-display: flex;
-align-items: center;
-justify-content: center;
-
-cursor: pointer;
-
-position: relative;
-
-transition:
-    background 0.2s ease,
-    transform 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.notification-button:hover {
-background:
-    rgba(209, 0, 255, 0.10);
-
-border-color:
-    rgba(209, 0, 255, 0.48);
-
-transform: translateY(-1px);
-}
-
-.notification-button svg {
-width: 22px;
-height: 22px;
-
-display: block;
-
-flex-shrink: 0;
-}
-
-.notification-count {
-position: absolute;
-
-top: -2px;
-right: -2px;
-
-min-width: 17px;
-height: 17px;
-
-padding: 0 4px;
-
-border-radius: 20px;
-
-background: var(--pink);
-color: var(--dark-text);
-
-font-size: 9px;
-font-weight: 800;
-
-display: grid;
-place-items: center;
-
-border:
-    2px solid var(--bg-dark);
 }
 
 
@@ -1060,18 +1036,14 @@ MOBILE
     min-height: 92px;
 }
 
-.notification-button {
+.page-back-button {
     width: 41px;
     height: 41px;
-
-    padding: 0;
 }
 
-.notification-button svg {
+.page-back-button svg {
     width: 20px;
     height: 20px;
-
-    display: block;
 }
 
 
@@ -1079,8 +1051,6 @@ MOBILE
 
 .finora-brand {
     gap: 3px;
-
-    transform: translateX(-10px);
 }
 
 .finora-name {
@@ -1194,8 +1164,6 @@ SMALL PHONES
 }
 
 .finora-brand {
-    transform: translateX(-7px);
-
     gap: 3px;
 }
 
@@ -1203,18 +1171,14 @@ SMALL PHONES
     margin-left: 2px;
 }
 
-.notification-button {
+.page-back-button {
     width: 37px;
     height: 37px;
-
-    padding: 0;
 }
 
-.notification-button svg {
+.page-back-button svg {
     width: 19px;
     height: 19px;
-
-    display: block;
 }
 
 .bottom-nav-item span {
@@ -1254,6 +1218,8 @@ REDUCED MOTION
 }
 
 }
+
+
 /* =========================
    FOOTER
 ========================= */
