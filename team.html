@@ -2,1384 +2,1115 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <meta
         name="theme-color"
-        content="#07050A"
-    >
+        content="#0b080b">
 
     <meta
         name="description"
-        content="FINORA Team"
-    >
+        content="FINORA Team — Referral and team center">
 
-    <title>FINORA | Team</title>
+    <title>FINORA | My Team</title>
 
-    <style>
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        :root {
-            --bg: #07050A;
-            --bg2: #0D0810;
-            --card: rgba(255,255,255,0.035);
-
-            --white: #FFFFFF;
-
-            --gold: #F5A623;
-            --gold-light: #FFD36A;
-            --orange: #FF7A18;
-
-            --pink: #E85D9E;
-            --pink-light: #FF8FC0;
-
-            --muted: rgba(255,255,255,0.55);
-            --muted2: rgba(255,255,255,0.38);
-
-            --border: rgba(255,255,255,0.075);
-        }
-
-        html {
-            background: var(--bg);
-        }
-
-        body {
-            min-height: 100vh;
-
-            background:
-                radial-gradient(
-                    circle at 85% 0%,
-                    rgba(232,93,158,0.10),
-                    transparent 30%
-                ),
-                radial-gradient(
-                    circle at 10% 25%,
-                    rgba(245,166,35,0.07),
-                    transparent 28%
-                ),
-                linear-gradient(
-                    180deg,
-                    #07050A 0%,
-                    #0D0810 100%
-                );
-
-            color: var(--white);
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
-            padding-bottom: 24px;
-        }
-
-        button {
-            font-family: inherit;
-        }
-
-        /* =================================
-           HEADER
-        ================================= */
-
-        .top-header {
-            height: 64px;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            padding: 0 15px;
-
-            position: sticky;
-            top: 0;
-
-            z-index: 50;
-
-            background:
-                rgba(7,5,10,0.96);
-
-            backdrop-filter: blur(14px);
-
-            border-bottom:
-                1px solid
-                rgba(255,255,255,0.07);
-        }
-
-        .back-button {
-            width: 39px;
-            height: 39px;
-
-            border-radius: 12px;
-
-            border:
-                1px solid
-                rgba(255,255,255,0.09);
-
-            background:
-                rgba(255,255,255,0.045);
-
-            color: white;
-
-            font-size: 25px;
-            line-height: 1;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            cursor: pointer;
-        }
-
-        .brand {
-            font-size: 20px;
-            font-weight: 900;
-            letter-spacing: 0.3px;
-        }
-
-        .brand .gold {
-            color: var(--gold);
-        }
-
-        .brand .pink {
-            color: var(--pink);
-        }
-
-        .header-space {
-            width: 39px;
-            height: 39px;
-        }
-
-        /* =================================
-           PAGE
-        ================================= */
-
-        .page {
-            width: 100%;
-            max-width: 520px;
-
-            margin: 0 auto;
-
-            padding:
-                18px 14px 30px;
-        }
-
-        /* =================================
-           INTRO
-        ================================= */
-
-        .intro {
-            margin-bottom: 15px;
-        }
-
-        .intro h1 {
-            font-size: 24px;
-            font-weight: 900;
-
-            margin-bottom: 5px;
-        }
-
-        .intro p {
-            font-size: 12px;
-            line-height: 1.5;
-
-            color: var(--muted);
-        }
-
-        /* =================================
-           REFERRAL CARD
-        ================================= */
-
-        .referral-card {
-            position: relative;
-            overflow: hidden;
-
-            padding: 17px;
-
-            margin-bottom: 13px;
-
-            border-radius: 18px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(245,166,35,0.12),
-                    rgba(232,93,158,0.08) 48%,
-                    rgba(255,255,255,0.025)
-                );
-
-            border:
-                1px solid
-                rgba(245,166,35,0.22);
-
-            box-shadow:
-                0 12px 30px
-                rgba(0,0,0,0.22);
-        }
-
-        .referral-card::after {
-            content: "";
-
-            position: absolute;
-
-            width: 120px;
-            height: 120px;
-
-            right: -55px;
-            top: -55px;
-
-            border-radius: 50%;
-
-            background:
-                rgba(232,93,158,0.10);
-        }
-
-        .referral-label {
-            position: relative;
-            z-index: 2;
-
-            font-size: 10px;
-
-            color: var(--muted);
-
-            margin-bottom: 6px;
-
-            text-transform: uppercase;
-            letter-spacing: 0.7px;
-        }
-
-        .referral-row {
-            position: relative;
-            z-index: 2;
-
-            display: flex;
-            align-items: center;
-
-            gap: 8px;
-        }
-
-        .referral-code {
-            flex: 1;
-            min-width: 0;
-
-            color: var(--gold-light);
-
-            font-size: 20px;
-            font-weight: 900;
-
-            letter-spacing: 1px;
-
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .copy-button {
-            flex-shrink: 0;
-
-            border: 0;
-
-            border-radius: 10px;
-
-            padding: 9px 12px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    var(--gold),
-                    var(--orange)
-                );
-
-            color: #140A03;
-
-            font-size: 11px;
-            font-weight: 900;
-
-            cursor: pointer;
-        }
-
-        .referral-link-row {
-            position: relative;
-            z-index: 2;
-
-            display: flex;
-            align-items: center;
-
-            gap: 7px;
-
-            margin-top: 11px;
-        }
-
-        .referral-link {
-            flex: 1;
-            min-width: 0;
-
-            padding: 8px 10px;
-
-            border-radius: 9px;
-
-            background:
-                rgba(0,0,0,0.25);
-
-            border:
-                1px solid
-                rgba(255,255,255,0.06);
-
-            color: var(--muted);
-
-            font-size: 10px;
-
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .copy-link {
-            flex-shrink: 0;
-
-            border:
-                1px solid
-                rgba(232,93,158,0.30);
-
-            border-radius: 9px;
-
-            padding: 8px 10px;
-
-            background:
-                rgba(232,93,158,0.08);
-
-            color: var(--pink-light);
-
-            font-size: 10px;
-            font-weight: 800;
-
-            cursor: pointer;
-        }
-
-        /* =================================
-           SUMMARY
-        ================================= */
-
-        .summary {
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 10px;
-
-            margin-bottom: 16px;
-        }
-
-        .summary-card {
-            padding: 14px;
-
-            border-radius: 15px;
-
-            background:
-                rgba(255,255,255,0.035);
-
-            border:
-                1px solid var(--border);
-        }
-
-        .summary-label {
-            color: var(--muted2);
-
-            font-size: 10px;
-
-            margin-bottom: 5px;
-        }
-
-        .summary-value {
-            font-size: 18px;
-            font-weight: 900;
-        }
-
-        .summary-card:nth-child(1)
-        .summary-value {
-            color: var(--white);
-        }
-
-        .summary-card:nth-child(2)
-        .summary-value {
-            color: var(--gold);
-        }
-
-        /* =================================
-           SECTION TITLE
-        ================================= */
-
-        .section-title {
-            display: flex;
-
-            align-items: center;
-            justify-content: space-between;
-
-            margin-bottom: 9px;
-        }
-
-        .section-title h2 {
-            font-size: 16px;
-            font-weight: 900;
-        }
-
-        .section-title span {
-            color: var(--muted2);
-            font-size: 10px;
-        }
-
-        /* =================================
-           LEVEL TABLE
-        ================================= */
-
-        .level-table-wrap {
-            overflow-x: auto;
-
-            border-radius: 15px;
-
-            border:
-                1px solid
-                var(--border);
-
-            background:
-                rgba(255,255,255,0.025);
-
-            margin-bottom: 18px;
-        }
-
-        .level-table {
-            width: 100%;
-
-            border-collapse: collapse;
-
-            min-width: 420px;
-        }
-
-        .level-table th {
-            padding: 10px 8px;
-
-            text-align: left;
-
-            font-size: 9px;
-
-            text-transform: uppercase;
-
-            letter-spacing: 0.35px;
-
-            color: var(--muted2);
-
-            background:
-                rgba(255,255,255,0.025);
-
-            border-bottom:
-                1px solid
-                var(--border);
-        }
-
-        .level-table td {
-            padding: 11px 8px;
-
-            font-size: 10px;
-
-            color:
-                rgba(255,255,255,0.72);
-
-            border-bottom:
-                1px solid
-                rgba(255,255,255,0.045);
-        }
-
-        .level-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .level-name {
-            font-weight: 900;
-        }
-
-        .level-one {
-            color: var(--gold);
-        }
-
-        .level-two {
-            color: var(--pink-light);
-        }
-
-        .level-three {
-            color: var(--gold-light);
-        }
-
-        .table-amount {
-            color: var(--white);
-            font-weight: 700;
-        }
-
-        .table-rate {
-            font-weight: 900;
-        }
-
-        /* =================================
-           LEVEL SECTIONS
-        ================================= */
-
-        .level-section {
-            margin-bottom: 15px;
-        }
-
-        .level-heading {
-            display: flex;
-
-            align-items: center;
-            justify-content: space-between;
-
-            padding: 9px 11px;
-
-            margin-bottom: 6px;
-
-            border-radius: 11px;
-
-            background:
-                rgba(255,255,255,0.025);
-
-            border:
-                1px solid
-                rgba(255,255,255,0.055);
-        }
-
-        .level-heading-left {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-        }
-
-        .level-dot {
-            width: 7px;
-            height: 7px;
-
-            border-radius: 50%;
-        }
-
-        .dot-gold {
-            background: var(--gold);
-            box-shadow:
-                0 0 8px
-                rgba(245,166,35,0.45);
-        }
-
-        .dot-pink {
-            background: var(--pink);
-            box-shadow:
-                0 0 8px
-                rgba(232,93,158,0.45);
-        }
-
-        .level-heading strong {
-            font-size: 11px;
-        }
-
-        .level-heading small {
-            color: var(--muted2);
-            font-size: 9px;
-        }
-
-        /* =================================
-           COMPACT MEMBER ROW
-        ================================= */
-
-        .member-list {
-            display: flex;
-            flex-direction: column;
-
-            gap: 5px;
-        }
-
-        .member-row {
-            display: grid;
-
-            grid-template-columns:
-                minmax(95px, 1.3fr)
-                minmax(85px, 1fr)
-                53px
-                minmax(75px, 0.9fr);
-
-            align-items: center;
-
-            gap: 7px;
-
-            min-height: 43px;
-
-            padding: 7px 9px;
-
-            border-radius: 10px;
-
-            background:
-                rgba(255,255,255,0.025);
-
-            border:
-                1px solid
-                rgba(255,255,255,0.045);
-        }
-
-        .member-phone {
-            min-width: 0;
-
-            font-size: 10px;
-
-            font-weight: 800;
-
-            color: var(--white);
-
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .member-deposit {
-            font-size: 9px;
-
-            color: var(--muted);
-
-            white-space: nowrap;
-        }
-
-        .member-status {
-            text-align: center;
-
-            font-size: 8px;
-
-            font-weight: 800;
-
-            padding: 4px 5px;
-
-            border-radius: 7px;
-
-            white-space: nowrap;
-        }
-
-        .active {
-            color: #F5DFA6;
-
-            background:
-                rgba(245,166,35,0.10);
-
-            border:
-                1px solid
-                rgba(245,166,35,0.16);
-        }
-
-        .inactive {
-            color:
-                rgba(255,255,255,0.45);
-
-            background:
-                rgba(255,255,255,0.04);
-        }
-
-        .member-commission {
-            text-align: right;
-
-            font-size: 9px;
-
-            color: var(--gold);
-
-            font-weight: 900;
-
-            white-space: nowrap;
-        }
-
-        /* =================================
-           MEMBER HEADINGS
-        ================================= */
-
-        .member-columns {
-            display: grid;
-
-            grid-template-columns:
-                minmax(95px, 1.3fr)
-                minmax(85px, 1fr)
-                53px
-                minmax(75px, 0.9fr);
-
-            gap: 7px;
-
-            padding:
-                0 9px 4px;
-
-            color: var(--muted2);
-
-            font-size: 8px;
-
-            text-transform: uppercase;
-        }
-
-        .member-columns span:last-child {
-            text-align: right;
-        }
-
-        .member-columns span:nth-child(3) {
-            text-align: center;
-        }
-
-        /* =================================
-           EMPTY / LOADING
-        ================================= */
-
-        .loading,
-        .empty {
-            text-align: center;
-
-            padding: 20px 12px;
-
-            border-radius: 13px;
-
-            background:
-                rgba(255,255,255,0.025);
-
-            border:
-                1px solid
-                rgba(255,255,255,0.05);
-
-            color: var(--muted);
-
-            font-size: 11px;
-        }
-
-        .empty {
-            display: none;
-        }
-
-        /* =================================
-           ERROR
-        ================================= */
-
-        .error {
-            display: none;
-
-            margin-bottom: 12px;
-
-            padding: 11px 12px;
-
-            border-radius: 11px;
-
-            color: #FF9AA8;
-
-            background:
-                rgba(220,50,70,0.08);
-
-            border:
-                1px solid
-                rgba(220,50,70,0.18);
-
-            font-size: 10px;
-        }
-
-        /* =================================
-           FOOTER BRANDING
-        ================================= */
-
-        .finora-footer {
-            text-align: center;
-
-            margin-top: 22px;
-
-            padding-top: 15px;
-
-            border-top:
-                1px solid
-                rgba(255,255,255,0.055);
-        }
-
-        .footer-brand {
-            font-size: 13px;
-            font-weight: 900;
-
-            letter-spacing: 0.5px;
-
-            margin-bottom: 4px;
-        }
-
-        .footer-brand .gold {
-            color: var(--gold);
-        }
-
-        .footer-brand .pink {
-            color: var(--pink);
-        }
-
-        .footer-text {
-            color: var(--muted2);
-
-            font-size: 9px;
-
-            letter-spacing: 0.3px;
-        }
-
-        /* =================================
-           SMALL SCREENS
-        ================================= */
-
-        @media (max-width: 370px) {
-
-            .page {
-                padding-left: 11px;
-                padding-right: 11px;
-            }
-
-            .member-row,
-            .member-columns {
-                grid-template-columns:
-                    minmax(82px, 1.15fr)
-                    minmax(75px, 1fr)
-                    49px
-                    minmax(68px, 0.85fr);
-            }
-
-            .member-row {
-                gap: 5px;
-                padding-left: 7px;
-                padding-right: 7px;
-            }
-
-            .member-columns {
-                padding-left: 7px;
-                padding-right: 7px;
-            }
-
-            .member-phone {
-                font-size: 9px;
-            }
-
-            .member-deposit,
-            .member-commission {
-                font-size: 8px;
-            }
-
-            .member-status {
-                font-size: 7px;
-                padding-left: 3px;
-                padding-right: 3px;
-            }
-        }
-
-    </style>
+    <link
+        rel="stylesheet"
+        href="team.css">
 
 </head>
 
 
 <body>
 
+    <!-- =====================================================
+         PAGE
+    ====================================================== -->
 
-<!-- =================================
-     HEADER
-================================= -->
-
-<header class="top-header">
-
-    <button
-        class="back-button"
-        type="button"
-        onclick="history.back()"
-        aria-label="Go back"
-    >
-        ‹
-    </button>
+    <div class="team-page">
 
 
-    <div class="brand">
-        FIN<span class="gold">O</span><span class="pink">RA</span>
+        <!-- =================================================
+             TOP HEADER
+        ================================================== -->
+
+        <header class="team-header">
+
+            <div class="header-left">
+
+                <button
+                    type="button"
+                    class="icon-button back-button"
+                    id="backButton"
+                    aria-label="Go back">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true">
+
+                        <path
+                            d="M15 18l-6-6 6-6"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+                        </path>
+
+                    </svg>
+
+                </button>
+
+            </div>
+
+
+            <div class="header-title">
+
+                <span class="eyebrow">
+                    FINORA
+                </span>
+
+                <h1>
+                    My Team
+                </h1>
+
+            </div>
+
+
+            <div class="header-right">
+
+                <button
+                    type="button"
+                    class="icon-button"
+                    id="notificationButton"
+                    aria-label="Notifications">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true">
+
+                        <path
+                            d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+                        </path>
+
+                        <path
+                            d="M10 21h4"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round">
+                        </path>
+
+                    </svg>
+
+                    <span
+                        class="notification-dot"
+                        id="notificationDot">
+                    </span>
+
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             MAIN CONTENT
+        ================================================== -->
+
+        <main class="team-content">
+
+
+            <!-- =============================================
+                 INTRO
+            ============================================== -->
+
+            <section class="team-intro">
+
+                <div>
+
+                    <p class="section-kicker">
+                        REFERRAL CENTER
+                    </p>
+
+                    <h2>
+                        Build your team.
+                        <span>Grow together.</span>
+                    </h2>
+
+                    <p class="intro-text">
+                        Invite people to FINORA and build
+                        your team through the referral system.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 TEAM OVERVIEW
+            ============================================== -->
+
+            <section class="overview-card">
+
+                <div class="overview-glow"></div>
+
+                <div class="overview-top">
+
+                    <div>
+
+                        <p class="card-label">
+                            TOTAL TEAM
+                        </p>
+
+                        <strong
+                            class="team-total"
+                            id="totalTeam">
+                            —
+                        </strong>
+
+                    </div>
+
+                    <div class="team-symbol">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true">
+
+                            <path
+                                d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round">
+                            </path>
+
+                            <circle
+                                cx="9"
+                                cy="7"
+                                r="4"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7">
+                            </circle>
+
+                            <path
+                                d="M22 21v-2a4 4 0 0 0-3-3.87"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round">
+                            </path>
+
+                            <path
+                                d="M16 3.13a4 4 0 0 1 0 7.75"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round">
+                            </path>
+
+                        </svg>
+
+                    </div>
+
+                </div>
+
+
+                <div class="level-summary">
+
+                    <div class="level-stat">
+
+                        <span class="level-number">
+                            L1
+                        </span>
+
+                        <strong id="levelOneCount">
+                            —
+                        </strong>
+
+                        <small>
+                            Direct
+                        </small>
+
+                    </div>
+
+
+                    <div class="summary-divider"></div>
+
+
+                    <div class="level-stat">
+
+                        <span class="level-number">
+                            L2
+                        </span>
+
+                        <strong id="levelTwoCount">
+                            —
+                        </strong>
+
+                        <small>
+                            Second
+                        </small>
+
+                    </div>
+
+
+                    <div class="summary-divider"></div>
+
+
+                    <div class="level-stat">
+
+                        <span class="level-number">
+                            L3
+                        </span>
+
+                        <strong id="levelThreeCount">
+                            —
+                        </strong>
+
+                        <small>
+                            Third
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 REFERRAL CARD
+            ============================================== -->
+
+            <section class="referral-card">
+
+                <div class="card-heading">
+
+                    <div>
+
+                        <p class="card-label">
+                            YOUR REFERRAL
+                        </p>
+
+                        <h3>
+                            Invite & earn
+                        </h3>
+
+                    </div>
+
+                    <div class="referral-mark">
+
+                        <span></span>
+                        <span></span>
+                        <span></span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Referral Code -->
+
+                <div class="copy-field">
+
+                    <div class="field-content">
+
+                        <span class="field-label">
+                            Referral Code
+                        </span>
+
+                        <strong
+                            id="referralCode">
+                            Loading...
+                        </strong>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="mini-action"
+                        id="copyCodeButton"
+                        aria-label="Copy referral code">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true">
+
+                            <rect
+                                x="9"
+                                y="9"
+                                width="11"
+                                height="11"
+                                rx="2"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7">
+                            </rect>
+
+                            <path
+                                d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7">
+                            </path>
+
+                        </svg>
+
+                    </button>
+
+                </div>
+
+
+                <!-- Referral Link -->
+
+                <div class="copy-field">
+
+                    <div class="field-content">
+
+                        <span class="field-label">
+                            Referral Link
+                        </span>
+
+                        <strong
+                            class="referral-link-text"
+                            id="referralLink">
+                            Preparing your link...
+                        </strong>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="mini-action"
+                        id="copyLinkButton"
+                        aria-label="Copy referral link">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true">
+
+                            <path
+                                d="M10 13a5 5 0 0 0 7.54.54l2-2a5 5 0 0 0-7.07-7.07l-1.14 1.14"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round"
+                                stroke-linejoin="round">
+                            </path>
+
+                            <path
+                                d="M14 11a5 5 0 0 0-7.54-.54l-2 2a5 5 0 0 0 7.07 7.07l1.14-1.14"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round"
+                                stroke-linejoin="round">
+                            </path>
+
+                        </svg>
+
+                    </button>
+
+                </div>
+
+
+                <!-- Main Referral Actions -->
+
+                <div class="referral-actions">
+
+                    <button
+                        type="button"
+                        class="premium-button secondary-button"
+                        id="copyReferralButton">
+
+                        <span class="button-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true">
+
+                                <rect
+                                    x="9"
+                                    y="9"
+                                    width="11"
+                                    height="11"
+                                    rx="2"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.7">
+                                </rect>
+
+                                <path
+                                    d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.7">
+                                </path>
+
+                            </svg>
+
+                        </span>
+
+                        <span>
+                            Copy Link
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="premium-button primary-button"
+                        id="shareButton">
+
+                        <span class="button-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true">
+
+                                <circle
+                                    cx="18"
+                                    cy="5"
+                                    r="2.5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.7">
+                                </circle>
+
+                                <circle
+                                    cx="6"
+                                    cy="12"
+                                    r="2.5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.7">
+                                </circle>
+
+                                <circle
+                                    cx="18"
+                                    cy="19"
+                                    r="2.5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.7">
+                                </circle>
+
+                                <path
+                                    d="M8.2 10.8l7.6-4.5M8.2 13.2l7.6 4.5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.7"
+                                    stroke-linecap="round">
+                                </path>
+
+                            </svg>
+
+                        </span>
+
+                        <span>
+                            Share
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 REFERRAL LEVELS
+            ============================================== -->
+
+            <section class="section-block">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <p class="section-kicker">
+                            REWARD STRUCTURE
+                        </p>
+
+                        <h3>
+                            Referral Levels
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="level-cards">
+
+
+                    <!-- Level 1 -->
+
+                    <article class="level-card level-one">
+
+                        <div class="level-card-top">
+
+                            <span class="level-badge">
+                                L1
+                            </span>
+
+                            <span class="level-rate">
+                                15%
+                            </span>
+
+                        </div>
+
+                        <h4>
+                            Direct referrals
+                        </h4>
+
+                        <p>
+                            People you invite directly
+                            to FINORA.
+                        </p>
+
+                    </article>
+
+
+                    <!-- Level 2 -->
+
+                    <article class="level-card level-two">
+
+                        <div class="level-card-top">
+
+                            <span class="level-badge">
+                                L2
+                            </span>
+
+                            <span class="level-rate">
+                                3%
+                            </span>
+
+                        </div>
+
+                        <h4>
+                            Second level
+                        </h4>
+
+                        <p>
+                            Referrals introduced by
+                            your Level 1 team.
+                        </p>
+
+                    </article>
+
+
+                    <!-- Level 3 -->
+
+                    <article class="level-card level-three">
+
+                        <div class="level-card-top">
+
+                            <span class="level-badge">
+                                L3
+                            </span>
+
+                            <span class="level-rate">
+                                2%
+                            </span>
+
+                        </div>
+
+                        <h4>
+                            Third level
+                        </h4>
+
+                        <p>
+                            Referrals connected through
+                            your Level 2 team.
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 TEAM MEMBERS
+            ============================================== -->
+
+            <section class="section-block">
+
+                <div class="section-heading team-members-heading">
+
+                    <div>
+
+                        <p class="section-kicker">
+                            YOUR NETWORK
+                        </p>
+
+                        <h3>
+                            Team Members
+                        </h3>
+
+                    </div>
+
+                    <span
+                        class="member-count"
+                        id="memberCount">
+                        0
+                    </span>
+
+                </div>
+
+
+                <div class="filter-row">
+
+                    <button
+                        type="button"
+                        class="filter-button active"
+                        data-level="all">
+                        All
+                    </button>
+
+                    <button
+                        type="button"
+                        class="filter-button"
+                        data-level="1">
+                        L1
+                    </button>
+
+                    <button
+                        type="button"
+                        class="filter-button"
+                        data-level="2">
+                        L2
+                    </button>
+
+                    <button
+                        type="button"
+                        class="filter-button"
+                        data-level="3">
+                        L3
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="members-container"
+                    id="membersContainer">
+
+                    <div class="empty-members">
+
+                        <div class="empty-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true">
+
+                                <circle
+                                    cx="9"
+                                    cy="8"
+                                    r="3.2"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.6">
+                                </circle>
+
+                                <path
+                                    d="M3.5 20a5.5 5.5 0 0 1 11 0"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.6"
+                                    stroke-linecap="round">
+                                </path>
+
+                                <path
+                                    d="M16 11a3 3 0 1 0 0-6"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.6"
+                                    stroke-linecap="round">
+                                </path>
+
+                                <path
+                                    d="M16 15a5 5 0 0 1 4.5 5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.6"
+                                    stroke-linecap="round">
+                                </path>
+
+                            </svg>
+
+                        </div>
+
+                        <h4>
+                            Your team is waiting
+                        </h4>
+
+                        <p>
+                            Share your referral link to
+                            start building your FINORA team.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 REFERRAL INCOME
+            ============================================== -->
+
+            <section class="income-card">
+
+                <div class="income-header">
+
+                    <div>
+
+                        <p class="card-label">
+                            REFERRAL EARNINGS
+                        </p>
+
+                        <h3>
+                            Referral Income
+                        </h3>
+
+                    </div>
+
+                    <div class="income-symbol">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true">
+
+                            <path
+                                d="M12 2v20"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round">
+                            </path>
+
+                            <path
+                                d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14.5a3.5 3.5 0 0 1 0 7H7"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round">
+                            </path>
+
+                        </svg>
+
+                    </div>
+
+                </div>
+
+
+                <div class="income-list">
+
+                    <div class="income-row">
+
+                        <span>
+                            Level 1 Income
+                        </span>
+
+                        <strong id="levelOneIncome">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="income-row">
+
+                        <span>
+                            Level 2 Income
+                        </span>
+
+                        <strong id="levelTwoIncome">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div class="income-row">
+
+                        <span>
+                            Level 3 Income
+                        </span>
+
+                        <strong id="levelThreeIncome">
+                            —
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="income-total">
+
+                    <span>
+                        Total Referral Income
+                    </span>
+
+                    <strong id="totalReferralIncome">
+                        —
+                    </strong>
+
+                </div>
+
+            </section>
+
+
+        </main>
+
+
+        <!-- =================================================
+             BOTTOM NAVIGATION
+        ================================================== -->
+
+        <nav
+            class="bottom-navigation"
+            aria-label="Main navigation">
+
+            <a
+                href="dashboard.html"
+                class="bottom-nav-item"
+                data-nav="home">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true">
+
+                    <path
+                        d="M3 10.5L12 3l9 7.5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                    </path>
+
+                    <path
+                        d="M5 9.5V21h14V9.5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linejoin="round">
+                    </path>
+
+                </svg>
+
+                <span>
+                    Home
+                </span>
+
+            </a>
+
+
+            <a
+                href="team.html"
+                class="bottom-nav-item active"
+                data-nav="team"
+                aria-current="page">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true">
+
+                    <circle
+                        cx="9"
+                        cy="8"
+                        r="3"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7">
+                    </circle>
+
+                    <path
+                        d="M3.5 20a5.5 5.5 0 0 1 11 0"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round">
+                    </path>
+
+                    <path
+                        d="M16 11a3 3 0 1 0 0-6"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7">
+                    </path>
+
+                    <path
+                        d="M16 15a5 5 0 0 1 4.5 5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round">
+                    </path>
+
+                </svg>
+
+                <span>
+                    Team
+                </span>
+
+            </a>
+
+
+            <a
+                href="rates.html"
+                class="bottom-nav-item"
+                data-nav="rates">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true">
+
+                    <path
+                        d="M4 19V5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round">
+                    </path>
+
+                    <path
+                        d="M4 19h16"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round">
+                    </path>
+
+                    <path
+                        d="M7 15l4-4 3 2 5-6"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                    </path>
+
+                </svg>
+
+                <span>
+                    Rates
+                </span>
+
+            </a>
+
+
+            <a
+                href="mine.html"
+                class="bottom-nav-item"
+                data-nav="mine">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true">
+
+                    <path
+                        d="M4 7h16v13H4z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linejoin="round">
+                    </path>
+
+                    <path
+                        d="M7 7V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7">
+                    </path>
+
+                    <path
+                        d="M4 11h16"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7">
+                    </path>
+
+                </svg>
+
+                <span>
+                    Mine
+                </span>
+
+            </a>
+
+
+            <a
+                href="profile.html"
+                class="bottom-nav-item"
+                data-nav="profile">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true">
+
+                    <circle
+                        cx="12"
+                        cy="8"
+                        r="3.5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7">
+                    </circle>
+
+                    <path
+                        d="M4.5 21a7.5 7.5 0 0 1 15 0"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round">
+                    </path>
+
+                </svg>
+
+                <span>
+                    Profile
+                </span>
+
+            </a>
+
+        </nav>
+
     </div>
 
 
-    <div class="header-space"></div>
-
-</header>
-
-
-<main class="page">
-
-
-    <!-- =================================
-         INTRO
-    ================================= -->
-
-    <section class="intro">
-
-        <h1>My Team</h1>
-
-        <p>
-            Grow your team and earn referral
-            income from qualified team activity.
-        </p>
-
-    </section>
-
-
     <div
-        class="error"
-        id="teamError"
-    ></div>
+        class="toast"
+        id="toast"
+        role="status"
+        aria-live="polite">
+    </div>
 
 
-    <!-- =================================
-         REFERRAL
-    ================================= -->
-
-    <section class="referral-card">
-
-        <div class="referral-label">
-            Your Referral Code
-        </div>
-
-
-        <div class="referral-row">
-
-            <div
-                class="referral-code"
-                id="referralCode"
-            >
-                Loading...
-            </div>
-
-
-            <button
-                class="copy-button"
-                id="copyReferralButton"
-                type="button"
-            >
-                Copy
-            </button>
-
-        </div>
-
-
-        <div class="referral-link-row">
-
-            <div
-                class="referral-link"
-                id="referralLink"
-            >
-                Loading referral link...
-            </div>
-
-
-            <button
-                class="copy-link"
-                id="copyReferralLinkButton"
-                type="button"
-            >
-                Copy Link
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- =================================
-         SUMMARY
-    ================================= -->
-
-    <section class="summary">
-
-        <div class="summary-card">
-
-            <div class="summary-label">
-                Total Members
-            </div>
-
-            <div
-                class="summary-value"
-                id="totalMembers"
-            >
-                0
-            </div>
-
-        </div>
-
-
-        <div class="summary-card">
-
-            <div class="summary-label">
-                Total Referral Income
-            </div>
-
-            <div
-                class="summary-value"
-                id="totalReferralIncome"
-            >
-                UGX 0
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =================================
-         TEAM STATISTICS
-    ================================= -->
-
-    <section>
-
-        <div class="section-title">
-
-            <h2>Team Statistics</h2>
-
-            <span>
-                3 Levels
-            </span>
-
-        </div>
-
-
-        <div class="level-table-wrap">
-
-            <table class="level-table">
-
-                <thead>
-
-                    <tr>
-
-                        <th>Level</th>
-
-                        <th>Members</th>
-
-                        <th>Deposit</th>
-
-                        <th>Rate</th>
-
-                        <th>Commission</th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody>
-
-                    <tr>
-
-                        <td>
-                            <span class="level-name level-one">
-                                Level 1
-                            </span>
-                        </td>
-
-                        <td id="level1Members">
-                            0
-                        </td>
-
-                        <td
-                            class="table-amount"
-                            id="level1Deposit"
-                        >
-                            UGX 0
-                        </td>
-
-                        <td
-                            class="table-rate level-one"
-                        >
-                            15%
-                        </td>
-
-                        <td
-                            class="table-amount"
-                            id="level1Commission"
-                        >
-                            UGX 0
-                        </td>
-
-                    </tr>
-
-
-                    <tr>
-
-                        <td>
-                            <span class="level-name level-two">
-                                Level 2
-                            </span>
-                        </td>
-
-                        <td id="level2Members">
-                            0
-                        </td>
-
-                        <td
-                            class="table-amount"
-                            id="level2Deposit"
-                        >
-                            UGX 0
-                        </td>
-
-                        <td
-                            class="table-rate level-two"
-                        >
-                            5%
-                        </td>
-
-                        <td
-                            class="table-amount"
-                            id="level2Commission"
-                        >
-                            UGX 0
-                        </td>
-
-                    </tr>
-
-
-                    <tr>
-
-                        <td>
-                            <span class="level-name level-three">
-                                Level 3
-                            </span>
-                        </td>
-
-                        <td id="level3Members">
-                            0
-                        </td>
-
-                        <td
-                            class="table-amount"
-                            id="level3Deposit"
-                        >
-                            UGX 0
-                        </td>
-
-                        <td
-                            class="table-rate level-three"
-                        >
-                            2%
-                        </td>
-
-                        <td
-                            class="table-amount"
-                            id="level3Commission"
-                        >
-                            UGX 0
-                        </td>
-
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </section>
-
-
-    <!-- =================================
-         TEAM MEMBERS
-    ================================= -->
-
-    <section>
-
-        <div class="section-title">
-
-            <h2>Team Members</h2>
-
-            <span id="memberCountLabel">
-                0 members
-            </span>
-
-        </div>
-
-
-        <div
-            class="loading"
-            id="teamLoading"
-        >
-            Loading team members...
-        </div>
-
-
-        <div
-            class="empty"
-            id="teamEmpty"
-        >
-            No team members yet.
-        </div>
-
-
-        <div
-            id="teamMembersContainer"
-            style="display:none;"
-        >
-
-
-            <!-- LEVEL 1 -->
-
-            <div class="level-section">
-
-                <div class="level-heading">
-
-                    <div class="level-heading-left">
-
-                        <span
-                            class="level-dot dot-gold"
-                        ></span>
-
-                        <strong>
-                            Level 1
-                        </strong>
-
-                    </div>
-
-                    <small>
-                        15%
-                    </small>
-
-                </div>
-
-
-                <div class="member-columns">
-
-                    <span>Member</span>
-                    <span>Deposit</span>
-                    <span>Status</span>
-                    <span>Commission</span>
-
-                </div>
-
-
-                <div
-                    class="member-list"
-                    id="level1List"
-                ></div>
-
-            </div>
-
-
-            <!-- LEVEL 2 -->
-
-            <div class="level-section">
-
-                <div class="level-heading">
-
-                    <div class="level-heading-left">
-
-                        <span
-                            class="level-dot dot-pink"
-                        ></span>
-
-                        <strong>
-                            Level 2
-                        </strong>
-
-                    </div>
-
-                    <small>
-                        5%
-                    </small>
-
-                </div>
-
-
-                <div class="member-columns">
-
-                    <span>Member</span>
-                    <span>Deposit</span>
-                    <span>Status</span>
-                    <span>Commission</span>
-
-                </div>
-
-
-                <div
-                    class="member-list"
-                    id="level2List"
-                ></div>
-
-            </div>
-
-
-            <!-- LEVEL 3 -->
-
-            <div class="level-section">
-
-                <div class="level-heading">
-
-                    <div class="level-heading-left">
-
-                        <span
-                            class="level-dot dot-gold"
-                        ></span>
-
-                        <strong>
-                            Level 3
-                        </strong>
-
-                    </div>
-
-                    <small>
-                        2%
-                    </small>
-
-                </div>
-
-
-                <div class="member-columns">
-
-                    <span>Member</span>
-                    <span>Deposit</span>
-                    <span>Status</span>
-                    <span>Commission</span>
-
-                </div>
-
-
-                <div
-                    class="member-list"
-                    id="level3List"
-                ></div>
-
-            </div>
-
-
-        </div>
-
-    </section>
-
-
-    <!-- =================================
-         FINORA FOOTER
-    ================================= -->
-
-    <footer class="finora-footer">
-
-        <div class="footer-brand">
-            FIN<span class="gold">O</span><span class="pink">RA</span>
-        </div>
-
-        <div class="footer-text">
-            Invest • Grow • Earn
-        </div>
-
-    </footer>
-
-
-</main>
-
-
-<!--
-    Team functionality remains connected
-    through team.js.
--->
-
-<script src="team.js"></script>
-
+    <script src="team.js"></script>
 
 </body>
 
