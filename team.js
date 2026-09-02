@@ -33,8 +33,18 @@ document.addEventListener(
             "https://finora-platform-production.up.railway.app";
 
 
+        /*
+           The referral link must point to the actual
+           FINORA platform where this page is running.
+
+           This avoids using the old GitHub Pages address.
+           When deployed on the FINORA Vercel platform,
+           window.location.origin automatically becomes
+           the Vercel FINORA platform address.
+        */
+
         const FRONTEND_URL =
-            "https://akanyijukadavis38-ux.github.io";
+            window.location.origin;
 
 
         /* =================================================
@@ -181,10 +191,6 @@ document.addEventListener(
                 );
 
 
-                /* =========================================
-                   NOT AUTHENTICATED
-                ========================================== */
-
                 if (
                     response.status === 401
                 ) {
@@ -208,10 +214,6 @@ document.addEventListener(
 
                 }
 
-
-                /* =========================================
-                   FROZEN ACCOUNT
-                ========================================== */
 
                 if (
                     response.status === 403
@@ -251,10 +253,6 @@ document.addEventListener(
                 }
 
 
-                /* =========================================
-                   OTHER SERVER ERRORS
-                ========================================== */
-
                 if (!response.ok) {
 
                     console.error(
@@ -272,10 +270,6 @@ document.addEventListener(
 
                 }
 
-
-                /* =========================================
-                   READ RESPONSE
-                ========================================== */
 
                 const data =
                     await response.json();
@@ -561,14 +555,6 @@ document.addEventListener(
 
             }
 
-
-            /*
-               We support the backend field variations
-               already used elsewhere in FINORA.
-
-               If level-specific referral income is not
-               returned by the backend, it remains zero.
-            */
 
             const levelOneIncome =
                 safeNumber(
@@ -998,10 +984,6 @@ document.addEventListener(
             }
 
 
-            /* =============================================
-               MODERN CLIPBOARD
-            ============================================== */
-
             if (
                 navigator.clipboard &&
                 window.isSecureContext
@@ -1026,10 +1008,6 @@ document.addEventListener(
 
             }
 
-
-            /* =============================================
-               FALLBACK
-            ============================================== */
 
             try {
 
@@ -1373,15 +1351,6 @@ document.addEventListener(
                     }
 
 
-                    const referralCode =
-                        currentUser &&
-                        (
-                            currentUser.referralCode ||
-                            currentUser.referral_code ||
-                            ""
-                        );
-
-
                     const shareData = {
 
                         title:
@@ -1395,10 +1364,6 @@ document.addEventListener(
 
                     };
 
-
-                    /* =====================================
-                       NATIVE SHARE
-                    ====================================== */
 
                     if (
                         navigator.share
@@ -1436,10 +1401,6 @@ document.addEventListener(
                     }
 
 
-                    /* =====================================
-                       SHARE FALLBACK
-                    ====================================== */
-
                     const copied =
                         await copyText(
                             link
@@ -1448,19 +1409,9 @@ document.addEventListener(
 
                     if (copied) {
 
-                        if (referralCode) {
-
-                            showToast(
-                                "Referral link copied. You can now share it."
-                            );
-
-                        } else {
-
-                            showToast(
-                                "Referral link copied."
-                            );
-
-                        }
+                        showToast(
+                            "Referral link copied. You can now share it."
+                        );
 
                     } else {
 
@@ -1614,16 +1565,6 @@ document.addEventListener(
 
         /* =================================================
            MAIN NAVIGATION
-
-           MAIN PAGES:
-
-           Home
-           Team
-           Rates
-           Mine
-           Profile
-
-           Secondary pages receive NO active state.
         ================================================= */
 
         function initializeNavigation() {
@@ -1767,11 +1708,6 @@ document.addEventListener(
                             }
 
 
-                            /*
-                               Immediately move the complete
-                               active state before navigation.
-                            */
-
                             setActiveNavigation(
                                 navName
                             );
@@ -1837,10 +1773,6 @@ document.addEventListener(
             );
 
 
-            /* =============================================
-               UI
-            ============================================== */
-
             initializeNavigation();
 
 
@@ -1867,10 +1799,6 @@ document.addEventListener(
 
             initializeTeamData();
 
-
-            /* =============================================
-               AUTHENTICATED USER
-            ============================================== */
 
             await loadCurrentUser();
 
