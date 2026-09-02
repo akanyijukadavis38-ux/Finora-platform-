@@ -1,237 +1,222 @@
-document.addEventListener("DOMContentLoaded", function () {
+/* =========================================================
+   FINORA REGISTER.JS
+   STABLE REGISTRATION VERSION
+========================================================= */
 
-    /* =====================================================
-       FINORA REGISTER.JS
-       COMPLETE DEBUG REGISTRATION VERSION
-    ===================================================== */
+(function () {
 
-    console.log("====================================");
-    console.log("FINORA REGISTER.JS LOADED");
-    console.log("====================================");
+    "use strict";
 
 
     /* =====================================================
-       ELEMENTS
+       INITIALIZATION
     ===================================================== */
 
-    const form = document.getElementById("registerForm");
-    const createButton = document.getElementById("createButton");
-    const formStatus = document.getElementById("formStatus");
+    function initRegister() {
 
-    const fullName = document.getElementById("fullName");
-    const phone = document.getElementById("phone");
-    const email = document.getElementById("email");
-    const password = document.getElementById("password");
-    const confirmPassword =
-        document.getElementById("confirmPassword");
-    const referralCode =
-        document.getElementById("referralCode");
-    const terms = document.getElementById("terms");
+        console.log("====================================");
+        console.log("FINORA REGISTER.JS INITIALIZING");
+        console.log("====================================");
 
 
-    /* =====================================================
-       RAILWAY BACKEND
-    ===================================================== */
+        /* =================================================
+           ELEMENTS
+        ================================================= */
 
-    const API_URL =
-        "https://finora-platform-production.up.railway.app";
+        const form =
+            document.getElementById("registerForm");
 
-    const REGISTER_URL =
-        API_URL + "/api/users/register";
+        const createButton =
+            document.getElementById("createButton");
+
+        const formStatus =
+            document.getElementById("formStatus");
+
+        const fullName =
+            document.getElementById("fullName");
+
+        const phone =
+            document.getElementById("phone");
+
+        const email =
+            document.getElementById("email");
+
+        const password =
+            document.getElementById("password");
+
+        const confirmPassword =
+            document.getElementById("confirmPassword");
+
+        const referralCode =
+            document.getElementById("referralCode");
+
+        const terms =
+            document.getElementById("terms");
 
 
-    console.log(
-        "FINORA REGISTER URL:",
-        REGISTER_URL
-    );
+        /* =================================================
+           BACKEND
+        ================================================= */
+
+        const API_URL =
+            "https://finora-platform-production.up.railway.app";
+
+        const REGISTER_URL =
+            API_URL + "/api/users/register";
 
 
-    /* =====================================================
-       BASIC CHECK
-    ===================================================== */
-
-    if (!form) {
-
-        console.error(
-            "FINORA ERROR: registerForm NOT FOUND"
+        console.log(
+            "FINORA REGISTER URL:",
+            REGISTER_URL
         );
 
-        return;
-    }
 
-    if (!createButton) {
+        /* =================================================
+           REQUIRED ELEMENT CHECK
+        ================================================= */
 
-        console.error(
-            "FINORA ERROR: createButton NOT FOUND"
-        );
+        if (!form) {
 
-        return;
-    }
+            console.error(
+                "❌ FINORA: registerForm NOT FOUND."
+            );
 
-
-    /* =====================================================
-       STATUS MESSAGE
-    ===================================================== */
-
-    function showStatus(message, type) {
-
-        if (!formStatus) {
-            console.log("FINORA STATUS:", message);
             return;
         }
 
-        formStatus.textContent = message;
 
-        formStatus.className =
-            "form-status" +
-            (type ? " " + type : "");
+        if (!createButton) {
+
+            console.error(
+                "❌ FINORA: createButton NOT FOUND."
+            );
+
+            return;
+        }
+
 
         console.log(
-            "FINORA STATUS:",
-            message
+            "✅ FINORA: Registration form found."
         );
-    }
+
+        console.log(
+            "✅ FINORA: Create button found."
+        );
 
 
-    /* =====================================================
-       BUTTON RESET
-    ===================================================== */
+        /* =================================================
+           STATUS
+        ================================================= */
 
-    function resetButton() {
+        function showStatus(message, type) {
 
-        createButton.disabled = false;
+            if (formStatus) {
 
-        createButton.textContent =
-            "CREATE FINORA ACCOUNT";
-    }
+                formStatus.textContent =
+                    message;
 
-
-    /* =====================================================
-       PASSWORD SHOW / HIDE
-    ===================================================== */
-
-    const toggleButtons =
-        document.querySelectorAll(".toggle-password");
-
-    console.log(
-        "FINORA PASSWORD BUTTONS:",
-        toggleButtons.length
-    );
-
-
-    toggleButtons.forEach(function (button) {
-
-        button.addEventListener(
-            "click",
-            function (event) {
-
-                event.preventDefault();
-                event.stopPropagation();
-
-                const targetId =
-                    button.getAttribute("data-target");
-
-                const target =
-                    document.getElementById(targetId);
-
-                if (!target) {
-
-                    console.error(
-                        "FINORA PASSWORD TARGET NOT FOUND:",
-                        targetId
-                    );
-
-                    return;
-                }
-
-
-                if (target.type === "password") {
-
-                    target.type = "text";
-
-                    button.textContent = "🙈";
-
-                    button.setAttribute(
-                        "aria-label",
-                        "Hide password"
-                    );
-
-                } else {
-
-                    target.type = "password";
-
-                    button.textContent = "👁";
-
-                    button.setAttribute(
-                        "aria-label",
-                        "Show password"
-                    );
-
-                }
+                formStatus.className =
+                    "form-status" +
+                    (type
+                        ? " " + type
+                        : "");
 
             }
-        );
 
-    });
+            console.log(
+                "FINORA STATUS:",
+                message
+            );
 
-
-    /* =====================================================
-       PASSWORD STRENGTH
-    ===================================================== */
-
-    if (password) {
-
-        password.addEventListener(
-            "input",
-            function () {
-
-                const value = password.value;
-
-                const bars =
-                    document.querySelectorAll(
-                        ".strength-bar"
-                    );
-
-                const strengthText =
-                    document.getElementById(
-                        "strengthText"
-                    );
-
-                let score = 0;
+        }
 
 
-                if (value.length >= 6) {
-                    score++;
-                }
+        /* =================================================
+           BUTTON RESET
+        ================================================= */
 
-                if (/[A-Z]/.test(value)) {
-                    score++;
-                }
+        function resetButton() {
 
-                if (/[0-9]/.test(value)) {
-                    score++;
-                }
+            createButton.disabled =
+                false;
 
-                if (
-                    /[^A-Za-z0-9]/.test(value)
-                ) {
-                    score++;
-                }
+            createButton.textContent =
+                "CREATE FINORA ACCOUNT";
+
+        }
 
 
-                bars.forEach(
-                    function (bar, index) {
+        /* =================================================
+           PASSWORD TOGGLE
+        ================================================= */
 
-                        if (index < score) {
+        const toggleButtons =
+            document.querySelectorAll(
+                ".toggle-password"
+            );
 
-                            bar.classList.add(
-                                "active"
+
+        toggleButtons.forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function (event) {
+
+                        event.preventDefault();
+                        event.stopPropagation();
+
+
+                        const targetId =
+                            button.getAttribute(
+                                "data-target"
+                            );
+
+
+                        const target =
+                            document.getElementById(
+                                targetId
+                            );
+
+
+                        if (!target) {
+
+                            console.error(
+                                "FINORA: Password target not found:",
+                                targetId
+                            );
+
+                            return;
+                        }
+
+
+                        if (
+                            target.type ===
+                            "password"
+                        ) {
+
+                            target.type =
+                                "text";
+
+                            button.textContent =
+                                "🙈";
+
+                            button.setAttribute(
+                                "aria-label",
+                                "Hide password"
                             );
 
                         } else {
 
-                            bar.classList.remove(
-                                "active"
+                            target.type =
+                                "password";
+
+                            button.textContent =
+                                "👁";
+
+                            button.setAttribute(
+                                "aria-label",
+                                "Show password"
                             );
 
                         }
@@ -239,118 +224,244 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 );
 
-
-                if (!strengthText) {
-                    return;
-                }
-
-
-                if (!value) {
-
-                    strengthText.textContent =
-                        "Password strength";
-
-                } else if (score === 1) {
-
-                    strengthText.textContent =
-                        "Weak";
-
-                } else if (score === 2) {
-
-                    strengthText.textContent =
-                        "Fair";
-
-                } else if (score === 3) {
-
-                    strengthText.textContent =
-                        "Good";
-
-                } else {
-
-                    strengthText.textContent =
-                        "Strong";
-
-                }
-
             }
         );
 
-    }
+
+        /* =================================================
+           PASSWORD STRENGTH
+        ================================================= */
+
+        if (password) {
+
+            password.addEventListener(
+                "input",
+                function () {
+
+                    const value =
+                        password.value;
 
 
-    /* =====================================================
-       CONFIRM PASSWORD
-    ===================================================== */
+                    const bars =
+                        document.querySelectorAll(
+                            ".strength-bar"
+                        );
 
-    if (confirmPassword) {
 
-        confirmPassword.addEventListener(
-            "input",
-            function () {
+                    const strengthText =
+                        document.getElementById(
+                            "strengthText"
+                        );
 
-                const message =
-                    document.getElementById(
-                        "confirmMessage"
+
+                    let score = 0;
+
+
+                    if (
+                        value.length >= 6
+                    ) {
+                        score++;
+                    }
+
+
+                    if (
+                        /[A-Z]/.test(value)
+                    ) {
+                        score++;
+                    }
+
+
+                    if (
+                        /[0-9]/.test(value)
+                    ) {
+                        score++;
+                    }
+
+
+                    if (
+                        /[^A-Za-z0-9]/.test(value)
+                    ) {
+                        score++;
+                    }
+
+
+                    bars.forEach(
+                        function (bar, index) {
+
+                            if (
+                                index < score
+                            ) {
+
+                                bar.classList.add(
+                                    "active"
+                                );
+
+                            } else {
+
+                                bar.classList.remove(
+                                    "active"
+                                );
+
+                            }
+
+                        }
                     );
 
-                if (!message) {
-                    return;
+
+                    if (!strengthText) {
+                        return;
+                    }
+
+
+                    if (!value) {
+
+                        strengthText.textContent =
+                            "Password strength";
+
+                    } else if (
+                        score === 1
+                    ) {
+
+                        strengthText.textContent =
+                            "Weak";
+
+                    } else if (
+                        score === 2
+                    ) {
+
+                        strengthText.textContent =
+                            "Fair";
+
+                    } else if (
+                        score === 3
+                    ) {
+
+                        strengthText.textContent =
+                            "Good";
+
+                    } else {
+
+                        strengthText.textContent =
+                            "Strong";
+
+                    }
+
                 }
+            );
+
+        }
 
 
-                if (!confirmPassword.value) {
+        /* =================================================
+           CONFIRM PASSWORD
+        ================================================= */
 
-                    message.textContent = "";
+        if (confirmPassword) {
 
-                    message.className =
-                        "field-message";
+            confirmPassword.addEventListener(
+                "input",
+                function () {
 
-                    return;
+                    const message =
+                        document.getElementById(
+                            "confirmMessage"
+                        );
+
+
+                    if (!message) {
+                        return;
+                    }
+
+
+                    if (
+                        !confirmPassword.value
+                    ) {
+
+                        message.textContent =
+                            "";
+
+                        message.className =
+                            "field-message";
+
+                        return;
+
+                    }
+
+
+                    if (
+                        password &&
+                        password.value !==
+                        confirmPassword.value
+                    ) {
+
+                        message.textContent =
+                            "Passwords do not match.";
+
+                        message.className =
+                            "field-message error";
+
+                    } else {
+
+                        message.textContent =
+                            "Passwords match.";
+
+                        message.className =
+                            "field-message success";
+
+                    }
+
                 }
+            );
+
+        }
 
 
-                if (
-                    password.value !==
-                    confirmPassword.value
-                ) {
+        /* =================================================
+           REGISTRATION FUNCTION
+        ================================================= */
 
-                    message.textContent =
-                        "Passwords do not match.";
+        let registrationRunning =
+            false;
 
-                    message.className =
-                        "field-message error";
 
-                } else {
+        async function registerAccount(
+            event
+        ) {
 
-                    message.textContent =
-                        "Passwords match.";
+            if (event) {
 
-                    message.className =
-                        "field-message success";
-
-                }
+                event.preventDefault();
+                event.stopPropagation();
 
             }
-        );
-
-    }
 
 
-    /* =====================================================
-       FORM SUBMISSION
-    ===================================================== */
+            console.log(
+                "===================================="
+            );
 
-    form.addEventListener(
-        "submit",
-        async function (event) {
+            console.log(
+                "FINORA CREATE ACCOUNT CLICKED"
+            );
 
-            event.preventDefault();
-            event.stopPropagation();
+            console.log(
+                "===================================="
+            );
 
 
-            console.log("====================================");
-            console.log("FINORA CREATE ACCOUNT BUTTON CLICKED");
-            console.log("====================================");
+            if (registrationRunning) {
+
+                console.log(
+                    "FINORA: Registration already running."
+                );
+
+                return;
+
+            }
+
+
+            registrationRunning =
+                true;
 
 
             showStatus(
@@ -368,25 +479,30 @@ document.addEventListener("DOMContentLoaded", function () {
                     ? fullName.value.trim()
                     : "";
 
+
             const phoneValue =
                 phone
                     ? phone.value.trim()
                     : "";
+
 
             const emailValue =
                 email
                     ? email.value.trim().toLowerCase()
                     : "";
 
+
             const passwordValue =
                 password
                     ? password.value
                     : "";
 
+
             const confirmValue =
                 confirmPassword
                     ? confirmPassword.value
                     : "";
+
 
             const referralValue =
                 referralCode
@@ -394,32 +510,33 @@ document.addEventListener("DOMContentLoaded", function () {
                     : "";
 
 
-            console.log(
-                "FINORA FORM VALUES READ"
-            );
-
-
             /* =================================================
-               VALIDATE NAME
+               NAME
             ================================================= */
 
-            if (nameValue.length < 2) {
+            if (
+                nameValue.length < 2
+            ) {
 
                 showStatus(
                     "Please enter your full name.",
                     "error"
                 );
 
+                registrationRunning =
+                    false;
+
                 if (fullName) {
                     fullName.focus();
                 }
 
                 return;
+
             }
 
 
             /* =================================================
-               VALIDATE PHONE
+               PHONE
             ================================================= */
 
             if (
@@ -433,16 +550,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     "error"
                 );
 
+                registrationRunning =
+                    false;
+
                 if (phone) {
                     phone.focus();
                 }
 
                 return;
+
             }
 
 
             /* =================================================
-               VALIDATE EMAIL
+               EMAIL
             ================================================= */
 
             if (
@@ -456,16 +577,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     "error"
                 );
 
+                registrationRunning =
+                    false;
+
                 if (email) {
                     email.focus();
                 }
 
                 return;
+
             }
 
 
             /* =================================================
-               VALIDATE PASSWORD
+               PASSWORD
             ================================================= */
 
             if (
@@ -477,11 +602,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     "error"
                 );
 
+                registrationRunning =
+                    false;
+
                 if (password) {
                     password.focus();
                 }
 
                 return;
+
             }
 
 
@@ -499,11 +628,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     "error"
                 );
 
+                registrationRunning =
+                    false;
+
                 if (confirmPassword) {
                     confirmPassword.focus();
                 }
 
                 return;
+
             }
 
 
@@ -521,15 +654,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     "error"
                 );
 
+                registrationRunning =
+                    false;
+
                 return;
+
             }
 
 
             /* =================================================
-               START REQUEST
+               START LOADING
             ================================================= */
 
-            createButton.disabled = true;
+            createButton.disabled =
+                true;
 
             createButton.textContent =
                 "CREATING ACCOUNT...";
@@ -542,7 +680,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             console.log(
-                "FINORA STEP 2: CONNECTING"
+                "FINORA: Registration validation passed."
             );
 
 
@@ -568,19 +706,27 @@ document.addEventListener("DOMContentLoaded", function () {
                     confirmValue,
 
                 referralCode:
-                    referralValue || null
+                    referralValue ||
+                    null
 
             };
 
 
             console.log(
-                "FINORA REQUEST BODY:",
+                "FINORA REGISTRATION REQUEST:",
                 {
-                    fullName: nameValue,
-                    phone: phoneValue,
-                    email: emailValue,
+                    fullName:
+                        nameValue,
+
+                    phone:
+                        phoneValue,
+
+                    email:
+                        emailValue,
+
                     referralCode:
-                        referralValue || null
+                        referralValue ||
+                        null
                 }
             );
 
@@ -592,13 +738,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const controller =
                 new AbortController();
 
+
             const timeoutId =
                 setTimeout(
                     function () {
-
-                        console.error(
-                            "FINORA REQUEST TIMED OUT"
-                        );
 
                         controller.abort();
 
@@ -609,10 +752,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             try {
 
-                /* =============================================
-                   SEND POST REQUEST
-                ============================================= */
-
                 showStatus(
                     "Step 3: Sending registration request...",
                     ""
@@ -620,12 +759,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 console.log(
-                    "FINORA STEP 3: FETCH START"
-                );
-
-                console.log(
-                    "POST:",
-                    REGISTER_URL
+                    "FINORA: POST REQUEST STARTING..."
                 );
 
 
@@ -634,7 +768,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         REGISTER_URL,
                         {
 
-                            method: "POST",
+                            method:
+                                "POST",
 
                             headers: {
 
@@ -645,6 +780,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                     "application/json"
 
                             },
+
+                            credentials:
+                                "include",
 
                             body:
                                 JSON.stringify(
@@ -663,16 +801,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
-                /* =============================================
-                   RESPONSE RECEIVED
-                ============================================= */
-
                 console.log(
-                    "FINORA STEP 4: RESPONSE RECEIVED"
-                );
-
-                console.log(
-                    "HTTP STATUS:",
+                    "FINORA: RESPONSE RECEIVED:",
                     response.status
                 );
 
@@ -683,16 +813,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
-                /* =============================================
-                   READ RESPONSE
-                ============================================= */
-
                 const responseText =
                     await response.text();
 
 
                 console.log(
-                    "FINORA RAW SERVER RESPONSE:",
+                    "FINORA RAW RESPONSE:",
                     responseText
                 );
 
@@ -706,15 +832,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     resetButton();
 
+                    registrationRunning =
+                        false;
+
                     return;
+
                 }
 
 
-                /* =============================================
-                   PARSE JSON
-                ============================================= */
-
                 let data;
+
 
                 try {
 
@@ -726,30 +853,36 @@ document.addEventListener("DOMContentLoaded", function () {
                 } catch (jsonError) {
 
                     console.error(
-                        "FINORA JSON ERROR:",
+                        "FINORA JSON PARSE ERROR:",
                         jsonError
                     );
+
 
                     showStatus(
                         "FINORA returned an invalid server response.",
                         "error"
                     );
 
+
                     resetButton();
 
+                    registrationRunning =
+                        false;
+
                     return;
+
                 }
 
 
                 console.log(
-                    "FINORA PARSED DATA:",
+                    "FINORA SERVER DATA:",
                     data
                 );
 
 
-                /* =============================================
-                   SERVER REJECTED REQUEST
-                ============================================= */
+                /* =================================================
+                   SERVER ERROR
+                ================================================= */
 
                 if (
                     !response.ok ||
@@ -762,32 +895,20 @@ document.addEventListener("DOMContentLoaded", function () {
                         "error"
                     );
 
+
                     resetButton();
 
+                    registrationRunning =
+                        false;
+
                     return;
+
                 }
 
 
-                /* =============================================
+                /* =================================================
                    SUCCESS
-                ============================================= */
-
-                console.log(
-                    "===================================="
-                );
-
-                console.log(
-                    "FINORA ACCOUNT CREATED"
-                );
-
-                console.log(
-                    data.user
-                );
-
-                console.log(
-                    "===================================="
-                );
-
+                ================================================= */
 
                 showStatus(
                     "Step 5: Account created successfully!",
@@ -795,9 +916,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
-                /* =============================================
+                console.log(
+                    "FINORA ACCOUNT CREATED SUCCESSFULLY"
+                );
+
+
+                /* =================================================
                    SAVE USER
-                ============================================= */
+                ================================================= */
 
                 if (data.user) {
 
@@ -810,14 +936,10 @@ document.addEventListener("DOMContentLoaded", function () {
                             )
                         );
 
-                        console.log(
-                            "FINORA USER SAVED TO LOCAL STORAGE"
-                        );
-
                     } catch (storageError) {
 
                         console.error(
-                            "FINORA LOCAL STORAGE ERROR:",
+                            "FINORA STORAGE ERROR:",
                             storageError
                         );
 
@@ -826,11 +948,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
 
-                /* =============================================
+                /* =================================================
                    SUCCESS BUTTON
-                ============================================= */
+                ================================================= */
 
-                createButton.disabled = true;
+                createButton.disabled =
+                    true;
 
                 createButton.textContent =
                     "ACCOUNT CREATED ✓";
@@ -840,23 +963,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     password.value = "";
                 }
 
+
                 if (confirmPassword) {
                     confirmPassword.value = "";
                 }
 
 
-                /* =============================================
-                   LOGIN REDIRECT
-                ============================================= */
-
                 showStatus(
-                    "Step 6: Account created. Opening login page...",
+                    "Account created. Opening login page...",
                     "success"
-                );
-
-
-                console.log(
-                    "FINORA: REDIRECTING TO login.html"
                 );
 
 
@@ -870,6 +985,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     1500
                 );
 
+
             } catch (error) {
 
                 clearTimeout(
@@ -878,29 +994,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 console.error(
-                    "===================================="
-                );
-
-                console.error(
-                    "FINORA REGISTRATION ERROR"
-                );
-
-                console.error(
+                    "❌ FINORA REGISTRATION ERROR:",
                     error
-                );
-
-                console.error(
-                    "===================================="
                 );
 
 
                 if (
+                    error &&
                     error.name ===
                     "AbortError"
                 ) {
 
                     showStatus(
-                        "FINORA server did not respond within 20 seconds. The registration request is hanging.",
+                        "FINORA server did not respond within 20 seconds.",
                         "error"
                     );
 
@@ -908,7 +1014,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     showStatus(
                         "Unable to connect to FINORA server: " +
-                        error.message,
+                        (
+                            error &&
+                            error.message
+                                ? error.message
+                                : "Unknown error"
+                        ),
                         "error"
                     );
 
@@ -917,42 +1028,97 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 resetButton();
 
+                registrationRunning =
+                    false;
+
             }
 
         }
-    );
+
+
+        /* =================================================
+           FORM SUBMIT
+        ================================================= */
+
+        form.addEventListener(
+            "submit",
+            registerAccount
+        );
+
+
+        /* =================================================
+           DIRECT BUTTON CLICK
+           
+           This guarantees that the CREATE ACCOUNT button
+           also triggers registration directly.
+        ================================================= */
+
+        createButton.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                registerAccount(event);
+
+            }
+        );
+
+
+        /* =================================================
+           READY
+        ================================================= */
+
+        console.log(
+            "===================================="
+        );
+
+        console.log(
+            "✅ FINORA REGISTER.JS READY"
+        );
+
+        console.log(
+            "Form:",
+            !!form
+        );
+
+        console.log(
+            "Create Button:",
+            !!createButton
+        );
+
+        console.log(
+            "===================================="
+        );
+
+
+        showStatus(
+            "Ready to create your FINORA account.",
+            ""
+        );
+
+    }
 
 
     /* =====================================================
-       READY
+       START SAFELY
     ===================================================== */
 
-    console.log(
-        "===================================="
-    );
+    if (
+        document.readyState ===
+        "loading"
+    ) {
 
-    console.log(
-        "FINORA REGISTER.JS READY"
-    );
+        document.addEventListener(
+            "DOMContentLoaded",
+            initRegister
+        );
 
-    console.log(
-        "Form:",
-        !!form
-    );
+    } else {
 
-    console.log(
-        "Create Button:",
-        !!createButton
-    );
+        initRegister();
 
-    console.log(
-        "Password Toggles:",
-        toggleButtons.length
-    );
+    }
 
-    console.log(
-        "===================================="
-
-    );
-
-});
+})();
