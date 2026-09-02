@@ -12,11 +12,8 @@ const router = express.Router();
 
 const FRONTEND_URL =
     "https://akanyijukadavis38-ux.github.io";
-
-
 /* =========================================================
    REGISTER
-   REPAIRED — ONLY THIS SECTION WAS CHANGED
 ========================================================= */
 
 router.post("/register", async (req, res) => {
@@ -54,12 +51,31 @@ router.post("/register", async (req, res) => {
 
 
         /* =================================================
-           FULL NAME
+           CLEAN VALUES
         ================================================= */
 
         const cleanName =
             String(fullName).trim();
 
+        const cleanPhone =
+            String(phone).trim();
+
+        const cleanEmail =
+            String(email)
+                .trim()
+                .toLowerCase();
+
+        const cleanReferralCode =
+            referralCode
+                ? String(referralCode)
+                    .trim()
+                    .toUpperCase()
+                : null;
+
+
+        /* =================================================
+           VALIDATION
+        ================================================= */
 
         if (cleanName.length < 2) {
 
@@ -71,32 +87,15 @@ router.post("/register", async (req, res) => {
         }
 
 
-        /* =================================================
-           UGANDA PHONE VALIDATION
-        ================================================= */
-
-        const cleanPhone =
-            String(phone).trim();
-
-
         if (!/^07[0-9]{8}$/.test(cleanPhone)) {
 
             return res.status(400).json({
                 success: false,
-                message: "Please enter a valid Ugandan phone number."
+                message:
+                    "Please enter a valid Ugandan phone number."
             });
 
         }
-
-
-        /* =================================================
-           EMAIL
-        ================================================= */
-
-        const cleanEmail =
-            String(email)
-                .trim()
-                .toLowerCase();
 
 
         if (
@@ -107,21 +106,19 @@ router.post("/register", async (req, res) => {
 
             return res.status(400).json({
                 success: false,
-                message: "Please enter a valid email address."
+                message:
+                    "Please enter a valid email address."
             });
 
         }
 
 
-        /* =================================================
-           PASSWORD
-        ================================================= */
-
         if (password.length < 6) {
 
             return res.status(400).json({
                 success: false,
-                message: "Password must be at least 6 characters."
+                message:
+                    "Password must be at least 6 characters."
             });
 
         }
@@ -131,39 +128,31 @@ router.post("/register", async (req, res) => {
 
             return res.status(400).json({
                 success: false,
-                message: "Passwords do not match."
+                message:
+                    "Passwords do not match."
             });
 
         }
 
 
         /* =================================================
-           REFERRAL CODE
+           REFERRER
         ================================================= */
 
-        let cleanReferredByCode = null;
-
-
-        if (referralCode) {
-
-            cleanReferredByCode =
-                String(referralCode)
-                    .trim()
-                    .toUpperCase();
-
+        if (cleanReferralCode) {
 
             const referringUser =
                 await User.findOne({
                     referralCode:
-                        cleanReferredByCode
+                        cleanReferralCode
                 });
-
 
             if (!referringUser) {
 
                 return res.status(400).json({
                     success: false,
-                    message: "Invalid referral code."
+                    message:
+                        "Invalid referral code."
                 });
 
             }
@@ -172,7 +161,7 @@ router.post("/register", async (req, res) => {
 
 
         /* =================================================
-           CHECK EXISTING EMAIL
+           EXISTING EMAIL
         ================================================= */
 
         const existingEmail =
@@ -180,23 +169,19 @@ router.post("/register", async (req, res) => {
                 email: cleanEmail
             });
 
-
         if (existingEmail) {
 
             return res.status(409).json({
-
                 success: false,
-
                 message:
                     "An account with this email already exists."
-
             });
 
         }
 
 
         /* =================================================
-           CHECK EXISTING PHONE
+           EXISTING PHONE
         ================================================= */
 
         const existingPhone =
@@ -204,16 +189,12 @@ router.post("/register", async (req, res) => {
                 phone: cleanPhone
             });
 
-
         if (existingPhone) {
 
             return res.status(409).json({
-
                 success: false,
-
                 message:
                     "An account with this phone number already exists."
-
             });
 
         }
@@ -231,41 +212,15 @@ router.post("/register", async (req, res) => {
 
 
         /* =================================================
-           GENERATE UNIQUE REFERRAL CODE
-           
-           Generate it here so the user.js validation hook
-           does not need to perform another lookup.
-        ================================================= */
-
-        let newReferralCode;
-        let referralCodeExists = true;
-
-
-        while (referralCodeExists) {
-
-            newReferralCode =
-                "FIN" +
-                Math.random()
-                    .toString(36)
-                    .substring(2, 8)
-                    .toUpperCase();
-
-
-            referralCodeExists =
-                await User.exists({
-                    referralCode:
-                        newReferralCode
-                });
-
-        }
-
-
-        /* =================================================
            CREATE USER
+           
+           user.js automatically generates the
+           FINORA referralCode through its
+           pre-validation hook.
         ================================================= */
 
         const user =
-            await User.create({
+            new User({
 
                 fullName:
                     cleanName,
@@ -279,20 +234,17 @@ router.post("/register", async (req, res) => {
                 password:
                     hashedPassword,
 
-                referralCode:
-                    newReferralCode,
-
                 referredByCode:
-                    cleanReferredByCode
+                    cleanReferralCode || null
 
             });
 
 
+        await user.save();
+
+
         /* =================================================
-           CREATE SESSION
-           
-           Session creation is attempted, but account
-           creation itself is already complete.
+           SESSION
         ================================================= */
 
         req.session.userId =
@@ -302,101 +254,104 @@ router.post("/register", async (req, res) => {
             true;
 
 
-        req.session.save(
-            error => {
+        await new Promise(
+            (resolve, reject) => {
 
-                if (error) {
+                req.session.save(
+                    error => {
 
-                    console.error(
-                        "⚠️ FINORA REGISTER SESSION WARNING:",
-                        error
-                    );
+                        if (error) {
+                            return reject(error);
+                        }
 
-                }
-
-
-                /* =========================================
-                   RESPONSE
-                ========================================= */
-
-                return res.status(201).json({
-
-                    success: true,
-
-                    message:
-                        "FINORA account created successfully.",
-
-                    user: {
-
-                        id:
-                            user._id,
-
-                        fullName:
-                            user.fullName,
-
-                        full_name:
-                            user.fullName,
-
-                        phone:
-                            user.phone,
-
-                        email:
-                            user.email,
-
-                        referralCode:
-                            user.referralCode,
-
-                        referral_code:
-                            user.referralCode,
-
-                        referredByCode:
-                            user.referredByCode || null,
-
-                        referred_by_code:
-                            user.referredByCode || null,
-
-                        balance:
-                            user.balance,
-
-                        walletBalance:
-                            user.balance,
-
-                        wallet_balance:
-                            user.balance,
-
-                        totalIncome:
-                            user.totalIncome,
-
-                        totalEarnings:
-                            user.totalIncome,
-
-                        total_earnings:
-                            user.totalIncome,
-
-                        totalDeposit:
-                            user.totalDeposit,
-
-                        totalInvested:
-                            user.totalDeposit,
-
-                        total_invested:
-                            user.totalDeposit,
-
-                        totalWithdrawal:
-                            user.totalWithdrawal,
-
-                        status:
-                            user.status,
-
-                        createdAt:
-                            user.createdAt
+                        resolve();
 
                     }
-
-                });
+                );
 
             }
         );
+
+
+        /* =================================================
+           SUCCESS RESPONSE
+        ================================================= */
+
+        return res.status(201).json({
+
+            success: true,
+
+            message:
+                "FINORA account created successfully.",
+
+            user: {
+
+                id:
+                    user._id,
+
+                fullName:
+                    user.fullName,
+
+                full_name:
+                    user.fullName,
+
+                phone:
+                    user.phone,
+
+                email:
+                    user.email,
+
+                referralCode:
+                    user.referralCode,
+
+                referral_code:
+                    user.referralCode,
+
+                referredByCode:
+                    user.referredByCode || null,
+
+                referred_by_code:
+                    user.referredByCode || null,
+
+                balance:
+                    user.balance,
+
+                walletBalance:
+                    user.balance,
+
+                wallet_balance:
+                    user.balance,
+
+                totalIncome:
+                    user.totalIncome,
+
+                totalEarnings:
+                    user.totalIncome,
+
+                total_earnings:
+                    user.totalIncome,
+
+                totalDeposit:
+                    user.totalDeposit,
+
+                totalInvested:
+                    user.totalDeposit,
+
+                total_invested:
+                    user.totalDeposit,
+
+                totalWithdrawal:
+                    user.totalWithdrawal,
+
+                status:
+                    user.status,
+
+                createdAt:
+                    user.createdAt
+
+            }
+
+        });
 
 
     } catch (error) {
@@ -411,7 +366,10 @@ router.post("/register", async (req, res) => {
            DUPLICATE DATABASE ENTRY
         ================================================= */
 
-        if (error && error.code === 11000) {
+        if (
+            error &&
+            error.code === 11000
+        ) {
 
             const duplicateFields =
                 Object.keys(
@@ -489,6 +447,7 @@ router.post("/register", async (req, res) => {
     }
 
 });
+
 
 
 /* =========================================================
