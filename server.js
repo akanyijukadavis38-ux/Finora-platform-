@@ -31,17 +31,6 @@ const allowedOrigins = [
    RAILWAY / PROXY
 ========================================================= */
 
-/*
-   Railway sits behind a proxy.
-
-   This is important because FINORA uses:
-   secure: true
-   cookies in production.
-
-   Without trust proxy, Express may not correctly
-   recognize the HTTPS connection through Railway.
-*/
-
 app.set(
     "trust proxy",
     1
@@ -57,19 +46,9 @@ app.use(
 
         origin: function(origin, callback) {
 
-            /*
-               Allow requests without an Origin header.
-               Useful for health checks and direct API calls.
-            */
-
             if (!origin) {
                 return callback(null, true);
             }
-
-
-            /*
-               Allow only the official FINORA frontend.
-            */
 
             if (
                 allowedOrigins.includes(origin)
@@ -81,12 +60,10 @@ app.use(
                 );
             }
 
-
             console.warn(
                 "⚠️ FINORA CORS BLOCKED:",
                 origin
             );
-
 
             return callback(
                 new Error(
@@ -95,9 +72,7 @@ app.use(
             );
         },
 
-
         credentials: true,
-
 
         methods: [
             "GET",
@@ -107,7 +82,6 @@ app.use(
             "DELETE",
             "OPTIONS"
         ],
-
 
         allowedHeaders: [
             "Content-Type",
@@ -130,42 +104,21 @@ app.use(
    SESSION
 ========================================================= */
 
-/*
-   IMPORTANT:
-
-   Vercel frontend:
-   https://finora-platform.vercel.app
-
-   Railway backend:
-   https://finora-platform-production.up.railway.app
-
-   These are different sites.
-
-   Therefore production requires:
-
-   secure: true
-   sameSite: "none"
-*/
-
 app.use(
     session({
 
         name:
             "finora.sid",
 
-
         secret:
             process.env.SESSION_SECRET ||
             "FINORA_CHANGE_THIS_SESSION_SECRET",
 
-
         resave:
             false,
 
-
         saveUninitialized:
             false,
-
 
         store:
             MongoStore.create({
@@ -182,7 +135,6 @@ app.use(
                 autoRemove:
                     "native"
             }),
-
 
         cookie: {
 
@@ -539,6 +491,41 @@ async function startServer() {
     try {
 
         await connectDB();
+
+
+        /* =====================================================
+           REMOVE OBSOLETE MONGODB INDEX
+        ===================================================== */
+
+        try {
+
+            await mongoose.connection
+                .collection("users")
+                .dropIndex("accountNumber_1");
+
+            console.log(
+                "✅ FINORA: Removed obsolete accountNumber_1 index"
+            );
+
+        } catch (indexError) {
+
+            if (
+                indexError.codeName ===
+                "IndexNotFound"
+            ) {
+
+                console.log(
+                    "ℹ️ FINORA: accountNumber_1 index already removed"
+                );
+
+            } else {
+
+                console.error(
+                    "⚠️ FINORA: Could not remove accountNumber_1 index:",
+                    indexError.message
+                );
+            }
+        }
 
 
         app.listen(
