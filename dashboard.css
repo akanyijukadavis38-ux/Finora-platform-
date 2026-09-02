@@ -769,10 +769,19 @@ line-height: 0;
 
 /* =========================================================
 BANNER ARTWORK
-FIXED ARTWORK AREA
+AUTOMATIC FULL-WIDTH VISUAL AREA
 
-The artwork now gets a real visual area instead of
-shrinking to the image's natural width.
+IMPORTANT:
+- KEEP contain
+- SHOW THE ENTIRE IMAGE
+- NO CROPPING
+- NO DISTORTION
+- NO scale()
+- NO PER-BANNER POSITIONING
+
+The artwork uses the entire banner width so that
+contain can make the original PNG as large as
+physically possible while still showing everything.
 ========================================================= */
 
 .banner-artwork {
@@ -781,8 +790,9 @@ position: absolute;
 top: 0;
 right: 0;
 bottom: 0;
+left: 0;
 
-width: 55%;
+width: 100%;
 height: 100%;
 
 overflow: hidden;
@@ -798,7 +808,7 @@ justify-content: center;
 
 /* =========================================================
 BANNER IMAGE
-FULL IMAGE • NATURAL PROPORTIONS • NO DISTORTION
+ENTIRE IMAGE • NATURAL PROPORTIONS • NO CROPPING
 ========================================================= */
 
 .banner-image {
@@ -827,7 +837,7 @@ transition:
 
 /* =========================================================
 ARTWORK LEFT BLEND
-WEAKER SO THE ACTUAL ARTWORK REMAINS VISIBLE
+LIGHT ENOUGH TO KEEP THE ARTWORK CLEAR
 ========================================================= */
 
 .banner-artwork::before {
@@ -842,10 +852,10 @@ z-index: 2;
 background:
     linear-gradient(
         90deg,
-        rgba(22, 6, 15, 0.78) 0%,
-        rgba(22, 6, 15, 0.50) 18%,
-        rgba(22, 6, 15, 0.20) 40%,
-        rgba(22, 6, 15, 0.05) 65%,
+        rgba(22, 6, 15, 0.62) 0%,
+        rgba(22, 6, 15, 0.38) 16%,
+        rgba(22, 6, 15, 0.16) 34%,
+        rgba(22, 6, 15, 0.05) 55%,
         rgba(22, 6, 15, 0) 100%
     );
 
@@ -868,9 +878,9 @@ z-index: 3;
 background:
     linear-gradient(
         180deg,
-        rgba(0, 0, 0, 0.08),
-        transparent 35%,
-        rgba(0, 0, 0, 0.18)
+        rgba(0, 0, 0, 0.05),
+        transparent 38%,
+        rgba(0, 0, 0, 0.10)
     );
 
 pointer-events: none;
@@ -2138,15 +2148,17 @@ TABLET
 
 /* =====================================================
    TABLET ARTWORK
+   ENTIRE IMAGE REMAINS VISIBLE
    ===================================================== */
 
 .banner-artwork {
-    width: 55%;
+    width: 100%;
     height: 100%;
 
     top: 0;
     right: 0;
     bottom: 0;
+    left: 0;
 
     display: flex;
     align-items: center;
@@ -2170,10 +2182,10 @@ TABLET
     background:
         linear-gradient(
             90deg,
-            rgba(22, 6, 15, 0.78) 0%,
-            rgba(22, 6, 15, 0.50) 18%,
-            rgba(22, 6, 15, 0.20) 40%,
-            rgba(22, 6, 15, 0.05) 65%,
+            rgba(22, 6, 15, 0.62) 0%,
+            rgba(22, 6, 15, 0.38) 16%,
+            rgba(22, 6, 15, 0.16) 34%,
+            rgba(22, 6, 15, 0.05) 55%,
             rgba(22, 6, 15, 0) 100%
         );
 }
@@ -2358,16 +2370,18 @@ MOBILE
 
 /* =====================================================
    MOBILE ARTWORK
+   FULL WIDTH + CONTAIN
    ===================================================== */
 
 .banner-artwork {
-    width: 55%;
+    width: 100%;
 
     height: 100%;
 
     top: 0;
     right: 0;
     bottom: 0;
+    left: 0;
 
     display: flex;
     align-items: center;
@@ -2393,10 +2407,10 @@ MOBILE
     background:
         linear-gradient(
             90deg,
-            rgba(22, 6, 15, 0.78) 0%,
-            rgba(22, 6, 15, 0.48) 18%,
-            rgba(22, 6, 15, 0.20) 38%,
-            rgba(22, 6, 15, 0.05) 62%,
+            rgba(22, 6, 15, 0.60) 0%,
+            rgba(22, 6, 15, 0.34) 17%,
+            rgba(22, 6, 15, 0.13) 36%,
+            rgba(22, 6, 15, 0.04) 58%,
             rgba(22, 6, 15, 0) 100%
         );
 }
@@ -2405,9 +2419,9 @@ MOBILE
     background:
         linear-gradient(
             180deg,
-            rgba(0, 0, 0, 0.06),
+            rgba(0, 0, 0, 0.05),
             transparent 40%,
-            rgba(0, 0, 0, 0.16)
+            rgba(0, 0, 0, 0.10)
         );
 }
 
@@ -2691,16 +2705,18 @@ VERY SMALL PHONES
 
 /* =====================================================
    VERY SMALL PHONE ARTWORK
+   FULL WIDTH + CONTAIN
    ===================================================== */
 
 .banner-artwork {
-    width: 52%;
+    width: 100%;
 
     height: 100%;
 
     top: 0;
     right: 0;
     bottom: 0;
+    left: 0;
 
     display: flex;
     align-items: center;
@@ -2724,10 +2740,10 @@ VERY SMALL PHONES
     background:
         linear-gradient(
             90deg,
-            rgba(22, 6, 15, 0.78) 0%,
-            rgba(22, 6, 15, 0.48) 18%,
-            rgba(22, 6, 15, 0.20) 38%,
-            rgba(22, 6, 15, 0.05) 62%,
+            rgba(22, 6, 15, 0.58) 0%,
+            rgba(22, 6, 15, 0.32) 18%,
+            rgba(22, 6, 15, 0.12) 38%,
+            rgba(22, 6, 15, 0.04) 62%,
             rgba(22, 6, 15, 0) 100%
         );
 }
