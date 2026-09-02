@@ -41,6 +41,8 @@
 
         <header class="team-header">
 
+            <!-- BACK BUTTON -->
+
             <button
                 type="button"
                 class="header-button back-button"
@@ -64,24 +66,33 @@
             </button>
 
 
+            <!-- CENTER FINORA BRAND -->
+
             <div class="team-header-title">
 
-                <span class="team-eyebrow">
-                    FINORA
-                </span>
+                <div class="finora-header-name">
+                    <span class="finora-fin">FIN</span><span class="finora-ora">ORA</span>
+                </div>
 
-                <h1>
-                    My Team
-                </h1>
+                <div class="finora-header-tagline">
+                    Invest • Grow • Earn
+                </div>
 
             </div>
 
+
+            <!--
+                Kept in the DOM for compatibility with existing
+                team.js logic, but hidden visually.
+            -->
 
             <button
                 type="button"
                 class="header-button notification-button"
                 id="notificationButton"
-                aria-label="Notifications">
+                aria-label="Notifications"
+                aria-hidden="true"
+                tabindex="-1">
 
                 <svg
                     viewBox="0 0 24 24"
@@ -102,7 +113,6 @@
                         stroke-linecap="round"/>
 
                 </svg>
-
 
                 <span
                     class="notification-dot"
@@ -156,14 +166,12 @@
 
                 <div class="user-phone-display">
 
-                    <!-- Small badge/icon space -->
                     <span
                         class="user-phone-badge"
                         id="userPhoneBadge"
                         aria-hidden="true">
                     </span>
 
-                    <!-- Current user's registered phone number -->
                     <span
                         class="user-phone-number"
                         id="userPhoneNumber">
@@ -800,22 +808,28 @@
 
 
             <!-- =================================================
-                 FOOTER
+                 CURRENT FINORA FOOTER
             ================================================== -->
 
             <footer class="team-footer">
 
                 <div class="footer-brand">
-                    FINORA
+                    <span class="fin">FIN</span><span class="ora">ORA</span>
                 </div>
 
                 <div class="footer-tagline">
-                    INVEST • GROW • EARN
+                    Invest • Grow • Earn
                 </div>
 
-                <p>
-                    © 2026 FINORA. All rights reserved.
+                <p class="footer-text">
+                    FINORA provides a simple and transparent
+                    investment experience designed around
+                    clear earning structures.
                 </p>
+
+                <div class="footer-copy">
+                    © 2026 FINORA. All rights reserved.
+                </div>
 
             </footer>
 
