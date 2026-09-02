@@ -904,7 +904,6 @@ router.get("/me", async (req, res) => {
 
 });
 
-
 /* =========================================================
    GET REAL TEAM
 ========================================================= */
@@ -991,7 +990,7 @@ router.get("/team", async (req, res) => {
                         currentUser.referralCode
                 })
                     .select(
-                        "_id fullName referralCode referredByCode status createdAt"
+                        "_id fullName phone referralCode referredByCode totalDeposit status createdAt"
                     )
                     .sort({
                         createdAt: -1
@@ -1023,7 +1022,7 @@ router.get("/team", async (req, res) => {
                     }
                 })
                     .select(
-                        "_id fullName referralCode referredByCode status createdAt"
+                        "_id fullName phone referralCode referredByCode totalDeposit status createdAt"
                     )
                     .sort({
                         createdAt: -1
@@ -1055,7 +1054,7 @@ router.get("/team", async (req, res) => {
                     }
                 })
                     .select(
-                        "_id fullName referralCode referredByCode status createdAt"
+                        "_id fullName phone referralCode referredByCode totalDeposit status createdAt"
                     )
                     .sort({
                         createdAt: -1
@@ -1068,39 +1067,90 @@ router.get("/team", async (req, res) => {
         ================================================= */
 
         const formatMember =
-            (user, level) => ({
+            (user, level) => {
 
-                id:
-                    user._id,
+                const totalDeposit =
+                    Number(
+                        user.totalDeposit
+                    ) || 0;
 
-                fullName:
-                    user.fullName,
 
-                full_name:
-                    user.fullName,
+                /*
+                 * FINORA TEAM STATUS
+                 *
+                 * Active:
+                 * Member has made their first deposit.
+                 *
+                 * Inactive:
+                 * Member has never made a deposit.
+                 *
+                 * We intentionally do NOT use
+                 * user.status for this.
+                 */
 
-                referralCode:
-                    user.referralCode,
+                const depositStatus =
+                    totalDeposit > 0
+                        ? "Active"
+                        : "Inactive";
 
-                referral_code:
-                    user.referralCode,
 
-                referredByCode:
-                    user.referredByCode || null,
+                return {
 
-                referred_by_code:
-                    user.referredByCode || null,
+                    id:
+                        user._id,
 
-                status:
-                    user.status,
+                    fullName:
+                        user.fullName,
 
-                level,
+                    full_name:
+                        user.fullName,
 
-                createdAt:
-                    user.createdAt
+                    phone:
+                        user.phone || "",
 
-            });
+                    referralCode:
+                        user.referralCode,
 
+                    referral_code:
+                        user.referralCode,
+
+                    referredByCode:
+                        user.referredByCode || null,
+
+                    referred_by_code:
+                        user.referredByCode || null,
+
+                    /*
+                     * Deposit amount is sent so the
+                     * frontend can correctly determine
+                     * Active / Inactive as well.
+                     */
+                    totalDeposit:
+                        totalDeposit,
+
+                    total_deposit:
+                        totalDeposit,
+
+                    /*
+                     * This is TEAM activity status,
+                     * based on first deposit.
+                     */
+                    status:
+                        depositStatus,
+
+                    level,
+
+                    createdAt:
+                        user.createdAt
+
+                };
+
+            };
+
+
+        /* =================================================
+           BUILD COMPLETE TEAM
+        ================================================= */
 
         const members = [
 
@@ -1139,9 +1189,11 @@ router.get("/team", async (req, res) => {
 
             success: true,
 
-            team: members,
+            team:
+                members,
 
-            members,
+            members:
+                members,
 
             summary: {
 
@@ -1161,11 +1213,14 @@ router.get("/team", async (req, res) => {
 
             commissionRates: {
 
-                levelOne: 15,
+                levelOne:
+                    15,
 
-                levelTwo: 5,
+                levelTwo:
+                    5,
 
-                levelThree: 2
+                levelThree:
+                    2
 
             }
 
@@ -1179,6 +1234,7 @@ router.get("/team", async (req, res) => {
             error
         );
 
+
         return res.status(500).json({
 
             success: false,
@@ -1191,7 +1247,6 @@ router.get("/team", async (req, res) => {
     }
 
 });
-
 
 /* =========================================================
    LOGOUT
