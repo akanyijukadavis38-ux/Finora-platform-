@@ -1456,65 +1456,208 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     }
 
+/* =====================================================
+   MAIN BOTTOM NAVIGATION
 
-    /* =====================================================
-       DASHBOARD LINKS
-       
-       These are normal HTML navigation links.
+   MAIN NAVIGATION:
+   HOME
+   TEAM
+   RATES
+   MINE
+   PROFILE
 
-       We do NOT create unnecessary JavaScript navigation.
+   Behavior:
+   - Only ONE item can be active.
+   - Active item gets the complete active state.
+   - Previous item immediately loses the active state.
+   - Navigation pages use normal HTML navigation.
+   - Secondary pages such as Deposit, Withdraw,
+     Reinvestment/Investment, Records and Support
+     are NOT part of this active navigation.
+===================================================== */
 
-       Examples:
+function initializeNavigation() {
 
-       deposit.html
-       investment.html
-       withdraw.html
-       my-investments.html
-       transaction-history.html
-       support.html
-       team.html
-       rates.html
-       mine.html
-       profile.html
-
-       Their own pages and JavaScript will be created
-       separately.
-    ===================================================== */
-
-    function initializeNavigation() {
-
-        const navigationLinks =
-            document.querySelectorAll(
-                "a[href]"
-            );
+    const navigation =
+        document.querySelector(
+            ".bottom-navigation"
+        );
 
 
-        navigationLinks.forEach(
-            (link) => {
+    if (!navigation) {
+        return;
+    }
 
-                const href =
-                    link.getAttribute(
-                        "href"
+
+    const navigationItems =
+        Array.from(
+            navigation.querySelectorAll(
+                ".bottom-nav-item"
+            )
+        );
+
+
+    if (!navigationItems.length) {
+        return;
+    }
+
+
+    /* =================================================
+       DETERMINE CURRENT PAGE
+    ================================================= */
+
+    const currentPath =
+        window.location.pathname
+            .split("/")
+            .pop()
+            .toLowerCase();
+
+
+    /* =================================================
+       PAGE → NAVIGATION MAP
+    ================================================= */
+
+    const pageMap = {
+
+        "dashboard.html": "home",
+
+        "": "home",
+
+        "team.html": "team",
+
+        "rates.html": "rates",
+
+        "mine.html": "mine",
+
+        "profile.html": "profile"
+
+    };
+
+
+    /* =================================================
+       SET ACTIVE NAVIGATION
+    ================================================= */
+
+    function setActiveNavigation(navName) {
+
+        navigationItems.forEach(
+            (item) => {
+
+                const isActive =
+                    item.dataset.nav === navName;
+
+
+                item.classList.toggle(
+                    "active",
+                    isActive
+                );
+
+
+                if (isActive) {
+
+                    item.setAttribute(
+                        "aria-current",
+                        "page"
                     );
 
+                } else {
 
-                if (
-                    !href ||
-                    href === "#"
-                ) {
-                    return;
+                    item.removeAttribute(
+                        "aria-current"
+                    );
                 }
 
-
-                /*
-                   No preventDefault here.
-
-                   The HTML href should perform the navigation
-                   normally.
-                */
             }
         );
     }
+
+
+    /* =================================================
+       INITIAL ACTIVE STATE
+
+       This makes the correct button active when a
+       page loads directly.
+
+       Example:
+
+       team.html
+       → Team active
+
+       rates.html
+       → Rates active
+
+       profile.html
+       → Profile active
+    ================================================= */
+
+    const currentNavigation =
+        pageMap[currentPath];
+
+
+    if (currentNavigation) {
+
+        setActiveNavigation(
+            currentNavigation
+        );
+
+    } else {
+
+        /*
+           Secondary pages are NOT assigned a main
+           navigation active state.
+
+           Examples:
+
+           deposit.html
+           withdraw.html
+           investment.html
+           my-investments.html
+           transaction-history.html
+           support.html
+        */
+
+        setActiveNavigation(
+            null
+        );
+    }
+
+
+    /* =================================================
+       NAVIGATION CLICK
+
+       Immediately move the complete active state
+       to the button that was tapped.
+
+       The browser is still allowed to navigate
+       normally through the HTML href.
+    ================================================= */
+
+    navigationItems.forEach(
+        (item) => {
+
+            item.addEventListener(
+                "click",
+                () => {
+
+                    const navName =
+                        item.dataset.nav;
+
+
+                    if (!navName) {
+                        return;
+                    }
+
+
+                    setActiveNavigation(
+                        navName
+                    );
+
+                }
+            );
+
+        }
+    );
+}
 
 
     /* =====================================================
