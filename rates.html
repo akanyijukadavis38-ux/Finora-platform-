@@ -270,13 +270,29 @@
 
             justify-content: center;
 
-            gap: 9px;
-
             text-align: center;
         }
 
 
+        /*
+         * FINORA MUST ALWAYS READ AS ONE WORD.
+         * FIN = WHITE
+         * ORA = GOLD
+         * NO VISUAL GAP BETWEEN THEM.
+         */
+
         .finora-name {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 0;
+
+            margin: 0;
+            padding: 0;
+
             font-family:
                 "Times New Roman",
                 Times,
@@ -289,9 +305,20 @@
 
             font-weight: 700;
 
-            letter-spacing: -2px;
+            letter-spacing: -2.4px;
 
             white-space: nowrap;
+        }
+
+
+        .finora-fin,
+        .finora-ora {
+            display: inline;
+
+            margin: 0;
+            padding: 0;
+
+            letter-spacing: -2.4px;
         }
 
 
@@ -845,6 +872,17 @@
 
 
         .footer-brand {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 0;
+
+            margin: 0;
+            padding: 0;
+
             font-family:
                 "Times New Roman",
                 Times,
@@ -854,7 +892,20 @@
 
             font-weight: 700;
 
-            letter-spacing: -1.5px;
+            letter-spacing: -2px;
+
+            line-height: 1;
+        }
+
+
+        .footer-brand .fin,
+        .footer-brand .ora {
+            display: inline;
+
+            margin: 0;
+            padding: 0;
+
+            letter-spacing: -2px;
         }
 
 
@@ -1093,8 +1144,6 @@
 
 
             .finora-brand {
-                gap: 6px;
-
                 transform:
                     translateX(0);
             }
@@ -1103,7 +1152,13 @@
             .finora-name {
                 font-size: 39px;
 
-                letter-spacing: -1.8px;
+                letter-spacing: -2.2px;
+            }
+
+
+            .finora-fin,
+            .finora-ora {
+                letter-spacing: -2.2px;
             }
 
 
@@ -1269,6 +1324,17 @@
             }
 
 
+            .footer-brand {
+                letter-spacing: -1.8px;
+            }
+
+
+            .footer-brand .fin,
+            .footer-brand .ora {
+                letter-spacing: -1.8px;
+            }
+
+
             /* MOBILE BOTTOM NAV */
 
             .bottom-navigation {
@@ -1309,6 +1375,14 @@
 
             .finora-name {
                 font-size: 34px;
+
+                letter-spacing: -2px;
+            }
+
+
+            .finora-fin,
+            .finora-ora {
+                letter-spacing: -2px;
             }
 
 
@@ -1396,15 +1470,7 @@
 
                         <div>
 
-                            <div class="finora-name">
-
-                                <span class="finora-fin">
-                                    FIN
-                                </span><span class="finora-ora">
-                                    ORA
-                                </span>
-
-                            </div>
+                            <div class="finora-name"><span class="finora-fin">FIN</span><span class="finora-ora">ORA</span></div>
 
 
                             <div class="finora-tagline">
@@ -2010,15 +2076,7 @@
             <div class="container">
 
 
-                <div class="footer-brand">
-
-                    <span class="fin">
-                        FIN
-                    </span><span class="ora">
-                        ORA
-                    </span>
-
-                </div>
+                <div class="footer-brand"><span class="fin">FIN</span><span class="ora">ORA</span></div>
 
 
                 <div class="footer-tagline">
