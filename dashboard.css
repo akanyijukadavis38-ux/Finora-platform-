@@ -473,6 +473,13 @@ INDIVIDUAL BANNER
     isolation: isolate;
 
     flex-shrink: 0;
+
+    /*
+     * Keeps the banner rendering as one solid surface.
+     */
+    transform: translateZ(0);
+
+    backface-visibility: hidden;
 }
 
 /* =========================================================
@@ -715,20 +722,7 @@ BANNER BUTTON
 
 /* =========================================================
 MAIN BANNER ARTWORK
-=========================================================
-
-IMPORTANT:
-The image is now the FULL BACKGROUND of the banner.
-
-It is NOT a right-side 55%, 68%, or 70% box.
-
-It occupies:
-    left: 0
-    right: 0
-    top: 0
-    bottom: 0
-
-The text stays above it.
+FULL-BANNER IMAGE LAYER
 ========================================================= */
 
 .banner-artwork {
@@ -746,6 +740,14 @@ The text stays above it.
     pointer-events: none;
 
     display: block;
+
+    /*
+     * Force the artwork layer to occupy the
+     * complete banner surface.
+     */
+    transform: translateZ(0);
+
+    backface-visibility: hidden;
 }
 
 /* =========================================================
@@ -760,24 +762,38 @@ FULL BANNER IMAGE
     width: 100%;
     height: 100%;
 
+    min-width: 100%;
+    min-height: 100%;
+
     max-width: none;
     max-height: none;
 
     display: block;
 
     /*
-       COVER = fill the entire banner.
-       No empty right-side artwork box.
-    */
+     * COVER makes the image fill the ENTIRE banner.
+     * There will be no empty image box on the right.
+     */
     object-fit: cover;
 
     object-position: center center;
 
     opacity: 1;
 
-    filter:
-        saturate(1.06)
-        contrast(1.04);
+    /*
+     * Do NOT blur or artificially sharpen the image.
+     * Keeping the source image untouched gives the
+     * cleanest possible rendering.
+     */
+    filter: none;
+
+    /*
+     * Helps prevent rendering artifacts during
+     * carousel movement.
+     */
+    transform: translateZ(0);
+
+    backface-visibility: hidden;
 
     transition:
         opacity 0.4s ease;
@@ -785,8 +801,7 @@ FULL BANNER IMAGE
 
 /* =========================================================
 IMAGE OVERLAY
-Keeps the words readable while allowing the artwork
-to remain clearly visible across the entire banner.
+TEXT REMAINS CLEARLY VISIBLE
 ========================================================= */
 
 .banner-artwork::before {
@@ -828,9 +843,9 @@ SUBTLE TOP/BOTTOM IMAGE BLEND
     background:
         linear-gradient(
             180deg,
-            rgba(0, 0, 0, 0.10) 0%,
+            rgba(0, 0, 0, 0.06) 0%,
             rgba(0, 0, 0, 0.00) 30%,
-            rgba(0, 0, 0, 0.08) 100%
+            rgba(0, 0, 0, 0.07) 100%
         );
 
     pointer-events: none;
@@ -1349,6 +1364,7 @@ QUICK ACTIONS
 
 /* =========================================================
 PREMIUM BANNER
+FULL IMAGE BACKGROUND
 ========================================================= */
 
 .premium-section {
@@ -1380,12 +1396,18 @@ PREMIUM BANNER
     display: flex;
 
     align-items: center;
+
+    isolation: isolate;
+
+    transform: translateZ(0);
+
+    backface-visibility: hidden;
 }
 
 .premium-content {
     position: relative;
 
-    z-index: 3;
+    z-index: 5;
 
     width: 57%;
 
@@ -1472,25 +1494,63 @@ PREMIUM BANNER
     letter-spacing: 0.7px;
 }
 
+/* =========================================================
+PREMIUM ARTWORK — FULL AREA
+========================================================= */
+
 .premium-artwork {
     position: absolute;
 
-    right: 0;
-    top: 0;
+    inset: 0;
 
-    width: 47%;
-    height: 100%;
-}
-
-.premium-banner-image {
     width: 100%;
     height: 100%;
 
+    overflow: hidden;
+
+    z-index: 1;
+
+    pointer-events: none;
+
+    transform: translateZ(0);
+
+    backface-visibility: hidden;
+}
+
+.premium-banner-image {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    min-width: 100%;
+    min-height: 100%;
+
+    max-width: none;
+    max-height: none;
+
     display: block;
 
-    object-fit: contain;
+    /*
+     * FULL COVER.
+     */
+    object-fit: cover;
+
     object-position: center center;
+
+    filter: none;
+
+    transform: translateZ(0);
+
+    backface-visibility: hidden;
 }
+
+/* =========================================================
+PREMIUM IMAGE OVERLAY
+TEXT STAYS ABOVE IMAGE
+========================================================= */
 
 .premium-artwork::before {
     content: "";
@@ -1504,15 +1564,14 @@ PREMIUM BANNER
     background:
         linear-gradient(
             90deg,
-            #3A0A20 0%,
-            rgba(
-                58,
-                10,
-                32,
-                0.55
-            ) 30%,
-            transparent 70%
+            rgba(21, 6, 13, 0.88) 0%,
+            rgba(21, 6, 13, 0.68) 20%,
+            rgba(21, 6, 13, 0.38) 42%,
+            rgba(21, 6, 13, 0.14) 65%,
+            rgba(21, 6, 13, 0.00) 100%
         );
+
+    pointer-events: none;
 }
 
 /* =========================================================
@@ -2041,11 +2100,10 @@ TABLET
             28px;
     }
 
-    /*
-     * IMPORTANT:
-     * The image continues to cover 100% of the banner.
-     * It is NOT reduced to a side section.
-     */
+    /* =====================================================
+       FULL IMAGE — TABLET
+       ===================================================== */
+
     .banner-artwork {
         position: absolute;
 
@@ -2053,6 +2111,8 @@ TABLET
 
         width: 100%;
         height: 100%;
+
+        z-index: 1;
     }
 
     .banner-image {
@@ -2063,13 +2123,19 @@ TABLET
         width: 100%;
         height: 100%;
 
+        min-width: 100%;
+        min-height: 100%;
+
         max-width: none;
         max-height: none;
 
         object-fit: cover;
+
         object-position: center center;
 
         opacity: 1;
+
+        filter: none;
     }
 
     .banner-artwork::before {
@@ -2083,6 +2149,40 @@ TABLET
                 rgba(11, 5, 10, 0.02) 84%,
                 rgba(11, 5, 10, 0.00) 100%
             );
+    }
+
+    /* =====================================================
+       PREMIUM — TABLET
+       ===================================================== */
+
+    .premium-artwork {
+        position: absolute;
+
+        inset: 0;
+
+        width: 100%;
+        height: 100%;
+    }
+
+    .premium-banner-image {
+        position: absolute;
+
+        inset: 0;
+
+        width: 100%;
+        height: 100%;
+
+        min-width: 100%;
+        min-height: 100%;
+
+        max-width: none;
+        max-height: none;
+
+        object-fit: cover;
+
+        object-position: center center;
+
+        filter: none;
     }
 }
 
@@ -2199,9 +2299,10 @@ MOBILE
         border-radius: 19px;
     }
 
-    /*
-     * TEXT STILL EXISTS AND REMAINS ABOVE THE IMAGE.
-     */
+    /* =====================================================
+       TEXT ABOVE IMAGE
+       ===================================================== */
+
     .banner-content {
         width: 67%;
 
@@ -2280,6 +2381,10 @@ MOBILE
         display: block;
 
         z-index: 1;
+
+        transform: translateZ(0);
+
+        backface-visibility: hidden;
     }
 
     .banner-image {
@@ -2289,6 +2394,9 @@ MOBILE
 
         width: 100%;
         height: 100%;
+
+        min-width: 100%;
+        min-height: 100%;
 
         max-width: none;
         max-height: none;
@@ -2300,6 +2408,12 @@ MOBILE
         object-position: center center;
 
         opacity: 1;
+
+        filter: none;
+
+        transform: translateZ(0);
+
+        backface-visibility: hidden;
     }
 
     .banner-artwork::before {
@@ -2318,9 +2432,9 @@ MOBILE
         background:
             linear-gradient(
                 180deg,
-                rgba(0, 0, 0, 0.08),
+                rgba(0, 0, 0, 0.06),
                 transparent 40%,
-                rgba(0, 0, 0, 0.12)
+                rgba(0, 0, 0, 0.08)
             );
     }
 
@@ -2426,11 +2540,15 @@ MOBILE
     }
 
     /* =====================================================
-       PREMIUM
+       PREMIUM — MOBILE
        ===================================================== */
 
     .premium-banner {
         min-height: 215px;
+
+        position: relative;
+
+        overflow: hidden;
     }
 
     .premium-content {
@@ -2438,6 +2556,10 @@ MOBILE
 
         padding:
             24px 18px;
+
+        position: relative;
+
+        z-index: 5;
     }
 
     .premium-content h2 {
@@ -2448,8 +2570,55 @@ MOBILE
         font-size: 9px;
     }
 
+    /*
+     * Premium image covers the WHOLE banner.
+     */
     .premium-artwork {
-        width: 45%;
+        position: absolute;
+
+        inset: 0;
+
+        width: 100%;
+        height: 100%;
+
+        z-index: 1;
+    }
+
+    .premium-banner-image {
+        position: absolute;
+
+        inset: 0;
+
+        width: 100%;
+        height: 100%;
+
+        min-width: 100%;
+        min-height: 100%;
+
+        max-width: none;
+        max-height: none;
+
+        object-fit: cover;
+
+        object-position: center center;
+
+        filter: none;
+
+        transform: translateZ(0);
+
+        backface-visibility: hidden;
+    }
+
+    .premium-artwork::before {
+        background:
+            linear-gradient(
+                90deg,
+                rgba(21, 6, 13, 0.88) 0%,
+                rgba(21, 6, 13, 0.66) 22%,
+                rgba(21, 6, 13, 0.34) 45%,
+                rgba(21, 6, 13, 0.10) 72%,
+                rgba(21, 6, 13, 0.00) 100%
+            );
     }
 
     /* =====================================================
@@ -2612,6 +2781,10 @@ VERY SMALL PHONES
         display: block;
 
         z-index: 1;
+
+        transform: translateZ(0);
+
+        backface-visibility: hidden;
     }
 
     .banner-image {
@@ -2622,6 +2795,9 @@ VERY SMALL PHONES
         width: 100%;
         height: 100%;
 
+        min-width: 100%;
+        min-height: 100%;
+
         max-width: none;
         max-height: none;
 
@@ -2630,6 +2806,12 @@ VERY SMALL PHONES
         object-position: center center;
 
         opacity: 1;
+
+        filter: none;
+
+        transform: translateZ(0);
+
+        backface-visibility: hidden;
     }
 
     .banner-artwork::before {
@@ -2655,6 +2837,44 @@ VERY SMALL PHONES
 
     .banner-indicators {
         margin-top: 10px;
+    }
+
+    /* =====================================================
+       PREMIUM — VERY SMALL PHONES
+       ===================================================== */
+
+    .premium-banner {
+        min-height: 210px;
+    }
+
+    .premium-artwork {
+        position: absolute;
+
+        inset: 0;
+
+        width: 100%;
+        height: 100%;
+    }
+
+    .premium-banner-image {
+        position: absolute;
+
+        inset: 0;
+
+        width: 100%;
+        height: 100%;
+
+        min-width: 100%;
+        min-height: 100%;
+
+        max-width: none;
+        max-height: none;
+
+        object-fit: cover;
+
+        object-position: center center;
+
+        filter: none;
     }
 
     .quick-actions {
