@@ -7,15 +7,15 @@
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        content="width=device-width, initial-scale=1.0">
 
     <meta
         name="theme-color"
-        content="#0b080b">
+        content="#0B0A0F">
 
     <meta
         name="description"
-        content="FINORA Team — Referral and team center">
+        content="FINORA My Team — Build your team and grow together.">
 
     <title>FINORA | My Team</title>
 
@@ -29,51 +29,109 @@
 <body>
 
     <!-- =====================================================
-         PAGE
+         TEAM PAGE
     ====================================================== -->
 
     <div class="team-page">
 
 
         <!-- =================================================
-             TOP HEADER
+             HEADER
         ================================================== -->
 
         <header class="team-header">
 
-            <div class="header-left">
+            <button
+                type="button"
+                class="header-button back-button"
+                id="backButton"
+                aria-label="Go back">
 
-                <button
-                    type="button"
-                    class="icon-button back-button"
-                    id="backButton"
-                    aria-label="Go back">
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true">
 
-                    <svg
-                        viewBox="0 0 24 24"
-                        aria-hidden="true">
+                    <path
+                        d="M15 18L9 12L15 6"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"/>
 
-                        <path
-                            d="M15 18l-6-6 6-6"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round">
-                        </path>
+                </svg>
 
-                    </svg>
-
-                </button>
-
-            </div>
+            </button>
 
 
-            <div class="header-title">
+            <div class="team-header-title">
 
-                <span class="eyebrow">
-                    FINORA
-                </span>
+                <div class="team-brand-line">
+
+                    <span class="brand-mark">
+
+                        <svg
+                            class="brand-f-mark"
+                            viewBox="0 0 120 120"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+
+                            <defs>
+
+                                <linearGradient
+                                    id="teamGold"
+                                    x1="0"
+                                    y1="0"
+                                    x2="1"
+                                    y2="1">
+
+                                    <stop
+                                        offset="0%"
+                                        stop-color="#FFF4B0"/>
+
+                                    <stop
+                                        offset="35%"
+                                        stop-color="#FFD75A"/>
+
+                                    <stop
+                                        offset="65%"
+                                        stop-color="#F2B632"/>
+
+                                    <stop
+                                        offset="100%"
+                                        stop-color="#A85B06"/>
+
+                                </linearGradient>
+
+                            </defs>
+
+
+                            <path
+                                d="M28 18H91V34H48V51H82V66H48V101H28V18Z"
+                                fill="url(#teamGold)"/>
+
+
+                            <path
+                                d="M48 51H82V66H48V51Z"
+                                fill="#0B0A0F"/>
+
+
+                            <path
+                                d="M48 68L87 27L96 36L57 77L48 68Z"
+                                fill="url(#teamGold)"
+                                opacity=".95"/>
+
+                        </svg>
+
+                    </span>
+
+
+                    <span class="team-eyebrow">
+                        FINORA
+                    </span>
+
+                </div>
+
 
                 <h1>
                     My Team
@@ -82,47 +140,42 @@
             </div>
 
 
-            <div class="header-right">
+            <button
+                type="button"
+                class="header-button notification-button"
+                id="notificationButton"
+                aria-label="Notifications">
 
-                <button
-                    type="button"
-                    class="icon-button"
-                    id="notificationButton"
-                    aria-label="Notifications">
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true">
 
-                    <svg
-                        viewBox="0 0 24 24"
-                        aria-hidden="true">
+                    <path
+                        d="M18 9C18 5.686 15.314 3 12 3C8.686 3 6 5.686 6 9C6 16 3 18 3 18H21C21 18 18 16 18 9Z"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"/>
 
-                        <path
-                            d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round">
-                        </path>
+                    <path
+                        d="M10 21H14"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"/>
 
-                        <path
-                            d="M10 21h4"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round">
-                        </path>
+                </svg>
 
-                    </svg>
 
-                    <span
-                        class="notification-dot"
-                        id="notificationDot">
-                    </span>
+                <span
+                    class="notification-dot"
+                    aria-hidden="true">
+                </span>
 
-                </button>
-
-            </div>
+            </button>
 
         </header>
+
 
 
         <!-- =================================================
@@ -132,95 +185,87 @@
         <main class="team-content">
 
 
-            <!-- =============================================
+            <!-- =================================================
                  INTRO
-            ============================================== -->
+            ================================================== -->
 
             <section class="team-intro">
 
-                <div>
-
-                    <p class="section-kicker">
-                        REFERRAL CENTER
-                    </p>
-
-                    <h2>
-                        Build your team.
-                        <span>Grow together.</span>
-                    </h2>
-
-                    <p class="intro-text">
-                        Invite people to FINORA and build
-                        your team through the referral system.
-                    </p>
-
+                <div class="intro-label">
+                    REFERRAL CENTER
                 </div>
+
+                <h2>
+                    Build your team.
+                    <span>Grow together.</span>
+                </h2>
+
+                <p>
+                    Invite people to FINORA using your referral link
+                    and grow your network together.
+                </p>
 
             </section>
 
 
-            <!-- =============================================
+
+            <!-- =================================================
                  TEAM OVERVIEW
-            ============================================== -->
+            ================================================== -->
 
             <section class="overview-card">
 
-                <div class="overview-glow"></div>
-
-                <div class="overview-top">
+                <div class="overview-main">
 
                     <div>
 
-                        <p class="card-label">
+                        <span class="overview-label">
                             TOTAL TEAM
-                        </p>
+                        </span>
 
-                        <strong
-                            class="team-total"
-                            id="totalTeam">
-                            —
+                        <strong id="totalTeam">
+                            0
                         </strong>
 
+                        <span class="overview-caption">
+                            Registered referrals
+                        </span>
+
                     </div>
+
 
                     <div class="team-symbol">
 
                         <svg
                             viewBox="0 0 24 24"
+                            fill="none"
                             aria-hidden="true">
-
-                            <path
-                                d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.7"
-                                stroke-linecap="round">
-                            </path>
 
                             <circle
                                 cx="9"
-                                cy="7"
-                                r="4"
-                                fill="none"
+                                cy="8"
+                                r="3"
                                 stroke="currentColor"
-                                stroke-width="1.7">
-                            </circle>
+                                stroke-width="1.7"/>
+
+                            <circle
+                                cx="17"
+                                cy="9"
+                                r="2.5"
+                                stroke="currentColor"
+                                stroke-width="1.7"/>
 
                             <path
-                                d="M22 21v-2a4 4 0 0 0-3-3.87"
-                                fill="none"
+                                d="M3 20C3 16.686 5.686 14 9 14C12.314 14 15 16.686 15 20"
                                 stroke="currentColor"
                                 stroke-width="1.7"
-                                stroke-linecap="round">
-                            </path>
+                                stroke-linecap="round"/>
 
                             <path
-                                d="M16 3.13a4 4 0 0 1 0 7.75"
-                                fill="none"
+                                d="M14 14.5C15 13.6 16.2 13 17.5 13C19.985 13 22 15.015 22 17.5"
                                 stroke="currentColor"
                                 stroke-width="1.7"
-                                stroke-linecap="round">
-                            </path>
+                                stroke-linecap="round"/>
 
                         </svg>
 
@@ -231,14 +276,14 @@
 
                 <div class="level-summary">
 
-                    <div class="level-stat">
+                    <div class="level-summary-item">
 
-                        <span class="level-number">
+                        <span class="level-summary-name">
                             L1
                         </span>
 
                         <strong id="levelOneCount">
-                            —
+                            0
                         </strong>
 
                         <small>
@@ -248,17 +293,17 @@
                     </div>
 
 
-                    <div class="summary-divider"></div>
+                    <div class="level-summary-divider"></div>
 
 
-                    <div class="level-stat">
+                    <div class="level-summary-item">
 
-                        <span class="level-number">
+                        <span class="level-summary-name">
                             L2
                         </span>
 
                         <strong id="levelTwoCount">
-                            —
+                            0
                         </strong>
 
                         <small>
@@ -268,17 +313,17 @@
                     </div>
 
 
-                    <div class="summary-divider"></div>
+                    <div class="level-summary-divider"></div>
 
 
-                    <div class="level-stat">
+                    <div class="level-summary-item">
 
-                        <span class="level-number">
+                        <span class="level-summary-name">
                             L3
                         </span>
 
                         <strong id="levelThreeCount">
-                            —
+                            0
                         </strong>
 
                         <small>
@@ -292,241 +337,189 @@
             </section>
 
 
-            <!-- =============================================
+
+            <!-- =================================================
                  REFERRAL CARD
-            ============================================== -->
+            ================================================== -->
 
             <section class="referral-card">
 
-                <div class="card-heading">
+                <div class="section-heading referral-heading">
 
                     <div>
 
-                        <p class="card-label">
+                        <span class="section-kicker">
                             YOUR REFERRAL
-                        </p>
+                        </span>
 
                         <h3>
-                            Invite & earn
+                            Invite &amp; earn
                         </h3>
 
                     </div>
 
-                    <div class="referral-mark">
 
-                        <span></span>
-                        <span></span>
-                        <span></span>
-
+                    <div class="referral-badge">
+                        FINORA
                     </div>
 
                 </div>
+
+
+                <p class="referral-description">
+                    Share your referral details with friends and
+                    start building your FINORA team.
+                </p>
 
 
                 <!-- Referral Code -->
 
-                <div class="copy-field">
+                <div class="referral-field">
 
-                    <div class="field-content">
-
-                        <span class="field-label">
-                            Referral Code
-                        </span>
-
-                        <strong
-                            id="referralCode">
-                            Loading...
-                        </strong>
-
+                    <div class="field-label">
+                        REFERRAL CODE
                     </div>
 
 
-                    <button
-                        type="button"
-                        class="mini-action"
-                        id="copyCodeButton"
-                        aria-label="Copy referral code">
+                    <div class="field-row">
 
-                        <svg
-                            viewBox="0 0 24 24"
-                            aria-hidden="true">
+                        <span
+                            id="referralCode"
+                            class="field-value">
+                            —
+                        </span>
 
-                            <rect
-                                x="9"
-                                y="9"
-                                width="11"
-                                height="11"
-                                rx="2"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.7">
-                            </rect>
 
-                            <path
-                                d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.7">
-                            </path>
+                        <button
+                            type="button"
+                            class="small-copy-button"
+                            id="copyCodeButton">
 
-                        </svg>
+                            Copy
 
-                    </button>
+                        </button>
+
+                    </div>
 
                 </div>
+
 
 
                 <!-- Referral Link -->
 
-                <div class="copy-field">
+                <div class="referral-field">
 
-                    <div class="field-content">
-
-                        <span class="field-label">
-                            Referral Link
-                        </span>
-
-                        <strong
-                            class="referral-link-text"
-                            id="referralLink">
-                            Preparing your link...
-                        </strong>
-
+                    <div class="field-label">
+                        REFERRAL LINK
                     </div>
 
 
-                    <button
-                        type="button"
-                        class="mini-action"
-                        id="copyLinkButton"
-                        aria-label="Copy referral link">
+                    <div class="field-row">
 
-                        <svg
-                            viewBox="0 0 24 24"
-                            aria-hidden="true">
+                        <span
+                            id="referralLink"
+                            class="field-value referral-link-value">
+                            —
+                        </span>
 
-                            <path
-                                d="M10 13a5 5 0 0 0 7.54.54l2-2a5 5 0 0 0-7.07-7.07l-1.14 1.14"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.7"
-                                stroke-linecap="round"
-                                stroke-linejoin="round">
-                            </path>
 
-                            <path
-                                d="M14 11a5 5 0 0 0-7.54-.54l-2 2a5 5 0 0 0 7.07 7.07l1.14-1.14"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.7"
-                                stroke-linecap="round"
-                                stroke-linejoin="round">
-                            </path>
+                        <button
+                            type="button"
+                            class="small-copy-button"
+                            id="copyLinkButton">
 
-                        </svg>
+                            Copy
 
-                    </button>
+                        </button>
+
+                    </div>
 
                 </div>
 
 
-                <!-- Main Referral Actions -->
+
+                <!-- Referral Actions -->
 
                 <div class="referral-actions">
 
                     <button
                         type="button"
-                        class="premium-button secondary-button"
+                        class="referral-action primary"
                         id="copyReferralButton">
 
-                        <span class="button-icon">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            aria-hidden="true">
 
-                            <svg
-                                viewBox="0 0 24 24"
-                                aria-hidden="true">
+                            <rect
+                                x="8"
+                                y="8"
+                                width="11"
+                                height="11"
+                                rx="2"
+                                stroke="currentColor"
+                                stroke-width="1.7"/>
 
-                                <rect
-                                    x="9"
-                                    y="9"
-                                    width="11"
-                                    height="11"
-                                    rx="2"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.7">
-                                </rect>
+                            <path
+                                d="M16 8V6C16 4.895 15.105 4 14 4H6C4.895 4 4 4.895 4 6V14C4 15.105 4.895 16 6 16H8"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round"/>
 
-                                <path
-                                    d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.7">
-                                </path>
+                        </svg>
 
-                            </svg>
-
-                        </span>
-
-                        <span>
-                            Copy Link
-                        </span>
+                        Copy Link
 
                     </button>
 
 
                     <button
                         type="button"
-                        class="premium-button primary-button"
+                        class="referral-action secondary"
                         id="shareButton">
 
-                        <span class="button-icon">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            aria-hidden="true">
 
-                            <svg
-                                viewBox="0 0 24 24"
-                                aria-hidden="true">
+                            <circle
+                                cx="18"
+                                cy="5"
+                                r="2.5"
+                                stroke="currentColor"
+                                stroke-width="1.7"/>
 
-                                <circle
-                                    cx="18"
-                                    cy="5"
-                                    r="2.5"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.7">
-                                </circle>
+                            <circle
+                                cx="6"
+                                cy="12"
+                                r="2.5"
+                                stroke="currentColor"
+                                stroke-width="1.7"/>
 
-                                <circle
-                                    cx="6"
-                                    cy="12"
-                                    r="2.5"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.7">
-                                </circle>
+                            <circle
+                                cx="18"
+                                cy="19"
+                                r="2.5"
+                                stroke="currentColor"
+                                stroke-width="1.7"/>
 
-                                <circle
-                                    cx="18"
-                                    cy="19"
-                                    r="2.5"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.7">
-                                </circle>
+                            <path
+                                d="M8.3 10.8L15.7 6.2"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round"/>
 
-                                <path
-                                    d="M8.2 10.8l7.6-4.5M8.2 13.2l7.6 4.5"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.7"
-                                    stroke-linecap="round">
-                                </path>
+                            <path
+                                d="M8.3 13.2L15.7 17.8"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round"/>
 
-                            </svg>
+                        </svg>
 
-                        </span>
-
-                        <span>
-                            Share
-                        </span>
+                        Share
 
                     </button>
 
@@ -535,9 +528,10 @@
             </section>
 
 
-            <!-- =============================================
+
+            <!-- =================================================
                  REFERRAL LEVELS
-            ============================================== -->
+            ================================================== -->
 
             <section class="section-block">
 
@@ -545,9 +539,9 @@
 
                     <div>
 
-                        <p class="section-kicker">
-                            REWARD STRUCTURE
-                        </p>
+                        <span class="section-kicker">
+                            COMMISSION STRUCTURE
+                        </span>
 
                         <h3>
                             Referral Levels
@@ -561,86 +555,85 @@
                 <div class="level-cards">
 
 
-                    <!-- Level 1 -->
-
                     <article class="level-card level-one">
 
-                        <div class="level-card-top">
+                        <div class="level-icon">
+                            L1
+                        </div>
 
-                            <span class="level-badge">
-                                L1
-                            </span>
 
-                            <span class="level-rate">
+                        <div class="level-content">
+
+                            <strong>
                                 15%
+                            </strong>
+
+                            <span>
+                                Direct referrals
                             </span>
 
                         </div>
 
-                        <h4>
-                            Direct referrals
-                        </h4>
 
-                        <p>
-                            People you invite directly
-                            to FINORA.
-                        </p>
+                        <div class="level-arrow">
+                            ›
+                        </div>
 
                     </article>
 
 
-                    <!-- Level 2 -->
 
                     <article class="level-card level-two">
 
-                        <div class="level-card-top">
+                        <div class="level-icon">
+                            L2
+                        </div>
 
-                            <span class="level-badge">
-                                L2
-                            </span>
 
-                            <span class="level-rate">
+                        <div class="level-content">
+
+                            <strong>
                                 3%
+                            </strong>
+
+                            <span>
+                                Second level
                             </span>
 
                         </div>
 
-                        <h4>
-                            Second level
-                        </h4>
 
-                        <p>
-                            Referrals introduced by
-                            your Level 1 team.
-                        </p>
+                        <div class="level-arrow">
+                            ›
+                        </div>
 
                     </article>
 
 
-                    <!-- Level 3 -->
 
                     <article class="level-card level-three">
 
-                        <div class="level-card-top">
+                        <div class="level-icon">
+                            L3
+                        </div>
 
-                            <span class="level-badge">
-                                L3
-                            </span>
 
-                            <span class="level-rate">
+                        <div class="level-content">
+
+                            <strong>
                                 2%
+                            </strong>
+
+                            <span>
+                                Third level
                             </span>
 
                         </div>
 
-                        <h4>
-                            Third level
-                        </h4>
 
-                        <p>
-                            Referrals connected through
-                            your Level 2 team.
-                        </p>
+                        <div class="level-arrow">
+                            ›
+                        </div>
 
                     </article>
 
@@ -649,19 +642,20 @@
             </section>
 
 
-            <!-- =============================================
+
+            <!-- =================================================
                  TEAM MEMBERS
-            ============================================== -->
+            ================================================== -->
 
             <section class="section-block">
 
-                <div class="section-heading team-members-heading">
+                <div class="section-heading members-heading">
 
                     <div>
 
-                        <p class="section-kicker">
+                        <span class="section-kicker">
                             YOUR NETWORK
-                        </p>
+                        </span>
 
                         <h3>
                             Team Members
@@ -669,16 +663,17 @@
 
                     </div>
 
+
                     <span
                         class="member-count"
                         id="memberCount">
-                        0
+                        0 members
                     </span>
 
                 </div>
 
 
-                <div class="filter-row">
+                <div class="member-filters">
 
                     <button
                         type="button"
@@ -712,8 +707,8 @@
 
 
                 <div
-                    class="members-container"
-                    id="membersContainer">
+                    id="membersContainer"
+                    class="members-container">
 
                     <div class="empty-members">
 
@@ -721,52 +716,46 @@
 
                             <svg
                                 viewBox="0 0 24 24"
+                                fill="none"
                                 aria-hidden="true">
 
                                 <circle
                                     cx="9"
                                     cy="8"
-                                    r="3.2"
-                                    fill="none"
+                                    r="3"
                                     stroke="currentColor"
-                                    stroke-width="1.6">
-                                </circle>
+                                    stroke-width="1.7"/>
 
                                 <path
-                                    d="M3.5 20a5.5 5.5 0 0 1 11 0"
-                                    fill="none"
+                                    d="M3 20C3 16.686 5.686 14 9 14C12.314 14 15 16.686 15 20"
                                     stroke="currentColor"
-                                    stroke-width="1.6"
-                                    stroke-linecap="round">
-                                </path>
+                                    stroke-width="1.7"
+                                    stroke-linecap="round"/>
 
                                 <path
-                                    d="M16 11a3 3 0 1 0 0-6"
-                                    fill="none"
+                                    d="M17 14V20"
                                     stroke="currentColor"
-                                    stroke-width="1.6"
-                                    stroke-linecap="round">
-                                </path>
+                                    stroke-width="1.7"
+                                    stroke-linecap="round"/>
 
                                 <path
-                                    d="M16 15a5 5 0 0 1 4.5 5"
-                                    fill="none"
+                                    d="M14 17H20"
                                     stroke="currentColor"
-                                    stroke-width="1.6"
-                                    stroke-linecap="round">
-                                </path>
+                                    stroke-width="1.7"
+                                    stroke-linecap="round"/>
 
                             </svg>
 
                         </div>
 
-                        <h4>
-                            Your team is waiting
-                        </h4>
+
+                        <strong>
+                            No team members yet
+                        </strong>
 
                         <p>
-                            Share your referral link to
-                            start building your FINORA team.
+                            Share your referral link to start
+                            building your team.
                         </p>
 
                     </div>
@@ -776,19 +765,20 @@
             </section>
 
 
-            <!-- =============================================
+
+            <!-- =================================================
                  REFERRAL INCOME
-            ============================================== -->
+            ================================================== -->
 
             <section class="income-card">
 
-                <div class="income-header">
+                <div class="income-heading">
 
                     <div>
 
-                        <p class="card-label">
+                        <span class="section-kicker">
                             REFERRAL EARNINGS
-                        </p>
+                        </span>
 
                         <h3>
                             Referral Income
@@ -796,27 +786,25 @@
 
                     </div>
 
+
                     <div class="income-symbol">
 
                         <svg
                             viewBox="0 0 24 24"
+                            fill="none"
                             aria-hidden="true">
 
                             <path
-                                d="M12 2v20"
-                                fill="none"
+                                d="M12 3V21"
                                 stroke="currentColor"
-                                stroke-width="1.7"
-                                stroke-linecap="round">
-                            </path>
+                                stroke-width="1.8"
+                                stroke-linecap="round"/>
 
                             <path
-                                d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14.5a3.5 3.5 0 0 1 0 7H7"
-                                fill="none"
+                                d="M16.5 7.2C16.1 5.9 14.6 5 12.7 5C10.3 5 8.5 6.1 8.5 7.9C8.5 9.8 10.3 10.5 12.4 11C14.5 11.5 16.5 12.1 16.5 14.1C16.5 16 14.7 17.2 12.3 17.2C10.1 17.2 8.3 16.2 7.7 14.7"
                                 stroke="currentColor"
-                                stroke-width="1.7"
-                                stroke-linecap="round">
-                            </path>
+                                stroke-width="1.8"
+                                stroke-linecap="round"/>
 
                         </svg>
 
@@ -830,11 +818,11 @@
                     <div class="income-row">
 
                         <span>
-                            Level 1 Income
+                            Level 1
                         </span>
 
                         <strong id="levelOneIncome">
-                            —
+                            UGX 0
                         </strong>
 
                     </div>
@@ -843,11 +831,11 @@
                     <div class="income-row">
 
                         <span>
-                            Level 2 Income
+                            Level 2
                         </span>
 
                         <strong id="levelTwoIncome">
-                            —
+                            UGX 0
                         </strong>
 
                     </div>
@@ -856,11 +844,11 @@
                     <div class="income-row">
 
                         <span>
-                            Level 3 Income
+                            Level 3
                         </span>
 
                         <strong id="levelThreeIncome">
-                            —
+                            UGX 0
                         </strong>
 
                     </div>
@@ -875,7 +863,7 @@
                     </span>
 
                     <strong id="totalReferralIncome">
-                        —
+                        UGX 0
                     </strong>
 
                 </div>
@@ -883,50 +871,56 @@
             </section>
 
 
+
+            <div class="team-bottom-space"></div>
+
         </main>
 
 
+
         <!-- =================================================
-             BOTTOM NAVIGATION
+             FIXED BOTTOM NAVIGATION
         ================================================== -->
 
         <nav
             class="bottom-navigation"
             aria-label="Main navigation">
 
+
             <a
                 href="dashboard.html"
                 class="bottom-nav-item"
                 data-nav="home">
 
-                <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden="true">
+                <span class="bottom-nav-icon">
 
-                    <path
-                        d="M3 10.5L12 3l9 7.5"
+                    <svg
+                        viewBox="0 0 24 24"
                         fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linecap="round"
-                        stroke-linejoin="round">
-                    </path>
+                        aria-hidden="true">
 
-                    <path
-                        d="M5 9.5V21h14V9.5"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linejoin="round">
-                    </path>
+                        <path
+                            d="M3 10.8L12 3L21 10.8V20C21 20.552 20.552 21 20 21H4C3.448 21 3 20.552 3 20V10.8Z"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linejoin="round"/>
 
-                </svg>
+                        <path
+                            d="M9 21V14H15V21"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linejoin="round"/>
 
-                <span>
+                    </svg>
+
+                </span>
+
+                <span class="bottom-nav-label">
                     Home
                 </span>
 
             </a>
+
 
 
             <a
@@ -935,49 +929,49 @@
                 data-nav="team"
                 aria-current="page">
 
-                <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden="true">
+                <span class="bottom-nav-icon">
 
-                    <circle
-                        cx="9"
-                        cy="8"
-                        r="3"
+                    <svg
+                        viewBox="0 0 24 24"
                         fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7">
-                    </circle>
+                        aria-hidden="true">
 
-                    <path
-                        d="M3.5 20a5.5 5.5 0 0 1 11 0"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linecap="round">
-                    </path>
+                        <circle
+                            cx="9"
+                            cy="8"
+                            r="3"
+                            stroke="currentColor"
+                            stroke-width="1.8"/>
 
-                    <path
-                        d="M16 11a3 3 0 1 0 0-6"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7">
-                    </path>
+                        <circle
+                            cx="17"
+                            cy="9"
+                            r="2.5"
+                            stroke="currentColor"
+                            stroke-width="1.8"/>
 
-                    <path
-                        d="M16 15a5 5 0 0 1 4.5 5"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linecap="round">
-                    </path>
+                        <path
+                            d="M3 20C3 16.686 5.686 14 9 14C12.314 14 15 16.686 15 20"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
 
-                </svg>
+                        <path
+                            d="M14 14.5C15 13.6 16.2 13 17.5 13C19.985 13 22 15.015 22 17.5"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
 
-                <span>
+                    </svg>
+
+                </span>
+
+                <span class="bottom-nav-label">
                     Team
                 </span>
 
             </a>
+
 
 
             <a
@@ -985,42 +979,47 @@
                 class="bottom-nav-item"
                 data-nav="rates">
 
-                <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden="true">
+                <span class="bottom-nav-icon">
 
-                    <path
-                        d="M4 19V5"
+                    <svg
+                        viewBox="0 0 24 24"
                         fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linecap="round">
-                    </path>
+                        aria-hidden="true">
 
-                    <path
-                        d="M4 19h16"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linecap="round">
-                    </path>
+                        <path
+                            d="M4 19V10"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
 
-                    <path
-                        d="M7 15l4-4 3 2 5-6"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linecap="round"
-                        stroke-linejoin="round">
-                    </path>
+                        <path
+                            d="M10 19V5"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
 
-                </svg>
+                        <path
+                            d="M16 19V8"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
 
-                <span>
+                        <path
+                            d="M22 19V3"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
+
+                    </svg>
+
+                </span>
+
+                <span class="bottom-nav-label">
                     Rates
                 </span>
 
             </a>
+
 
 
             <a
@@ -1028,39 +1027,42 @@
                 class="bottom-nav-item"
                 data-nav="mine">
 
-                <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden="true">
+                <span class="bottom-nav-icon">
 
-                    <path
-                        d="M4 7h16v13H4z"
+                    <svg
+                        viewBox="0 0 24 24"
                         fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linejoin="round">
-                    </path>
+                        aria-hidden="true">
 
-                    <path
-                        d="M7 7V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7">
-                    </path>
+                        <path
+                            d="M12 3L20 7.5V16.5L12 21L4 16.5V7.5L12 3Z"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linejoin="round"/>
 
-                    <path
-                        d="M4 11h16"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7">
-                    </path>
+                        <path
+                            d="M8 10L12 12.3L16 10"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"/>
 
-                </svg>
+                        <path
+                            d="M12 12.3V17"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
 
-                <span>
+                    </svg>
+
+                </span>
+
+                <span class="bottom-nav-label">
                     Mine
                 </span>
 
             </a>
+
 
 
             <a
@@ -1068,30 +1070,31 @@
                 class="bottom-nav-item"
                 data-nav="profile">
 
-                <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden="true">
+                <span class="bottom-nav-icon">
 
-                    <circle
-                        cx="12"
-                        cy="8"
-                        r="3.5"
+                    <svg
+                        viewBox="0 0 24 24"
                         fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7">
-                    </circle>
+                        aria-hidden="true">
 
-                    <path
-                        d="M4.5 21a7.5 7.5 0 0 1 15 0"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linecap="round">
-                    </path>
+                        <circle
+                            cx="12"
+                            cy="8"
+                            r="3"
+                            stroke="currentColor"
+                            stroke-width="1.8"/>
 
-                </svg>
+                        <path
+                            d="M5 21C5 16.582 8.134 14 12 14C15.866 14 19 16.582 19 21"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
 
-                <span>
+                    </svg>
+
+                </span>
+
+                <span class="bottom-nav-label">
                     Profile
                 </span>
 
@@ -1099,14 +1102,19 @@
 
         </nav>
 
-    </div>
 
 
-    <div
-        class="toast"
-        id="toast"
-        role="status"
-        aria-live="polite">
+        <!-- =================================================
+             TOAST
+        ================================================== -->
+
+        <div
+            id="toast"
+            class="toast"
+            role="status"
+            aria-live="polite">
+        </div>
+
     </div>
 
 
