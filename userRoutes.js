@@ -137,46 +137,6 @@ router.post("/register", async (req, res) => {
 
 
         /* =================================================
-           CHECK EXISTING EMAIL
-        ================================================= */
-
-        const existingEmail =
-            await User.findOne({
-                email: cleanEmail
-            });
-
-
-        if (existingEmail) {
-
-            return res.status(409).json({
-                success: false,
-                message: "An account with this email already exists."
-            });
-
-        }
-
-
-        /* =================================================
-           CHECK EXISTING PHONE
-        ================================================= */
-
-        const existingPhone =
-            await User.findOne({
-                phone: cleanPhone
-            });
-
-
-        if (existingPhone) {
-
-            return res.status(409).json({
-                success: false,
-                message: "An account with this phone number already exists."
-            });
-
-        }
-
-
-        /* =================================================
            REFERRAL CODE
         ================================================= */
 
@@ -222,6 +182,25 @@ router.post("/register", async (req, res) => {
 
 
         /* =================================================
+           GENERATE REFERRAL CODE
+           
+           We generate the user's own referral code here
+           before User.create().
+           
+           This prevents the async referral-code hook in
+           user.js from having to perform another database
+           lookup during registration.
+        ================================================= */
+
+        const newReferralCode =
+            "FIN" +
+            Math.random()
+                .toString(36)
+                .substring(2, 8)
+                .toUpperCase();
+
+
+        /* =================================================
            CREATE USER
         ================================================= */
 
@@ -239,6 +218,9 @@ router.post("/register", async (req, res) => {
 
                 password:
                     hashedPassword,
+
+                referralCode:
+                    newReferralCode,
 
                 referredByCode:
                     cleanReferredByCode
@@ -363,6 +345,77 @@ router.post("/register", async (req, res) => {
             "❌ FINORA REGISTER ERROR:",
             error
         );
+
+
+        /* =================================================
+           DUPLICATE DATABASE ENTRY
+        ================================================= */
+
+        if (error && error.code === 11000) {
+
+            const duplicateFields =
+                Object.keys(
+                    error.keyPattern ||
+                    error.keyValue ||
+                    {}
+                );
+
+
+            if (
+                duplicateFields.includes(
+                    "email"
+                )
+            ) {
+
+                return res.status(409).json({
+
+                    success: false,
+
+                    message:
+                        "An account with this email already exists."
+
+                });
+
+            }
+
+
+            if (
+                duplicateFields.includes(
+                    "phone"
+                )
+            ) {
+
+                return res.status(409).json({
+
+                    success: false,
+
+                    message:
+                        "An account with this phone number already exists."
+
+                });
+
+            }
+
+
+            if (
+                duplicateFields.includes(
+                    "referralCode"
+                )
+            ) {
+
+                return res.status(409).json({
+
+                    success: false,
+
+                    message:
+                        "Please try creating the account again."
+
+                });
+
+            }
+
+        }
+
 
         return res.status(500).json({
 
