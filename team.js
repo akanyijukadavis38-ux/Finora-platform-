@@ -7,90 +7,57 @@
    NO LOCAL STORAGE
    NO FAKE TEAM DATA
 
-   BACKEND CONNECTIONS:
+   BACKEND:
    GET /api/users/me
    GET /api/users/team
 
-   TEAM DATA:
-   Loaded from the real FINORA backend.
-
-   LEVELS:
-   Level 1 = Direct referrals
-   Level 2 = Referrals of Level 1
-   Level 3 = Referrals of Level 2
-
-   COMMISSION RATES:
+   COMMISSION LEVELS:
    Level 1 = 15%
    Level 2 = 5%
    Level 3 = 2%
-========================================================= */
 
+   LEVEL CARD ACTION:
+   Tapping L1 / L2 / L3 selects that level,
+   activates the matching filter,
+   and scrolls to Team Members.
+========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
     () => {
 
-
-        /* =================================================
-           FINORA CONFIGURATION
-        ================================================= */
-
         const FINORA_API =
             "https://finora-platform-production.up.railway.app";
-
-
-        /*
-           The referral link must point to the actual
-           FINORA platform where this page is running.
-
-           This avoids using the old GitHub Pages address.
-           When deployed on the FINORA Vercel platform,
-           window.location.origin automatically becomes
-           the Vercel FINORA platform address.
-        */
 
         const FRONTEND_URL =
             window.location.origin;
 
 
-        /* =================================================
-           BASIC HELPERS
-        ================================================= */
+        /* =====================================================
+           HELPERS
+        ===================================================== */
 
         function getElement(id) {
-
             return document.getElementById(id);
-
         }
 
 
         function safeNumber(value) {
-
-            const number =
-                Number(value);
+            const number = Number(value);
 
             return Number.isFinite(number)
                 ? number
                 : 0;
-
         }
 
 
         function formatUGX(value) {
-
             return (
                 "UGX " +
-                safeNumber(value).toLocaleString(
-                    "en-UG"
-                )
+                safeNumber(value).toLocaleString("en-UG")
             );
-
         }
 
-
-        /* =================================================
-           TOAST
-        ================================================= */
 
         let toastTimer = null;
 
@@ -100,70 +67,39 @@ document.addEventListener(
             const toast =
                 getElement("toast");
 
-
-            if (!toast) {
-
-                return;
-
-            }
-
+            if (!toast) return;
 
             toast.textContent =
                 message;
 
+            toast.classList.add("show");
 
-            toast.classList.add(
-                "show"
-            );
-
-
-            clearTimeout(
-                toastTimer
-            );
-
+            clearTimeout(toastTimer);
 
             toastTimer =
                 setTimeout(
                     () => {
-
-                        toast.classList.remove(
-                            "show"
-                        );
-
+                        toast.classList.remove("show");
                     },
                     2500
                 );
-
         }
 
 
-        /* =================================================
-           CURRENT USER
-        ================================================= */
+        /* =====================================================
+           STATE
+        ===================================================== */
 
-        let currentUser =
-            null;
+        let currentUser = null;
 
+        let teamMembers = [];
 
-        /* =================================================
-           TEAM DATA
-           
-           This is populated ONLY from the backend.
-           No localStorage.
-           No fake members.
-        ================================================= */
-
-        let teamMembers =
-            [];
+        let currentFilter = "all";
 
 
-        let currentFilter =
-            "all";
-
-
-        /* =================================================
+        /* =====================================================
            LOAD CURRENT USER
-        ================================================= */
+        ===================================================== */
 
         async function loadCurrentUser() {
 
@@ -179,9 +115,7 @@ document.addEventListener(
                         `${FINORA_API}/api/users/me`,
                         {
                             method: "GET",
-
                             credentials: "include",
-
                             headers: {
                                 "Accept":
                                     "application/json"
@@ -196,37 +130,24 @@ document.addEventListener(
                 );
 
 
-                if (
-                    response.status === 401
-                ) {
+                if (response.status === 401) {
 
                     console.warn(
                         "FINORA TEAM: No authenticated session."
                     );
 
+                    updateReferralInformation(null);
 
-                    updateReferralInformation(
-                        null
-                    );
-
-
-                    updateFinancialInformation(
-                        null
-                    );
-
+                    updateFinancialInformation(null);
 
                     return null;
-
                 }
 
 
-                if (
-                    response.status === 403
-                ) {
+                if (response.status === 403) {
 
                     let frozenData =
                         null;
-
 
                     try {
 
@@ -237,7 +158,6 @@ document.addEventListener(
 
                         frozenData =
                             null;
-
                     }
 
 
@@ -248,13 +168,9 @@ document.addEventListener(
                             : "Your FINORA account has been frozen.";
 
 
-                    showToast(
-                        message
-                    );
-
+                    showToast(message);
 
                     return null;
-
                 }
 
 
@@ -265,14 +181,11 @@ document.addEventListener(
                         response.status
                     );
 
-
                     showToast(
                         "Unable to load your FINORA account."
                     );
 
-
                     return null;
-
                 }
 
 
@@ -295,14 +208,11 @@ document.addEventListener(
                         "FINORA TEAM: Invalid user response."
                     );
 
-
                     showToast(
                         "Unable to load your FINORA account."
                     );
 
-
                     return null;
-
                 }
 
 
@@ -319,14 +229,11 @@ document.addEventListener(
                         "FINORA TEAM: No user object returned."
                     );
 
-
                     showToast(
                         "FINORA account information is unavailable."
                     );
 
-
                     return null;
-
                 }
 
 
@@ -349,7 +256,6 @@ document.addEventListener(
 
                 return currentUser;
 
-
             } catch (error) {
 
                 console.error(
@@ -357,22 +263,18 @@ document.addEventListener(
                     error
                 );
 
-
                 showToast(
                     "FINORA could not connect to the server."
                 );
 
-
                 return null;
-
             }
-
         }
 
 
-        /* =================================================
+        /* =====================================================
            LOAD REAL TEAM MEMBERS
-        ================================================= */
+        ===================================================== */
 
         async function loadTeamMembers() {
 
@@ -388,9 +290,7 @@ document.addEventListener(
                         `${FINORA_API}/api/users/team`,
                         {
                             method: "GET",
-
                             credentials: "include",
-
                             headers: {
                                 "Accept":
                                     "application/json"
@@ -405,45 +305,26 @@ document.addEventListener(
                 );
 
 
-                /* =================================================
-                   NO SESSION
-                ================================================= */
-
-                if (
-                    response.status === 401
-                ) {
+                if (response.status === 401) {
 
                     console.warn(
-                        "FINORA TEAM: No authenticated session for team request."
+                        "FINORA TEAM: Team request requires authentication."
                     );
 
-
-                    teamMembers =
-                        [];
-
+                    teamMembers = [];
 
                     updateTeamSummary();
 
-
                     renderTeamMembers();
 
-
                     return false;
-
                 }
 
 
-                /* =================================================
-                   FROZEN ACCOUNT
-                ================================================= */
-
-                if (
-                    response.status === 403
-                ) {
+                if (response.status === 403) {
 
                     let frozenData =
                         null;
-
 
                     try {
 
@@ -454,7 +335,6 @@ document.addEventListener(
 
                         frozenData =
                             null;
-
                     }
 
 
@@ -465,29 +345,17 @@ document.addEventListener(
                             : "Your FINORA account has been frozen.";
 
 
-                    showToast(
-                        message
-                    );
+                    showToast(message);
 
-
-                    teamMembers =
-                        [];
-
+                    teamMembers = [];
 
                     updateTeamSummary();
 
-
                     renderTeamMembers();
 
-
                     return false;
-
                 }
 
-
-                /* =================================================
-                   OTHER SERVER ERROR
-                ================================================= */
 
                 if (!response.ok) {
 
@@ -496,30 +364,19 @@ document.addEventListener(
                         response.status
                     );
 
+                    showToast(
+                        "Unable to load your team members."
+                    );
 
-                    teamMembers =
-                        [];
-
+                    teamMembers = [];
 
                     updateTeamSummary();
 
-
                     renderTeamMembers();
 
-
-                    showToast(
-                        "Unable to load your FINORA team."
-                    );
-
-
                     return false;
-
                 }
 
-
-                /* =================================================
-                   RESPONSE
-                ================================================= */
 
                 const data =
                     await response.json();
@@ -540,49 +397,25 @@ document.addEventListener(
                         "FINORA TEAM: Invalid team response."
                     );
 
-
-                    teamMembers =
-                        [];
-
+                    teamMembers = [];
 
                     updateTeamSummary();
 
-
                     renderTeamMembers();
 
-
-                    showToast(
-                        "FINORA team information is unavailable."
-                    );
-
-
                     return false;
-
                 }
 
 
-                /* =================================================
-                   ACCEPT BACKEND TEAM ARRAY
-                ================================================= */
-
                 const backendMembers =
-                    Array.isArray(
-                        data.members
-                    )
+                    Array.isArray(data.members)
                         ? data.members
                         : (
-                            Array.isArray(
-                                data.team
-                            )
+                            Array.isArray(data.team)
                                 ? data.team
                                 : []
                         );
 
-
-                /*
-                   The backend is the only source of team data.
-                   We do not create members here.
-                */
 
                 teamMembers =
                     backendMembers.map(
@@ -611,45 +444,22 @@ document.addEventListener(
 
                             createdAt:
                                 member.createdAt
-
                         })
                     );
 
 
                 console.log(
-                    "FINORA TEAM: Real members loaded:",
-                    teamMembers.length
+                    "FINORA TEAM: REAL MEMBERS LOADED:",
+                    teamMembers
                 );
 
 
-                if (data.summary) {
-
-                    console.log(
-                        "FINORA TEAM SUMMARY:",
-                        data.summary
-                    );
-
-                }
-
-
-                if (data.commissionRates) {
-
-                    console.log(
-                        "FINORA TEAM COMMISSION RATES:",
-                        data.commissionRates
-                    );
-
-                }
-
-
                 updateTeamSummary();
-
 
                 renderTeamMembers();
 
 
                 return true;
-
 
             } catch (error) {
 
@@ -658,67 +468,45 @@ document.addEventListener(
                     error
                 );
 
-
-                teamMembers =
-                    [];
-
-
-                updateTeamSummary();
-
-
-                renderTeamMembers();
-
-
                 showToast(
                     "FINORA could not load your team."
                 );
 
+                teamMembers = [];
+
+                updateTeamSummary();
+
+                renderTeamMembers();
 
                 return false;
-
             }
-
         }
 
 
-        /* =================================================
+        /* =====================================================
            REFERRAL INFORMATION
-        ================================================= */
+        ===================================================== */
 
         function updateReferralInformation(user) {
 
             const codeElement =
-                getElement(
-                    "referralCode"
-                );
-
+                getElement("referralCode");
 
             const linkElement =
-                getElement(
-                    "referralLink"
-                );
+                getElement("referralLink");
 
 
             if (!user) {
 
-                if (codeElement) {
-
+                if (codeElement)
                     codeElement.textContent =
                         "—";
 
-                }
-
-
-                if (linkElement) {
-
+                if (linkElement)
                     linkElement.textContent =
                         "—";
 
-                }
-
-
                 return;
-
             }
 
 
@@ -730,44 +518,30 @@ document.addEventListener(
 
             if (!referralCode) {
 
-                if (codeElement) {
-
+                if (codeElement)
                     codeElement.textContent =
                         "—";
 
-                }
-
-
-                if (linkElement) {
-
+                if (linkElement)
                     linkElement.textContent =
                         "Referral code unavailable";
-
-                }
 
 
                 console.warn(
                     "FINORA TEAM: User has no referral code."
                 );
 
-
                 return;
-
             }
 
 
             const referralLink =
-                `${FRONTEND_URL}/?ref=${encodeURIComponent(
-                    referralCode
-                )}`;
+                `${FRONTEND_URL}/?ref=${encodeURIComponent(referralCode)}`;
 
 
-            if (codeElement) {
-
+            if (codeElement)
                 codeElement.textContent =
                     referralCode;
-
-            }
 
 
             if (linkElement) {
@@ -777,13 +551,11 @@ document.addEventListener(
 
                 linkElement.title =
                     referralLink;
-
             }
 
 
             window.FINORA_REFERRAL_CODE =
                 referralCode;
-
 
             window.FINORA_REFERRAL_LINK =
                 referralLink;
@@ -799,83 +571,47 @@ document.addEventListener(
                 "FINORA TEAM REFERRAL LINK:",
                 referralLink
             );
-
         }
 
 
-        /* =================================================
+        /* =====================================================
            FINANCIAL INFORMATION
-           
-           IMPORTANT:
-           We preserve the existing financial display.
-           No fake referral earnings are calculated here.
-           
-           The User model currently does not contain
-           level-specific referral-income fields.
-        ================================================= */
+        ===================================================== */
 
         function updateFinancialInformation(user) {
 
             const levelOneIncomeElement =
-                getElement(
-                    "levelOneIncome"
-                );
-
+                getElement("levelOneIncome");
 
             const levelTwoIncomeElement =
-                getElement(
-                    "levelTwoIncome"
-                );
-
+                getElement("levelTwoIncome");
 
             const levelThreeIncomeElement =
-                getElement(
-                    "levelThreeIncome"
-                );
-
+                getElement("levelThreeIncome");
 
             const totalReferralIncomeElement =
-                getElement(
-                    "totalReferralIncome"
-                );
+                getElement("totalReferralIncome");
 
 
             if (!user) {
 
-                if (levelOneIncomeElement) {
-
+                if (levelOneIncomeElement)
                     levelOneIncomeElement.textContent =
                         formatUGX(0);
 
-                }
-
-
-                if (levelTwoIncomeElement) {
-
+                if (levelTwoIncomeElement)
                     levelTwoIncomeElement.textContent =
                         formatUGX(0);
 
-                }
-
-
-                if (levelThreeIncomeElement) {
-
+                if (levelThreeIncomeElement)
                     levelThreeIncomeElement.textContent =
                         formatUGX(0);
 
-                }
-
-
-                if (totalReferralIncomeElement) {
-
+                if (totalReferralIncomeElement)
                     totalReferralIncomeElement.textContent =
                         formatUGX(0);
 
-                }
-
-
                 return;
-
             }
 
 
@@ -915,102 +651,64 @@ document.addEventListener(
                 );
 
 
-            if (levelOneIncomeElement) {
-
+            if (levelOneIncomeElement)
                 levelOneIncomeElement.textContent =
-                    formatUGX(
-                        levelOneIncome
-                    );
-
-            }
+                    formatUGX(levelOneIncome);
 
 
-            if (levelTwoIncomeElement) {
-
+            if (levelTwoIncomeElement)
                 levelTwoIncomeElement.textContent =
-                    formatUGX(
-                        levelTwoIncome
-                    );
-
-            }
+                    formatUGX(levelTwoIncome);
 
 
-            if (levelThreeIncomeElement) {
-
+            if (levelThreeIncomeElement)
                 levelThreeIncomeElement.textContent =
-                    formatUGX(
-                        levelThreeIncome
-                    );
-
-            }
+                    formatUGX(levelThreeIncome);
 
 
-            if (totalReferralIncomeElement) {
-
+            if (totalReferralIncomeElement)
                 totalReferralIncomeElement.textContent =
-                    formatUGX(
-                        totalReferralIncome
-                    );
-
-            }
-
+                    formatUGX(totalReferralIncome);
         }
 
 
-        /* =================================================
+        /* =====================================================
            TEAM SUMMARY
-        ================================================= */
+        ===================================================== */
 
         function updateTeamSummary() {
 
             const totalTeamElement =
-                getElement(
-                    "totalTeam"
-                );
-
+                getElement("totalTeam");
 
             const levelOneElement =
-                getElement(
-                    "levelOneCount"
-                );
-
+                getElement("levelOneCount");
 
             const levelTwoElement =
-                getElement(
-                    "levelTwoCount"
-                );
-
+                getElement("levelTwoCount");
 
             const levelThreeElement =
-                getElement(
-                    "levelThreeCount"
-                );
+                getElement("levelThreeCount");
 
 
             const levelOneCount =
                 teamMembers.filter(
                     member =>
-                        String(
-                            member.level
-                        ) === "1"
+                        String(member.level) === "1"
                 ).length;
 
 
             const levelTwoCount =
                 teamMembers.filter(
                     member =>
-                        String(
-                            member.level
-                        ) === "2"
+                        String(member.level) === "2"
                 ).length;
 
 
             const levelThreeCount =
                 teamMembers.filter(
                     member =>
-                        String(
-                            member.level
-                        ) === "3"
+                        String(member.level) === "3"
                 ).length;
 
 
@@ -1018,91 +716,56 @@ document.addEventListener(
                 teamMembers.length;
 
 
-            if (totalTeamElement) {
-
+            if (totalTeamElement)
                 totalTeamElement.textContent =
-                    total.toLocaleString(
-                        "en-UG"
-                    );
-
-            }
+                    total.toLocaleString("en-UG");
 
 
-            if (levelOneElement) {
-
+            if (levelOneElement)
                 levelOneElement.textContent =
-                    levelOneCount.toLocaleString(
-                        "en-UG"
-                    );
-
-            }
+                    levelOneCount.toLocaleString("en-UG");
 
 
-            if (levelTwoElement) {
-
+            if (levelTwoElement)
                 levelTwoElement.textContent =
-                    levelTwoCount.toLocaleString(
-                        "en-UG"
-                    );
-
-            }
+                    levelTwoCount.toLocaleString("en-UG");
 
 
-            if (levelThreeElement) {
-
+            if (levelThreeElement)
                 levelThreeElement.textContent =
-                    levelThreeCount.toLocaleString(
-                        "en-UG"
-                    );
-
-            }
-
+                    levelThreeCount.toLocaleString("en-UG");
         }
 
 
-        /* =================================================
+        /* =====================================================
            RENDER TEAM MEMBERS
-        ================================================= */
+        ===================================================== */
 
         function renderTeamMembers() {
 
             const container =
-                getElement(
-                    "membersContainer"
-                );
-
+                getElement("membersContainer");
 
             const countElement =
-                getElement(
-                    "memberCount"
-                );
+                getElement("memberCount");
 
 
-            if (!container) {
-
+            if (!container)
                 return;
-
-            }
 
 
             let filteredMembers =
                 teamMembers;
 
 
-            if (
-                currentFilter !==
-                "all"
-            ) {
+            if (currentFilter !== "all") {
 
                 filteredMembers =
                     teamMembers.filter(
                         member =>
-                            String(
-                                member.level
-                            ) ===
+                            String(member.level) ===
                             currentFilter
                     );
-
             }
 
 
@@ -1114,11 +777,22 @@ document.addEventListener(
                             ? "member"
                             : "members"
                     }`;
-
             }
 
 
             if (!filteredMembers.length) {
+
+                const levelMessage =
+                    currentFilter === "all"
+                        ? "No team members yet"
+                        : `No Level ${currentFilter} members yet`;
+
+
+                const levelDescription =
+                    currentFilter === "all"
+                        ? "Share your referral link to start building your team."
+                        : `You do not have any Level ${currentFilter} referrals yet.`;
+
 
                 container.innerHTML = `
                     <div class="empty-members">
@@ -1160,19 +834,17 @@ document.addEventListener(
                         </div>
 
                         <strong>
-                            No team members yet
+                            ${levelMessage}
                         </strong>
 
                         <p>
-                            Share your referral link to start
-                            building your team.
+                            ${levelDescription}
                         </p>
 
                     </div>
                 `;
 
                 return;
-
             }
 
 
@@ -1180,18 +852,15 @@ document.addEventListener(
                 filteredMembers
                     .map(
                         member =>
-                            createMemberCard(
-                                member
-                            )
+                            createMemberCard(member)
                     )
                     .join("");
-
         }
 
 
-        /* =================================================
+        /* =====================================================
            CREATE MEMBER CARD
-        ================================================= */
+        ===================================================== */
 
         function createMemberCard(member) {
 
@@ -1259,13 +928,12 @@ document.addEventListener(
 
                 </article>
             `;
-
         }
 
 
-        /* =================================================
+        /* =====================================================
            ESCAPE HTML
-        ================================================= */
+        ===================================================== */
 
         function escapeHTML(value) {
 
@@ -1290,21 +958,17 @@ document.addEventListener(
                     /'/g,
                     "&#039;"
                 );
-
         }
 
 
-        /* =================================================
-           COPY TEXT
-        ================================================= */
+        /* =====================================================
+           COPY
+        ===================================================== */
 
         async function copyText(text) {
 
-            if (!text) {
-
+            if (!text)
                 return false;
-
-            }
 
 
             if (
@@ -1326,9 +990,7 @@ document.addEventListener(
                         "FINORA: Clipboard API failed.",
                         error
                     );
-
                 }
-
             }
 
 
@@ -1342,7 +1004,6 @@ document.addEventListener(
 
                 textarea.value =
                     text;
-
 
                 textarea.style.position =
                     "fixed";
@@ -1360,7 +1021,6 @@ document.addEventListener(
 
 
                 textarea.focus();
-
 
                 textarea.select();
 
@@ -1383,17 +1043,14 @@ document.addEventListener(
                     error
                 );
 
-
                 return false;
-
             }
-
         }
 
 
-        /* =================================================
+        /* =====================================================
            GET REFERRAL LINK
-        ================================================= */
+        ===================================================== */
 
         function getReferralLink() {
 
@@ -1402,13 +1059,10 @@ document.addEventListener(
             ) {
 
                 return window.FINORA_REFERRAL_LINK;
-
             }
 
 
-            if (
-                currentUser
-            ) {
+            if (currentUser) {
 
                 const referralCode =
                     currentUser.referralCode ||
@@ -1424,20 +1078,17 @@ document.addEventListener(
                             referralCode
                         )
                     );
-
                 }
-
             }
 
 
             return "";
-
         }
 
 
-        /* =================================================
-           COPY CODE
-        ================================================= */
+        /* =====================================================
+           COPY REFERRAL CODE
+        ===================================================== */
 
         function initializeCopyCode() {
 
@@ -1447,11 +1098,8 @@ document.addEventListener(
                 );
 
 
-            if (!button) {
-
+            if (!button)
                 return;
-
-            }
 
 
             button.addEventListener(
@@ -1473,9 +1121,7 @@ document.addEventListener(
                             "Your referral code is not available yet."
                         );
 
-
                         return;
-
                     }
 
 
@@ -1496,18 +1142,15 @@ document.addEventListener(
                         showToast(
                             "Unable to copy referral code."
                         );
-
                     }
-
                 }
             );
-
         }
 
 
-        /* =================================================
-           COPY LINK
-        ================================================= */
+        /* =====================================================
+           COPY REFERRAL LINK
+        ===================================================== */
 
         function initializeCopyLink() {
 
@@ -1517,11 +1160,8 @@ document.addEventListener(
                 );
 
 
-            if (!button) {
-
+            if (!button)
                 return;
-
-            }
 
 
             button.addEventListener(
@@ -1538,9 +1178,7 @@ document.addEventListener(
                             "Your referral link is not available yet."
                         );
 
-
                         return;
-
                     }
 
 
@@ -1561,18 +1199,15 @@ document.addEventListener(
                         showToast(
                             "Unable to copy referral link."
                         );
-
                     }
-
                 }
             );
-
         }
 
 
-        /* =================================================
+        /* =====================================================
            COPY REFERRAL BUTTON
-        ================================================= */
+        ===================================================== */
 
         function initializeReferralCopyButton() {
 
@@ -1582,11 +1217,8 @@ document.addEventListener(
                 );
 
 
-            if (!button) {
-
+            if (!button)
                 return;
-
-            }
 
 
             button.addEventListener(
@@ -1603,9 +1235,7 @@ document.addEventListener(
                             "Your referral link is not available yet."
                         );
 
-
                         return;
-
                     }
 
 
@@ -1626,18 +1256,15 @@ document.addEventListener(
                         showToast(
                             "Unable to copy referral link."
                         );
-
                     }
-
                 }
             );
-
         }
 
 
-        /* =================================================
+        /* =====================================================
            SHARE
-        ================================================= */
+        ===================================================== */
 
         function initializeShare() {
 
@@ -1647,11 +1274,8 @@ document.addEventListener(
                 );
 
 
-            if (!button) {
-
+            if (!button)
                 return;
-
-            }
 
 
             button.addEventListener(
@@ -1668,9 +1292,7 @@ document.addEventListener(
                             "Your referral link is not available yet."
                         );
 
-
                         return;
-
                     }
 
 
@@ -1684,20 +1306,16 @@ document.addEventListener(
 
                         url:
                             link
-
                     };
 
 
-                    if (
-                        navigator.share
-                    ) {
+                    if (navigator.share) {
 
                         try {
 
                             await navigator.share(
                                 shareData
                             );
-
 
                             return;
 
@@ -1710,7 +1328,6 @@ document.addEventListener(
                             ) {
 
                                 return;
-
                             }
 
 
@@ -1718,9 +1335,7 @@ document.addEventListener(
                                 "FINORA: Native share failed.",
                                 error
                             );
-
                         }
-
                     }
 
 
@@ -1741,18 +1356,15 @@ document.addEventListener(
                         showToast(
                             "Unable to share referral link."
                         );
-
                     }
-
                 }
             );
-
         }
 
 
-        /* =================================================
-           TEAM FILTERS
-        ================================================= */
+        /* =====================================================
+           FILTERS
+        ===================================================== */
 
         function initializeFilters() {
 
@@ -1764,11 +1376,8 @@ document.addEventListener(
                 );
 
 
-            if (!buttons.length) {
-
+            if (!buttons.length)
                 return;
-
-            }
 
 
             buttons.forEach(
@@ -1794,25 +1403,176 @@ document.addEventListener(
                                         "active",
                                         item === button
                                     );
-
                                 }
                             );
 
 
                             renderTeamMembers();
-
                         }
                     );
-
                 }
             );
-
         }
 
 
-        /* =================================================
+        /* =====================================================
+           COMMISSION LEVEL CARDS
+        ===================================================== */
+
+        function initializeLevelCards() {
+
+            const levelCards =
+                Array.from(
+                    document.querySelectorAll(
+                        ".level-card"
+                    )
+                );
+
+
+            if (!levelCards.length)
+                return;
+
+
+            levelCards.forEach(
+                card => {
+
+                    let level =
+                        "";
+
+
+                    if (
+                        card.classList.contains(
+                            "level-one"
+                        )
+                    ) {
+
+                        level =
+                            "1";
+
+                    } else if (
+                        card.classList.contains(
+                            "level-two"
+                        )
+                    ) {
+
+                        level =
+                            "2";
+
+                    } else if (
+                        card.classList.contains(
+                            "level-three"
+                        )
+                    ) {
+
+                        level =
+                            "3";
+                    }
+
+
+                    if (!level)
+                        return;
+
+
+                    card.setAttribute(
+                        "role",
+                        "button"
+                    );
+
+
+                    card.setAttribute(
+                        "tabindex",
+                        "0"
+                    );
+
+
+                    card.setAttribute(
+                        "aria-label",
+                        `View Level ${level} team members`
+                    );
+
+
+                    function openLevel() {
+
+                        currentFilter =
+                            level;
+
+
+                        const filterButtons =
+                            Array.from(
+                                document.querySelectorAll(
+                                    ".filter-button"
+                                )
+                            );
+
+
+                        filterButtons.forEach(
+                            button => {
+
+                                button.classList.toggle(
+                                    "active",
+                                    button.dataset.level ===
+                                    level
+                                );
+                            }
+                        );
+
+
+                        renderTeamMembers();
+
+
+                        const membersSection =
+                            document
+                                .getElementById(
+                                    "membersContainer"
+                                );
+
+
+                        if (membersSection) {
+
+                            membersSection.scrollIntoView(
+                                {
+                                    behavior:
+                                        "smooth",
+
+                                    block:
+                                        "start"
+                                }
+                            );
+                        }
+                    }
+
+
+                    card.addEventListener(
+                        "click",
+                        openLevel
+                    );
+
+
+                    card.addEventListener(
+                        "keydown",
+                        event => {
+
+                            if (
+                                event.key ===
+                                "Enter" ||
+                                event.key ===
+                                " "
+                            ) {
+
+                                event.preventDefault();
+
+                                openLevel();
+                            }
+                        }
+                    );
+                }
+            );
+        }
+
+
+        /* =====================================================
            NOTIFICATIONS
-        ================================================= */
+        ===================================================== */
 
         function initializeNotifications() {
 
@@ -1822,11 +1582,8 @@ document.addEventListener(
                 );
 
 
-            if (!button) {
-
+            if (!button)
                 return;
-
-            }
 
 
             button.addEventListener(
@@ -1836,16 +1593,14 @@ document.addEventListener(
                     showToast(
                         "No new notifications."
                     );
-
                 }
             );
-
         }
 
 
-        /* =================================================
+        /* =====================================================
            BACK BUTTON
-        ================================================= */
+        ===================================================== */
 
         function initializeBackButton() {
 
@@ -1855,41 +1610,24 @@ document.addEventListener(
                 );
 
 
-            if (!button) {
-
+            if (!button)
                 return;
-
-            }
 
 
             button.addEventListener(
                 "click",
                 () => {
 
-                    /*
-                       Do NOT use window.history.back()
-                       here.
-
-                       History can restore an old Dashboard
-                       page with its previous navigation state.
-
-                       Going directly to Dashboard allows the
-                       Dashboard navigation system to initialize
-                       Home as the active page.
-                    */
-
                     window.location.href =
                         "dashboard.html";
-
                 }
             );
-
         }
 
 
-        /* =================================================
-           MAIN NAVIGATION
-        ================================================= */
+        /* =====================================================
+           BOTTOM NAVIGATION
+        ===================================================== */
 
         function initializeNavigation() {
 
@@ -1899,11 +1637,8 @@ document.addEventListener(
                 );
 
 
-            if (!navigation) {
-
+            if (!navigation)
                 return;
-
-            }
 
 
             const items =
@@ -1914,11 +1649,8 @@ document.addEventListener(
                 );
 
 
-            if (!items.length) {
-
+            if (!items.length)
                 return;
-
-            }
 
 
             const currentPath =
@@ -1947,7 +1679,6 @@ document.addEventListener(
 
                 "profile.html":
                     "profile"
-
             };
 
 
@@ -1984,19 +1715,14 @@ document.addEventListener(
                             item.removeAttribute(
                                 "aria-current"
                             );
-
                         }
-
                     }
                 );
-
             }
 
 
             const currentNavigation =
-                pageMap[
-                    currentPath
-                ];
+                pageMap[currentPath];
 
 
             if (currentNavigation) {
@@ -2010,7 +1736,6 @@ document.addEventListener(
                 setActiveNavigation(
                     null
                 );
-
             }
 
 
@@ -2025,54 +1750,37 @@ document.addEventListener(
                                 item.dataset.nav;
 
 
-                            if (!navName) {
-
+                            if (!navName)
                                 return;
-
-                            }
 
 
                             setActiveNavigation(
                                 navName
                             );
-
                         }
                     );
-
                 }
             );
-
         }
 
 
-        /* =================================================
-           TEAM DATA INITIALIZATION
-        ================================================= */
+        /* =====================================================
+           INITIAL TEAM DATA
+        ===================================================== */
 
         function initializeTeamData() {
 
-            /*
-               Start with an empty array while the backend
-               request is loading.
-
-               This does NOT create fake members.
-            */
-
-            teamMembers =
-                [];
-
+            teamMembers = [];
 
             updateTeamSummary();
 
-
             renderTeamMembers();
-
         }
 
 
-        /* =================================================
-           TEAM INITIALIZATION
-        ================================================= */
+        /* =====================================================
+           INITIALIZE TEAM
+        ===================================================== */
 
         async function initializeTeam() {
 
@@ -2080,17 +1788,14 @@ document.addEventListener(
                 "================================="
             );
 
-
             console.log(
                 "FINORA TEAM INITIALIZING"
             );
-
 
             console.log(
                 "FINORA API:",
                 FINORA_API
             );
-
 
             console.log(
                 "================================="
@@ -2099,50 +1804,32 @@ document.addEventListener(
 
             initializeNavigation();
 
-
             initializeBackButton();
-
 
             initializeNotifications();
 
-
             initializeCopyCode();
-
 
             initializeCopyLink();
 
-
             initializeReferralCopyButton();
-
 
             initializeShare();
 
-
             initializeFilters();
 
+            initializeLevelCards();
 
             initializeTeamData();
 
-
-            /*
-               First authenticate and load the current user.
-            */
 
             const authenticatedUser =
                 await loadCurrentUser();
 
 
-            /*
-               Only attempt to load the team after the
-               authenticated user has been loaded.
-            */
-
-            if (
-                authenticatedUser
-            ) {
+            if (authenticatedUser) {
 
                 await loadTeamMembers();
-
             }
 
 
@@ -2150,22 +1837,19 @@ document.addEventListener(
                 "================================="
             );
 
-
             console.log(
                 "FINORA TEAM READY"
             );
 
-
             console.log(
                 "================================="
             );
-
         }
 
 
-        /* =================================================
+        /* =====================================================
            START
-        ================================================= */
+        ===================================================== */
 
         initializeTeam()
             .catch(
@@ -2180,9 +1864,7 @@ document.addEventListener(
                     showToast(
                         "FINORA Team page could not initialize."
                     );
-
                 }
             );
-
     }
 );
