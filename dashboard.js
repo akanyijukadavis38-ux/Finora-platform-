@@ -1734,138 +1734,111 @@ function initializeNavigation() {
     }
 
 
-    /* =====================================================
-       DASHBOARD INITIALIZATION
-    ===================================================== */
+  /* =====================================================
+   DASHBOARD INITIALIZATION
 
-    async function initializeDashboard() {
+   IMPORTANT:
+   The dashboard UI initializes immediately.
 
-        console.log(
-            "================================="
+   The authenticated-user request runs in the
+   background and does NOT block the page.
+
+   No fake data.
+   No localStorage.
+   No loading-state replacement.
+===================================================== */
+
+function initializeDashboard() {
+
+    console.log(
+        "================================="
+    );
+
+
+    console.log(
+        "FINORA DASHBOARD INITIALIZING"
+    );
+
+
+    console.log(
+        "FINORA API:",
+        FINORA_API
+    );
+
+
+    console.log(
+        "================================="
+    );
+
+
+    /* =============================================
+       UI SYSTEMS START IMMEDIATELY
+    ============================================= */
+
+    initializeBannerCarousel();
+
+
+    initializeNotifications();
+
+
+    initializeCommunity();
+
+
+    initializeNavigation();
+
+
+    initializeRecentTransactions();
+
+
+    initializeEmptyLinks();
+
+
+    /* =============================================
+       AUTHENTICATED USER
+
+       IMPORTANT:
+       DO NOT await this.
+
+       The backend request runs silently
+       in the background while the dashboard
+       is already usable.
+    ============================================= */
+
+    loadCurrentUser()
+        .then(
+            (user) => {
+
+                if (user) {
+
+                    console.log(
+                        "FINORA DASHBOARD USER DATA READY"
+                    );
+
+                }
+            }
+        )
+        .catch(
+            (error) => {
+
+                console.error(
+                    "❌ FINORA BACKGROUND USER LOAD ERROR:",
+                    error
+                );
+            }
         );
 
 
-        console.log(
-            "FINORA DASHBOARD INITIALIZING"
-        );
-
-
-        console.log(
-            "FINORA API:",
-            FINORA_API
-        );
-
-
-        console.log(
-            "================================="
-        );
-
-
-        /* =============================================
-           UI SYSTEMS
-        ============================================= */
-
-        initializeBannerCarousel();
-
-
-        initializeNotifications();
-
-
-        initializeCommunity();
-
-
-        initializeNavigation();
-
-
-        initializeRecentTransactions();
-
-
-        initializeEmptyLinks();
-
-
-        /* =============================================
-           AUTHENTICATED USER
-        ============================================= */
-
-        const user =
-            await loadCurrentUser();
-
-
-        if (!user) {
-
-            console.warn(
-                "FINORA: Dashboard loaded without authenticated user."
-            );
-
-
-            return;
-        }
-
-
-        /* =============================================
-           FINAL DASHBOARD STATE
-        ============================================= */
-
-        updateDashboardUser(
-            user
-        );
-
-
-        updateFinancialData(
-            user
-        );
-
-
-        updateReferralInformation(
-            user
-        );
-
-
-        updateAccountStatus(
-            user
-        );
-
-
-        console.log(
-            "================================="
-        );
-
-
-        console.log(
-            "FINORA DASHBOARD READY"
-        );
-
-
-        console.log(
-            "AUTHENTICATED USER:",
-            user.fullName
-        );
-
-
-        console.log(
-            "================================="
-        );
-    }
+    console.log(
+        "FINORA DASHBOARD UI READY"
+    );
+}
 
 
     /* =====================================================
        START
     ===================================================== */
 
-    initializeDashboard()
-        .catch(
-            (error) => {
-
-                console.error(
-                    "❌ FINORA DASHBOARD INITIALIZATION ERROR:",
-                    error
-                );
-
-
-                showTemporaryMessage(
-                    "FINORA dashboard could not initialize."
-                );
-            }
-        );
+    initializeDashboard();
+    
 
 });
