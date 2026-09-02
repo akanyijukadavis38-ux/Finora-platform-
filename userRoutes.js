@@ -16,6 +16,7 @@ const FRONTEND_URL =
 
 /* =========================================================
    REGISTER
+   REPAIRED — ONLY THIS SECTION WAS CHANGED
 ========================================================= */
 
 router.post("/register", async (req, res) => {
@@ -171,6 +172,54 @@ router.post("/register", async (req, res) => {
 
 
         /* =================================================
+           CHECK EXISTING EMAIL
+        ================================================= */
+
+        const existingEmail =
+            await User.findOne({
+                email: cleanEmail
+            });
+
+
+        if (existingEmail) {
+
+            return res.status(409).json({
+
+                success: false,
+
+                message:
+                    "An account with this email already exists."
+
+            });
+
+        }
+
+
+        /* =================================================
+           CHECK EXISTING PHONE
+        ================================================= */
+
+        const existingPhone =
+            await User.findOne({
+                phone: cleanPhone
+            });
+
+
+        if (existingPhone) {
+
+            return res.status(409).json({
+
+                success: false,
+
+                message:
+                    "An account with this phone number already exists."
+
+            });
+
+        }
+
+
+        /* =================================================
            HASH PASSWORD
         ================================================= */
 
@@ -182,22 +231,33 @@ router.post("/register", async (req, res) => {
 
 
         /* =================================================
-           GENERATE REFERRAL CODE
+           GENERATE UNIQUE REFERRAL CODE
            
-           We generate the user's own referral code here
-           before User.create().
-           
-           This prevents the async referral-code hook in
-           user.js from having to perform another database
-           lookup during registration.
+           Generate it here so the user.js validation hook
+           does not need to perform another lookup.
         ================================================= */
 
-        const newReferralCode =
-            "FIN" +
-            Math.random()
-                .toString(36)
-                .substring(2, 8)
-                .toUpperCase();
+        let newReferralCode;
+        let referralCodeExists = true;
+
+
+        while (referralCodeExists) {
+
+            newReferralCode =
+                "FIN" +
+                Math.random()
+                    .toString(36)
+                    .substring(2, 8)
+                    .toUpperCase();
+
+
+            referralCodeExists =
+                await User.exists({
+                    referralCode:
+                        newReferralCode
+                });
+
+        }
 
 
         /* =================================================
@@ -230,6 +290,9 @@ router.post("/register", async (req, res) => {
 
         /* =================================================
            CREATE SESSION
+           
+           Session creation is attempted, but account
+           creation itself is already complete.
         ================================================= */
 
         req.session.userId =
@@ -239,104 +302,101 @@ router.post("/register", async (req, res) => {
             true;
 
 
-        await new Promise(
-            (resolve, reject) => {
+        req.session.save(
+            error => {
 
-                req.session.save(
-                    error => {
+                if (error) {
 
-                        if (error) {
-                            return reject(error);
-                        }
+                    console.error(
+                        "⚠️ FINORA REGISTER SESSION WARNING:",
+                        error
+                    );
 
-                        resolve();
+                }
+
+
+                /* =========================================
+                   RESPONSE
+                ========================================= */
+
+                return res.status(201).json({
+
+                    success: true,
+
+                    message:
+                        "FINORA account created successfully.",
+
+                    user: {
+
+                        id:
+                            user._id,
+
+                        fullName:
+                            user.fullName,
+
+                        full_name:
+                            user.fullName,
+
+                        phone:
+                            user.phone,
+
+                        email:
+                            user.email,
+
+                        referralCode:
+                            user.referralCode,
+
+                        referral_code:
+                            user.referralCode,
+
+                        referredByCode:
+                            user.referredByCode || null,
+
+                        referred_by_code:
+                            user.referredByCode || null,
+
+                        balance:
+                            user.balance,
+
+                        walletBalance:
+                            user.balance,
+
+                        wallet_balance:
+                            user.balance,
+
+                        totalIncome:
+                            user.totalIncome,
+
+                        totalEarnings:
+                            user.totalIncome,
+
+                        total_earnings:
+                            user.totalIncome,
+
+                        totalDeposit:
+                            user.totalDeposit,
+
+                        totalInvested:
+                            user.totalDeposit,
+
+                        total_invested:
+                            user.totalDeposit,
+
+                        totalWithdrawal:
+                            user.totalWithdrawal,
+
+                        status:
+                            user.status,
+
+                        createdAt:
+                            user.createdAt
 
                     }
-                );
+
+                });
 
             }
         );
-
-
-        /* =================================================
-           RESPONSE
-        ================================================= */
-
-        return res.status(201).json({
-
-            success: true,
-
-            message:
-                "FINORA account created successfully.",
-
-            user: {
-
-                id:
-                    user._id,
-
-                fullName:
-                    user.fullName,
-
-                full_name:
-                    user.fullName,
-
-                phone:
-                    user.phone,
-
-                email:
-                    user.email,
-
-                referralCode:
-                    user.referralCode,
-
-                referral_code:
-                    user.referralCode,
-
-                referredByCode:
-                    user.referredByCode || null,
-
-                referred_by_code:
-                    user.referredByCode || null,
-
-                balance:
-                    user.balance,
-
-                walletBalance:
-                    user.balance,
-
-                wallet_balance:
-                    user.balance,
-
-                totalIncome:
-                    user.totalIncome,
-
-                totalEarnings:
-                    user.totalIncome,
-
-                total_earnings:
-                    user.totalIncome,
-
-                totalDeposit:
-                    user.totalDeposit,
-
-                totalInvested:
-                    user.totalDeposit,
-
-                total_invested:
-                    user.totalDeposit,
-
-                totalWithdrawal:
-                    user.totalWithdrawal,
-
-                status:
-                    user.status,
-
-                createdAt:
-                    user.createdAt
-
-            }
-
-        });
 
 
     } catch (error) {
@@ -961,7 +1021,7 @@ router.get("/team", async (req, res) => {
 
         /* =================================================
            LEVEL 1
-           
+
            Users directly referred by current user.
         ================================================= */
 
@@ -982,7 +1042,7 @@ router.get("/team", async (req, res) => {
 
         /* =================================================
            LEVEL 2
-           
+
            Users referred by Level 1 users.
         ================================================= */
 
@@ -1014,7 +1074,7 @@ router.get("/team", async (req, res) => {
 
         /* =================================================
            LEVEL 3
-           
+
            Users referred by Level 2 users.
         ================================================= */
 
