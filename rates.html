@@ -1,1 +1,1657 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="theme-color"
+        content="#0B0A0F">
+
+    <meta
+        name="description"
+        content="FINORA Rates — Daily investment earnings and 20-day returns">
+
+    <title>FINORA | Rates</title>
+
+    <style>
+        :root {
+            --bg-dark: #0B0A0F;
+            --bg-dark-2: #121116;
+            --bg-dark-3: #18141A;
+
+            --bg-pink: #190912;
+            --bg-pink-2: #230A17;
+            --bg-pink-3: #2D0B1D;
+
+            --card: #171218;
+            --card-light: #211820;
+
+            --pink: #D100FF;
+            --pink-light: #E044FF;
+            --pink-soft: #B500E6;
+            --pink-deep: #9400BF;
+            --pink-glow: #F06AFF;
+
+            --gold: #C99A22;
+            --gold-deep: #A9790F;
+            --gold-light: #D9AE3A;
+            --gold-rich: #E0B94A;
+
+            --cream: #F1DFB0;
+            --cream-light: #F6E9C9;
+
+            --white: #FFFFFF;
+            --text: #FFFFFF;
+            --muted: #A9A5AD;
+            --dark-text: #0B0A0F;
+
+            --border: rgba(209, 0, 255, 0.20);
+            --border-strong: rgba(209, 0, 255, 0.32);
+            --gold-border: rgba(201, 154, 34, 0.28);
+
+            --shadow: 0 18px 45px rgba(0, 0, 0, 0.55);
+
+            --radius-lg: 24px;
+            --radius-md: 18px;
+            --radius-sm: 14px;
+
+            --container: 1180px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(
+                    circle at 0% 0%,
+                    rgba(209, 0, 255, 0.13),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 100% 100%,
+                    rgba(201, 154, 34, 0.07),
+                    transparent 28%
+                ),
+                linear-gradient(
+                    135deg,
+                    #170911 0%,
+                    #0B0A0F 48%,
+                    #070609 100%
+                );
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(
+                    120deg,
+                    transparent 0%,
+                    rgba(209, 0, 255, 0.025) 45%,
+                    transparent 70%
+                );
+            z-index: -1;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        .page-shell {
+            min-height: 100vh;
+            padding-bottom: 115px;
+        }
+
+        .container {
+            width: min(calc(100% - 32px), var(--container));
+            margin: 0 auto;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .dashboard-header {
+            position: relative;
+            z-index: 50;
+            border-bottom: 1px solid rgba(209, 0, 255, 0.20);
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(15, 7, 14, 0.97),
+                    rgba(11, 10, 15, 0.88)
+                );
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        .top-header {
+            min-height: 105px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .finora-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            text-align: center;
+        }
+
+        .finora-name {
+            font-family: "Times New Roman", Times, serif;
+            font-size: clamp(38px, 5vw, 58px);
+            line-height: 0.9;
+            font-weight: 700;
+            letter-spacing: -2px;
+            white-space: nowrap;
+        }
+
+        .finora-fin {
+            color: var(--white);
+        }
+
+        .finora-ora {
+            color: var(--gold-light);
+        }
+
+        .finora-tagline {
+            margin-top: 5px;
+            color: var(--pink);
+            font-size: 9px;
+            line-height: 1;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .header-actions {
+            position: absolute;
+            right: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .notification-button {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid rgba(209, 0, 255, 0.32);
+            background: rgba(12, 7, 12, 0.82);
+            color: var(--pink-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notification-button svg {
+            width: 21px;
+            height: 21px;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .rates-hero {
+            padding: 48px 0 34px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+            gap: 22px;
+            align-items: stretch;
+        }
+
+        .hero-main {
+            position: relative;
+            overflow: hidden;
+            padding: 38px;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(209, 0, 255, 0.23);
+            background:
+                radial-gradient(
+                    circle at 85% 20%,
+                    rgba(209, 0, 255, 0.14),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    145deg,
+                    rgba(45, 11, 29, 0.94),
+                    rgba(20, 12, 19, 0.96)
+                );
+            box-shadow: var(--shadow);
+        }
+
+        .hero-main::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            right: -100px;
+            bottom: -120px;
+            border-radius: 50%;
+            background: rgba(201, 154, 34, 0.08);
+            filter: blur(4px);
+        }
+
+        .hero-kicker {
+            color: var(--pink);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .hero-title {
+            max-width: 680px;
+            font-size: clamp(31px, 5vw, 52px);
+            line-height: 1.03;
+            letter-spacing: -1.7px;
+            font-weight: 800;
+        }
+
+        .hero-title span {
+            color: var(--pink-light);
+        }
+
+        .hero-description {
+            max-width: 670px;
+            margin-top: 17px;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .hero-rate {
+            margin-top: 28px;
+            display: flex;
+            align-items: baseline;
+            gap: 11px;
+        }
+
+        .hero-rate strong {
+            font-size: clamp(48px, 7vw, 78px);
+            line-height: 0.9;
+            color: var(--white);
+            letter-spacing: -4px;
+        }
+
+        .hero-rate span {
+            color: var(--gold-light);
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .hero-side {
+            display: grid;
+            grid-template-rows: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .info-card {
+            padding: 27px;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(209, 0, 255, 0.18);
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(29, 18, 27, 0.97),
+                    rgba(16, 12, 17, 0.97)
+                );
+            box-shadow: 0 15px 38px rgba(0, 0, 0, 0.42);
+        }
+
+        .info-label {
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.8px;
+        }
+
+        .info-value {
+            margin-top: 10px;
+            font-size: 29px;
+            font-weight: 800;
+            color: var(--white);
+        }
+
+        .info-value.gold {
+            color: var(--gold-light);
+        }
+
+        .info-small {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           SECTION HEADING
+        ========================= */
+
+        .section-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 20px;
+            margin: 16px 0 20px;
+        }
+
+        .section-kicker {
+            color: var(--pink);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 7px;
+        }
+
+        .section-title {
+            font-size: clamp(25px, 4vw, 34px);
+            line-height: 1.1;
+            letter-spacing: -0.7px;
+        }
+
+        .section-description {
+            max-width: 470px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+            text-align: right;
+        }
+
+        /* =========================
+           RATES TABLE
+        ========================= */
+
+        .rates-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(209, 0, 255, 0.22);
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(25, 15, 23, 0.98),
+                    rgba(13, 10, 14, 0.98)
+                );
+            box-shadow: var(--shadow);
+        }
+
+        .rates-card-top {
+            padding: 22px 26px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .rates-card-title {
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .rates-card-note {
+            color: var(--gold-light);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .rates-table {
+            width: 100%;
+            min-width: 650px;
+            border-collapse: collapse;
+        }
+
+        .rates-table th {
+            padding: 19px 26px;
+            text-align: left;
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            background: rgba(209, 0, 255, 0.035);
+            border-bottom: 1px solid rgba(209, 0, 255, 0.14);
+        }
+
+        .rates-table td {
+            padding: 21px 26px;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+            vertical-align: middle;
+        }
+
+        .rates-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .rates-table tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        .rates-table tbody tr:hover {
+            background: rgba(209, 0, 255, 0.045);
+        }
+
+        .investment-amount {
+            font-weight: 800;
+            color: var(--white);
+        }
+
+        .daily-earning {
+            color: var(--pink-light);
+            font-weight: 800;
+        }
+
+        .total-earning {
+            color: var(--gold-light);
+            font-weight: 800;
+        }
+
+        .amount-unit {
+            color: var(--muted);
+            font-size: 10px;
+            margin-left: 3px;
+            font-weight: 700;
+        }
+
+        /* =========================
+           RULES
+        ========================= */
+
+        .rules-section {
+            padding: 52px 0 25px;
+        }
+
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .rule-card {
+            min-height: 165px;
+            padding: 23px;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(209, 0, 255, 0.16);
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(28, 18, 26, 0.92),
+                    rgba(16, 12, 17, 0.94)
+                );
+        }
+
+        .rule-number {
+            color: var(--pink);
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .rule-title {
+            margin-top: 18px;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .rule-text {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .site-footer {
+            margin-top: 55px;
+            padding: 40px 0 35px;
+            border-top: 1px solid rgba(209, 0, 255, 0.16);
+            text-align: center;
+        }
+
+        .footer-brand {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 35px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+        }
+
+        .footer-brand .fin {
+            color: var(--white);
+        }
+
+        .footer-brand .ora {
+            color: var(--gold-light);
+        }
+
+        .footer-tagline {
+            margin-top: 7px;
+            color: var(--pink);
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+        .footer-text {
+            max-width: 530px;
+            margin: 14px auto 0;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .footer-copy {
+            margin-top: 20px;
+            color: rgba(169, 165, 173, 0.65);
+            font-size: 10px;
+        }
+
+        /* =========================
+           BOTTOM NAVIGATION
+        ========================= */
+
+        .bottom-navigation {
+            position: fixed;
+            z-index: 100;
+            left: 50%;
+            bottom: 14px;
+            transform: translateX(-50%);
+            width: min(calc(100% - 22px), 650px);
+            min-height: 70px;
+            padding: 8px 10px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+            background: rgba(13, 5, 10, 0.96);
+            border: 1px solid rgba(209, 0, 255, 0.28);
+            border-radius: 22px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        .bottom-nav-item {
+            min-width: 0;
+            padding: 8px 4px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            color: rgba(255, 255, 255, 0.58);
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .bottom-nav-item svg {
+            width: 25px;
+            height: 25px;
+            color: currentColor;
+        }
+
+        .bottom-nav-item span {
+            font-size: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .bottom-nav-item.active {
+            background: rgba(209, 0, 255, 0.17);
+            color: var(--pink);
+            box-shadow:
+                inset 0 0 0 1px rgba(209, 0, 255, 0.14);
+        }
+
+        .bottom-nav-item:hover {
+            color: var(--pink-light);
+            transform: translateY(-1px);
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-side {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: none;
+            }
+
+            .rules-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .section-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .section-description {
+                max-width: 650px;
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .page-shell {
+                padding-bottom: 105px;
+            }
+
+            .container {
+                width: calc(100% - 22px);
+            }
+
+            .top-header {
+                min-height: 92px;
+            }
+
+            .header-actions {
+                right: 0;
+            }
+
+            .notification-button {
+                width: 41px;
+                height: 41px;
+            }
+
+            .notification-button svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            .finora-brand {
+                gap: 6px;
+                transform: translateX(-10px);
+            }
+
+            .finora-name {
+                font-size: 39px;
+                letter-spacing: -1.8px;
+            }
+
+            .finora-tagline {
+                font-size: 7px;
+                letter-spacing: 2px;
+                margin-top: 4px;
+            }
+
+            .rates-hero {
+                padding-top: 28px;
+            }
+
+            .hero-main {
+                padding: 28px 23px;
+                border-radius: 20px;
+            }
+
+            .hero-title {
+                font-size: 32px;
+                letter-spacing: -1px;
+            }
+
+            .hero-description {
+                font-size: 13px;
+                line-height: 1.65;
+            }
+
+            .hero-rate {
+                margin-top: 23px;
+            }
+
+            .hero-rate strong {
+                font-size: 57px;
+                letter-spacing: -3px;
+            }
+
+            .hero-rate span {
+                font-size: 11px;
+            }
+
+            .hero-side {
+                gap: 12px;
+            }
+
+            .info-card {
+                padding: 21px 18px;
+                border-radius: 18px;
+            }
+
+            .info-value {
+                font-size: 23px;
+            }
+
+            .info-small {
+                font-size: 11px;
+            }
+
+            .section-heading {
+                margin-top: 30px;
+            }
+
+            .section-title {
+                font-size: 27px;
+            }
+
+            .section-description {
+                font-size: 12px;
+            }
+
+            .rates-card {
+                border-radius: 19px;
+            }
+
+            .rates-card-top {
+                padding: 19px 18px;
+            }
+
+            .rates-card-note {
+                font-size: 9px;
+            }
+
+            .rates-table {
+                min-width: 560px;
+            }
+
+            .rates-table th {
+                padding: 16px 18px;
+                font-size: 9px;
+            }
+
+            .rates-table td {
+                padding: 19px 18px;
+                font-size: 13px;
+            }
+
+            .rules-section {
+                padding-top: 38px;
+            }
+
+            .rules-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .rule-card {
+                min-height: 155px;
+                padding: 18px;
+                border-radius: 16px;
+            }
+
+            .rule-title {
+                margin-top: 15px;
+                font-size: 13px;
+            }
+
+            .rule-text {
+                font-size: 11px;
+            }
+
+            .site-footer {
+                margin-top: 42px;
+            }
+
+            .bottom-navigation {
+                bottom: 8px;
+                width: calc(100% - 14px);
+                min-height: 67px;
+                border-radius: 19px;
+                padding: 7px 5px;
+            }
+
+            .bottom-nav-item {
+                padding: 7px 2px;
+                gap: 4px;
+            }
+
+            .bottom-nav-item svg {
+                width: 23px;
+                height: 23px;
+            }
+
+            .bottom-nav-item span {
+                font-size: 8px;
+            }
+        }
+
+        @media (max-width: 390px) {
+
+            .finora-name {
+                font-size: 34px;
+            }
+
+            .finora-brand {
+                transform: translateX(-7px);
+            }
+
+            .notification-button {
+                width: 37px;
+                height: 37px;
+            }
+
+            .rules-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bottom-nav-item span {
+                font-size: 7px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page-shell">
+
+        <!-- =========================
+             HEADER
+        ========================== -->
+
+        <header class="dashboard-header">
+
+            <div class="container">
+
+                <div class="top-header">
+
+                    <a href="dashboard.html" class="finora-brand">
+
+                        <div>
+
+                            <div class="finora-name">
+                                <span class="finora-fin">FIN</span><span class="finora-ora">ORA</span>
+                            </div>
+
+                            <div class="finora-tagline">
+                                Invest • Grow • Earn
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                    <div class="header-actions">
+
+                        <button
+                            class="notification-button"
+                            type="button"
+                            aria-label="Notifications">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                                stroke-linejoin="round">
+
+                                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+
+                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+
+                            </svg>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <main>
+
+            <!-- =========================
+                 HERO
+            ========================== -->
+
+            <section class="rates-hero">
+
+                <div class="container">
+
+                    <div class="hero-grid">
+
+                        <div class="hero-main">
+
+                            <div class="hero-kicker">
+                                FINORA Earnings Structure
+                            </div>
+
+                            <h1 class="hero-title">
+                                Grow your investment with
+                                <span>10% daily earnings.</span>
+                            </h1>
+
+                            <p class="hero-description">
+                                FINORA provides a simple and transparent
+                                20-day earning structure. Your daily earnings
+                                are calculated at 10% of the investment amount.
+                            </p>
+
+                            <div class="hero-rate">
+
+                                <strong>10%</strong>
+
+                                <span>Daily Earnings</span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="hero-side">
+
+                            <div class="info-card">
+
+                                <div class="info-label">
+                                    Minimum Investment
+                                </div>
+
+                                <div class="info-value">
+                                    UGX 10,000
+                                </div>
+
+                                <div class="info-small">
+                                    Start from a small amount and choose
+                                    the investment level that suits you.
+                                </div>
+
+                            </div>
+
+
+                            <div class="info-card">
+
+                                <div class="info-label">
+                                    Investment Duration
+                                </div>
+
+                                <div class="info-value gold">
+                                    20 Days
+                                </div>
+
+                                <div class="info-small">
+                                    Daily earnings are calculated for
+                                    the full 20-day earning period.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 EARNINGS TABLE
+            ========================== -->
+
+            <section>
+
+                <div class="container">
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <div class="section-kicker">
+                                Earnings Guide
+                            </div>
+
+                            <h2 class="section-title">
+                                Investment & Earnings
+                            </h2>
+
+                        </div>
+
+                        <p class="section-description">
+                            See exactly how much you earn each day and
+                            the total earnings accumulated over 20 days.
+                        </p>
+
+                    </div>
+
+
+                    <div class="rates-card">
+
+                        <div class="rates-card-top">
+
+                            <div class="rates-card-title">
+                                20-Day Earnings Table
+                            </div>
+
+                            <div class="rates-card-note">
+                                10% Daily
+                            </div>
+
+                        </div>
+
+
+                        <div class="table-wrapper">
+
+                            <table class="rates-table">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            Investment
+                                        </th>
+
+                                        <th>
+                                            Daily Earnings
+                                        </th>
+
+                                        <th>
+                                            Total After 20 Days
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody>
+
+                                    <tr>
+
+                                        <td>
+                                            <span class="investment-amount">
+                                                UGX 10,000
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="daily-earning">
+                                                UGX 1,000
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="total-earning">
+                                                UGX 20,000
+                                            </span>
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>
+                                            <span class="investment-amount">
+                                                UGX 30,000
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="daily-earning">
+                                                UGX 3,000
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="total-earning">
+                                                UGX 60,000
+                                            </span>
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>
+                                            <span class="investment-amount">
+                                                UGX 50,000
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="daily-earning">
+                                                UGX 5,000
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="total-earning">
+                                                UGX 100,000
+                                            </span>
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>
+                                            <span class="investment-amount">
+                                                UGX 100,000
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="daily-earning">
+                                                UGX 10,000
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="total-earning">
+                                                UGX 200,000
+                                            </span>
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>
+                                            <span class="investment-amount">
+                                                UGX 250,000
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="daily-earning">
+                                                UGX 25,000
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="total-earning">
+                                                UGX 500,000
+                                            </span>
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>
+                                            <span class="investment-amount">
+                                                UGX 500,000
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="daily-earning">
+                                                UGX 50,000
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="total-earning">
+                                                UGX 1,000,000
+                                            </span>
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>
+                                            <span class="investment-amount">
+                                                UGX 1,000,000
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="daily-earning">
+                                                UGX 100,000
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="total-earning">
+                                                UGX 2,000,000
+                                            </span>
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>
+                                            <span class="investment-amount">
+                                                UGX 1,500,000
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="daily-earning">
+                                                UGX 150,000
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="total-earning">
+                                                UGX 3,000,000
+                                            </span>
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>
+                                            <span class="investment-amount">
+                                                UGX 2,000,000
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="daily-earning">
+                                                UGX 200,000
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="total-earning">
+                                                UGX 4,000,000
+                                            </span>
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>
+                                            <span class="investment-amount">
+                                                UGX 3,000,000
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="daily-earning">
+                                                UGX 300,000
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="total-earning">
+                                                UGX 6,000,000
+                                            </span>
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 RULES
+            ========================== -->
+
+            <section class="rules-section">
+
+                <div class="container">
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <div class="section-kicker">
+                                Simple & Clear
+                            </div>
+
+                            <h2 class="section-title">
+                                How the Rates Work
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="rules-grid">
+
+                        <div class="rule-card">
+
+                            <div class="rule-number">
+                                01
+                            </div>
+
+                            <div class="rule-title">
+                                Minimum Investment
+                            </div>
+
+                            <div class="rule-text">
+                                The minimum investment amount is
+                                UGX 10,000.
+                            </div>
+
+                        </div>
+
+
+                        <div class="rule-card">
+
+                            <div class="rule-number">
+                                02
+                            </div>
+
+                            <div class="rule-title">
+                                Daily Rate
+                            </div>
+
+                            <div class="rule-text">
+                                Earnings are calculated at
+                                10% of the investment amount each day.
+                            </div>
+
+                        </div>
+
+
+                        <div class="rule-card">
+
+                            <div class="rule-number">
+                                03
+                            </div>
+
+                            <div class="rule-title">
+                                20-Day Period
+                            </div>
+
+                            <div class="rule-text">
+                                The earning period runs for
+                                20 days.
+                            </div>
+
+                        </div>
+
+
+                        <div class="rule-card">
+
+                            <div class="rule-number">
+                                04
+                            </div>
+
+                            <div class="rule-title">
+                                Earnings Calculation
+                            </div>
+
+                            <div class="rule-text">
+                                Daily earnings are multiplied by
+                                20 days to show the total earnings
+                                after the full period.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <!-- =========================
+             FOOTER
+        ========================== -->
+
+        <footer class="site-footer">
+
+            <div class="container">
+
+                <div class="footer-brand">
+
+                    <span class="fin">
+                        FIN
+                    </span><span class="ora">
+                        ORA
+                    </span>
+
+                </div>
+
+                <div class="footer-tagline">
+                    Invest • Grow • Earn
+                </div>
+
+                <p class="footer-text">
+                    FINORA provides a simple and transparent
+                    investment experience designed around
+                    clear earning structures.
+                </p>
+
+                <div class="footer-copy">
+                    © 2026 FINORA. All rights reserved.
+                </div>
+
+            </div>
+
+        </footer>
+
+    </div>
+
+
+    <!-- =========================
+         BOTTOM NAVIGATION
+    ========================== -->
+
+    <nav class="bottom-navigation">
+
+        <a
+            href="dashboard.html"
+            class="bottom-nav-item">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+
+                <path d="M3 10.5 12 3l9 7.5"></path>
+                <path d="M5 9.5V21h14V9.5"></path>
+                <path d="M9 21v-6h6v6"></path>
+
+            </svg>
+
+            <span>Home</span>
+
+        </a>
+
+
+        <a
+            href="team.html"
+            class="bottom-nav-item">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+
+            </svg>
+
+            <span>Team</span>
+
+        </a>
+
+
+        <a
+            href="rates.html"
+            class="bottom-nav-item active">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+
+                <path d="M3 3v18h18"></path>
+                <path d="m7 16 4-5 3 3 5-7"></path>
+
+            </svg>
+
+            <span>Rates</span>
+
+        </a>
+
+
+        <a
+            href="mine.html"
+            class="bottom-nav-item">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+
+                <path d="M3 10h18"></path>
+                <path d="M5 10V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4"></path>
+                <path d="M5 10v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9"></path>
+                <path d="M8 14h8"></path>
+
+            </svg>
+
+            <span>Mine</span>
+
+        </a>
+
+
+        <a
+            href="profile.html"
+            class="bottom-nav-item">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+
+                <circle cx="12" cy="8" r="4"></circle>
+                <path d="M4 21a8 8 0 0 1 16 0"></path>
+
+            </svg>
+
+            <span>Profile</span>
+
+        </a>
+
+    </nav>
+
+
+    <script>
+        /*
+         * FINORA Rates Page
+         * Self-contained HTML + CSS + JS.
+         *
+         * No external libraries required.
+         */
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const currentPage = "rates.html";
+
+            document.querySelectorAll(".bottom-nav-item").forEach(function (item) {
+
+                const href = item.getAttribute("href");
+
+                if (href === currentPage) {
+                    item.classList.add("active");
+                }
+
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>
