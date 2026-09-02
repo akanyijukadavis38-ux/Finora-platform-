@@ -506,6 +506,184 @@ a {
 
 
 /* =========================================================
+   CURRENT USER PHONE
+========================================================= */
+
+.user-phone-card {
+
+    position:
+        relative;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    min-height:
+        54px;
+
+    margin:
+        0 0 18px;
+
+    padding:
+        10px 16px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.065);
+
+    border-radius:
+        16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(33,24,32,.94),
+            rgba(23,18,24,.94)
+        );
+
+    box-shadow:
+        0 12px 30px
+        rgba(0,0,0,.30);
+
+    overflow:
+        hidden;
+
+}
+
+
+.user-phone-card::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    pointer-events:
+        none;
+
+    top:
+        0;
+
+    left:
+        18px;
+
+    right:
+        18px;
+
+    height:
+        1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(209,0,255,.38),
+            transparent
+        );
+
+}
+
+
+.user-phone-display {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        8px;
+
+    min-width:
+        0;
+
+}
+
+
+.user-phone-badge {
+
+    width:
+        20px;
+
+    height:
+        20px;
+
+    flex:
+        0 0 20px;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border:
+        1px solid
+        var(--gold-border);
+
+    border-radius:
+        7px;
+
+    background:
+        rgba(201,154,34,.075);
+
+    color:
+        var(--gold-light);
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.035);
+
+}
+
+
+/*
+   The badge space is intentionally empty in HTML.
+   The actual badge/icon can be added later through
+   CSS or JavaScript without changing the layout.
+*/
+
+
+.user-phone-number {
+
+    min-width:
+        0;
+
+    color:
+        var(--white);
+
+    font-size:
+        13px;
+
+    line-height:
+        1;
+
+    font-weight:
+        750;
+
+    letter-spacing:
+        .2px;
+
+    white-space:
+        nowrap;
+
+}
+
+
+/* =========================================================
    SHARED CARDS
 ========================================================= */
 
@@ -2384,12 +2562,60 @@ a {
 }
 
 
+/* =========================================================
+   PHONE RESPONSIVE
+========================================================= */
+
 @media (max-width: 390px) {
 
     .bottom-nav-item span {
 
         font-size:
             7px;
+
+    }
+
+
+    .user-phone-card {
+
+        min-height:
+            51px;
+
+        margin-bottom:
+            16px;
+
+        padding:
+            9px 13px;
+
+    }
+
+
+    .user-phone-display {
+
+        gap:
+            7px;
+
+    }
+
+
+    .user-phone-badge {
+
+        width:
+            19px;
+
+        height:
+            19px;
+
+        flex-basis:
+            19px;
+
+    }
+
+
+    .user-phone-number {
+
+        font-size:
+            12px;
 
     }
 
@@ -2598,6 +2824,22 @@ a {
 
         font-size:
             9px;
+
+    }
+
+
+    .user-phone-card {
+
+        margin-bottom:
+            15px;
+
+    }
+
+
+    .user-phone-number {
+
+        font-size:
+            11px;
 
     }
 
