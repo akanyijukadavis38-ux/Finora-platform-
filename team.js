@@ -16,6 +16,14 @@
    Level 2 = 5%
    Level 3 = 2%
 
+   TEAM MEMBER STATUS:
+   Active   = member has made first deposit
+   Inactive = member has never made a deposit
+
+   PHONE DISPLAY:
+   Current user = full registered phone number
+   Team members = masked phone number
+
    LEVEL CARD ACTION:
    Tapping L1 / L2 / L3 selects that level,
    activates the matching filter,
@@ -43,7 +51,9 @@ document.addEventListener(
 
 
         function safeNumber(value) {
-            const number = Number(value);
+
+            const number =
+                Number(value);
 
             return Number.isFinite(number)
                 ? number
@@ -52,10 +62,113 @@ document.addEventListener(
 
 
         function formatUGX(value) {
+
             return (
                 "UGX " +
                 safeNumber(value).toLocaleString("en-UG")
             );
+        }
+
+
+        /*
+         * Keep the current user's registered phone number
+         * exactly as supplied by the backend.
+         */
+        function formatCurrentUserPhone(phone) {
+
+            if (
+                phone === null ||
+                phone === undefined
+            ) {
+                return "—";
+            }
+
+            const value =
+                String(phone).trim();
+
+            return value || "—";
+        }
+
+
+        /*
+         * Mask team-member phone numbers.
+         *
+         * Example:
+         * 0701234567 -> 0701****67
+         */
+        function maskPhone(phone) {
+
+            if (
+                phone === null ||
+                phone === undefined
+            ) {
+                return "—";
+            }
+
+
+            const value =
+                String(phone)
+                    .replace(/\s+/g, "")
+                    .trim();
+
+
+            if (!value)
+                return "—";
+
+
+            /*
+             * Uganda phone numbers are normally
+             * 10 digits beginning with 07.
+             */
+            if (value.length >= 6) {
+
+                return (
+                    value.slice(0, 4) +
+                    "****" +
+                    value.slice(-2)
+                );
+            }
+
+
+            return value;
+        }
+
+
+        /*
+         * Determine whether a team member has made
+         * their first deposit.
+         *
+         * IMPORTANT:
+         * We do NOT use account status here.
+         */
+        function getMemberDepositStatus(member) {
+
+            const totalDeposit =
+                safeNumber(
+                    member.totalDeposit ??
+                    member.total_deposit ??
+                    member.depositTotal ??
+                    member.deposit_total
+                );
+
+
+            return totalDeposit > 0
+                ? "Active"
+                : "Inactive";
+        }
+
+
+        /*
+         * Convert status to a CSS-safe class.
+         */
+        function getStatusClass(status) {
+
+            return String(status)
+                .toLowerCase()
+                .replace(
+                    /[^a-z0-9_-]/g,
+                    ""
+                );
         }
 
 
@@ -67,19 +180,31 @@ document.addEventListener(
             const toast =
                 getElement("toast");
 
-            if (!toast) return;
+
+            if (!toast)
+                return;
+
 
             toast.textContent =
                 message;
 
+
             toast.classList.add("show");
 
-            clearTimeout(toastTimer);
+
+            clearTimeout(
+                toastTimer
+            );
+
 
             toastTimer =
                 setTimeout(
                     () => {
-                        toast.classList.remove("show");
+
+                        toast.classList.remove(
+                            "show"
+                        );
+
                     },
                     2500
                 );
@@ -95,6 +220,41 @@ document.addEventListener(
         let teamMembers = [];
 
         let currentFilter = "all";
+
+
+        /* =====================================================
+           CURRENT USER PHONE
+        ===================================================== */
+
+        function updateCurrentUserPhone(user) {
+
+            const phoneElement =
+                getElement("userPhoneNumber");
+
+
+            if (!phoneElement)
+                return;
+
+
+            if (!user) {
+
+                phoneElement.textContent =
+                    "—";
+
+                return;
+            }
+
+
+            const phone =
+                user.phone ||
+                user.phoneNumber ||
+                user.phone_number ||
+                "";
+
+
+            phoneElement.textContent =
+                formatCurrentUserPhone(phone);
+        }
 
 
         /* =====================================================
@@ -115,7 +275,9 @@ document.addEventListener(
                         `${FINORA_API}/api/users/me`,
                         {
                             method: "GET",
+
                             credentials: "include",
+
                             headers: {
                                 "Accept":
                                     "application/json"
@@ -136,9 +298,25 @@ document.addEventListener(
                         "FINORA TEAM: No authenticated session."
                     );
 
-                    updateReferralInformation(null);
 
-                    updateFinancialInformation(null);
+                    currentUser =
+                        null;
+
+
+                    updateCurrentUserPhone(
+                        null
+                    );
+
+
+                    updateReferralInformation(
+                        null
+                    );
+
+
+                    updateFinancialInformation(
+                        null
+                    );
+
 
                     return null;
                 }
@@ -148,6 +326,7 @@ document.addEventListener(
 
                     let frozenData =
                         null;
+
 
                     try {
 
@@ -168,7 +347,10 @@ document.addEventListener(
                             : "Your FINORA account has been frozen.";
 
 
-                    showToast(message);
+                    showToast(
+                        message
+                    );
+
 
                     return null;
                 }
@@ -181,9 +363,11 @@ document.addEventListener(
                         response.status
                     );
 
+
                     showToast(
                         "Unable to load your FINORA account."
                     );
+
 
                     return null;
                 }
@@ -208,9 +392,11 @@ document.addEventListener(
                         "FINORA TEAM: Invalid user response."
                     );
 
+
                     showToast(
                         "Unable to load your FINORA account."
                     );
+
 
                     return null;
                 }
@@ -229,9 +415,11 @@ document.addEventListener(
                         "FINORA TEAM: No user object returned."
                     );
 
+
                     showToast(
                         "FINORA account information is unavailable."
                     );
+
 
                     return null;
                 }
@@ -239,6 +427,14 @@ document.addEventListener(
 
                 currentUser =
                     user;
+
+
+                /*
+                 * Current user's full registered phone.
+                 */
+                updateCurrentUserPhone(
+                    currentUser
+                );
 
 
                 updateReferralInformation(
@@ -263,9 +459,11 @@ document.addEventListener(
                     error
                 );
 
+
                 showToast(
                     "FINORA could not connect to the server."
                 );
+
 
                 return null;
             }
@@ -290,7 +488,9 @@ document.addEventListener(
                         `${FINORA_API}/api/users/team`,
                         {
                             method: "GET",
+
                             credentials: "include",
+
                             headers: {
                                 "Accept":
                                     "application/json"
@@ -311,11 +511,15 @@ document.addEventListener(
                         "FINORA TEAM: Team request requires authentication."
                     );
 
-                    teamMembers = [];
+
+                    teamMembers =
+                        [];
+
 
                     updateTeamSummary();
 
                     renderTeamMembers();
+
 
                     return false;
                 }
@@ -325,6 +529,7 @@ document.addEventListener(
 
                     let frozenData =
                         null;
+
 
                     try {
 
@@ -345,13 +550,19 @@ document.addEventListener(
                             : "Your FINORA account has been frozen.";
 
 
-                    showToast(message);
+                    showToast(
+                        message
+                    );
 
-                    teamMembers = [];
+
+                    teamMembers =
+                        [];
+
 
                     updateTeamSummary();
 
                     renderTeamMembers();
+
 
                     return false;
                 }
@@ -364,15 +575,20 @@ document.addEventListener(
                         response.status
                     );
 
+
                     showToast(
                         "Unable to load your team members."
                     );
 
-                    teamMembers = [];
+
+                    teamMembers =
+                        [];
+
 
                     updateTeamSummary();
 
                     renderTeamMembers();
+
 
                     return false;
                 }
@@ -397,11 +613,15 @@ document.addEventListener(
                         "FINORA TEAM: Invalid team response."
                     );
 
-                    teamMembers = [];
+
+                    teamMembers =
+                        [];
+
 
                     updateTeamSummary();
 
                     renderTeamMembers();
+
 
                     return false;
                 }
@@ -419,32 +639,66 @@ document.addEventListener(
 
                 teamMembers =
                     backendMembers.map(
-                        member => ({
+                        member => {
 
-                            ...member,
+                            const deposit =
+                                safeNumber(
+                                    member.totalDeposit ??
+                                    member.total_deposit ??
+                                    member.depositTotal ??
+                                    member.deposit_total
+                                );
 
-                            name:
-                                member.name ||
-                                member.fullName ||
-                                member.full_name ||
-                                "FINORA Member",
 
-                            fullName:
-                                member.fullName ||
-                                member.full_name ||
-                                member.name ||
-                                "FINORA Member",
+                            const phone =
+                                member.phone ||
+                                member.phoneNumber ||
+                                member.phone_number ||
+                                "";
 
-                            level:
-                                member.level,
 
-                            status:
-                                member.status ||
-                                "active",
+                            const status =
+                                deposit > 0
+                                    ? "Active"
+                                    : "Inactive";
 
-                            createdAt:
-                                member.createdAt
-                        })
+
+                            return {
+
+                                ...member,
+
+                                name:
+                                    member.name ||
+                                    member.fullName ||
+                                    member.full_name ||
+                                    "FINORA Member",
+
+                                fullName:
+                                    member.fullName ||
+                                    member.full_name ||
+                                    member.name ||
+                                    "FINORA Member",
+
+                                level:
+                                    member.level,
+
+                                phone:
+                                    phone,
+
+                                totalDeposit:
+                                    deposit,
+
+                                /*
+                                 * This status is intentionally
+                                 * based on first deposit.
+                                 */
+                                status:
+                                    status,
+
+                                createdAt:
+                                    member.createdAt
+                            };
+                        }
                     );
 
 
@@ -468,15 +722,20 @@ document.addEventListener(
                     error
                 );
 
+
                 showToast(
                     "FINORA could not load your team."
                 );
 
-                teamMembers = [];
+
+                teamMembers =
+                    [];
+
 
                 updateTeamSummary();
 
                 renderTeamMembers();
+
 
                 return false;
             }
@@ -492,6 +751,7 @@ document.addEventListener(
             const codeElement =
                 getElement("referralCode");
 
+
             const linkElement =
                 getElement("referralLink");
 
@@ -502,9 +762,11 @@ document.addEventListener(
                     codeElement.textContent =
                         "—";
 
+
                 if (linkElement)
                     linkElement.textContent =
                         "—";
+
 
                 return;
             }
@@ -522,6 +784,7 @@ document.addEventListener(
                     codeElement.textContent =
                         "—";
 
+
                 if (linkElement)
                     linkElement.textContent =
                         "Referral code unavailable";
@@ -530,6 +793,7 @@ document.addEventListener(
                 console.warn(
                     "FINORA TEAM: User has no referral code."
                 );
+
 
                 return;
             }
@@ -557,6 +821,7 @@ document.addEventListener(
             window.FINORA_REFERRAL_CODE =
                 referralCode;
 
+
             window.FINORA_REFERRAL_LINK =
                 referralLink;
 
@@ -583,11 +848,14 @@ document.addEventListener(
             const levelOneIncomeElement =
                 getElement("levelOneIncome");
 
+
             const levelTwoIncomeElement =
                 getElement("levelTwoIncome");
 
+
             const levelThreeIncomeElement =
                 getElement("levelThreeIncome");
+
 
             const totalReferralIncomeElement =
                 getElement("totalReferralIncome");
@@ -599,17 +867,21 @@ document.addEventListener(
                     levelOneIncomeElement.textContent =
                         formatUGX(0);
 
+
                 if (levelTwoIncomeElement)
                     levelTwoIncomeElement.textContent =
                         formatUGX(0);
+
 
                 if (levelThreeIncomeElement)
                     levelThreeIncomeElement.textContent =
                         formatUGX(0);
 
+
                 if (totalReferralIncomeElement)
                     totalReferralIncomeElement.textContent =
                         formatUGX(0);
+
 
                 return;
             }
@@ -681,11 +953,14 @@ document.addEventListener(
             const totalTeamElement =
                 getElement("totalTeam");
 
+
             const levelOneElement =
                 getElement("levelOneCount");
 
+
             const levelTwoElement =
                 getElement("levelTwoCount");
+
 
             const levelThreeElement =
                 getElement("levelThreeCount");
@@ -694,21 +969,24 @@ document.addEventListener(
             const levelOneCount =
                 teamMembers.filter(
                     member =>
-                        String(member.level) === "1"
+                        String(member.level) ===
+                        "1"
                 ).length;
 
 
             const levelTwoCount =
                 teamMembers.filter(
                     member =>
-                        String(member.level) === "2"
+                        String(member.level) ===
+                        "2"
                 ).length;
 
 
             const levelThreeCount =
                 teamMembers.filter(
                     member =>
-                        String(member.level) === "3"
+                        String(member.level) ===
+                        "3"
                 ).length;
 
 
@@ -745,6 +1023,7 @@ document.addEventListener(
 
             const container =
                 getElement("membersContainer");
+
 
             const countElement =
                 getElement("memberCount");
@@ -882,10 +1161,36 @@ document.addEventListener(
                 );
 
 
+            /*
+             * Status is based on first deposit,
+             * not account status.
+             */
             const status =
+                getMemberDepositStatus(
+                    member
+                );
+
+
+            const statusText =
                 escapeHTML(
-                    member.status ||
-                    "Active"
+                    status
+                );
+
+
+            const statusClass =
+                getStatusClass(
+                    status
+                );
+
+
+            const phone =
+                escapeHTML(
+                    maskPhone(
+                        member.phone ||
+                        member.phoneNumber ||
+                        member.phone_number ||
+                        ""
+                    )
                 );
 
 
@@ -920,10 +1225,15 @@ document.addEventListener(
                             Level ${level}
                         </span>
 
+                        <span class="member-phone">
+                            ${phone}
+                        </span>
+
                     </div>
 
-                    <div class="member-status">
-                        ${status}
+                    <div
+                        class="member-status ${statusClass}">
+                        ${statusText}
                     </div>
 
                 </article>
@@ -1005,11 +1315,14 @@ document.addEventListener(
                 textarea.value =
                     text;
 
+
                 textarea.style.position =
                     "fixed";
 
+
                 textarea.style.left =
                     "-9999px";
+
 
                 textarea.style.top =
                     "-9999px";
@@ -1042,6 +1355,7 @@ document.addEventListener(
                     "FINORA: Copy failed.",
                     error
                 );
+
 
                 return false;
             }
@@ -1121,6 +1435,7 @@ document.addEventListener(
                             "Your referral code is not available yet."
                         );
 
+
                         return;
                     }
 
@@ -1177,6 +1492,7 @@ document.addEventListener(
                         showToast(
                             "Your referral link is not available yet."
                         );
+
 
                         return;
                     }
@@ -1235,6 +1551,7 @@ document.addEventListener(
                             "Your referral link is not available yet."
                         );
 
+
                         return;
                     }
 
@@ -1292,6 +1609,7 @@ document.addEventListener(
                             "Your referral link is not available yet."
                         );
 
+
                         return;
                     }
 
@@ -1316,6 +1634,7 @@ document.addEventListener(
                             await navigator.share(
                                 shareData
                             );
+
 
                             return;
 
@@ -1521,10 +1840,9 @@ document.addEventListener(
 
 
                         const membersSection =
-                            document
-                                .getElementById(
-                                    "membersContainer"
-                                );
+                            document.getElementById(
+                                "membersContainer"
+                            );
 
 
                         if (membersSection) {
@@ -1788,14 +2106,17 @@ document.addEventListener(
                 "================================="
             );
 
+
             console.log(
                 "FINORA TEAM INITIALIZING"
             );
+
 
             console.log(
                 "FINORA API:",
                 FINORA_API
             );
+
 
             console.log(
                 "================================="
@@ -1837,9 +2158,11 @@ document.addEventListener(
                 "================================="
             );
 
+
             console.log(
                 "FINORA TEAM READY"
             );
+
 
             console.log(
                 "================================="
