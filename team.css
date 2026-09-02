@@ -2167,10 +2167,6 @@ a {
 
 /* =========================================================
    FIXED BOTTOM NAVIGATION
-
-   IMPORTANT:
-   The ACTIVE background belongs to the COMPLETE
-   navigation item, including BOTH icon and label.
 ========================================================= */
 
 .bottom-navigation {
@@ -2178,20 +2174,29 @@ a {
     position:
         fixed;
 
-    left:
-        0;
+    z-index:
+        100;
 
-    right:
-        0;
+    left:
+        50%;
 
     bottom:
-        0;
+        14px;
 
-    z-index:
-        5000;
+    transform:
+        translateX(-50%);
+
+    width:
+        min(
+            calc(100% - 22px),
+            650px
+        );
 
     min-height:
-        var(--bottom-nav-height);
+        70px;
+
+    padding:
+        8px 10px;
 
     display:
         grid;
@@ -2199,49 +2204,42 @@ a {
     grid-template-columns:
         repeat(5, 1fr);
 
-    align-items:
-        center;
-
     gap:
-        3px;
-
-    padding:
-        6px 7px
-        max(
-            6px,
-            env(safe-area-inset-bottom)
-        );
-
-    border-top:
-        1px solid
-        rgba(255,255,255,.065);
+        5px;
 
     background:
-        rgba(11,10,15,.96);
+        rgba(13, 5, 10, 0.96);
 
-    backdrop-filter:
-        blur(22px);
+    border:
+        1px solid
+        rgba(209, 0, 255, 0.28);
 
-    -webkit-backdrop-filter:
-        blur(22px);
+    border-radius:
+        22px;
 
     box-shadow:
-        0 -15px 40px
-        rgba(0,0,0,.42);
+        0 18px 45px
+        rgba(0, 0, 0, 0.65);
+
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
 
 }
 
 
 .bottom-nav-item {
 
-    position:
-        relative;
-
     min-width:
         0;
 
-    min-height:
-        60px;
+    padding:
+        8px 4px;
+
+    border-radius:
+        15px;
 
     display:
         flex;
@@ -2256,69 +2254,26 @@ a {
         center;
 
     gap:
-        4px;
-
-    padding:
-        6px 8px;
-
-    border:
-        1px solid
-        transparent;
-
-    border-radius:
-        17px;
+        5px;
 
     color:
-        #77727B;
+        rgba(255, 255, 255, 0.58);
 
     transition:
-        color .2s ease,
-        background .2s ease,
-        border-color .2s ease,
-        transform .2s ease,
-        box-shadow .2s ease;
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
 
 }
 
 
-.bottom-nav-item:hover {
-
-    color:
-        rgba(255,255,255,.78);
-
-}
-
-
-.bottom-nav-item:active {
-
-    transform:
-        scale(.96);
-
-}
-
-
-/*
-   Icon has NO background of its own.
-   This keeps the icon and label inside
-   one single active shape.
-*/
-
-.bottom-nav-icon {
+.bottom-nav-item svg {
 
     width:
-        23px;
+        25px;
 
     height:
-        23px;
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
+        25px;
 
     color:
         currentColor;
@@ -2326,21 +2281,7 @@ a {
 }
 
 
-.bottom-nav-icon svg {
-
-    width:
-        100%;
-
-    height:
-        100%;
-
-    display:
-        block;
-
-}
-
-
-.bottom-nav-label {
+.bottom-nav-item span {
 
     font-size:
         10px;
@@ -2348,96 +2289,109 @@ a {
     font-weight:
         700;
 
-    line-height:
-        1;
-
-    color:
-        currentColor;
+    white-space:
+        nowrap;
 
 }
 
-
-/* =========================================================
-   COMPLETE ACTIVE NAV ITEM
-========================================================= */
 
 .bottom-nav-item.active {
 
-    color:
-        var(--white);
-
     background:
-        linear-gradient(
-            145deg,
-            rgba(209,0,255,.20),
-            rgba(148,0,191,.13)
-        );
-
-    border-color:
-        rgba(209,0,255,.30);
-
-    box-shadow:
-        0 8px 24px
-        rgba(209,0,255,.16),
-        inset 0 1px 0
-        rgba(255,255,255,.05);
-
-}
-
-
-.bottom-nav-item.active .bottom-nav-icon {
+        rgba(209, 0, 255, 0.17);
 
     color:
         var(--magenta);
 
+    box-shadow:
+        inset 0 0 0 1px
+        rgba(209, 0, 255, 0.14);
+
 }
 
 
+.bottom-nav-item.active .bottom-nav-icon,
 .bottom-nav-item.active .bottom-nav-label {
 
     color:
-        var(--white);
+        var(--magenta);
 
 }
 
 
-/*
-   Small premium top accent for the COMPLETE
-   active navigation shape.
-*/
+.bottom-nav-item:hover {
 
-.bottom-nav-item.active::before {
-
-    content:
-        "";
-
-    position:
-        absolute;
-
-    top:
-        0;
-
-    left:
-        50%;
-
-    width:
-        30px;
-
-    height:
-        2px;
+    color:
+        var(--magenta-light);
 
     transform:
-        translateX(-50%);
+        translateY(-1px);
 
-    border-radius:
-        999px;
+}
 
-    background:
-        var(--magenta);
 
-    box-shadow:
-        0 0 12px
-        rgba(209,0,255,.75);
+@media (max-width: 650px) {
+
+    .bottom-navigation {
+
+        bottom:
+            8px;
+
+        width:
+            calc(100% - 14px);
+
+        min-height:
+            67px;
+
+        border-radius:
+            19px;
+
+        padding:
+            7px 5px;
+
+    }
+
+
+    .bottom-nav-item {
+
+        padding:
+            7px 2px;
+
+        gap:
+            4px;
+
+    }
+
+
+    .bottom-nav-item svg {
+
+        width:
+            23px;
+
+        height:
+            23px;
+
+    }
+
+
+    .bottom-nav-item span {
+
+        font-size:
+            8px;
+
+    }
+
+}
+
+
+@media (max-width: 390px) {
+
+    .bottom-nav-item span {
+
+        font-size:
+            7px;
+
+    }
 
 }
 
