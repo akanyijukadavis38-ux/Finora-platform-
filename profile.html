@@ -11,319 +11,219 @@
 
     <meta
         name="theme-color"
-        content="#07050A">
+        content="#0B0A0F">
 
     <meta
         name="description"
-        content="FINORA — My Profile">
+        content="FINORA — Profile">
 
-    <title>FINORA | My Profile</title>
+    <title>FINORA | Profile</title>
 
-    <link
-        rel="stylesheet"
-        href="profile.css">
+    <link rel="stylesheet" href="profile.css">
 
 </head>
-
 
 <body>
 
 <div class="profile-page">
 
 
-    <!-- =====================================================
+    <!-- =========================================
          HEADER
-         ===================================================== -->
+         ========================================= -->
 
     <header class="profile-header">
 
-        <a
-            href="dashboard.html"
-            class="profile-brand"
-            aria-label="FINORA Dashboard">
+        <div class="profile-container profile-top-header">
 
+            <a
+                href="dashboard.html"
+                class="finora-brand"
+                aria-label="FINORA Home">
 
-            <!-- FINORA F LOGO -->
-
-            <svg
-                class="profile-logo"
-                viewBox="0 0 100 110"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-label="FINORA logo"
-                role="img">
-
-                <defs>
-
-                    <linearGradient
-                        id="profileGold"
-                        x1="12"
-                        y1="5"
-                        x2="88"
-                        y2="105"
-                        gradientUnits="userSpaceOnUse">
-
-                        <stop
-                            offset="0"
-                            stop-color="#FFF0A8"/>
-
-                        <stop
-                            offset=".22"
-                            stop-color="#FFD35A"/>
-
-                        <stop
-                            offset=".55"
-                            stop-color="#F2B52F"/>
-
-                        <stop
-                            offset=".82"
-                            stop-color="#D88A12"/>
-
-                        <stop
-                            offset="1"
-                            stop-color="#A95E05"/>
-
-                    </linearGradient>
-
-
-                    <linearGradient
-                        id="profileShine"
-                        x1="20"
-                        y1="4"
-                        x2="55"
-                        y2="70"
-                        gradientUnits="userSpaceOnUse">
-
-                        <stop
-                            offset="0"
-                            stop-color="#FFF8D0"/>
-
-                        <stop
-                            offset=".45"
-                            stop-color="#FFE27A"/>
-
-                        <stop
-                            offset="1"
-                            stop-color="#E9A51E"/>
-
-                    </linearGradient>
-
-                </defs>
-
-
-                <path
-                    fill="url(#profileGold)"
-                    d="
-                    M20 8
-                    C21 5 24 3 28 3
-                    H82
-                    C85 3 87 5 85 8
-                    L78 19
-                    C77 21 75 22 72 22
-                    H46
-                    C39 22 34 24 29 27
-                    C25 30 22 33 20 37
-                    L15 49
-                    C14 52 16 54 19 52
-                    L28 46
-                    C33 42 39 40 45 40
-                    H67
-                    C70 40 72 42 70 45
-                    L63 56
-                    C62 58 60 59 57 59
-                    H46
-                    C40 59 36 62 33 67
-                    C30 72 27 80 24 88
-                    L20 101
-                    H5
-                    L18 56
-                    C20 49 23 42 27 37
-                    C32 30 39 27 47 26
-                    H72
-                    L77 18
-                    H43
-                    C34 18 27 21 21 27
-                    L16 32
-                    Z
-                    " />
-
-                <path
-                    fill="url(#profileShine)"
-                    opacity=".72"
-                    d="
-                    M27 7
-                    H79
-                    L75 13
-                    H45
-                    C36 13 29 16 23 21
-                    L20 23
-                    L24 10
-                    C24 8 25 7 27 7
-                    Z
-                    " />
-
-            </svg>
-
-
-            <!-- FINORA WORDMARK -->
-
-            <div class="profile-brand-text">
-
-                <div class="profile-finora-name">
-
-                    <span class="profile-fin">
-                        FIN
-                    </span>
-
-                    <span class="profile-ora">
-                        ORA
-                    </span>
-
+                <div class="finora-name">
+                    <span class="fin-fin">FIN</span><span class="fin-ora">ORA</span>
                 </div>
 
-                <div class="profile-tagline">
+                <div class="finora-tagline">
                     INVEST • GROW • EARN
                 </div>
 
+            </a>
+
+
+            <div class="header-actions">
+
+                <button
+                    type="button"
+                    class="notification-button"
+                    id="notificationButton"
+                    aria-label="Notifications">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+
+                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+
+                    </svg>
+
+                    <span
+                        class="notification-count"
+                        id="notificationCount"
+                        hidden>
+                        0
+                    </span>
+
+                </button>
+
             </div>
 
-        </a>
-
-
-        <!-- BACK TO DASHBOARD -->
-
-        <a
-            href="dashboard.html"
-            class="profile-back">
-
-            ← Dashboard
-
-        </a>
+        </div>
 
     </header>
 
 
 
-    <!-- =====================================================
-         MAIN CONTENT
-         ===================================================== -->
+    <!-- =========================================
+         MAIN
+         ========================================= -->
 
-    <main class="profile-main">
-
-        <div class="profile-container">
+    <main class="profile-container profile-main">
 
 
-            <!-- =================================================
-                 PAGE HEADING
-                 ================================================= -->
+        <!-- =====================================
+             INTRO
+             ===================================== -->
 
-            <section class="profile-heading">
+        <section class="profile-intro">
 
-                <div class="profile-kicker">
-                    ACCOUNT
-                </div>
+            <div class="profile-kicker">
+                ACCOUNT
+            </div>
 
-                <h1>
-                    My Profile
-                </h1>
+            <h1>
+                My <span>Profile</span>
+            </h1>
 
-                <p>
-                    Manage your FINORA account information.
+            <p>
+                Manage your account information and security.
+            </p>
+
+        </section>
+
+
+
+        <!-- =====================================
+             PROFILE IDENTITY CARD
+             ===================================== -->
+
+        <section class="profile-identity-card">
+
+            <div class="profile-avatar" id="profileAvatar">
+                U
+            </div>
+
+
+            <div class="profile-identity-content">
+
+                <h2 id="profileName">
+                    Loading...
+                </h2>
+
+                <p id="profileEmail">
+                    Loading...
                 </p>
 
-            </section>
+                <div class="profile-meta">
+
+                    <span
+                        class="status-badge inactive"
+                        id="accountStatus">
+
+                        <span class="status-dot"></span>
+
+                        INACTIVE
+
+                    </span>
 
 
+                    <span class="joined-date">
 
-            <!-- =================================================
-                 PROFILE SUMMARY
-                 ================================================= -->
+                        Joined
+                        <strong id="joinedDate">
+                            —
+                        </strong>
 
-            <section class="profile-summary">
-
-
-                <div class="profile-avatar">
-
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-
-                        <circle
-                            cx="12"
-                            cy="8"
-                            r="4"
-                            fill="currentColor"/>
-
-                        <path
-                            d="
-                            M4 21
-                            C4 16.582
-                            7.582 13
-                            12 13
-                            C16.418 13
-                            20 16.582
-                            20 21"
-                            fill="currentColor"/>
-
-                    </svg>
+                    </span>
 
                 </div>
 
+            </div>
 
-                <div class="profile-user">
-
-                    <!-- ONLY FULL NAME -->
-
-                    <h2 id="profileFullName">
-                        Investor
-                    </h2>
-
-                    <p id="profileEmail">
-                        —
-                    </p>
-
-                </div>
-
-
-                <span
-                    class="profile-status"
-                    id="profileStatus">
-
-                    Active
-
-                </span>
-
-            </section>
+        </section>
 
 
 
-            <!-- =================================================
-                 ACCOUNT INFORMATION
-                 ================================================= -->
+        <!-- =====================================
+             ACCOUNT INFORMATION
+             ===================================== -->
 
-            <section class="account-information">
+        <section class="profile-section">
 
+            <div class="section-heading">
 
-                <div class="information-heading">
+                <div>
 
-                    <div class="profile-kicker">
-                        ACCOUNT INFORMATION
+                    <div class="section-kicker">
+                        ACCOUNT
                     </div>
 
                     <h2>
-                        Personal Details
+                        Account Information
                     </h2>
 
                 </div>
 
+            </div>
 
 
-                <div class="information-list">
+            <div class="information-card">
 
 
-                    <!-- FULL NAME -->
+                <div class="information-row">
 
-                    <div class="information-row">
+                    <div class="information-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+
+                            <circle
+                                cx="12"
+                                cy="8"
+                                r="4">
+                            </circle>
+
+                            <path d="M4 21a8 8 0 0 1 16 0"></path>
+
+                        </svg>
+
+                    </div>
+
+
+                    <div class="information-content">
 
                         <span>
                             Full Name
@@ -335,102 +235,1299 @@
 
                     </div>
 
+                </div>
 
 
-                    <!-- PHONE NUMBER -->
 
-                    <div class="information-row">
+                <div class="information-row">
+
+                    <div class="information-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.8 19.8 0 0 1 3.11 5.18 2 2 0 0 1 5.1 3h3a2 2 0 0 1 2 1.72 12.7 12.7 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L9.08 10.91a16 16 0 0 0 4 4l1.27-1.27a2 2 0 0 1 2.11-.45 12.7 12.7 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+
+                        </svg>
+
+                    </div>
+
+
+                    <div class="information-content">
 
                         <span>
                             Phone Number
                         </span>
 
-                        <strong id="profilePhone">
+                        <strong id="accountPhone">
                             —
                         </strong>
 
                     </div>
 
+                </div>
 
 
-                    <!-- EMAIL ADDRESS -->
 
-                    <div class="information-row">
+                <div class="information-row">
+
+                    <div class="information-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+
+                            <rect
+                                x="3"
+                                y="5"
+                                width="18"
+                                height="14"
+                                rx="2">
+                            </rect>
+
+                            <path d="m3 7 9 6 9-6"></path>
+
+                        </svg>
+
+                    </div>
+
+
+                    <div class="information-content">
 
                         <span>
                             Email Address
                         </span>
 
-                        <strong id="profileEmailAddress">
+                        <strong id="accountEmail">
                             —
                         </strong>
 
                     </div>
-
-
-
-                    <!-- ACCOUNT NUMBER -->
-
-                    <div class="information-row">
-
-                        <span>
-                            Account Number
-                        </span>
-
-                        <strong id="profileAccountNumber">
-                            —
-                        </strong>
-
-                    </div>
-
 
                 </div>
 
-            </section>
 
 
-        </div>
+                <div class="information-row referral-row">
+
+                    <div class="information-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+
+                            <circle
+                                cx="9"
+                                cy="7"
+                                r="4">
+                            </circle>
+
+                            <path d="M3 21a6 6 0 0 1 12 0"></path>
+
+                            <path d="M16 11h5"></path>
+
+                            <path d="M18.5 8.5 21 11l-2.5 2.5"></path>
+
+                        </svg>
+
+                    </div>
+
+
+                    <div class="information-content">
+
+                        <span>
+                            Referral Code
+                        </span>
+
+                        <div class="referral-value">
+
+                            <strong id="accountReferralCode">
+                                —
+                            </strong>
+
+                            <button
+                                type="button"
+                                class="copy-button"
+                                id="copyReferralButton">
+
+                                COPY
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             ACCOUNT SECURITY
+             ===================================== -->
+
+        <section class="profile-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <div class="section-kicker">
+                        PROTECTION
+                    </div>
+
+                    <h2>
+                        Account Security
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="security-card">
+
+                <div class="security-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+
+                        <rect
+                            x="5"
+                            y="11"
+                            width="14"
+                            height="10"
+                            rx="2">
+                        </rect>
+
+                        <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+
+                        <circle
+                            cx="12"
+                            cy="16"
+                            r="1">
+                        </circle>
+
+                    </svg>
+
+                </div>
+
+
+                <div class="security-content">
+
+                    <h3>
+                        Keep your account secure
+                    </h3>
+
+                    <p>
+                        Never share your FINORA password or
+                        verification details with anyone.
+                        FINORA support will never ask for
+                        your password.
+                    </p>
+
+                    <p>
+                        Your account security is your responsibility.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             ACCOUNT SETTINGS
+             ===================================== -->
+
+        <section class="profile-section settings-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <div class="section-kicker">
+                        SETTINGS
+                    </div>
+
+                    <h2>
+                        Account Settings
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="settings-card">
+
+                <button
+                    type="button"
+                    class="setting-item"
+                    id="changePasswordButton">
+
+                    <div class="setting-left">
+
+                        <div class="setting-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round"
+                                stroke-linejoin="round">
+
+                                <rect
+                                    x="5"
+                                    y="11"
+                                    width="14"
+                                    height="10"
+                                    rx="2">
+                                </rect>
+
+                                <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+
+                            </svg>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Change Password
+                            </strong>
+
+                            <span>
+                                Update your account password
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <svg
+                        class="setting-arrow"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+
+                        <path d="m9 18 6-6-6-6"></path>
+
+                    </svg>
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             LOGOUT
+             ===================================== -->
+
+        <section class="logout-section">
+
+            <button
+                type="button"
+                class="logout-button"
+                id="logoutButton">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <path d="M10 17l5-5-5-5"></path>
+
+                    <path d="M15 12H3"></path>
+
+                    <path d="M21 19V5a2 2 0 0 0-2-2h-6"></path>
+
+                </svg>
+
+                <span>
+                    Log Out
+                </span>
+
+            </button>
+
+        </section>
+
 
     </main>
 
 
 
-    <!-- =====================================================
+    <!-- =========================================
+         BOTTOM NAVIGATION
+         ========================================= -->
+
+    <nav
+        class="bottom-navigation"
+        aria-label="Main navigation">
+
+
+        <a
+            href="dashboard.html"
+            class="bottom-nav-item"
+            data-page="home">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+
+                <path d="M3 10.5 12 3l9 7.5"></path>
+
+                <path d="M5 9.5V21h14V9.5"></path>
+
+                <path d="M9 21v-6h6v6"></path>
+
+            </svg>
+
+            <span>
+                Home
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="team.html"
+            class="bottom-nav-item"
+            data-page="team">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+
+                <circle
+                    cx="9"
+                    cy="7"
+                    r="4">
+                </circle>
+
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+
+            </svg>
+
+            <span>
+                Team
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="rates.html"
+            class="bottom-nav-item"
+            data-page="rates">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+
+                <path d="M4 19V5"></path>
+
+                <path d="M4 19h16"></path>
+
+                <path d="m7 15 4-4 3 2 6-7"></path>
+
+            </svg>
+
+            <span>
+                Rates
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="mine.html"
+            class="bottom-nav-item"
+            data-page="mine">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+
+                <rect
+                    x="3"
+                    y="5"
+                    width="18"
+                    height="14"
+                    rx="2">
+                </rect>
+
+                <path d="M3 10h18"></path>
+
+                <path d="M7 15h3"></path>
+
+            </svg>
+
+            <span>
+                Mine
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="profile.html"
+            class="bottom-nav-item active"
+            data-page="profile"
+            aria-current="page">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+
+                <circle
+                    cx="12"
+                    cy="8"
+                    r="4">
+                </circle>
+
+                <path d="M4 21a8 8 0 0 1 16 0"></path>
+
+            </svg>
+
+            <span>
+                Profile
+            </span>
+
+        </a>
+
+    </nav>
+
+
+
+    <!-- =========================================
          FOOTER
-         ===================================================== -->
+         ========================================= -->
 
-    <footer class="profile-footer">
+    <footer class="site-footer">
 
-        <p>
+        <div class="profile-container">
 
-            FINORA 2026
+            <div class="footer-brand">
+                <span class="fin">FIN</span><span class="ora">ORA</span>
+            </div>
 
-            <span>•</span>
+            <div class="footer-tagline">
+                Invest • Grow • Earn
+            </div>
 
-            Invest
+            <p class="footer-text">
+                FINORA provides a simple and transparent
+                investment experience designed around
+                clear earning structures.
+            </p>
 
-            <span>•</span>
+            <div class="footer-copy">
+                © 2026 FINORA. All rights reserved.
+            </div>
 
-            Grow
-
-            <span>•</span>
-
-            Earn
-
-        </p>
+        </div>
 
     </footer>
-
 
 </div>
 
 
 
-<!-- =====================================================
-     PROFILE JAVASCRIPT
-     ===================================================== -->
+<!-- =========================================
+     JAVASCRIPT
+     ========================================= -->
 
-<script src="profile.js"></script>
+<script>
+
+const FINORA_API =
+    "https://finora-platform-production.up.railway.app";
+
+
+/* =========================================================
+   SAFE TEXT
+========================================================= */
+
+function safeText(value) {
+
+    return String(
+        value ?? ""
+    );
+
+}
+
+
+/* =========================================================
+   FORMAT JOINED DATE
+
+   Example:
+   03 Sep 2026
+========================================================= */
+
+function formatJoinedDate(dateValue) {
+
+    if (!dateValue) {
+        return "—";
+    }
+
+    const date =
+        new Date(dateValue);
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+        return "—";
+    }
+
+    return date.toLocaleDateString(
+        "en-UG",
+        {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+/* =========================================================
+   PROFILE AVATAR
+========================================================= */
+
+function createInitials(name) {
+
+    const cleanName =
+        safeText(name)
+            .trim();
+
+    if (!cleanName) {
+        return "U";
+    }
+
+    const parts =
+        cleanName
+            .split(/\s+/)
+            .filter(Boolean);
+
+    if (parts.length === 1) {
+
+        return parts[0]
+            .substring(0, 1)
+            .toUpperCase();
+
+    }
+
+    return (
+        parts[0].substring(0, 1) +
+        parts[parts.length - 1].substring(0, 1)
+    ).toUpperCase();
+
+}
+
+
+/* =========================================================
+   UPDATE ACCOUNT STATUS
+
+   INACTIVE until the user has made an investment.
+
+   If backend later supplies:
+       hasInvestment
+       hasInvestments
+       investmentCount
+       totalInvested
+
+   we use that information.
+
+========================================================= */
+
+function determineAccountStatus(user) {
+
+    if (!user) {
+        return "inactive";
+    }
+
+    if (
+        user.hasInvestment === true ||
+        user.hasInvestments === true ||
+        Number(user.investmentCount) > 0 ||
+        Number(user.totalInvested) > 0 ||
+        Number(user.total_invested) > 0
+    ) {
+
+        return "active";
+
+    }
+
+    return "inactive";
+
+}
+
+
+/* =========================================================
+   RENDER PROFILE
+========================================================= */
+
+function renderProfile(user) {
+
+    if (!user) {
+        return;
+    }
+
+
+    const fullName =
+        user.fullName ??
+        user.full_name ??
+        "FINORA User";
+
+
+    const phone =
+        user.phone ??
+        user.phoneNumber ??
+        user.phone_number ??
+        "—";
+
+
+    const email =
+        user.email ??
+        "—";
+
+
+    const referralCode =
+        user.referralCode ??
+        user.referral_code ??
+        "—";
+
+
+    const joinedDate =
+        user.createdAt ??
+        user.created_at ??
+        user.joinedAt ??
+        user.joined_at;
+
+
+    /* -----------------------------------------
+       PROFILE IDENTITY
+    ----------------------------------------- */
+
+    const profileAvatar =
+        document.getElementById(
+            "profileAvatar"
+        );
+
+    const profileName =
+        document.getElementById(
+            "profileName"
+        );
+
+    const profileEmail =
+        document.getElementById(
+            "profileEmail"
+        );
+
+    const joinedDateElement =
+        document.getElementById(
+            "joinedDate"
+        );
+
+
+    if (profileAvatar) {
+
+        profileAvatar.textContent =
+            createInitials(fullName);
+
+    }
+
+
+    if (profileName) {
+
+        profileName.textContent =
+            safeText(fullName);
+
+    }
+
+
+    if (profileEmail) {
+
+        profileEmail.textContent =
+            safeText(email);
+
+    }
+
+
+    if (joinedDateElement) {
+
+        joinedDateElement.textContent =
+            formatJoinedDate(joinedDate);
+
+    }
+
+
+    /* -----------------------------------------
+       ACCOUNT STATUS
+    ----------------------------------------- */
+
+    const status =
+        determineAccountStatus(user);
+
+
+    const statusElement =
+        document.getElementById(
+            "accountStatus"
+        );
+
+
+    if (statusElement) {
+
+        statusElement.classList.remove(
+            "active",
+            "inactive"
+        );
+
+        statusElement.classList.add(
+            status
+        );
+
+        statusElement.innerHTML = `
+            <span class="status-dot"></span>
+            ${status === "active" ? "ACTIVE" : "INACTIVE"}
+        `;
+
+    }
+
+
+    /* -----------------------------------------
+       ACCOUNT INFORMATION
+    ----------------------------------------- */
+
+    const fullNameElement =
+        document.getElementById(
+            "accountFullName"
+        );
+
+    const phoneElement =
+        document.getElementById(
+            "accountPhone"
+        );
+
+    const emailElement =
+        document.getElementById(
+            "accountEmail"
+        );
+
+    const referralElement =
+        document.getElementById(
+            "accountReferralCode"
+        );
+
+
+    if (fullNameElement) {
+
+        fullNameElement.textContent =
+            safeText(fullName);
+
+    }
+
+
+    if (phoneElement) {
+
+        phoneElement.textContent =
+            safeText(phone);
+
+    }
+
+
+    if (emailElement) {
+
+        emailElement.textContent =
+            safeText(email);
+
+    }
+
+
+    if (referralElement) {
+
+        referralElement.textContent =
+            safeText(referralCode);
+
+    }
+
+
+    /* -----------------------------------------
+       COPY BUTTON STATE
+    ----------------------------------------- */
+
+    const copyButton =
+        document.getElementById(
+            "copyReferralButton"
+        );
+
+
+    if (copyButton) {
+
+        copyButton.dataset.code =
+            safeText(referralCode);
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD CURRENT USER
+========================================================= */
+
+async function loadProfile() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${FINORA_API}/api/me`,
+                {
+                    method: "GET",
+
+                    credentials: "include",
+
+                    headers: {
+                        "Accept":
+                            "application/json"
+                    }
+                }
+            );
+
+
+        if (
+            response.status === 401
+        ) {
+
+            console.warn(
+                "FINORA: Profile session is not authenticated."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            response.status === 403
+        ) {
+
+            const data =
+                await response
+                    .json()
+                    .catch(
+                        () => ({})
+                    );
+
+            alert(
+                data.message ||
+                "Your FINORA account is unavailable."
+            );
+
+            return;
+
+        }
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                `Profile request failed: ${response.status}`
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        const user =
+            data.user ||
+            data.data?.user ||
+            data;
+
+
+        renderProfile(user);
+
+
+        console.log(
+            "FINORA: Profile data updated."
+        );
+
+    } catch (error) {
+
+        console.error(
+            "❌ FINORA PROFILE LOAD ERROR:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   COPY REFERRAL CODE
+========================================================= */
+
+function initializeReferralCopy() {
+
+    const button =
+        document.getElementById(
+            "copyReferralButton"
+        );
+
+
+    if (!button) {
+        return;
+    }
+
+
+    button.addEventListener(
+        "click",
+        async () => {
+
+            const code =
+                button.dataset.code ||
+                document.getElementById(
+                    "accountReferralCode"
+                )?.textContent ||
+                "";
+
+
+            if (
+                !code ||
+                code === "—"
+            ) {
+                return;
+            }
+
+
+            try {
+
+                await navigator.clipboard
+                    .writeText(code);
+
+
+                const originalText =
+                    button.textContent;
+
+
+                button.textContent =
+                    "COPIED";
+
+
+                button.classList.add(
+                    "copied"
+                );
+
+
+                setTimeout(
+                    () => {
+
+                        button.textContent =
+                            originalText;
+
+                        button.classList.remove(
+                            "copied"
+                        );
+
+                    },
+                    1500
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "FINORA: Could not copy referral code.",
+                    error
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CHANGE PASSWORD
+========================================================= */
+
+function initializeChangePassword() {
+
+    const button =
+        document.getElementById(
+            "changePasswordButton"
+        );
+
+
+    if (!button) {
+        return;
+    }
+
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            /*
+             * The password-change backend will be
+             * connected when that security endpoint
+             * is built.
+             */
+
+            console.log(
+                "FINORA: Change Password selected."
+            );
+
+            alert(
+                "Password change will be available soon."
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+function initializeLogout() {
+
+    const button =
+        document.getElementById(
+            "logoutButton"
+        );
+
+
+    if (!button) {
+        return;
+    }
+
+
+    button.addEventListener(
+        "click",
+        async () => {
+
+            const confirmed =
+                window.confirm(
+                    "Are you sure you want to log out?"
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            try {
+
+                button.disabled =
+                    true;
+
+                button.classList.add(
+                    "loading"
+                );
+
+
+                const response =
+                    await fetch(
+                        `${FINORA_API}/api/users/logout`,
+                        {
+                            method: "POST",
+
+                            credentials: "include",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json",
+
+                                "Accept":
+                                    "application/json"
+                            }
+                        }
+                    );
+
+
+                if (
+                    response.ok
+                ) {
+
+                    window.location.href =
+                        "login.html";
+
+                    return;
+
+                }
+
+
+                /*
+                 * If the logout endpoint has not
+                 * been connected yet, do not pretend
+                 * the logout succeeded.
+                 */
+
+                throw new Error(
+                    `Logout failed: ${response.status}`
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "❌ FINORA LOGOUT ERROR:",
+                    error
+                );
+
+
+                button.disabled =
+                    false;
+
+                button.classList.remove(
+                    "loading"
+                );
+
+
+                alert(
+                    "FINORA could not log you out right now. Please try again."
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   NOTIFICATIONS
+========================================================= */
+
+function initializeNotifications() {
+
+    const button =
+        document.getElementById(
+            "notificationButton"
+        );
+
+
+    if (!button) {
+        return;
+    }
+
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            console.log(
+                "FINORA notifications opened."
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+function initializeProfile() {
+
+    initializeNotifications();
+
+    initializeReferralCopy();
+
+    initializeChangePassword();
+
+    initializeLogout();
+
+    loadProfile();
+
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    initializeProfile
+);
+
+</script>
 
 </body>
 
