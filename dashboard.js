@@ -435,40 +435,32 @@ document.addEventListener("DOMContentLoaded", () => {
             return null;
         }
     }
+/* =====================================================
+   HANDLE UNAUTHENTICATED USER
+
+   IMPORTANT:
+   Do NOT replace the dashboard user's name with
+   "Guest" while authentication is being checked.
+
+   The existing dashboard UI remains untouched.
+
+   If the session is genuinely missing, notify the
+   user without destroying the current UI state.
+===================================================== */
+
+function handleUnauthenticatedUser() {
+
+    showTemporaryMessage(
+        "Your FINORA session has expired. Please log in again."
+    );
 
 
-    /* =====================================================
-       HANDLE UNAUTHENTICATED USER
-    ===================================================== */
+    console.warn(
+        "FINORA: No authenticated session."
+    );
+}
 
-    function handleUnauthenticatedUser() {
-
-        updateDashboardUser(
-            null
-        );
-
-
-        /*
-           We do not automatically redirect immediately.
-
-           This makes debugging easier and prevents the
-           dashboard from appearing to randomly disappear.
-
-           The user can still see the page while the console
-           clearly reports that no session exists.
-        */
-
-        showTemporaryMessage(
-            "Your FINORA session has expired. Please log in again."
-        );
-
-
-        console.warn(
-            "FINORA: Redirecting to login is disabled for now."
-        );
-    }
-
-
+  
     /* =====================================================
        UPDATE USER NAME
     ===================================================== */
@@ -483,14 +475,18 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+if (!user) {
 
-        if (!user) {
+    /*
+       Do not change the existing dashboard name.
 
-            fullNameElement.textContent =
-                "Guest";
+       This prevents a temporary "Guest" state from
+       appearing while the backend session is being
+       checked.
+    */
 
-            return;
-        }
+    return;
+}
 
 
         const name =
