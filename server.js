@@ -22,7 +22,7 @@ const FRONTEND_URL =
 
 
 const allowedOrigins = [
-    "https://akanyijukadavis38-ux.github.io",
+    
     "https://finora-platform.vercel.app"
 ];
 
