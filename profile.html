@@ -1263,7 +1263,6 @@ function initializeReferralCopy() {
 /* =========================================================
    CHANGE PASSWORD
 ========================================================= */
-
 function initializeChangePassword() {
 
     const button =
@@ -1281,19 +1280,13 @@ function initializeChangePassword() {
         "click",
         () => {
 
-            console.log(
-                "FINORA: Change Password selected."
-            );
-
-            alert(
-                "Password change will be available soon."
-            );
+            window.location.href =
+                "change-password.html";
 
         }
     );
 
 }
-
 
 /* =========================================================
    LOGOUT
