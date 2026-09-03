@@ -11,8 +11,6 @@ ROOT
 
 :root {
 
-/* BACKGROUNDS */
-
 --bg-dark: #0B0A0F;
 --bg-dark-2: #121116;
 --bg-dark-3: #18161D;
@@ -23,7 +21,6 @@ ROOT
 
 /* =====================================================
    FINORA MAGENTA
-   COPIED FROM THE FINORA LOGIN CSS
 ====================================================== */
 
 --pink: #D100FF;
@@ -74,68 +71,70 @@ ROOT
 
 }
 
+
 /* =========================================================
 RESET
 ========================================================= */
 
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  }
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
 html,
 body {
-min-height: 100%;
+    min-height: 100%;
 }
 
 html {
-scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 body {
 
-font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-background:
+    background:
 
-    radial-gradient(
-        circle at 12% 15%,
-        rgba(209, 0, 255, 0.07),
-        transparent 34%
-    ),
+        radial-gradient(
+            circle at 12% 15%,
+            rgba(209, 0, 255, 0.07),
+            transparent 34%
+        ),
 
-    radial-gradient(
-        circle at 88% 85%,
-        rgba(201, 154, 34, 0.045),
-        transparent 34%
-    ),
+        radial-gradient(
+            circle at 88% 85%,
+            rgba(201, 154, 34, 0.045),
+            transparent 34%
+        ),
 
-    linear-gradient(
-        180deg,
-        #121116 0%,
-        #0B0A0F 55%,
-        #070609 100%
-    );
+        linear-gradient(
+            180deg,
+            #121116 0%,
+            #0B0A0F 55%,
+            #070609 100%
+        );
 
-color: var(--text);
+    color: var(--text);
 
-overflow-x: hidden;
+    overflow-x: hidden;
 
 }
 
 a {
-color: inherit;
-text-decoration: none;
+    color: inherit;
+    text-decoration: none;
 }
 
 button,
 input {
-font-family: inherit;
+    font-family: inherit;
 }
+
 
 /* =========================================================
 PAGE
@@ -143,28 +142,29 @@ PAGE
 
 .page {
 
-min-height: 100vh;
+    min-height: 100vh;
 
-display: flex;
-flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
-background:
+    background:
 
-    radial-gradient(
-        circle at 15% 20%,
-        rgba(209, 0, 255, 0.06),
-        transparent 35%
-    ),
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(209, 0, 255, 0.06),
+            transparent 35%
+        ),
 
-    radial-gradient(
-        circle at 85% 80%,
-        rgba(201, 154, 34, 0.045),
-        transparent 35%
-    ),
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(201, 154, 34, 0.045),
+            transparent 35%
+        ),
 
-    transparent;
+        transparent;
 
 }
+
 
 /* =========================================================
 MAGENTA BACKGROUND LIGHT
@@ -172,30 +172,31 @@ MAGENTA BACKGROUND LIGHT
 
 .page::before {
 
-content: "";
+    content: "";
 
-position: fixed;
+    position: fixed;
 
-width: 500px;
-height: 500px;
+    width: 500px;
+    height: 500px;
 
-top: -300px;
-left: -230px;
+    top: -300px;
+    left: -230px;
 
-border-radius: 50%;
+    border-radius: 50%;
 
-background:
-    radial-gradient(
-        circle,
-        rgba(209, 0, 255, 0.12),
-        transparent 68%
-    );
+    background:
+        radial-gradient(
+            circle,
+            rgba(209, 0, 255, 0.12),
+            transparent 68%
+        );
 
-pointer-events: none;
+    pointer-events: none;
 
-z-index: -1;
+    z-index: -1;
 
 }
+
 
 /* =========================================================
 GOLD BACKGROUND LIGHT
@@ -203,30 +204,31 @@ GOLD BACKGROUND LIGHT
 
 .page::after {
 
-content: "";
+    content: "";
 
-position: fixed;
+    position: fixed;
 
-width: 420px;
-height: 420px;
+    width: 420px;
+    height: 420px;
 
-right: -240px;
-bottom: -250px;
+    right: -240px;
+    bottom: -250px;
 
-border-radius: 50%;
+    border-radius: 50%;
 
-background:
-    radial-gradient(
-        circle,
-        rgba(201, 154, 34, 0.08),
-        transparent 68%
-    );
+    background:
+        radial-gradient(
+            circle,
+            rgba(201, 154, 34, 0.08),
+            transparent 68%
+        );
 
-pointer-events: none;
+    pointer-events: none;
 
-z-index: -1;
+    z-index: -1;
 
 }
+
 
 /* =========================================================
 HEADER
@@ -234,41 +236,42 @@ HEADER
 
 .header {
 
-width: 100%;
+    width: 100%;
 
-border-bottom:
-    1px solid
-    rgba(209, 0, 255, 0.16);
+    border-bottom:
+        1px solid
+        rgba(209, 0, 255, 0.16);
 
-background:
-    rgba(8, 7, 11, 0.94);
+    background:
+        rgba(8, 7, 11, 0.94);
 
-backdrop-filter: blur(14px);
--webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
 
 }
 
 .header-inner {
 
-width:
-    min(
-        1180px,
-        92%
-    );
+    width:
+        min(
+            1180px,
+            92%
+        );
 
-margin: auto;
+    margin: auto;
 
-min-height: 82px;
+    min-height: 82px;
 
-display: flex;
+    display: flex;
 
-align-items: center;
+    align-items: center;
 
-justify-content: space-between;
+    justify-content: space-between;
 
-gap: 25px;
+    gap: 25px;
 
 }
+
 
 /* =========================================================
 FINORA BRAND
@@ -276,46 +279,47 @@ FINORA BRAND
 
 .brand {
 
-display: flex;
+    display: flex;
 
-align-items: center;
+    align-items: center;
 
-gap: 10px;
+    gap: 10px;
 
-text-decoration: none;
+    text-decoration: none;
 
-color: inherit;
+    color: inherit;
 
-min-width: 0;
+    min-width: 0;
 
 }
 
 .finora-mark {
 
-width: 42px;
-height: 48px;
+    width: 42px;
+    height: 48px;
 
-display: block;
+    display: block;
 
-flex: 0 0 auto;
+    flex: 0 0 auto;
 
-filter:
-    drop-shadow(
-        0 5px 14px
-        rgba(209, 0, 255, 0.20)
-    );
+    filter:
+        drop-shadow(
+            0 5px 14px
+            rgba(209, 0, 255, 0.20)
+        );
 
 }
 
 .brand-text {
 
-display: flex;
+    display: flex;
 
-flex-direction: column;
+    flex-direction: column;
 
-min-width: 0;
+    min-width: 0;
 
 }
+
 
 /* =========================================================
 FINORA WORDMARK
@@ -325,34 +329,35 @@ ORA = GOLD
 
 .brand-name {
 
-display: flex;
+    display: flex;
 
-align-items: baseline;
+    align-items: baseline;
 
-font-family:
-    "Times New Roman",
-    Times,
-    serif;
+    font-family:
+        "Times New Roman",
+        Times,
+        serif;
 
-font-size: 29px;
+    font-size: 29px;
 
-font-weight: 700;
+    font-weight: 700;
 
-letter-spacing: -1px;
+    letter-spacing: -1px;
 
-line-height: 0.92;
+    line-height: 0.92;
 
-white-space: nowrap;
+    white-space: nowrap;
 
 }
 
 .brand-name .fin {
-color: #FFFFFF;
+    color: #FFFFFF;
 }
 
 .brand-name .ora {
-color: var(--gold);
+    color: var(--gold);
 }
+
 
 /* =========================================================
 TAGLINE
@@ -360,26 +365,27 @@ TAGLINE
 
 .brand-tagline {
 
-margin-top: 6px;
+    margin-top: 6px;
 
-font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-font-size: 8px;
+    font-size: 8px;
 
-font-weight: 700;
+    font-weight: 700;
 
-letter-spacing: 2.3px;
+    letter-spacing: 2.3px;
 
-color: #FFFFFF;
+    color: #FFFFFF;
 
-opacity: 0.48;
+    opacity: 0.48;
 
-white-space: nowrap;
+    white-space: nowrap;
 
 }
+
 
 /* =========================================================
 TOP LOGIN
@@ -387,34 +393,35 @@ TOP LOGIN
 
 .login-top {
 
-font-size: 13px;
+    font-size: 13px;
 
-color: #FFFFFF;
+    color: #FFFFFF;
 
-opacity: 0.62;
+    opacity: 0.62;
 
 }
 
 .login-top a {
 
-margin-left: 5px;
+    margin-left: 5px;
 
-color: var(--pink);
+    color: var(--pink);
 
-text-decoration: none;
+    text-decoration: none;
 
-font-weight: 700;
+    font-weight: 700;
 
-transition:
-    color 0.2s ease;
+    transition:
+        color 0.2s ease;
 
 }
 
 .login-top a:hover {
 
-color: var(--pink-light);
+    color: var(--pink-light);
 
 }
+
 
 /* =========================================================
 MAIN
@@ -422,20 +429,21 @@ MAIN
 
 .main {
 
-flex: 1;
+    flex: 1;
 
-width: 100%;
+    width: 100%;
 
-display: flex;
+    display: flex;
 
-align-items: center;
+    align-items: center;
 
-justify-content: center;
+    justify-content: center;
 
-padding:
-    55px 20px;
+    padding:
+        55px 20px;
 
 }
+
 
 /* =========================================================
 REGISTER WRAPPER
@@ -443,23 +451,24 @@ REGISTER WRAPPER
 
 .register-wrapper {
 
-width:
-    min(
-        1080px,
-        100%
-    );
+    width:
+        min(
+            1080px,
+            100%
+        );
 
-display: grid;
+    display: grid;
 
-grid-template-columns:
-    .88fr
-    1.12fr;
+    grid-template-columns:
+        .88fr
+        1.12fr;
 
-gap: 48px;
+    gap: 48px;
 
-align-items: center;
+    align-items: center;
 
 }
+
 
 /* =========================================================
 INFORMATION PANEL
@@ -467,31 +476,32 @@ INFORMATION PANEL
 
 .info-panel {
 
-position: relative;
+    position: relative;
 
-overflow: hidden;
+    overflow: hidden;
 
-padding:
-    48px 42px;
+    padding:
+        48px 42px;
 
-border-radius: 26px;
+    border-radius: 26px;
 
-background:
+    background:
 
-    linear-gradient(
-        145deg,
-        rgba(31, 17, 25, 0.97),
-        rgba(10, 7, 9, 0.99)
-    );
+        linear-gradient(
+            145deg,
+            rgba(31, 17, 25, 0.97),
+            rgba(10, 7, 9, 0.99)
+        );
 
-border:
-    1px solid
-    rgba(209, 0, 255, 0.35);
+    border:
+        1px solid
+        rgba(209, 0, 255, 0.35);
 
-box-shadow:
-    var(--shadow);
+    box-shadow:
+        var(--shadow);
 
 }
+
 
 /* =========================================================
 MAGENTA TOP ACCENT
@@ -499,29 +509,30 @@ MAGENTA TOP ACCENT
 
 .info-panel::before {
 
-content: "";
+    content: "";
 
-position: absolute;
+    position: absolute;
 
-top: 0;
-left: 35px;
+    top: 0;
+    left: 35px;
 
-width: 100px;
-height: 2px;
+    width: 100px;
+    height: 2px;
 
-background:
-    linear-gradient(
-        90deg,
-        var(--pink),
-        var(--pink-light),
-        transparent
-    );
+    background:
+        linear-gradient(
+            90deg,
+            var(--pink),
+            var(--pink-light),
+            transparent
+        );
 
-box-shadow:
-    0 0 18px
-    rgba(209, 0, 255, 0.65);
+    box-shadow:
+        0 0 18px
+        rgba(209, 0, 255, 0.65);
 
 }
+
 
 /* =========================================================
 GOLD CORNER GLOW
@@ -529,26 +540,27 @@ GOLD CORNER GLOW
 
 .info-panel::after {
 
-content: "";
+    content: "";
 
-position: absolute;
+    position: absolute;
 
-width: 220px;
-height: 220px;
+    width: 220px;
+    height: 220px;
 
-right: -150px;
-bottom: -150px;
+    right: -150px;
+    bottom: -150px;
 
-border-radius: 50%;
+    border-radius: 50%;
 
-background:
-    radial-gradient(
-        circle,
-        rgba(201, 154, 34, 0.12),
-        transparent 70%
-    );
+    background:
+        radial-gradient(
+            circle,
+            rgba(201, 154, 34, 0.12),
+            transparent 70%
+        );
 
 }
+
 
 /* =========================================================
 KICKER
@@ -556,37 +568,38 @@ KICKER
 
 .info-kicker {
 
-display: flex;
+    display: flex;
 
-align-items: center;
+    align-items: center;
 
-gap: 9px;
+    gap: 9px;
 
-color: var(--gold);
+    color: var(--gold);
 
-font-size: 10px;
+    font-size: 10px;
 
-font-weight: 900;
+    font-weight: 900;
 
-letter-spacing: 2.2px;
+    letter-spacing: 2.2px;
 
 }
 
 .info-kicker::before {
 
-content: "";
+    content: "";
 
-width: 28px;
-height: 1px;
+    width: 28px;
+    height: 1px;
 
-background:
-    var(--pink);
+    background:
+        var(--pink);
 
-box-shadow:
-    0 0 10px
-    rgba(209, 0, 255, 0.75);
+    box-shadow:
+        0 0 10px
+        rgba(209, 0, 255, 0.75);
 
 }
+
 
 /* =========================================================
 INFORMATION HEADING
@@ -594,54 +607,55 @@ INFORMATION HEADING
 
 .info-panel h1 {
 
-margin-top: 20px;
+    margin-top: 20px;
 
-color: var(--white);
+    color: var(--white);
 
-font-size:
-    clamp(
-        40px,
-        4.5vw,
-        60px
-    );
+    font-size:
+        clamp(
+            40px,
+            4.5vw,
+            60px
+        );
 
-line-height: .98;
+    line-height: .98;
 
-font-weight: 800;
+    font-weight: 800;
 
-letter-spacing: -2.6px;
+    letter-spacing: -2.6px;
 
 }
 
 .info-panel h1 span {
 
-color: var(--pink);
+    color: var(--pink);
 
-text-shadow:
-    0 0 25px
-    rgba(209, 0, 255, 0.30);
+    text-shadow:
+        0 0 25px
+        rgba(209, 0, 255, 0.30);
 
 }
 
 .info-panel > p {
 
-max-width: 500px;
+    max-width: 500px;
 
-margin-top: 22px;
+    margin-top: 22px;
 
-color:
-    rgba(
-        255,
-        255,
-        255,
-        0.70
-    );
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.70
+        );
 
-font-size: 14px;
+    font-size: 14px;
 
-line-height: 1.8;
+    line-height: 1.8;
 
 }
+
 
 /* =========================================================
 BENEFITS
@@ -649,25 +663,26 @@ BENEFITS
 
 .benefits {
 
-margin-top: 38px;
+    margin-top: 38px;
 
-display: flex;
+    display: flex;
 
-flex-direction: column;
+    flex-direction: column;
 
-gap: 22px;
+    gap: 22px;
 
 }
 
 .benefit {
 
-display: flex;
+    display: flex;
 
-align-items: center;
+    align-items: center;
 
-gap: 15px;
+    gap: 15px;
 
 }
+
 
 /* =========================================================
 PREMIUM ICON CONTAINER
@@ -675,69 +690,70 @@ PREMIUM ICON CONTAINER
 
 .benefit-icon {
 
-position: relative;
+    position: relative;
 
-width: 43px;
-height: 43px;
+    width: 43px;
+    height: 43px;
 
-flex: 0 0 43px;
+    flex: 0 0 43px;
 
-display: flex;
+    display: flex;
 
-align-items: center;
+    align-items: center;
 
-justify-content: center;
+    justify-content: center;
 
-border-radius: 13px;
+    border-radius: 13px;
 
-background:
-    linear-gradient(
-        145deg,
-        rgba(209, 0, 255, 0.20),
-        rgba(201, 154, 34, 0.055)
-    );
+    background:
+        linear-gradient(
+            145deg,
+            rgba(209, 0, 255, 0.20),
+            rgba(201, 154, 34, 0.055)
+        );
 
-border:
-    1px solid
-    rgba(209, 0, 255, 0.45);
+    border:
+        1px solid
+        rgba(209, 0, 255, 0.45);
 
-box-shadow:
+    box-shadow:
 
-    inset
-    0 1px 0
-    rgba(255, 255, 255, 0.08),
+        inset
+        0 1px 0
+        rgba(255, 255, 255, 0.08),
 
-    0 8px 25px
-    rgba(0, 0, 0, 0.35),
+        0 8px 25px
+        rgba(0, 0, 0, 0.35),
 
-    0 0 20px
-    rgba(209, 0, 255, 0.12);
+        0 0 20px
+        rgba(209, 0, 255, 0.12);
 
 }
 
 .benefit-icon svg {
 
-width: 20px;
-height: 20px;
+    width: 20px;
+    height: 20px;
 
-fill: none;
+    fill: none;
 
-stroke:
-    var(--gold);
+    stroke:
+        var(--gold);
 
-stroke-width: 1.8;
+    stroke-width: 1.8;
 
-stroke-linecap: round;
+    stroke-linecap: round;
 
-stroke-linejoin: round;
+    stroke-linejoin: round;
 
-filter:
-    drop-shadow(
-        0 0 5px
-        rgba(201, 154, 34, 0.22)
-    );
+    filter:
+        drop-shadow(
+            0 0 5px
+            rgba(201, 154, 34, 0.22)
+        );
 
 }
+
 
 /* =========================================================
 MAGENTA INNER DOT
@@ -745,26 +761,27 @@ MAGENTA INNER DOT
 
 .benefit-icon::after {
 
-content: "";
+    content: "";
 
-position: absolute;
+    position: absolute;
 
-width: 4px;
-height: 4px;
+    width: 4px;
+    height: 4px;
 
-right: 7px;
-bottom: 7px;
+    right: 7px;
+    bottom: 7px;
 
-border-radius: 50%;
+    border-radius: 50%;
 
-background:
-    var(--pink);
+    background:
+        var(--pink);
 
-box-shadow:
-    0 0 8px
-    rgba(209, 0, 255, 0.80);
+    box-shadow:
+        0 0 8px
+        rgba(209, 0, 255, 0.80);
 
 }
+
 
 /* =========================================================
 BENEFIT TEXT
@@ -772,31 +789,32 @@ BENEFIT TEXT
 
 .benefit h3 {
 
-color: var(--white);
+    color: var(--white);
 
-font-size: 14px;
+    font-size: 14px;
 
-font-weight: 750;
+    font-weight: 750;
 
-margin-bottom: 5px;
+    margin-bottom: 5px;
 
 }
 
 .benefit p {
 
-color:
-    rgba(
-        255,
-        255,
-        255,
-        0.50
-    );
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.50
+        );
 
-font-size: 12px;
+    font-size: 12px;
 
-line-height: 1.55;
+    line-height: 1.55;
 
 }
+
 
 /* =========================================================
 FORM CARD
@@ -804,31 +822,32 @@ FORM CARD
 
 .form-card {
 
-position: relative;
+    position: relative;
 
-padding:
-    40px;
+    padding:
+        40px;
 
-border-radius: 26px;
+    border-radius: 26px;
 
-background:
+    background:
 
-    linear-gradient(
-        145deg,
-        rgba(29, 18, 24, 0.98),
-        rgba(10, 7, 9, 0.99)
-    );
+        linear-gradient(
+            145deg,
+            rgba(29, 18, 24, 0.98),
+            rgba(10, 7, 9, 0.99)
+        );
 
-border:
-    1px solid
-    rgba(255, 255, 255, 0.09);
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.09);
 
-box-shadow:
-    var(--shadow);
+    box-shadow:
+        var(--shadow);
 
-overflow: hidden;
+    overflow: hidden;
 
 }
+
 
 /* =========================================================
 MAGENTA / GOLD TOP LINE
@@ -836,31 +855,32 @@ MAGENTA / GOLD TOP LINE
 
 .form-card::before {
 
-content: "";
+    content: "";
 
-position: absolute;
+    position: absolute;
 
-top: 0;
-left: 8%;
+    top: 0;
+    left: 8%;
 
-width: 84%;
-height: 2px;
+    width: 84%;
+    height: 2px;
 
-background:
-    linear-gradient(
-        90deg,
-        transparent,
-        var(--pink),
-        var(--gold),
-        var(--pink),
-        transparent
-    );
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--pink),
+            var(--gold),
+            var(--pink),
+            transparent
+        );
 
-box-shadow:
-    0 0 18px
-    rgba(209, 0, 255, 0.35);
+    box-shadow:
+        0 0 18px
+        rgba(209, 0, 255, 0.35);
 
 }
+
 
 /* =========================================================
 FORM HEADER
@@ -868,41 +888,42 @@ FORM HEADER
 
 .form-header {
 
-margin-bottom: 30px;
+    margin-bottom: 30px;
 
 }
 
 .form-header h2 {
 
-color: var(--white);
+    color: var(--white);
 
-font-size: 30px;
+    font-size: 30px;
 
-line-height: 1.1;
+    line-height: 1.1;
 
-font-weight: 800;
+    font-weight: 800;
 
-letter-spacing: -.8px;
+    letter-spacing: -.8px;
 
 }
 
 .form-header p {
 
-margin-top: 9px;
+    margin-top: 9px;
 
-color:
-    rgba(
-        255,
-        255,
-        255,
-        0.50
-    );
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.50
+        );
 
-font-size: 13px;
+    font-size: 13px;
 
-line-height: 1.6;
+    line-height: 1.6;
 
 }
+
 
 /* =========================================================
 FORM GROUP
@@ -910,37 +931,38 @@ FORM GROUP
 
 .form-group {
 
-margin-bottom: 18px;
+    margin-bottom: 18px;
 
 }
 
 .form-group label {
 
-display: block;
+    display: block;
 
-margin-bottom: 8px;
+    margin-bottom: 8px;
 
-color:
-    rgba(
-        255,
-        255,
-        255,
-        0.90
-    );
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.90
+        );
 
-font-size: 11px;
+    font-size: 11px;
 
-font-weight: 700;
+    font-weight: 700;
 
 }
 
 .optional {
 
-color: var(--gold);
+    color: var(--gold);
 
-font-size: 9px;
+    font-size: 9px;
 
 }
+
 
 /* =========================================================
 INPUT
@@ -949,121 +971,176 @@ INPUT
 .input-wrapper,
 .referral-wrapper {
 
-position: relative;
+    position: relative;
 
 }
 
 .form-input {
 
-width: 100%;
+    width: 100%;
 
-height: 51px;
+    height: 51px;
 
-padding:
-    0 15px;
+    padding:
+        0 15px;
 
-border:
-    1px solid
-    rgba(255, 255, 255, 0.10);
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
 
-border-radius: 11px;
+    border-radius: 11px;
 
-outline: none;
+    outline: none;
 
-background:
-    rgba(255, 255, 255, 0.025);
+    background:
+        rgba(255, 255, 255, 0.025);
 
-color: var(--white);
+    color: var(--white);
 
-font-size: 14px;
+    font-size: 14px;
 
-transition:
-    border-color 0.22s ease,
-    box-shadow 0.22s ease,
-    background 0.22s ease;
+    transition:
+        border-color 0.22s ease,
+        box-shadow 0.22s ease,
+        background 0.22s ease;
 
 }
 
 .form-input::placeholder {
 
-color:
-    rgba(
-        255,
-        255,
-        255,
-        0.27
-    );
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.27
+        );
 
 }
 
 .form-input:hover {
 
-border-color:
-    rgba(
-        255,
-        255,
-        255,
-        0.17
-    );
+    border-color:
+        rgba(
+            255,
+            255,
+            255,
+            0.17
+        );
 
 }
 
 .form-input:focus {
 
-border-color:
-    var(--pink);
+    border-color:
+        var(--pink);
 
-background:
-    rgba(
-        209,
-        0,
-        255,
-        0.045
-    );
+    background:
+        rgba(
+            209,
+            0,
+            255,
+            0.045
+        );
 
-box-shadow:
+    box-shadow:
 
-    0 0 0 3px
-    rgba(
-        209,
-        0,
-        255,
-        0.10
-    ),
+        0 0 0 3px
+        rgba(
+            209,
+            0,
+            255,
+            0.10
+        ),
 
-    0 8px 28px
-    rgba(
-        0,
-        0,
-        0,
-        0.20
-    );
+        0 8px 28px
+        rgba(
+            0,
+            0,
+            0,
+            0.20
+        );
 
 }
+
+
+/* =========================================================
+VALID INPUT
+========================================================= */
 
 .form-input.valid {
 
-border-color:
-    rgba(
-        98,
-        230,
-        165,
-        0.48
-    );
+    border-color:
+        rgba(
+            98,
+            230,
+            165,
+            0.48
+        );
 
 }
 
-.form-input.invalid {
 
-border-color:
-    rgba(
-        255,
-        102,
-        130,
-        0.65
-    );
+/* =========================================================
+INVALID INPUT
+========================================================= */
+
+.form-input.invalid,
+.form-input.error {
+
+    border-color:
+        rgba(
+            209,
+            0,
+            255,
+            0.90
+        );
+
+    background:
+        rgba(
+            209,
+            0,
+            255,
+            0.045
+        );
+
+    box-shadow:
+        0 0 0 2px
+        rgba(
+            209,
+            0,
+            255,
+            0.10
+        );
 
 }
+
+.form-input.invalid:focus,
+.form-input.error:focus {
+
+    border-color:
+        var(--pink-light);
+
+    box-shadow:
+
+        0 0 0 3px
+        rgba(
+            209,
+            0,
+            255,
+            0.15
+        ),
+
+        0 8px 28px
+        rgba(
+            0,
+            0,
+            0,
+            0.20
+        );
+
+}
+
 
 /* =========================================================
 PASSWORD
@@ -1071,94 +1148,118 @@ PASSWORD
 
 .password-input {
 
-padding-right: 55px;
+    padding-right: 55px;
 
 }
 
 .toggle-password {
 
-position: absolute;
+    position: absolute;
 
-top: 50%;
-right: 9px;
+    top: 50%;
+    right: 9px;
 
-transform:
-    translateY(-50%);
+    transform:
+        translateY(-50%);
 
-width: 36px;
-height: 36px;
+    width: 36px;
+    height: 36px;
 
-border: 0;
+    border: 0;
 
-border-radius: 9px;
+    border-radius: 9px;
 
-background: transparent;
+    background: transparent;
 
-color:
-    rgba(
-        255,
-        255,
-        255,
-        0.50
-    );
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.50
+        );
 
-cursor: pointer;
+    cursor: pointer;
 
-transition:
-    .2s ease;
+    transition:
+        .2s ease;
 
 }
 
 .toggle-password:hover {
 
-color:
-    var(--gold);
+    color:
+        var(--gold);
 
-background:
-    rgba(
-        201,
-        154,
-        34,
-        0.07
-    );
+    background:
+        rgba(
+            201,
+            154,
+            34,
+            0.07
+        );
 
 }
 
+
 /* =========================================================
-FIELD MESSAGES
+FIELD VALIDATION MESSAGES
 ========================================================= */
 
 .field-message {
 
-display: none;
+    display: none;
 
-margin-top: 7px;
+    margin-top: 7px;
 
-font-size: 10px;
+    padding-left: 2px;
 
-line-height: 1.4;
+    font-size: 10px;
+
+    line-height: 1.5;
+
+    font-weight: 600;
 
 }
 
+
+/* =========================================================
+IMPORTANT:
+SHOW ERROR AND SUCCESS MESSAGES
+========================================================= */
+
+.field-message.error,
+.field-message.success,
 .field-message.show {
 
-display: block;
+    display: block;
 
 }
+
+
+/* =========================================================
+MAGENTA ERROR MESSAGE
+========================================================= */
 
 .field-message.error {
 
-color:
-    #FF6682;
+    color:
+        var(--pink);
 
 }
+
+
+/* =========================================================
+SUCCESS MESSAGE
+========================================================= */
 
 .field-message.success {
 
-color:
-    #62E6A5;
+    color:
+        #62E6A5;
 
 }
+
 
 /* =========================================================
 PASSWORD STRENGTH
@@ -1166,59 +1267,60 @@ PASSWORD STRENGTH
 
 .password-strength {
 
-margin-top: 9px;
+    margin-top: 9px;
 
-display: none;
+    display: none;
 
 }
 
 .password-strength.show {
 
-display: block;
+    display: block;
 
 }
 
 .strength-bars {
 
-display: flex;
+    display: flex;
 
-gap: 5px;
+    gap: 5px;
 
 }
 
 .strength-bar {
 
-flex: 1;
+    flex: 1;
 
-height: 4px;
+    height: 4px;
 
-border-radius: 20px;
+    border-radius: 20px;
 
-background:
-    rgba(
-        255,
-        255,
-        255,
-        0.08
-    );
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.08
+        );
 
 }
 
 .strength-text {
 
-margin-top: 6px;
+    margin-top: 6px;
 
-color:
-    rgba(
-        255,
-        255,
-        255,
-        0.30
-    );
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.30
+        );
 
-font-size: 9px;
+    font-size: 9px;
 
 }
+
 
 /* =========================================================
 REFERRAL STATUS
@@ -1226,41 +1328,42 @@ REFERRAL STATUS
 
 .referral-status {
 
-position: absolute;
+    position: absolute;
 
-top: 50%;
-right: 14px;
+    top: 50%;
+    right: 14px;
 
-transform:
-    translateY(-50%);
+    transform:
+        translateY(-50%);
 
-display: none;
+    display: none;
 
-font-size: 10px;
+    font-size: 10px;
 
-font-weight: 800;
+    font-weight: 800;
 
 }
 
 .referral-status.show {
 
-display: block;
+    display: block;
 
 }
 
 .referral-status.valid {
 
-color:
-    #62E6A5;
+    color:
+        #62E6A5;
 
 }
 
 .referral-status.invalid {
 
-color:
-    #FF6682;
+    color:
+        var(--pink);
 
 }
+
 
 /* =========================================================
 TERMS
@@ -1268,50 +1371,51 @@ TERMS
 
 .terms {
 
-display: flex;
+    display: flex;
 
-align-items: flex-start;
+    align-items: flex-start;
 
-gap: 10px;
+    gap: 10px;
 
-margin-top: 7px;
+    margin-top: 7px;
 
-color:
-    rgba(
-        255,
-        255,
-        255,
-        0.50
-    );
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.50
+        );
 
-font-size: 10px;
+    font-size: 10px;
 
-line-height: 1.55;
+    line-height: 1.55;
 
 }
 
 .terms input {
 
-width: 14px;
-height: 14px;
+    width: 14px;
+    height: 14px;
 
-margin-top: 2px;
+    margin-top: 2px;
 
-flex-shrink: 0;
+    flex-shrink: 0;
 
-accent-color:
-    var(--pink);
+    accent-color:
+        var(--pink);
 
 }
 
 .terms a {
 
-color:
-    var(--gold);
+    color:
+        var(--gold);
 
-font-weight: 700;
+    font-weight: 700;
 
 }
+
 
 /* =========================================================
 CREATE ACCOUNT BUTTON
@@ -1320,148 +1424,149 @@ FINORA MAGENTA
 
 .create-button {
 
-position: relative;
+    position: relative;
 
-width: 100%;
+    width: 100%;
 
-height: 55px;
+    height: 55px;
 
-margin-top: 22px;
+    margin-top: 22px;
 
-border:
-    1px solid
-    rgba(
-        255,
-        255,
-        255,
-        0.08
-    );
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            0.08
+        );
 
-border-radius: 12px;
+    border-radius: 12px;
 
-overflow: hidden;
+    overflow: hidden;
 
-cursor: pointer;
+    cursor: pointer;
 
-background:
+    background:
 
-    linear-gradient(
-        135deg,
-        var(--pink-light) 0%,
-        var(--pink) 48%,
-        var(--pink-deep) 100%
-    );
+        linear-gradient(
+            135deg,
+            var(--pink-light) 0%,
+            var(--pink) 48%,
+            var(--pink-deep) 100%
+        );
 
-color:
-    var(--white);
+    color:
+        var(--white);
 
-font-size: 12px;
+    font-size: 12px;
 
-font-weight: 900;
+    font-weight: 900;
 
-letter-spacing: 1px;
+    letter-spacing: 1px;
 
-box-shadow:
+    box-shadow:
 
-    0 14px 35px
-    rgba(
-        209,
-        0,
-        255,
-        0.28
-    ),
+        0 14px 35px
+        rgba(
+            209,
+            0,
+            255,
+            0.28
+        ),
 
-    inset
-    0 1px 0
-    rgba(
-        255,
-        255,
-        255,
-        0.18
-    );
+        inset
+        0 1px 0
+        rgba(
+            255,
+            255,
+            255,
+            0.18
+        );
 
-transition:
-    .25s ease;
+    transition:
+        .25s ease;
 
 }
 
 .create-button::before {
 
-content: "";
+    content: "";
 
-position: absolute;
+    position: absolute;
 
-top: 0;
-left: -120%;
+    top: 0;
+    left: -120%;
 
-width: 65%;
-height: 100%;
+    width: 65%;
+    height: 100%;
 
-background:
-    linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.25),
-        transparent
-    );
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.25),
+            transparent
+        );
 
-transform:
-    skewX(-20deg);
+    transform:
+        skewX(-20deg);
 
-transition:
-    left .55s ease;
+    transition:
+        left .55s ease;
 
 }
 
 .create-button:hover {
 
-transform:
-    translateY(-2px);
+    transform:
+        translateY(-2px);
 
-box-shadow:
+    box-shadow:
 
-    0 18px 45px
-    rgba(
-        209,
-        0,
-        255,
-        0.40
-    ),
+        0 18px 45px
+        rgba(
+            209,
+            0,
+            255,
+            0.40
+        ),
 
-    0 0 20px
-    rgba(
-        209,
-        0,
-        255,
-        0.14
-    );
+        0 0 20px
+        rgba(
+            209,
+            0,
+            255,
+            0.14
+        );
 
 }
 
 .create-button:hover::before {
 
-left: 140%;
+    left: 140%;
 
 }
 
 .create-button:active {
 
-transform:
-    translateY(0);
+    transform:
+        translateY(0);
 
 }
 
 .create-button:disabled {
 
-opacity: .55;
+    opacity: .55;
 
-cursor: not-allowed;
+    cursor: not-allowed;
 
-transform: none;
+    transform: none;
 
-box-shadow: none;
+    box-shadow: none;
 
 }
+
 
 /* =========================================================
 FORM STATUS
@@ -1469,74 +1574,75 @@ FORM STATUS
 
 .form-status {
 
-display: none;
+    display: none;
 
-margin-top: 15px;
+    margin-top: 15px;
 
-padding:
-    12px 14px;
+    padding:
+        12px 14px;
 
-border-radius: 10px;
+    border-radius: 10px;
 
-font-size: 11px;
+    font-size: 11px;
 
-line-height: 1.5;
+    line-height: 1.5;
 
 }
 
 .form-status.show {
 
-display: block;
+    display: block;
 
 }
 
 .form-status.error {
 
-color:
-    #FFB0BD;
+    color:
+        #FFB0BD;
 
-background:
-    rgba(
-        255,
-        102,
-        130,
-        0.065
-    );
+    background:
+        rgba(
+            255,
+            102,
+            130,
+            0.065
+        );
 
-border:
-    1px solid
-    rgba(
-        255,
-        102,
-        130,
-        0.18
-    );
+    border:
+        1px solid
+        rgba(
+            255,
+            102,
+            130,
+            0.18
+        );
 
 }
 
 .form-status.success {
 
-color:
-    #A7F3CE;
+    color:
+        #A7F3CE;
 
-background:
-    rgba(
-        98,
-        230,
-        165,
-        0.065
-    );
+    background:
+        rgba(
+            98,
+            230,
+            165,
+            0.065
+        );
 
-border:
-    1px solid
-    rgba(
-        98,
-        230,
-        165,
-        0.18
-    );
+    border:
+        1px solid
+        rgba(
+            98,
+            230,
+            165,
+            0.18
+        );
 
 }
+
 
 /* =========================================================
 BOTTOM LOGIN
@@ -1544,48 +1650,49 @@ BOTTOM LOGIN
 
 .bottom-login {
 
-margin-top: 24px;
+    margin-top: 24px;
 
-padding-top: 20px;
+    padding-top: 20px;
 
-border-top:
-    1px solid
-    rgba(
-        255,
-        255,
-        255,
-        0.07
-    );
+    border-top:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            0.07
+        );
 
-text-align: center;
+    text-align: center;
 
-color:
-    rgba(
-        255,
-        255,
-        255,
-        0.50
-    );
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.50
+        );
 
-font-size: 11px;
+    font-size: 11px;
 
 }
 
 .bottom-login a {
 
-color:
-    var(--pink);
+    color:
+        var(--pink);
 
-font-weight: 800;
+    font-weight: 800;
 
 }
 
 .bottom-login a:hover {
 
-color:
-    var(--pink-light);
+    color:
+        var(--pink-light);
 
 }
+
 
 /* =========================================================
 FOOTER
@@ -1593,33 +1700,34 @@ FOOTER
 
 .footer {
 
-padding:
-    21px 15px;
+    padding:
+        21px 15px;
 
-text-align: center;
+    text-align: center;
 
-border-top:
-    1px solid
-    rgba(
-        209,
-        0,
-        255,
-        0.12
-    );
+    border-top:
+        1px solid
+        rgba(
+            209,
+            0,
+            255,
+            0.12
+        );
 
-color:
-    rgba(
-        255,
-        255,
-        255,
-        0.30
-    );
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.30
+        );
 
-font-size: 9px;
+    font-size: 9px;
 
-letter-spacing: .5px;
+    letter-spacing: .5px;
 
 }
+
 
 /* =========================================================
 FOCUS
@@ -1629,13 +1737,14 @@ button:focus-visible,
 a:focus-visible,
 input:focus-visible {
 
-outline:
-    2px solid
-    var(--pink);
+    outline:
+        2px solid
+        var(--pink);
 
-outline-offset: 3px;
+    outline-offset: 3px;
 
 }
+
 
 /* =========================================================
 TABLET
@@ -1643,38 +1752,43 @@ TABLET
 
 @media (max-width: 850px) {
 
-.main {
+    .main {
 
-    padding:
-        40px 18px 55px;
+        padding:
+            40px 18px 55px;
+
+    }
+
+    .register-wrapper {
+
+        grid-template-columns: 1fr;
+
+        max-width: 640px;
+
+        gap: 25px;
+
+    }
+
+    .info-panel {
+
+        padding:
+            38px 34px;
+
+    }
+
+    .benefits {
+
+        display: grid;
+
+        grid-template-columns:
+            1fr 1fr;
+
+        gap: 20px;
+
+    }
+
 }
 
-.register-wrapper {
-
-    grid-template-columns: 1fr;
-
-    max-width: 640px;
-
-    gap: 25px;
-}
-
-.info-panel {
-
-    padding:
-        38px 34px;
-}
-
-.benefits {
-
-    display: grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap: 20px;
-}
-
-}
 
 /* =========================================================
 MOBILE
@@ -1682,71 +1796,82 @@ MOBILE
 
 @media (max-width: 600px) {
 
-.header-inner {
+    .header-inner {
 
-    width:
-        calc(100% - 30px);
+        width:
+            calc(100% - 30px);
 
-    min-height: 70px;
+        min-height: 70px;
+
+    }
+
+    .brand-name {
+
+        font-size: 27px;
+
+    }
+
+    .brand-tagline {
+
+        font-size: 6px;
+
+        letter-spacing: 1.7px;
+
+    }
+
+    .login-top {
+
+        font-size: 11px;
+
+    }
+
+    .main {
+
+        padding:
+            25px 13px 45px;
+
+    }
+
+    .info-panel {
+
+        padding:
+            30px 23px;
+
+        border-radius: 21px;
+
+    }
+
+    .info-panel h1 {
+
+        font-size: 39px;
+
+    }
+
+    .benefits {
+
+        display: flex;
+
+        gap: 18px;
+
+    }
+
+    .form-card {
+
+        padding:
+            28px 20px;
+
+        border-radius: 21px;
+
+    }
+
+    .form-header h2 {
+
+        font-size: 26px;
+
+    }
+
 }
 
-.brand-name {
-
-    font-size: 27px;
-}
-
-.brand-tagline {
-
-    font-size: 6px;
-
-    letter-spacing: 1.7px;
-}
-
-.login-top {
-
-    font-size: 11px;
-}
-
-.main {
-
-    padding:
-        25px 13px 45px;
-}
-
-.info-panel {
-
-    padding:
-        30px 23px;
-
-    border-radius: 21px;
-}
-
-.info-panel h1 {
-
-    font-size: 39px;
-}
-
-.benefits {
-
-    display: flex;
-
-    gap: 18px;
-}
-
-.form-card {
-
-    padding:
-        28px 20px;
-
-    border-radius: 21px;
-}
-
-.form-header h2 {
-
-    font-size: 26px;
-}
-
-}
 
 /* =========================================================
 SMALL PHONES
@@ -1754,53 +1879,62 @@ SMALL PHONES
 
 @media (max-width: 390px) {
 
-.header-inner {
+    .header-inner {
 
-    width:
-        calc(100% - 20px);
+        width:
+            calc(100% - 20px);
+
+    }
+
+    .brand-name {
+
+        font-size: 23px;
+
+    }
+
+    .brand-tagline {
+
+        font-size: 5.5px;
+
+        letter-spacing: 1.4px;
+
+    }
+
+    .login-top {
+
+        font-size: 10px;
+
+    }
+
+    .main {
+
+        padding:
+            20px 10px 35px;
+
+    }
+
+    .info-panel {
+
+        padding:
+            25px 18px;
+
+    }
+
+    .info-panel h1 {
+
+        font-size: 35px;
+
+    }
+
+    .form-card {
+
+        padding:
+            24px 16px;
+
+    }
+
 }
 
-.brand-name {
-
-    font-size: 23px;
-}
-
-.brand-tagline {
-
-    font-size: 5.5px;
-
-    letter-spacing: 1.4px;
-}
-
-.login-top {
-
-    font-size: 10px;
-}
-
-.main {
-
-    padding:
-        20px 10px 35px;
-}
-
-.info-panel {
-
-    padding:
-        25px 18px;
-}
-
-.info-panel h1 {
-
-    font-size: 35px;
-}
-
-.form-card {
-
-    padding:
-        24px 16px;
-}
-
-}
 
 /* =========================================================
 REDUCE MOTION
@@ -1808,20 +1942,22 @@ REDUCE MOTION
 
 @media (prefers-reduced-motion: reduce) {
 
-html {
+    html {
 
-    scroll-behavior: auto;
-}
+        scroll-behavior: auto;
 
-*,
-*::before,
-*::after {
+    }
 
-    transition-duration:
-        .01ms !important;
+    *,
+    *::before,
+    *::after {
 
-    animation-duration:
-        .01ms !important;
-}
+        transition-duration:
+            .01ms !important;
+
+        animation-duration:
+            .01ms !important;
+
+    }
 
 }
