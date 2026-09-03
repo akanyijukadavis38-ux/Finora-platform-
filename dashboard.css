@@ -1895,41 +1895,108 @@ RECENT TRANSACTIONS
 .empty-transactions p {
     font-size: 12px;
 }
-
 /* =========================================================
-FOOTER
+FINORA FOOTER
 ========================================================= */
 
 .dashboard-footer {
-    padding:
-        25px
-        0
-        30px;
+    margin-top: 34px;
 
-    text-align: center;
+    padding:
+        28px
+        15px
+        24px;
 
     border-top:
         1px solid
         rgba(
-            209,
-            0,
             255,
-            0.14
+            255,
+            255,
+            0.055
         );
+
+    text-align: center;
 }
 
-.dashboard-footer p {
+.dashboard-footer .footer-brand {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 0;
+
+    margin: 0;
+    padding: 0;
+
+    font-family:
+        "Times New Roman",
+        Times,
+        serif;
+
+    font-size: 35px;
+
+    font-weight: 700;
+
+    letter-spacing: -2px;
+
+    line-height: 1;
+}
+
+.dashboard-footer .footer-brand .fin,
+.dashboard-footer .footer-brand .ora {
+    display: inline;
+
+    margin: 0;
+    padding: 0;
+
+    letter-spacing: -2px;
+}
+
+.dashboard-footer .footer-brand .fin {
+    color: var(--white);
+}
+
+.dashboard-footer .footer-brand .ora {
+    color: var(--gold-light);
+}
+
+.dashboard-footer .footer-tagline {
+    margin-top: 6px;
+
+    color: var(--pink);
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.8px;
+
+    line-height: 1;
+}
+
+.dashboard-footer .footer-text {
+    max-width: 320px;
+
+    margin:
+        12px
+        auto
+        0;
+
     color: var(--muted);
 
-    font-size: 10px;
+    font-size: 9px;
 
-    letter-spacing: 1px;
+    line-height: 1.6;
 }
 
-.dashboard-footer span {
-    color: var(--gold);
+.dashboard-footer .footer-copy {
+    margin-top: 10px;
 
-    margin: 0 5px;
+    color: var(--muted);
+
+    font-size: 9px;
 }
 
 /* =========================================================
@@ -2233,10 +2300,7 @@ MOBILE
             translateX(-10px);
     }
 
-    .finora-logo-mark {
-        width: 35px;
-        height: 42px;
-    }
+   
 
     .finora-name {
         font-family:
@@ -2709,11 +2773,7 @@ VERY SMALL PHONES
         font-size: 34px;
     }
 
-    .finora-logo-mark {
-        width: 31px;
-        height: 38px;
-    }
-
+    
     .finora-brand {
         transform:
             translateX(-7px);
