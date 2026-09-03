@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 8080;
    FINORA PRODUCTION CONFIGURATION
 ========================================================= */
 const FRONTEND_URL =
-    "https://akanyijukadavis38-ux.github.io";
+    "https://finora-platform.vercel.app";
 
 
 const allowedOrigins = [
