@@ -12,6 +12,8 @@ const router = express.Router();
 
 const FRONTEND_URL =
     "https://akanyijukadavis38-ux.github.io";
+
+
 /* =========================================================
    REGISTER
 ========================================================= */
@@ -213,10 +215,6 @@ router.post("/register", async (req, res) => {
 
         /* =================================================
            CREATE USER
-           
-           user.js automatically generates the
-           FINORA referralCode through its
-           pre-validation hook.
         ================================================= */
 
         const user =
@@ -447,7 +445,6 @@ router.post("/register", async (req, res) => {
     }
 
 });
-
 
 
 /* =========================================================
@@ -904,6 +901,7 @@ router.get("/me", async (req, res) => {
 
 });
 
+
 /* =========================================================
    GET REAL TEAM
 ========================================================= */
@@ -979,8 +977,6 @@ router.get("/team", async (req, res) => {
 
         /* =================================================
            LEVEL 1
-
-           Users directly referred by current user.
         ================================================= */
 
         const levelOneUsers =
@@ -1000,8 +996,6 @@ router.get("/team", async (req, res) => {
 
         /* =================================================
            LEVEL 2
-
-           Users referred by Level 1 users.
         ================================================= */
 
         const levelOneCodes =
@@ -1032,8 +1026,6 @@ router.get("/team", async (req, res) => {
 
         /* =================================================
            LEVEL 3
-
-           Users referred by Level 2 users.
         ================================================= */
 
         const levelTwoCodes =
@@ -1075,19 +1067,6 @@ router.get("/team", async (req, res) => {
                     ) || 0;
 
 
-                /*
-                 * FINORA TEAM STATUS
-                 *
-                 * Active:
-                 * Member has made their first deposit.
-                 *
-                 * Inactive:
-                 * Member has never made a deposit.
-                 *
-                 * We intentionally do NOT use
-                 * user.status for this.
-                 */
-
                 const depositStatus =
                     totalDeposit > 0
                         ? "Active"
@@ -1120,21 +1099,12 @@ router.get("/team", async (req, res) => {
                     referred_by_code:
                         user.referredByCode || null,
 
-                    /*
-                     * Deposit amount is sent so the
-                     * frontend can correctly determine
-                     * Active / Inactive as well.
-                     */
                     totalDeposit:
                         totalDeposit,
 
                     total_deposit:
                         totalDeposit,
 
-                    /*
-                     * This is TEAM activity status,
-                     * based on first deposit.
-                     */
                     status:
                         depositStatus,
 
@@ -1247,6 +1217,8 @@ router.get("/team", async (req, res) => {
     }
 
 });
+
+
 /* =========================================================
    CHANGE PASSWORD
 ========================================================= */
@@ -1502,475 +1474,167 @@ router.post("/change-password", async (req, res) => {
     }
 
 });
-/* =========================================================
-   FORGOT PASSWORD — REQUEST RESET
-========================================================= */
 
-const crypto = require("crypto");
+
+/* =========================================================
+   FORGOT PASSWORD — SIMPLE ACCOUNT RECOVERY
+========================================================= */
 
 router.post("/forgot-password", async (req, res) => {
 
     try {
 
-        const email =
-            String(req.body.email || "")
-                .trim()
-                .toLowerCase();
-
-
-        if (!email) {
-
-            return res.status(400).json({
-                success: false,
-                message: "Please enter your registered email address."
-            });
-
-        }
-
-
-        if (
-            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-        ) {
-
-            return res.status(400).json({
-                success: false,
-                message: "Please enter a valid email address."
-            });
-
-        }
-
-
-        const user =
-            await User.findOne({
-                email
-            });
-
-
-        /*
-         * Do not reveal whether an email exists.
-         * This prevents account enumeration.
-         */
-
-        if (!user) {
-
-            return res.status(200).json({
-                success: true,
-                message:
-                    "If an account exists with that email, a password reset link has been sent."
-            });
-
-        }
-
-
-        if (user.status === "frozen") {
-
-            return res.status(403).json({
-                success: false,
-                message:
-                    "Your FINORA account has been frozen."
-            });
-
-        }
-
-
-        /*
-         * Generate a secure random reset token.
-         */
-
-        const resetToken =
-            crypto.randomBytes(32).toString("hex");
-
-
-        /*
-         * Store only the HASHED token in MongoDB.
-         */
-
-        const hashedToken =
-            crypto
-                .createHash("sha256")
-                .update(resetToken)
-                .digest("hex");
-
-
-        /*
-         * Reset link expires after 15 minutes.
-         */
-
-        const resetExpires =
-            new Date(
-                Date.now() + 15 * 60 * 1000
-            );
-
-
-        user.resetPasswordToken =
-            hashedToken;
-
-        user.resetPasswordExpires =
-            resetExpires;
-
-
-        await user.save();
-
-
-        /*
-         * Frontend reset page.
-         */
-
-        const resetLink =
-            `${FRONTEND_URL}/forgot-password.html?token=${encodeURIComponent(
-                resetToken
-            )}`;
-
-
-        /*
-         * Resend email configuration.
-         *
-         * These values will come from Railway
-         * environment variables.
-         */
-
-        const resendApiKey =
-            process.env.RESEND_API_KEY;
-
-        const resendFromEmail =
-            process.env.RESEND_FROM_EMAIL;
-
-
-        if (
-            !resendApiKey ||
-            !resendFromEmail
-        ) {
-
-            console.error(
-                "❌ FINORA PASSWORD RESET: Resend environment variables are missing."
-            );
-
-            /*
-             * Do not leave a usable reset token
-             * in the database if email cannot be sent.
-             */
-
-            user.resetPasswordToken = null;
-            user.resetPasswordExpires = null;
-
-            await user.save();
-
-            return res.status(500).json({
-                success: false,
-                message:
-                    "FINORA could not send the password reset email right now."
-            });
-
-        }
-
-
-        /*
-         * SEND RESET EMAIL THROUGH RESEND
-         */
-
-        const emailResponse =
-            await fetch(
-                "https://api.resend.com/emails",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Authorization":
-                            `Bearer ${resendApiKey}`,
-
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            from:
-                                resendFromEmail,
-
-                            to: [
-                                user.email
-                            ],
-
-                            subject:
-                                "FINORA Password Reset",
-
-                            html: `
-                                <div style="
-                                    background:#07050A;
-                                    padding:40px 20px;
-                                    font-family:Arial,sans-serif;
-                                    color:#ffffff;
-                                ">
-
-                                    <div style="
-                                        max-width:520px;
-                                        margin:auto;
-                                        background:#100C13;
-                                        border:1px solid rgba(209,0,255,.22);
-                                        border-radius:14px;
-                                        padding:30px;
-                                    ">
-
-                                        <div style="
-                                            text-align:center;
-                                            font-size:34px;
-                                            font-weight:700;
-                                            letter-spacing:-2px;
-                                        ">
-                                            <span style="color:#ffffff;">
-                                                FIN
-                                            </span>
-                                            <span style="color:#E7B84B;">
-                                                ORA
-                                            </span>
-                                        </div>
-
-                                        <div style="
-                                            text-align:center;
-                                            color:#D100FF;
-                                            font-size:9px;
-                                            font-weight:700;
-                                            letter-spacing:2px;
-                                            margin-top:6px;
-                                        ">
-                                            INVEST • GROW • EARN
-                                        </div>
-
-                                        <h2 style="
-                                            margin-top:30px;
-                                            color:#ffffff;
-                                        ">
-                                            Reset Your Password
-                                        </h2>
-
-                                        <p style="
-                                            color:#B7AEBB;
-                                            line-height:1.7;
-                                        ">
-                                            We received a request to reset
-                                            your FINORA account password.
-                                        </p>
-
-                                        <p style="
-                                            color:#B7AEBB;
-                                            line-height:1.7;
-                                        ">
-                                            Click the button below to create
-                                            your new password.
-                                        </p>
-
-                                        <div style="
-                                            text-align:center;
-                                            margin:30px 0;
-                                        ">
-
-                                            <a
-                                                href="${resetLink}"
-                                                style="
-                                                    display:inline-block;
-                                                    background:#D100FF;
-                                                    color:#ffffff;
-                                                    text-decoration:none;
-                                                    padding:14px 24px;
-                                                    border-radius:8px;
-                                                    font-weight:700;
-                                                "
-                                            >
-                                                RESET PASSWORD
-                                            </a>
-
-                                        </div>
-
-                                        <p style="
-                                            color:#8E8791;
-                                            font-size:12px;
-                                            line-height:1.6;
-                                        ">
-                                            This password reset link expires
-                                            in 15 minutes.
-                                        </p>
-
-                                        <p style="
-                                            color:#8E8791;
-                                            font-size:12px;
-                                            line-height:1.6;
-                                        ">
-                                            If you did not request a password
-                                            reset, you can safely ignore this
-                                            email.
-                                        </p>
-
-                                    </div>
-
-                                </div>
-                            `
-                        })
-                }
-            );
-
-
-        if (!emailResponse.ok) {
-
-            const resendError =
-                await emailResponse.text();
-
-            console.error(
-                "❌ FINORA RESEND ERROR:",
-                resendError
-            );
-
-
-            user.resetPasswordToken = null;
-            user.resetPasswordExpires = null;
-
-            await user.save();
-
-
-            return res.status(500).json({
-                success: false,
-                message:
-                    "FINORA could not send the password reset email."
-            });
-
-        }
-
-
-        return res.status(200).json({
-            success: true,
-            message:
-                "If an account exists with that email, a password reset link has been sent."
-        });
-
-
-    } catch (error) {
-
-        console.error(
-            "❌ FINORA FORGOT PASSWORD ERROR:",
-            error
-        );
-
-        return res.status(500).json({
-            success: false,
-            message:
-                "FINORA could not process your password reset request."
-        });
-
-    }
-
-});
-
-
-/* =========================================================
-   RESET PASSWORD
-========================================================= */
-
-router.post("/reset-password", async (req, res) => {
-
-    try {
-
         const {
-            token,
+            identifier,
             newPassword,
             confirmPassword
         } = req.body;
 
 
+        /* =================================================
+           REQUIRED FIELDS
+        ================================================= */
+
         if (
-            !token ||
+            !identifier ||
             !newPassword ||
             !confirmPassword
         ) {
 
             return res.status(400).json({
+
                 success: false,
+
                 message:
-                    "Please fill in all password fields."
+                    "Please fill in all required fields."
+
             });
 
         }
 
+
+        /* =================================================
+           CLEAN IDENTIFIER
+        ================================================= */
+
+        const cleanIdentifier =
+            String(identifier).trim();
+
+
+        /* =================================================
+           PASSWORD LENGTH
+        ================================================= */
 
         if (
             String(newPassword).length < 6
         ) {
 
             return res.status(400).json({
+
                 success: false,
+
                 message:
                     "New password must be at least 6 characters."
+
             });
 
         }
 
 
+        /* =================================================
+           CONFIRM PASSWORD
+        ================================================= */
+
         if (
-            newPassword !== confirmPassword
+            newPassword !==
+            confirmPassword
         ) {
 
             return res.status(400).json({
+
                 success: false,
+
                 message:
                     "New passwords do not match."
+
             });
 
         }
 
 
-        /*
-         * Hash the token received from the
-         * frontend and compare it with the
-         * token stored in MongoDB.
-         */
+        /* =================================================
+           FIND EXISTING ACCOUNT
+           
+           The identifier can be either:
+           - Registered email
+           - Registered phone number
+        ================================================= */
 
-        const hashedToken =
-            crypto
-                .createHash("sha256")
-                .update(String(token))
-                .digest("hex");
+        let user;
 
 
-        const user =
-            await User.findOne({
-                resetPasswordToken:
-                    hashedToken,
+        if (
+            cleanIdentifier.includes("@")
+        ) {
 
-                resetPasswordExpires: {
-                    $gt: new Date()
-                }
-            });
+            user =
+                await User.findOne({
+                    email:
+                        cleanIdentifier.toLowerCase()
+                });
 
+        } else {
+
+            user =
+                await User.findOne({
+                    phone:
+                        cleanIdentifier
+                });
+
+        }
+
+
+        /* =================================================
+           ACCOUNT NOT FOUND
+        ================================================= */
 
         if (!user) {
 
-            return res.status(400).json({
+            return res.status(404).json({
+
                 success: false,
+
                 message:
-                    "This password reset link is invalid or has expired."
+                    "No FINORA account was found with that email or phone number."
+
             });
 
         }
 
 
-        if (user.status === "frozen") {
+        /* =================================================
+           FROZEN ACCOUNT
+        ================================================= */
 
-            user.resetPasswordToken = null;
-            user.resetPasswordExpires = null;
-
-            await user.save();
+        if (
+            user.status === "frozen"
+        ) {
 
             return res.status(403).json({
+
                 success: false,
+
                 message:
                     "Your FINORA account has been frozen."
+
             });
 
         }
 
 
-        /*
-         * Prevent using the current password again.
-         */
+        /* =================================================
+           PREVENT SAME PASSWORD
+        ================================================= */
 
         const samePassword =
             await bcrypt.compare(
@@ -1982,17 +1646,20 @@ router.post("/reset-password", async (req, res) => {
         if (samePassword) {
 
             return res.status(400).json({
+
                 success: false,
+
                 message:
                     "New password must be different from your current password."
+
             });
 
         }
 
 
-        /*
-         * Hash the new permanent password.
-         */
+        /* =================================================
+           HASH NEW PASSWORD
+        ================================================= */
 
         const hashedPassword =
             await bcrypt.hash(
@@ -2001,45 +1668,67 @@ router.post("/reset-password", async (req, res) => {
             );
 
 
+        /* =================================================
+           UPDATE EXISTING ACCOUNT
+           
+           IMPORTANT:
+           We only replace the password.
+           The existing account remains the same.
+        ================================================= */
+
         user.password =
             hashedPassword;
 
 
         /*
-         * Reset token can never be reused.
+         * Clear any old reset-token information
+         * that may have been created by the previous
+         * password-reset system.
          */
 
         user.resetPasswordToken = null;
-
         user.resetPasswordExpires = null;
 
 
         await user.save();
 
 
+        /* =================================================
+           SUCCESS
+        ================================================= */
+
         return res.status(200).json({
+
             success: true,
+
             message:
-                "FINORA password has been reset successfully."
+                "Your FINORA password has been recovered successfully. Please log in to your account."
+
         });
 
 
     } catch (error) {
 
         console.error(
-            "❌ FINORA RESET PASSWORD ERROR:",
+            "❌ FINORA FORGOT PASSWORD ERROR:",
             error
         );
 
+
         return res.status(500).json({
+
             success: false,
+
             message:
-                "FINORA could not reset your password right now."
+                "FINORA could not recover your password right now."
+
         });
 
     }
 
 });
+
+
 /* =========================================================
    LOGOUT
 ========================================================= */
