@@ -460,18 +460,8 @@
             }
 
 
-            registrationRunning =
-                true;
-
-
-            showStatus(
-                "Step 1: Create Account button clicked.",
-                ""
-            );
-
-
             /* =================================================
-               READ VALUES
+               READ VALUES BEFORE VALIDATION
             ================================================= */
 
             const nameValue =
@@ -511,8 +501,34 @@
 
 
             /* =================================================
+               VALIDATION
+               
+               Registration is NOT marked as running until
+               all local validation has passed.
+               
+               This guarantees the user receives a clear
+               message when something is missing or wrong.
+            ================================================= */
+
+            /* =================================================
                NAME
             ================================================= */
+
+            if (!nameValue) {
+
+                showStatus(
+                    "Please enter your full name.",
+                    "error"
+                );
+
+                if (fullName) {
+                    fullName.focus();
+                }
+
+                return;
+
+            }
+
 
             if (
                 nameValue.length < 2
@@ -522,9 +538,6 @@
                     "Please enter your full name.",
                     "error"
                 );
-
-                registrationRunning =
-                    false;
 
                 if (fullName) {
                     fullName.focus();
@@ -539,6 +552,22 @@
                PHONE
             ================================================= */
 
+            if (!phoneValue) {
+
+                showStatus(
+                    "Please enter your Uganda phone number.",
+                    "error"
+                );
+
+                if (phone) {
+                    phone.focus();
+                }
+
+                return;
+
+            }
+
+
             if (
                 !/^07[0-9]{8}$/.test(
                     phoneValue
@@ -549,9 +578,6 @@
                     "Enter a valid Uganda phone number, e.g. 0701234567.",
                     "error"
                 );
-
-                registrationRunning =
-                    false;
 
                 if (phone) {
                     phone.focus();
@@ -566,6 +592,22 @@
                EMAIL
             ================================================= */
 
+            if (!emailValue) {
+
+                showStatus(
+                    "Please enter your email address.",
+                    "error"
+                );
+
+                if (email) {
+                    email.focus();
+                }
+
+                return;
+
+            }
+
+
             if (
                 !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
                     emailValue
@@ -576,9 +618,6 @@
                     "Please enter a valid email address.",
                     "error"
                 );
-
-                registrationRunning =
-                    false;
 
                 if (email) {
                     email.focus();
@@ -593,6 +632,22 @@
                PASSWORD
             ================================================= */
 
+            if (!passwordValue) {
+
+                showStatus(
+                    "Please enter your password.",
+                    "error"
+                );
+
+                if (password) {
+                    password.focus();
+                }
+
+                return;
+
+            }
+
+
             if (
                 passwordValue.length < 6
             ) {
@@ -601,9 +656,6 @@
                     "Password must contain at least 6 characters.",
                     "error"
                 );
-
-                registrationRunning =
-                    false;
 
                 if (password) {
                     password.focus();
@@ -618,6 +670,22 @@
                CONFIRM PASSWORD
             ================================================= */
 
+            if (!confirmValue) {
+
+                showStatus(
+                    "Please confirm your password.",
+                    "error"
+                );
+
+                if (confirmPassword) {
+                    confirmPassword.focus();
+                }
+
+                return;
+
+            }
+
+
             if (
                 passwordValue !==
                 confirmValue
@@ -627,9 +695,6 @@
                     "Passwords do not match.",
                     "error"
                 );
-
-                registrationRunning =
-                    false;
 
                 if (confirmPassword) {
                     confirmPassword.focus();
@@ -654,12 +719,23 @@
                     "error"
                 );
 
-                registrationRunning =
-                    false;
-
                 return;
 
             }
+
+
+            /* =================================================
+               VALIDATION PASSED
+            ================================================= */
+
+            registrationRunning =
+                true;
+
+
+            showStatus(
+                "Step 1: Create Account button clicked.",
+                ""
+            );
 
 
             /* =================================================
