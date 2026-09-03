@@ -461,7 +461,7 @@
 
 
             /* =================================================
-               READ VALUES BEFORE VALIDATION
+               READ VALUES
             ================================================= */
 
             const nameValue =
@@ -502,17 +502,9 @@
 
             /* =================================================
                VALIDATION
-               
-               Registration is NOT marked as running until
-               all local validation has passed.
-               
-               This guarantees the user receives a clear
-               message when something is missing or wrong.
             ================================================= */
 
-            /* =================================================
-               NAME
-            ================================================= */
+            /* FULL NAME */
 
             if (!nameValue) {
 
@@ -530,9 +522,7 @@
             }
 
 
-            if (
-                nameValue.length < 2
-            ) {
+            if (nameValue.length < 2) {
 
                 showStatus(
                     "Please enter your full name.",
@@ -548,9 +538,7 @@
             }
 
 
-            /* =================================================
-               PHONE
-            ================================================= */
+            /* PHONE */
 
             if (!phoneValue) {
 
@@ -588,9 +576,7 @@
             }
 
 
-            /* =================================================
-               EMAIL
-            ================================================= */
+            /* EMAIL */
 
             if (!emailValue) {
 
@@ -628,9 +614,7 @@
             }
 
 
-            /* =================================================
-               PASSWORD
-            ================================================= */
+            /* PASSWORD */
 
             if (!passwordValue) {
 
@@ -648,9 +632,7 @@
             }
 
 
-            if (
-                passwordValue.length < 6
-            ) {
+            if (passwordValue.length < 6) {
 
                 showStatus(
                     "Password must contain at least 6 characters.",
@@ -666,9 +648,7 @@
             }
 
 
-            /* =================================================
-               CONFIRM PASSWORD
-            ================================================= */
+            /* CONFIRM PASSWORD */
 
             if (!confirmValue) {
 
@@ -705,9 +685,7 @@
             }
 
 
-            /* =================================================
-               TERMS
-            ================================================= */
+            /* TERMS */
 
             if (
                 terms &&
@@ -1124,7 +1102,7 @@
 
         /* =================================================
            DIRECT BUTTON CLICK
-           
+
            This guarantees that the CREATE ACCOUNT button
            also triggers registration directly.
         ================================================= */
