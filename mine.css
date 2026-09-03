@@ -135,7 +135,69 @@ justify-content: center;
 
 position: relative;
 }
+/* =========================================
+BACK BUTTON
+========================================= */
 
+.page-back-button {
+position: absolute;
+
+left: 0;
+
+width: 42px;
+height: 42px;
+
+padding: 0;
+
+display: flex;
+align-items: center;
+justify-content: center;
+
+border: 1px solid rgba(209, 0, 255, 0.22);
+
+border-radius: 50%;
+
+background:
+    rgba(7, 6, 9, 0.72);
+
+color: var(--white);
+
+cursor: pointer;
+
+appearance: none;
+-webkit-appearance: none;
+
+box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.28);
+
+transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.page-back-button:hover {
+background:
+    rgba(209, 0, 255, 0.10);
+
+border-color:
+    rgba(209, 0, 255, 0.42);
+
+transform: translateY(-1px);
+}
+
+.page-back-button:active {
+transform: translateY(0);
+}
+
+.page-back-button svg {
+width: 21px;
+height: 21px;
+
+display: block;
+
+flex-shrink: 0;
+}
 
 /* =========================================
 FINORA BRAND
