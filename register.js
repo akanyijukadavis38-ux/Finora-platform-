@@ -55,6 +55,26 @@
 
 
         /* =================================================
+           FIELD MESSAGES
+        ================================================= */
+
+        const nameMessage =
+            document.getElementById("nameMessage");
+
+        const phoneMessage =
+            document.getElementById("phoneMessage");
+
+        const emailMessage =
+            document.getElementById("emailMessage");
+
+        const confirmMessage =
+            document.getElementById("confirmMessage");
+
+        const referralMessage =
+            document.getElementById("referralMessage");
+
+
+        /* =================================================
            BACKEND
         ================================================= */
 
@@ -127,6 +147,177 @@
                 "FINORA STATUS:",
                 message
             );
+
+        }
+
+
+        /* =================================================
+           FIELD ERROR HELPERS
+        ================================================= */
+
+        function clearFieldMessage(
+            input,
+            messageElement
+        ) {
+
+            if (input) {
+
+                input.classList.remove(
+                    "error"
+                );
+
+                input.removeAttribute(
+                    "aria-invalid"
+                );
+
+            }
+
+            if (messageElement) {
+
+                messageElement.textContent =
+                    "";
+
+                messageElement.className =
+                    "field-message";
+
+            }
+
+        }
+
+
+        function showFieldError(
+            input,
+            messageElement,
+            message
+        ) {
+
+            if (input) {
+
+                input.classList.add(
+                    "error"
+                );
+
+                input.setAttribute(
+                    "aria-invalid",
+                    "true"
+                );
+
+            }
+
+            if (messageElement) {
+
+                messageElement.textContent =
+                    message;
+
+                messageElement.className =
+                    "field-message error";
+
+            }
+
+        }
+
+
+        function showFieldSuccess(
+            input,
+            messageElement,
+            message
+        ) {
+
+            if (input) {
+
+                input.classList.remove(
+                    "error"
+                );
+
+                input.removeAttribute(
+                    "aria-invalid"
+                );
+
+            }
+
+            if (messageElement) {
+
+                messageElement.textContent =
+                    message;
+
+                messageElement.className =
+                    "field-message success";
+
+            }
+
+        }
+
+
+        function focusField(input) {
+
+            if (!input) {
+                return;
+            }
+
+            try {
+
+                input.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+            } catch (scrollError) {
+
+                console.error(
+                    "FINORA SCROLL ERROR:",
+                    scrollError
+                );
+
+            }
+
+            setTimeout(
+                function () {
+
+                    input.focus();
+
+                },
+                250
+            );
+
+        }
+
+
+        function clearAllValidationMessages() {
+
+            clearFieldMessage(
+                fullName,
+                nameMessage
+            );
+
+            clearFieldMessage(
+                phone,
+                phoneMessage
+            );
+
+            clearFieldMessage(
+                email,
+                emailMessage
+            );
+
+            clearFieldMessage(
+                password,
+                null
+            );
+
+            clearFieldMessage(
+                confirmPassword,
+                confirmMessage
+            );
+
+            if (referralMessage) {
+
+                referralMessage.textContent =
+                    "";
+
+                referralMessage.className =
+                    "field-message";
+
+            }
 
         }
 
@@ -346,6 +537,215 @@
 
                     }
 
+
+                    /* =====================================
+                       PASSWORD ERROR CLEARING
+                    ===================================== */
+
+                    if (
+                        value &&
+                        value.length >= 6
+                    ) {
+
+                        password.classList.remove(
+                            "error"
+                        );
+
+                        password.removeAttribute(
+                            "aria-invalid"
+                        );
+
+                    }
+
+                    if (
+                        confirmPassword &&
+                        confirmPassword.value
+                    ) {
+
+                        if (
+                            value ===
+                            confirmPassword.value
+                        ) {
+
+                            showFieldSuccess(
+                                confirmPassword,
+                                confirmMessage,
+                                "Passwords match."
+                            );
+
+                        } else {
+
+                            showFieldError(
+                                confirmPassword,
+                                confirmMessage,
+                                "Passwords do not match."
+                            );
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =================================================
+           LIVE FULL NAME VALIDATION
+        ================================================= */
+
+        if (fullName) {
+
+            fullName.addEventListener(
+                "input",
+                function () {
+
+                    const value =
+                        fullName.value.trim();
+
+
+                    if (!value) {
+
+                        clearFieldMessage(
+                            fullName,
+                            nameMessage
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (value.length < 2) {
+
+                        showFieldError(
+                            fullName,
+                            nameMessage,
+                            "Please enter your full name."
+                        );
+
+                        return;
+
+                    }
+
+
+                    showFieldSuccess(
+                        fullName,
+                        nameMessage,
+                        "Full name looks good."
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =================================================
+           LIVE PHONE VALIDATION
+        ================================================= */
+
+        if (phone) {
+
+            phone.addEventListener(
+                "input",
+                function () {
+
+                    const value =
+                        phone.value.trim();
+
+
+                    if (!value) {
+
+                        clearFieldMessage(
+                            phone,
+                            phoneMessage
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (
+                        !/^07[0-9]{8}$/.test(
+                            value
+                        )
+                    ) {
+
+                        showFieldError(
+                            phone,
+                            phoneMessage,
+                            "Enter a valid Uganda phone number, e.g. 0701234567."
+                        );
+
+                        return;
+
+                    }
+
+
+                    showFieldSuccess(
+                        phone,
+                        phoneMessage,
+                        "Phone number looks good."
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =================================================
+           LIVE EMAIL VALIDATION
+        ================================================= */
+
+        if (email) {
+
+            email.addEventListener(
+                "input",
+                function () {
+
+                    const value =
+                        email.value.trim().toLowerCase();
+
+
+                    if (!value) {
+
+                        clearFieldMessage(
+                            email,
+                            emailMessage
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (
+                        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+                            value
+                        )
+                    ) {
+
+                        showFieldError(
+                            email,
+                            emailMessage,
+                            "Please enter a valid email address."
+                        );
+
+                        return;
+
+                    }
+
+
+                    showFieldSuccess(
+                        email,
+                        emailMessage,
+                        "Email address looks good."
+                    );
+
                 }
             );
 
@@ -362,26 +762,16 @@
                 "input",
                 function () {
 
-                    const message =
-                        document.getElementById(
-                            "confirmMessage"
+                    const value =
+                        confirmPassword.value;
+
+
+                    if (!value) {
+
+                        clearFieldMessage(
+                            confirmPassword,
+                            confirmMessage
                         );
-
-
-                    if (!message) {
-                        return;
-                    }
-
-
-                    if (
-                        !confirmPassword.value
-                    ) {
-
-                        message.textContent =
-                            "";
-
-                        message.className =
-                            "field-message";
 
                         return;
 
@@ -390,23 +780,22 @@
 
                     if (
                         password &&
-                        password.value !==
-                        confirmPassword.value
+                        password.value !== value
                     ) {
 
-                        message.textContent =
-                            "Passwords do not match.";
-
-                        message.className =
-                            "field-message error";
+                        showFieldError(
+                            confirmPassword,
+                            confirmMessage,
+                            "Passwords do not match."
+                        );
 
                     } else {
 
-                        message.textContent =
-                            "Passwords match.";
-
-                        message.className =
-                            "field-message success";
+                        showFieldSuccess(
+                            confirmPassword,
+                            confirmMessage,
+                            "Passwords match."
+                        );
 
                     }
 
@@ -501,21 +890,33 @@
 
 
             /* =================================================
-               VALIDATION
+               CLEAR GENERAL STATUS
             ================================================= */
 
-            /* FULL NAME */
+            showStatus(
+                "",
+                ""
+            );
+
+
+            /* =================================================
+               FULL NAME
+            ================================================= */
 
             if (!nameValue) {
 
+                showFieldError(
+                    fullName,
+                    nameMessage,
+                    "Please enter your full name."
+                );
+
                 showStatus(
-                    "Please enter your full name.",
+                    "Please correct the highlighted field.",
                     "error"
                 );
 
-                if (fullName) {
-                    fullName.focus();
-                }
+                focusField(fullName);
 
                 return;
 
@@ -524,32 +925,49 @@
 
             if (nameValue.length < 2) {
 
+                showFieldError(
+                    fullName,
+                    nameMessage,
+                    "Please enter your full name using at least 2 characters."
+                );
+
                 showStatus(
-                    "Please enter your full name.",
+                    "Please correct the highlighted field.",
                     "error"
                 );
 
-                if (fullName) {
-                    fullName.focus();
-                }
+                focusField(fullName);
 
                 return;
 
             }
 
 
-            /* PHONE */
+            showFieldSuccess(
+                fullName,
+                nameMessage,
+                "Full name looks good."
+            );
+
+
+            /* =================================================
+               PHONE
+            ================================================= */
 
             if (!phoneValue) {
 
+                showFieldError(
+                    phone,
+                    phoneMessage,
+                    "Please enter your Uganda phone number."
+                );
+
                 showStatus(
-                    "Please enter your Uganda phone number.",
+                    "Please correct the highlighted field.",
                     "error"
                 );
 
-                if (phone) {
-                    phone.focus();
-                }
+                focusField(phone);
 
                 return;
 
@@ -562,32 +980,49 @@
                 )
             ) {
 
+                showFieldError(
+                    phone,
+                    phoneMessage,
+                    "Enter a valid Uganda phone number, e.g. 0701234567."
+                );
+
                 showStatus(
-                    "Enter a valid Uganda phone number, e.g. 0701234567.",
+                    "Please correct the highlighted field.",
                     "error"
                 );
 
-                if (phone) {
-                    phone.focus();
-                }
+                focusField(phone);
 
                 return;
 
             }
 
 
-            /* EMAIL */
+            showFieldSuccess(
+                phone,
+                phoneMessage,
+                "Phone number looks good."
+            );
+
+
+            /* =================================================
+               EMAIL
+            ================================================= */
 
             if (!emailValue) {
 
+                showFieldError(
+                    email,
+                    emailMessage,
+                    "Please enter your email address."
+                );
+
                 showStatus(
-                    "Please enter your email address.",
+                    "Please correct the highlighted field.",
                     "error"
                 );
 
-                if (email) {
-                    email.focus();
-                }
+                focusField(email);
 
                 return;
 
@@ -600,32 +1035,52 @@
                 )
             ) {
 
+                showFieldError(
+                    email,
+                    emailMessage,
+                    "Please enter a valid email address."
+                );
+
                 showStatus(
-                    "Please enter a valid email address.",
+                    "Please correct the highlighted field.",
                     "error"
                 );
 
-                if (email) {
-                    email.focus();
-                }
+                focusField(email);
 
                 return;
 
             }
 
 
-            /* PASSWORD */
+            showFieldSuccess(
+                email,
+                emailMessage,
+                "Email address looks good."
+            );
+
+
+            /* =================================================
+               PASSWORD
+            ================================================= */
 
             if (!passwordValue) {
+
+                password.classList.add(
+                    "error"
+                );
+
+                password.setAttribute(
+                    "aria-invalid",
+                    "true"
+                );
 
                 showStatus(
                     "Please enter your password.",
                     "error"
                 );
 
-                if (password) {
-                    password.focus();
-                }
+                focusField(password);
 
                 return;
 
@@ -634,32 +1089,54 @@
 
             if (passwordValue.length < 6) {
 
+                password.classList.add(
+                    "error"
+                );
+
+                password.setAttribute(
+                    "aria-invalid",
+                    "true"
+                );
+
                 showStatus(
                     "Password must contain at least 6 characters.",
                     "error"
                 );
 
-                if (password) {
-                    password.focus();
-                }
+                focusField(password);
 
                 return;
 
             }
 
 
-            /* CONFIRM PASSWORD */
+            password.classList.remove(
+                "error"
+            );
+
+            password.removeAttribute(
+                "aria-invalid"
+            );
+
+
+            /* =================================================
+               CONFIRM PASSWORD
+            ================================================= */
 
             if (!confirmValue) {
 
+                showFieldError(
+                    confirmPassword,
+                    confirmMessage,
+                    "Please confirm your password."
+                );
+
                 showStatus(
-                    "Please confirm your password.",
+                    "Please correct the highlighted field.",
                     "error"
                 );
 
-                if (confirmPassword) {
-                    confirmPassword.focus();
-                }
+                focusField(confirmPassword);
 
                 return;
 
@@ -671,21 +1148,34 @@
                 confirmValue
             ) {
 
+                showFieldError(
+                    confirmPassword,
+                    confirmMessage,
+                    "Passwords do not match. Please enter the same password."
+                );
+
                 showStatus(
-                    "Passwords do not match.",
+                    "Please correct the highlighted field.",
                     "error"
                 );
 
-                if (confirmPassword) {
-                    confirmPassword.focus();
-                }
+                focusField(confirmPassword);
 
                 return;
 
             }
 
 
-            /* TERMS */
+            showFieldSuccess(
+                confirmPassword,
+                confirmMessage,
+                "Passwords match."
+            );
+
+
+            /* =================================================
+               TERMS
+            ================================================= */
 
             if (
                 terms &&
@@ -693,8 +1183,33 @@
             ) {
 
                 showStatus(
-                    "Please agree to the Terms & Conditions and Privacy Policy.",
+                    "Please agree to the Terms & Conditions and Privacy Policy before creating your account.",
                     "error"
+                );
+
+                try {
+
+                    terms.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+
+                } catch (scrollError) {
+
+                    console.error(
+                        "FINORA TERMS SCROLL ERROR:",
+                        scrollError
+                    );
+
+                }
+
+                setTimeout(
+                    function () {
+
+                        terms.focus();
+
+                    },
+                    250
                 );
 
                 return;
