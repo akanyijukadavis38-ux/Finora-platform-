@@ -1247,7 +1247,261 @@ router.get("/team", async (req, res) => {
     }
 
 });
+/* =========================================================
+   CHANGE PASSWORD
+========================================================= */
 
+router.post("/change-password", async (req, res) => {
+
+    try {
+
+        /* =================================================
+           AUTHENTICATION
+        ================================================= */
+
+        if (
+            !req.session ||
+            !req.session.userId
+        ) {
+
+            return res.status(401).json({
+
+                success: false,
+
+                message:
+                    "You must be logged in to change your password."
+
+            });
+
+        }
+
+
+        /* =================================================
+           GET USER
+        ================================================= */
+
+        const user =
+            await User.findById(
+                req.session.userId
+            );
+
+
+        if (!user) {
+
+            return res.status(401).json({
+
+                success: false,
+
+                message:
+                    "FINORA user account could not be found."
+
+            });
+
+        }
+
+
+        /* =================================================
+           FROZEN ACCOUNT
+        ================================================= */
+
+        if (user.status === "frozen") {
+
+            req.session.destroy(
+                () => {}
+            );
+
+            return res.status(403).json({
+
+                success: false,
+
+                message:
+                    "Your FINORA account has been frozen."
+
+            });
+
+        }
+
+
+        /* =================================================
+           GET PASSWORDS
+        ================================================= */
+
+        const {
+            currentPassword,
+            newPassword,
+            confirmPassword
+        } = req.body;
+
+
+        /* =================================================
+           REQUIRED FIELDS
+        ================================================= */
+
+        if (
+            !currentPassword ||
+            !newPassword ||
+            !confirmPassword
+        ) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "Please fill in all password fields."
+
+            });
+
+        }
+
+
+        /* =================================================
+           PASSWORD LENGTH
+        ================================================= */
+
+        if (
+            String(newPassword).length < 6
+        ) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "New password must be at least 6 characters."
+
+            });
+
+        }
+
+
+        /* =================================================
+           CONFIRM PASSWORD
+        ================================================= */
+
+        if (
+            newPassword !==
+            confirmPassword
+        ) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "New passwords do not match."
+
+            });
+
+        }
+
+
+        /* =================================================
+           VERIFY CURRENT PASSWORD
+        ================================================= */
+
+        const passwordMatches =
+            await bcrypt.compare(
+                currentPassword,
+                user.password
+            );
+
+
+        if (!passwordMatches) {
+
+            return res.status(401).json({
+
+                success: false,
+
+                message:
+                    "Current password is incorrect."
+
+            });
+
+        }
+
+
+        /* =================================================
+           PREVENT SAME PASSWORD
+        ================================================= */
+
+        const samePassword =
+            await bcrypt.compare(
+                newPassword,
+                user.password
+            );
+
+
+        if (samePassword) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "New password must be different from your current password."
+
+            });
+
+        }
+
+
+        /* =================================================
+           HASH NEW PASSWORD
+        ================================================= */
+
+        const hashedPassword =
+            await bcrypt.hash(
+                newPassword,
+                12
+            );
+
+
+        /* =================================================
+           UPDATE PASSWORD
+        ================================================= */
+
+        user.password =
+            hashedPassword;
+
+
+        await user.save();
+
+
+        /* =================================================
+           SUCCESS
+        ================================================= */
+
+        return res.status(200).json({
+
+            success: true,
+
+            message:
+                "FINORA password changed successfully."
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "❌ FINORA CHANGE PASSWORD ERROR:",
+            error
+        );
+
+
+        return res.status(500).json({
+
+            success: false,
+
+            message:
+                "FINORA could not change your password right now."
+
+        });
+
+    }
+
+});
 /* =========================================================
    LOGOUT
 ========================================================= */
