@@ -9,10 +9,8 @@ const router = express.Router();
 /* =========================================================
    FRONTEND
 ========================================================= */
-
 const FRONTEND_URL =
-    "https://akanyijukadavis38-ux.github.io";
-
+    "https://finora-platform.vercel.app";
 
 /* =========================================================
    REGISTER
