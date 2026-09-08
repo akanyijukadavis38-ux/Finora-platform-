@@ -12,18 +12,16 @@ const investmentRoutes = require("./investmentRoutes");
 const app = express();
 
 const PORT = process.env.PORT || 8080;
-
-
 /* =========================================================
    FINORA PRODUCTION CONFIGURATION
 ========================================================= */
 const FRONTEND_URL =
-    "https://finora-platform.vercel.app";
+    "https://finora-platform.netlify.app";
 
 
 const allowedOrigins = [
     
-    "https://finora-platform.vercel.app"
+    "https://finora-platform.netlify.app"
 ];
 
 
