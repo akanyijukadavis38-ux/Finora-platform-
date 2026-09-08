@@ -171,57 +171,47 @@ resetPasswordExpires: {
 /* =========================================================
    AUTOMATIC REFERRAL CODE
 ========================================================= */
+userSchema.pre("validate", async function(next) {
 
-userSchema.pre(
-    "validate",
-    async function(next) {
+    try {
 
-        try {
-
-            /*
-               If the user already has a referral code,
-               leave it unchanged.
-            */
-
-            if (this.referralCode) {
-                return next();
-            }
-
-
-            /*
-               Generate a code that does not already
-               exist in MongoDB.
-            */
-
-            let code;
-            let exists = true;
-
-
-            while (exists) {
-
-                code =
-                    generateReferralCode();
-
-
-                exists =
-                    await mongoose.models.User.exists({
-                        referralCode: code
-                    });
-            }
-
-
-            this.referralCode =
-                code;
-
-
-            next();
-
-        } catch (error) {
-
-            next(error);
+        if (this.referralCode) {
+            return next();
         }
+
+        let code;
+
+        for (let attempt = 0; attempt < 10; attempt++) {
+
+            code = generateReferralCode();
+
+            const exists =
+                await mongoose.models.User.exists({
+                    referralCode: code
+                });
+
+            if (!exists) {
+
+                this.referralCode = code;
+
+                return next();
+
+            }
+        }
+
+        return next(
+            new Error(
+                "Unable to generate a unique FINORA referral code."
+            )
+        );
+
+    } catch (error) {
+
+        return next(error);
+
     }
-);
+
+});
 
 
 module.exports =
