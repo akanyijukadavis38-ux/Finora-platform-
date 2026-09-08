@@ -29,9 +29,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const FINORA_API =
         "https://finora-platform-production.up.railway.app";
 
-const FRONTEND_URL =
-    "https://finora-platform.vercel.app";
-    
+
+    const FRONTEND_URL =
+    "https://finora-platform.netlify.app";
 
 
     const AUTO_SLIDE_DELAY =
