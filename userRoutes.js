@@ -4,13 +4,13 @@ const bcrypt = require("bcrypt");
 const User = require("./user");
 
 const router = express.Router();
-
+const FRONTEND_URL = "https://finora-platform.netlify.app";
 
 /* =========================================================
    FRONTEND
 ========================================================= */
-const FRONTEND_URL =
-    "https://finora-platform.vercel.app";
+
+   
 
 /* =========================================================
    REGISTER
