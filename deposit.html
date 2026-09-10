@@ -22,522 +22,10 @@
 
     <title>FINORA | Deposit</title>
 
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-
-        body {
-            min-height: 100vh;
-            font-family: Arial, Helvetica, sans-serif;
-            background:
-                radial-gradient(
-                    circle at top,
-                    rgba(234, 60, 255, 0.12),
-                    transparent 38%
-                ),
-                #08050b;
-            color: #ffffff;
-        }
-
-
-        /* =================================================
-           PAGE
-        ================================================= */
-
-        .page {
-            width: 100%;
-            max-width: 560px;
-            margin: 0 auto;
-            padding: 18px 16px 40px;
-        }
-
-
-        /* =================================================
-           FINORA BRAND
-        ================================================= */
-
-        .brand {
-            text-align: center;
-            margin-bottom: 18px;
-        }
-
-
-        .brand-logo {
-            width: 145px;
-            height: 145px;
-            object-fit: cover;
-            display: block;
-            margin: 0 auto 8px;
-            border-radius: 18px;
-        }
-
-
-        .brand-title {
-            font-family: "Times New Roman", Times, serif;
-            font-size: 29px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            line-height: 1;
-        }
-
-
-        .brand-title .fin {
-            color: #ffffff;
-        }
-
-
-        .brand-title .ora {
-            color: #f5a623;
-        }
-
-
-        .brand-tagline {
-            margin-top: 7px;
-            color: #ea3cff;
-            font-size: 9px;
-            font-weight: 700;
-            letter-spacing: 2px;
-        }
-
-
-        /* =================================================
-           HEADER
-        ================================================= */
-
-        .page-header {
-            text-align: center;
-            margin: 4px 0 22px;
-        }
-
-
-        .page-header h1 {
-            font-family: "Times New Roman", Times, serif;
-            font-size: 28px;
-            color: #ffffff;
-            margin-bottom: 7px;
-        }
-
-
-        .page-header p {
-            color: #bdb4c2;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-
-        /* =================================================
-           MESSAGE
-        ================================================= */
-
-        .message {
-            display: none;
-            padding: 13px 15px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            font-size: 13px;
-            line-height: 1.45;
-            text-align: center;
-        }
-
-
-        .message.show {
-            display: block;
-        }
-
-
-        .message.success {
-            background: rgba(50, 205, 100, 0.12);
-            border: 1px solid rgba(50, 205, 100, 0.35);
-            color: #72e99a;
-        }
-
-
-        .message.error {
-            background: rgba(255, 50, 100, 0.12);
-            border: 1px solid rgba(255, 50, 100, 0.35);
-            color: #ff829f;
-        }
-
-
-        /* =================================================
-           DEPOSIT FORM CARD
-        ================================================= */
-
-        .deposit-card {
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(255,255,255,0.055),
-                    rgba(255,255,255,0.018)
-                );
-            border: 1px solid rgba(234, 60, 255, 0.22);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow:
-                0 18px 45px rgba(0,0,0,0.38);
-            margin-bottom: 18px;
-        }
-
-
-        .section-title {
-            font-family: "Times New Roman", Times, serif;
-            font-size: 20px;
-            color: #f5a623;
-            margin-bottom: 16px;
-        }
-
-
-        /* =================================================
-           LABELS / INPUTS
-        ================================================= */
-
-        .field {
-            margin-bottom: 17px;
-        }
-
-
-        .field label {
-            display: block;
-            font-size: 12px;
-            font-weight: 700;
-            color: #ddd4df;
-            margin-bottom: 8px;
-        }
-
-
-        .field input,
-        .field select {
-            width: 100%;
-            height: 50px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.10);
-            outline: none;
-            background: #110b15;
-            color: #ffffff;
-            padding: 0 14px;
-            font-size: 14px;
-        }
-
-
-        .field input:focus,
-        .field select:focus {
-            border-color: #ea3cff;
-            box-shadow:
-                0 0 0 3px rgba(234,60,255,0.08);
-        }
-
-
-        .field input::placeholder {
-            color: #746b77;
-        }
-
-
-        .field select option {
-            background: #110b15;
-            color: #ffffff;
-        }
-
-
-        .input-hint {
-            margin-top: 6px;
-            color: #817684;
-            font-size: 11px;
-        }
-
-
-        /* =================================================
-           PAYMENT METHOD
-        ================================================= */
-
-        .payment-methods {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 18px;
-        }
-
-
-        .payment-option {
-            position: relative;
-        }
-
-
-        .payment-option input {
-            position: absolute;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-
-        .payment-label {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 70px;
-            border-radius: 14px;
-            border: 1px solid rgba(255,255,255,0.10);
-            background: #110b15;
-            cursor: pointer;
-            transition: 0.2s ease;
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-
-        .payment-label span {
-            display: block;
-            text-align: center;
-        }
-
-
-        .payment-label small {
-            display: block;
-            margin-top: 5px;
-            font-size: 10px;
-            color: #938a96;
-            font-weight: 400;
-        }
-
-
-        .payment-option input:checked + .payment-label {
-            border-color: #ea3cff;
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(234,60,255,0.16),
-                    rgba(245,166,35,0.07)
-                );
-            box-shadow:
-                0 0 18px rgba(234,60,255,0.10);
-        }
-
-
-        /* =================================================
-           MERCHANT INFORMATION
-        ================================================= */
-
-        .merchant-box {
-            border: 1px solid rgba(245,166,35,0.25);
-            background: rgba(245,166,35,0.055);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 18px;
-        }
-
-
-        .merchant-heading {
-            color: #f5a623;
-            font-size: 12px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-
-        .merchant-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-
-        .merchant-code {
-            font-size: 24px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            color: #ffffff;
-        }
-
-
-        .copy-button {
-            border: 1px solid rgba(234,60,255,0.35);
-            background: rgba(234,60,255,0.10);
-            color: #ea3cff;
-            border-radius: 9px;
-            padding: 9px 12px;
-            font-size: 11px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-
-        .copy-button:active {
-            transform: scale(0.97);
-        }
-
-
-        .ussd-text {
-            margin-top: 9px;
-            color: #a99faa;
-            font-size: 11px;
-            line-height: 1.5;
-        }
-
-
-        /* =================================================
-           SUBMIT
-        ================================================= */
-
-        .submit-button {
-            width: 100%;
-            height: 53px;
-            border: none;
-            border-radius: 13px;
-            cursor: pointer;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    #9e18bd,
-                    #ea3cff
-                );
-
-            color: #ffffff;
-            font-size: 15px;
-            font-weight: 800;
-            letter-spacing: 0.3px;
-
-            box-shadow:
-                0 10px 25px rgba(234,60,255,0.18);
-
-            transition: 0.2s ease;
-        }
-
-
-        .submit-button:active {
-            transform: translateY(1px);
-        }
-
-
-        .submit-button:disabled {
-            opacity: 0.55;
-            cursor: not-allowed;
-        }
-
-
-        /* =================================================
-           RULES
-        ================================================= */
-
-        .rules-card {
-            background: rgba(255,255,255,0.025);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 18px;
-            padding: 18px;
-            margin-top: 18px;
-        }
-
-
-        .rules-title {
-            color: #f5a623;
-            font-family: "Times New Roman", Times, serif;
-            font-size: 19px;
-            margin-bottom: 13px;
-        }
-
-
-        .rule {
-            display: flex;
-            gap: 11px;
-            margin-bottom: 12px;
-        }
-
-
-        .rule:last-child {
-            margin-bottom: 0;
-        }
-
-
-        .rule-number {
-            flex: 0 0 25px;
-            height: 25px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(234,60,255,0.12);
-            color: #ea3cff;
-            font-size: 11px;
-            font-weight: 800;
-        }
-
-
-        .rule-text {
-            color: #b9b0bd;
-            font-size: 12px;
-            line-height: 1.5;
-        }
-
-
-        .rule-text strong {
-            color: #ffffff;
-        }
-
-
-        /* =================================================
-           FOOTER
-        ================================================= */
-
-        .footer {
-            text-align: center;
-            margin-top: 25px;
-            color: #655c68;
-            font-size: 10px;
-            line-height: 1.6;
-        }
-
-
-        /* =================================================
-           LOADING
-        ================================================= */
-
-        .page.loading {
-            opacity: 0.98;
-        }
-
-
-        /* =================================================
-           MOBILE
-        ================================================= */
-
-        @media (max-width: 390px) {
-
-            .page {
-                padding-left: 13px;
-                padding-right: 13px;
-            }
-
-            .brand-logo {
-                width: 125px;
-                height: 125px;
-            }
-
-            .brand-title {
-                font-size: 26px;
-            }
-
-            .deposit-card {
-                padding: 17px;
-            }
-
-            .merchant-code {
-                font-size: 21px;
-            }
-
-        }
-
-    </style>
+    <link
+        rel="stylesheet"
+        href="deposit.css?v=3"
+    >
 
 </head>
 
@@ -549,24 +37,10 @@
 
 
         <!-- =================================================
-             FINORA LOGO
+             FINORA BRAND
         ================================================= -->
 
         <header class="brand">
-
-            <!--
-                SAVE THE FINORA LOGO YOU SENT AS:
-
-                assets/finora-logo.png
-
-                Then this image will be used here.
-            -->
-
-            <img
-                src="assets/finora-logo.png"
-                alt="FINORA"
-                class="brand-logo"
-            >
 
             <div class="brand-title">
                 <span class="fin">FIN</span><span class="ora">ORA</span>
@@ -580,16 +54,22 @@
 
 
         <!-- =================================================
-             PAGE TITLE
+             PAGE HEADER
         ================================================= -->
 
         <section class="page-header">
 
-            <h1>Deposit Funds</h1>
+            <div class="page-badge">
+                SECURE WALLET FUNDING
+            </div>
+
+            <h1>
+                Deposit Funds
+            </h1>
 
             <p>
-                Add funds to your FINORA wallet using
-                Mobile Money.
+                Add funds to your FINORA wallet
+                securely using Mobile Money.
             </p>
 
         </section>
@@ -606,35 +86,59 @@
 
 
         <!-- =================================================
-             DEPOSIT CARD
+             DEPOSIT FORM CARD
         ================================================= -->
 
         <section class="deposit-card">
 
-            <h2 class="section-title">
-                Make a Deposit
-            </h2>
+
+            <div class="card-top">
+
+                <div>
+                    <span class="card-eyebrow">
+                        WALLET
+                    </span>
+
+                    <h2 class="section-title">
+                        Make a Deposit
+                    </h2>
+                </div>
+
+                <div class="secure-mark">
+                    <span class="secure-dot"></span>
+                    SECURE
+                </div>
+
+            </div>
 
 
             <!-- =================================================
                  AMOUNT
             ================================================= -->
 
-            <div class="field">
+            <div class="field amount-field">
 
                 <label for="amount">
-                    Deposit Amount (UGX)
+                    Deposit Amount
                 </label>
 
-                <input
-                    type="number"
-                    id="amount"
-                    name="amount"
-                    min="10000"
-                    step="1"
-                    placeholder="Enter amount"
-                    inputmode="numeric"
-                >
+                <div class="amount-input-wrap">
+
+                    <span class="currency">
+                        UGX
+                    </span>
+
+                    <input
+                        type="number"
+                        id="amount"
+                        name="amount"
+                        min="10000"
+                        step="1"
+                        placeholder="10,000"
+                        inputmode="numeric"
+                    >
+
+                </div>
 
                 <div class="input-hint">
                     Minimum deposit: UGX 10,000
@@ -647,12 +151,11 @@
                  PAYMENT METHOD
             ================================================= -->
 
-            <div class="field">
+            <div class="field payment-field">
 
                 <label>
                     Select Payment Method
                 </label>
-
 
                 <div class="payment-methods">
 
@@ -674,13 +177,29 @@
                             class="payment-label"
                         >
 
-                            <span>
-                                MTN Mobile Money
+                            <div class="payment-logo-wrap">
 
-                                <small>
+                                <img
+                                    src="assets/mtn.png"
+                                    alt="MTN Mobile Money"
+                                    class="payment-logo"
+                                >
+
+                            </div>
+
+                            <div class="payment-details">
+
+                                <span class="payment-name">
+                                    MTN Mobile Money
+                                </span>
+
+                                <span class="payment-network">
                                     MTN Uganda
-                                </small>
-                            </span>
+                                </span>
+
+                            </div>
+
+                            <span class="payment-check"></span>
 
                         </label>
 
@@ -703,13 +222,29 @@
                             class="payment-label"
                         >
 
-                            <span>
-                                Airtel Money
+                            <div class="payment-logo-wrap">
 
-                                <small>
+                                <img
+                                    src="assets/airtel.png"
+                                    alt="Airtel Money"
+                                    class="payment-logo"
+                                >
+
+                            </div>
+
+                            <div class="payment-details">
+
+                                <span class="payment-name">
+                                    Airtel Money
+                                </span>
+
+                                <span class="payment-network">
                                     Airtel Uganda
-                                </small>
-                            </span>
+                                </span>
+
+                            </div>
+
+                            <span class="payment-check"></span>
 
                         </label>
 
@@ -722,7 +257,7 @@
 
 
             <!-- =================================================
-                 MERCHANT CODE
+                 PAYMENT INSTRUCTIONS
             ================================================= -->
 
             <div
@@ -730,8 +265,33 @@
                 class="merchant-box"
             >
 
-                <div class="merchant-heading">
-                    MTN MERCHANT CODE
+                <div class="merchant-top">
+
+                    <div>
+
+                        <div class="merchant-heading">
+                            PAYMENT DETAILS
+                        </div>
+
+                        <div
+                            id="merchantNetwork"
+                            class="merchant-network"
+                        >
+                            MTN MOBILE MONEY
+                        </div>
+
+                    </div>
+
+                    <div class="payment-status">
+                        <span></span>
+                        READY
+                    </div>
+
+                </div>
+
+
+                <div class="merchant-label">
+                    Merchant Code
                 </div>
 
 
@@ -750,7 +310,7 @@
                         id="copyCode"
                         class="copy-button"
                     >
-                        Copy Code
+                        Copy
                     </button>
 
                 </div>
@@ -769,10 +329,10 @@
 
 
             <!-- =================================================
-                 PAYMENT REFERENCE
+                 TRANSACTION REFERENCE
             ================================================= -->
 
-            <div class="field">
+            <div class="field reference-field">
 
                 <label for="paymentReference">
                     Mobile Money Transaction Reference
@@ -783,13 +343,13 @@
                     id="paymentReference"
                     name="paymentReference"
                     maxlength="100"
-                    placeholder="Enter your transaction/reference number"
+                    placeholder="Enter transaction reference"
                     autocomplete="off"
                 >
 
                 <div class="input-hint">
                     Enter the reference exactly as shown
-                    after your payment.
+                    after completing your payment.
                 </div>
 
             </div>
@@ -804,34 +364,63 @@
                 id="submitDeposit"
                 class="submit-button"
             >
-                Submit Deposit
+                <span>
+                    Submit Deposit
+                </span>
+
+                <span class="button-arrow">
+                    →
+                </span>
             </button>
+
+
+            <!-- =================================================
+                 SECURITY NOTICE
+            ================================================= -->
+
+            <div class="security-notice">
+
+                <div class="security-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <strong>
+                        Payment Verification
+                    </strong>
+
+                    <p>
+                        Make your Mobile Money payment first,
+                        then submit the transaction reference.
+                    </p>
+
+                </div>
+
+            </div>
 
 
         </section>
 
 
         <!-- =================================================
-             GENERAL DEPOSIT RULES
+             DEPOSIT GUIDELINES
         ================================================= -->
 
         <section class="rules-card">
 
-            <h2 class="rules-title">
-                Deposit Guidelines
-            </h2>
+            <div class="rules-header">
 
+                <div>
 
-            <div class="rule">
+                    <span class="rules-eyebrow">
+                        IMPORTANT
+                    </span>
 
-                <div class="rule-number">
-                    1
-                </div>
+                    <h2 class="rules-title">
+                        Deposit Guidelines
+                    </h2>
 
-                <div class="rule-text">
-                    <strong>Minimum Deposit:</strong>
-                    The minimum deposit amount is
-                    UGX 10,000.
                 </div>
 
             </div>
@@ -840,13 +429,20 @@
             <div class="rule">
 
                 <div class="rule-number">
-                    2
+                    01
                 </div>
 
                 <div class="rule-text">
-                    <strong>Use the Correct Merchant Code:</strong>
-                    Always use the official FINORA merchant
-                    code displayed for your selected payment method.
+
+                    <strong>
+                        Minimum Deposit
+                    </strong>
+
+                    <p>
+                        The minimum deposit amount is
+                        UGX 10,000.
+                    </p>
+
                 </div>
 
             </div>
@@ -855,14 +451,44 @@
             <div class="rule">
 
                 <div class="rule-number">
-                    3
+                    02
                 </div>
 
                 <div class="rule-text">
-                    <strong>Keep Your Payment Reference:</strong>
-                    Keep your Mobile Money transaction/reference
-                    number and enter it correctly when submitting
-                    your deposit.
+
+                    <strong>
+                        Use the Correct Merchant Code
+                    </strong>
+
+                    <p>
+                        Always use the official FINORA
+                        merchant code displayed for your
+                        selected payment method.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="rule">
+
+                <div class="rule-number">
+                    03
+                </div>
+
+                <div class="rule-text">
+
+                    <strong>
+                        Keep Your Transaction Reference
+                    </strong>
+
+                    <p>
+                        Keep your Mobile Money transaction
+                        reference and enter it correctly
+                        when submitting your deposit.
+                    </p>
+
                 </div>
 
             </div>
@@ -877,9 +503,19 @@
 
         <footer class="footer">
 
-            FINORA<br>
+            <div class="footer-brand">
+                <span class="footer-fin">FIN</span><span class="footer-ora">ORA</span>
+            </div>
 
-            INVEST • GROW • EARN
+            <div class="footer-tagline">
+                INVEST • GROW • EARN
+            </div>
+
+            <div class="footer-line"></div>
+
+            <p>
+                Secure Mobile Money deposits
+            </p>
 
         </footer>
 
@@ -889,7 +525,6 @@
 
     <!-- =====================================================
          FRONTEND JAVASCRIPT
-         PART 2 WILL BE deposit.js
     ===================================================== -->
 
     <script src="deposit.js?v=1"></script>
