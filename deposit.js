@@ -1,548 +1,630 @@
-/* =========================================================
-   FINORA — DEPOSIT JAVASCRIPT
-   ========================================================= */
+document.addEventListener("DOMContentLoaded", function () {
 
-"use strict";
+    /* =========================================================
+       FINORA DEPOSIT PAGE
+    ========================================================= */
 
+    const amountInput =
+        document.getElementById("amount");
 
-/* =========================================================
-   PAYMENT DETAILS
-========================================================= */
+    const mtnOption =
+        document.getElementById("mtn");
 
-const PAYMENT_DETAILS = {
+    const airtelOption =
+        document.getElementById("airtel");
 
-    MTN: {
-        network: "MTN MOBILE MONEY",
-        code: "52200475",
-        ussd:
-            "Dial *165*3# on your MTN line, select the merchant payment option, and enter merchant code 52200475."
-    },
+    const merchantBox =
+        document.getElementById("merchantBox");
 
-    Airtel: {
-        network: "AIRTEL MONEY",
-        code: "7157334",
-        ussd:
-            "Dial *185*9# on your Airtel line, select the merchant payment option, and enter merchant code 7157334."
-    }
+    const merchantNetwork =
+        document.getElementById("merchantNetwork");
 
-};
+    const merchantCode =
+        document.getElementById("merchantCode");
 
+    const copyCodeButton =
+        document.getElementById("copyCode");
 
-/* =========================================================
-   DOM ELEMENTS
-========================================================= */
+    const ussdText =
+        document.getElementById("ussdText");
 
-const amountInput =
-    document.getElementById("amount");
+    const paymentReference =
+        document.getElementById("paymentReference");
 
-const mtnRadio =
-    document.getElementById("mtn");
+    const submitButton =
+        document.getElementById("submitDeposit");
 
-const airtelRadio =
-    document.getElementById("airtel");
-
-const merchantNetwork =
-    document.getElementById("merchantNetwork");
-
-const merchantCode =
-    document.getElementById("merchantCode");
-
-const ussdText =
-    document.getElementById("ussdText");
-
-const copyCode =
-    document.getElementById("copyCode");
-
-const paymentReference =
-    document.getElementById("paymentReference");
-
-const submitDeposit =
-    document.getElementById("submitDeposit");
-
-const message =
-    document.getElementById("message");
-
-const page =
-    document.querySelector(".page");
+    const messageBox =
+        document.getElementById("message");
 
 
-/* =========================================================
-   PAGE LOADING PROTECTION
-========================================================= */
+    /* =========================================================
+       FINORA PAYMENT INFORMATION
+    ========================================================= */
 
-if (page) {
-    page.classList.add("loading");
+    const paymentDetails = {
 
-    window.addEventListener("load", () => {
-        page.classList.remove("loading");
-    });
-}
+        MTN: {
+            merchantCode: "52200475",
 
+            ussd:
+                "Dial *165*3# on your MTN line, select the merchant payment option, and enter merchant code 52200475."
+        },
 
-/* =========================================================
-   MESSAGE HANDLER
-========================================================= */
+        Airtel: {
+            merchantCode: "7157334",
 
-function showMessage(text, type = "error") {
+            ussd:
+                "Dial *185*9# on your Airtel line and follow the payment instructions using merchant code 7157334."
+        }
 
-    if (!message) return;
-
-    message.textContent = text;
-
-    message.className = "message show " + type;
-
-}
+    };
 
 
-function clearMessage() {
+    let selectedMethod = "MTN";
 
-    if (!message) return;
-
-    message.textContent = "";
-
-    message.className = "message";
-
-}
+    let submitting = false;
 
 
-/* =========================================================
-   GET SELECTED PAYMENT METHOD
-========================================================= */
+    /* =========================================================
+       MESSAGE
+    ========================================================= */
 
-function getSelectedPaymentMethod() {
+    function showMessage(text, type) {
 
-    if (airtelRadio && airtelRadio.checked) {
-        return "Airtel";
-    }
+        if (!messageBox) {
+            return;
+        }
 
-    return "MTN";
-}
+        messageBox.textContent = text;
 
+        messageBox.style.display = "block";
 
-/* =========================================================
-   UPDATE PAYMENT DETAILS
-========================================================= */
+        messageBox.classList.remove(
+            "success",
+            "error",
+            "info"
+        );
 
-function updatePaymentDetails() {
-
-    const method =
-        getSelectedPaymentMethod();
-
-    const details =
-        PAYMENT_DETAILS[method];
-
-    if (!details) return;
-
-
-    if (merchantNetwork) {
-
-        merchantNetwork.textContent =
-            details.network;
-
+        messageBox.classList.add(
+            type || "info"
+        );
     }
 
 
-    if (merchantCode) {
+    function clearMessage() {
 
-        merchantCode.textContent =
-            details.code;
+        if (!messageBox) {
+            return;
+        }
 
+        messageBox.textContent = "";
+
+        messageBox.style.display = "none";
+
+        messageBox.classList.remove(
+            "success",
+            "error",
+            "info"
+        );
     }
 
 
-    if (ussdText) {
+    /* =========================================================
+       SELECT PAYMENT METHOD
+    ========================================================= */
 
-        ussdText.textContent =
-            details.ussd;
+    function selectPaymentMethod(method) {
 
+        if (
+            !paymentDetails[method]
+        ) {
+            return;
+        }
+
+        selectedMethod = method;
+
+
+        const details =
+            paymentDetails[method];
+
+
+        /* -----------------------------------------
+           MERCHANT NETWORK
+        ----------------------------------------- */
+
+        if (merchantNetwork) {
+
+            merchantNetwork.textContent =
+                method;
+        }
+
+
+        /* -----------------------------------------
+           MERCHANT CODE
+        ----------------------------------------- */
+
+        if (merchantCode) {
+
+            merchantCode.textContent =
+                details.merchantCode;
+        }
+
+
+        /* -----------------------------------------
+           USSD INSTRUCTION
+        ----------------------------------------- */
+
+        if (ussdText) {
+
+            ussdText.textContent =
+                details.ussd;
+        }
+
+
+        /* -----------------------------------------
+           ACTIVE MTN CARD
+        ----------------------------------------- */
+
+        if (mtnOption) {
+
+            mtnOption.classList.toggle(
+                "selected",
+                method === "MTN"
+            );
+        }
+
+
+        /* -----------------------------------------
+           ACTIVE AIRTEL CARD
+        ----------------------------------------- */
+
+        if (airtelOption) {
+
+            airtelOption.classList.toggle(
+                "selected",
+                method === "Airtel"
+            );
+        }
+
+
+        /* -----------------------------------------
+           ACCESSIBILITY STATE
+        ----------------------------------------- */
+
+        if (mtnOption) {
+
+            mtnOption.setAttribute(
+                "aria-checked",
+                method === "MTN"
+                    ? "true"
+                    : "false"
+            );
+        }
+
+
+        if (airtelOption) {
+
+            airtelOption.setAttribute(
+                "aria-checked",
+                method === "Airtel"
+                    ? "true"
+                    : "false"
+            );
+        }
+
+
+        clearMessage();
     }
 
 
-    clearMessage();
+    /* =========================================================
+       MTN BUTTON
+    ========================================================= */
 
-}
+    if (mtnOption) {
 
+        mtnOption.addEventListener(
+            "click",
+            function () {
 
-/* =========================================================
-   PAYMENT METHOD EVENTS
-========================================================= */
-
-if (mtnRadio) {
-
-    mtnRadio.addEventListener(
-        "change",
-        updatePaymentDetails
-    );
-
-}
-
-
-if (airtelRadio) {
-
-    airtelRadio.addEventListener(
-        "change",
-        updatePaymentDetails
-    );
-
-}
-
-
-/* =========================================================
-   COPY MERCHANT CODE
-========================================================= */
-
-if (copyCode) {
-
-    copyCode.addEventListener(
-        "click",
-        async () => {
-
-            const code =
-                merchantCode
-                    ? merchantCode.textContent.trim()
-                    : "";
-
-            if (!code) {
-
-                showMessage(
-                    "Merchant code is unavailable.",
-                    "error"
+                selectPaymentMethod(
+                    "MTN"
                 );
 
-                return;
             }
+        );
+    }
 
 
-            try {
+    /* =========================================================
+       AIRTEL BUTTON
+    ========================================================= */
 
-                await navigator.clipboard.writeText(code);
+    if (airtelOption) {
 
-                const originalText =
-                    copyCode.textContent;
+        airtelOption.addEventListener(
+            "click",
+            function () {
 
-                copyCode.textContent =
-                    "Copied";
-
-                copyCode.setAttribute(
-                    "aria-label",
-                    "Merchant code copied"
+                selectPaymentMethod(
+                    "Airtel"
                 );
 
-
-                setTimeout(() => {
-
-                    copyCode.textContent =
-                        originalText;
-
-                    copyCode.setAttribute(
-                        "aria-label",
-                        "Copy merchant code"
-                    );
-
-                }, 1600);
+            }
+        );
+    }
 
 
-            } catch (error) {
+    /* =========================================================
+       COPY MERCHANT CODE
+    ========================================================= */
 
-                /*
-                 * Fallback for browsers where
-                 * Clipboard API is unavailable.
-                 */
+    if (copyCodeButton) {
+
+        copyCodeButton.addEventListener(
+            "click",
+            async function () {
+
+                const code =
+                    paymentDetails[
+                        selectedMethod
+                    ].merchantCode;
+
 
                 try {
 
-                    const tempInput =
-                        document.createElement("input");
+                    if (
+                        navigator.clipboard &&
+                        navigator.clipboard.writeText
+                    ) {
 
-                    tempInput.value = code;
+                        await navigator.clipboard.writeText(
+                            code
+                        );
 
-                    document.body.appendChild(
-                        tempInput
-                    );
+                    } else {
 
-                    tempInput.select();
+                        const temporaryInput =
+                            document.createElement(
+                                "input"
+                            );
 
-                    document.execCommand("copy");
+                        temporaryInput.value =
+                            code;
 
-                    tempInput.remove();
+                        document.body.appendChild(
+                            temporaryInput
+                        );
 
+                        temporaryInput.select();
 
-                    const originalText =
-                        copyCode.textContent;
+                        document.execCommand(
+                            "copy"
+                        );
 
-                    copyCode.textContent =
-                        "Copied";
+                        temporaryInput.remove();
+                    }
 
-
-                    setTimeout(() => {
-
-                        copyCode.textContent =
-                            originalText;
-
-                    }, 1600);
-
-
-                } catch (fallbackError) {
 
                     showMessage(
-                        "Unable to copy the merchant code. Please copy it manually.",
+                        `${selectedMethod} merchant code ${code} copied successfully.`,
+                        "success"
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        "FINORA COPY ERROR:",
+                        error
+                    );
+
+                    showMessage(
+                        "Could not copy the merchant code. Please copy it manually.",
+                        "error"
+                    );
+                }
+
+            }
+        );
+    }
+
+
+    /* =========================================================
+       SUBMIT DEPOSIT
+    ========================================================= */
+
+    if (submitButton) {
+
+        submitButton.addEventListener(
+            "click",
+            async function (event) {
+
+                event.preventDefault();
+
+
+                if (submitting) {
+                    return;
+                }
+
+
+                clearMessage();
+
+
+                /* -----------------------------------------
+                   AMOUNT
+                ----------------------------------------- */
+
+                const amount =
+                    Number(
+                        amountInput
+                            ? amountInput.value.trim()
+                            : 0
+                    );
+
+
+                /* -----------------------------------------
+                   PAYMENT REFERENCE
+                ----------------------------------------- */
+
+                const reference =
+                    paymentReference
+                        ? paymentReference.value.trim()
+                        : "";
+
+
+                /* -----------------------------------------
+                   AMOUNT VALIDATION
+                ----------------------------------------- */
+
+                if (
+                    !Number.isFinite(amount)
+                ) {
+
+                    showMessage(
+                        "Please enter a valid deposit amount.",
                         "error"
                     );
 
+                    if (amountInput) {
+                        amountInput.focus();
+                    }
+
+                    return;
                 }
 
-            }
 
-        }
-    );
+                if (
+                    amount < 10000
+                ) {
 
-}
+                    showMessage(
+                        "Minimum deposit is UGX 10,000.",
+                        "error"
+                    );
 
+                    if (amountInput) {
+                        amountInput.focus();
+                    }
 
-/* =========================================================
-   AMOUNT VALIDATION
-========================================================= */
+                    return;
+                }
 
-function getDepositAmount() {
 
-    if (!amountInput) return 0;
+                if (
+                    !Number.isInteger(amount)
+                ) {
 
-    const value =
-        Number(amountInput.value);
+                    showMessage(
+                        "Please enter a whole UGX amount.",
+                        "error"
+                    );
 
-    if (!Number.isFinite(value)) {
-        return 0;
-    }
+                    if (amountInput) {
+                        amountInput.focus();
+                    }
 
-    return value;
+                    return;
+                }
 
-}
 
+                /* -----------------------------------------
+                   PAYMENT REFERENCE VALIDATION
+                ----------------------------------------- */
 
-function validateDepositAmount() {
+                if (
+                    !reference
+                ) {
 
-    const amount =
-        getDepositAmount();
+                    showMessage(
+                        "Please enter your Mobile Money transaction reference.",
+                        "error"
+                    );
 
+                    if (paymentReference) {
+                        paymentReference.focus();
+                    }
 
-    if (!amount) {
+                    return;
+                }
 
-        showMessage(
-            "Please enter your deposit amount.",
-            "error"
-        );
 
-        return false;
+                if (
+                    reference.length < 4 ||
+                    reference.length > 100
+                ) {
 
-    }
+                    showMessage(
+                        "Please enter a valid payment reference.",
+                        "error"
+                    );
 
+                    if (paymentReference) {
+                        paymentReference.focus();
+                    }
 
-    if (amount < 10000) {
+                    return;
+                }
 
-        showMessage(
-            "The minimum deposit amount is UGX 10,000.",
-            "error"
-        );
 
-        return false;
+                /* -----------------------------------------
+                   START SUBMISSION
+                ----------------------------------------- */
 
-    }
+                submitting = true;
 
+                submitButton.disabled = true;
 
-    if (!Number.isInteger(amount)) {
-
-        showMessage(
-            "Please enter a valid whole-number amount.",
-            "error"
-        );
-
-        return false;
-
-    }
-
-
-    return true;
-
-}
-
-
-/* =========================================================
-   TRANSACTION REFERENCE VALIDATION
-========================================================= */
-
-function validateReference() {
-
-    if (!paymentReference) {
-        return false;
-    }
-
-
-    const reference =
-        paymentReference.value.trim();
-
-
-    if (!reference) {
-
-        showMessage(
-            "Please enter your Mobile Money transaction reference.",
-            "error"
-        );
-
-        paymentReference.focus();
-
-        return false;
-
-    }
-
-
-    if (reference.length < 4) {
-
-        showMessage(
-            "Please enter a valid Mobile Money transaction reference.",
-            "error"
-        );
-
-        paymentReference.focus();
-
-        return false;
-
-    }
-
-
-    return true;
-
-}
-
-
-/* =========================================================
-   AMOUNT INPUT
-========================================================= */
-
-if (amountInput) {
-
-    amountInput.addEventListener(
-        "input",
-        () => {
-
-            clearMessage();
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   REFERENCE INPUT
-========================================================= */
-
-if (paymentReference) {
-
-    paymentReference.addEventListener(
-        "input",
-        () => {
-
-            clearMessage();
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   SUBMIT DEPOSIT
-========================================================= */
-
-if (submitDeposit) {
-
-    submitDeposit.addEventListener(
-        "click",
-        async () => {
-
-            clearMessage();
-
-
-            /* ---------------------------------------------
-               VALIDATE AMOUNT
-            --------------------------------------------- */
-
-            if (!validateDepositAmount()) {
-                return;
-            }
-
-
-            /* ---------------------------------------------
-               VALIDATE REFERENCE
-            --------------------------------------------- */
-
-            if (!validateReference()) {
-                return;
-            }
-
-
-            const amount =
-                getDepositAmount();
-
-            const paymentMethod =
-                getSelectedPaymentMethod();
-
-            const reference =
-                paymentReference.value.trim();
-
-
-            /* ---------------------------------------------
-               CURRENT PAYMENT DETAILS
-            --------------------------------------------- */
-
-            const payment =
-                PAYMENT_DETAILS[paymentMethod];
-
-
-            if (!payment) {
-
-                showMessage(
-                    "Please select a valid payment method.",
-                    "error"
+                submitButton.setAttribute(
+                    "aria-busy",
+                    "true"
                 );
 
-                return;
+
+                const originalButtonText =
+                    submitButton.textContent;
+
+
+                submitButton.textContent =
+                    "Submitting...";
+
+
+                try {
+
+                    /* =====================================
+                       REAL FINORA BACKEND
+                    ===================================== */
+
+                    const response =
+                        await fetch(
+                            "https://finora-platform-production.up.railway.app/api/deposits",
+                            {
+
+                                method: "POST",
+
+                                credentials: "include",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json",
+
+                                    "Accept":
+                                        "application/json"
+                                },
+
+                                body:
+                                    JSON.stringify({
+
+                                        amount:
+                                            amount,
+
+                                        paymentMethod:
+                                            selectedMethod,
+
+                                        paymentReference:
+                                            reference
+                                    })
+                            }
+                        );
+
+
+                    let data = null;
+
+
+                    try {
+
+                        data =
+                            await response.json();
+
+                    } catch (error) {
+
+                        data = null;
+                    }
+
+
+                    /* -------------------------------------
+                       BACKEND REJECTED REQUEST
+                    ------------------------------------- */
+
+                    if (
+                        !response.ok
+                    ) {
+
+                        throw new Error(
+                            data &&
+                            data.message
+                                ? data.message
+                                : "FINORA could not submit your deposit."
+                        );
+                    }
+
+
+                    /* -------------------------------------
+                       REAL SUCCESS
+                    ------------------------------------- */
+
+                    showMessage(
+                        data &&
+                        data.message
+                            ? data.message
+                            : "Deposit submitted successfully and is pending verification.",
+                        "success"
+                    );
+
+
+                    /* -------------------------------------
+                       CLEAR REFERENCE AFTER SUCCESS
+                    ------------------------------------- */
+
+                    if (paymentReference) {
+
+                        paymentReference.value =
+                            "";
+                    }
+
+
+                } catch (error) {
+
+                    console.error(
+                        "❌ FINORA DEPOSIT ERROR:",
+                        error
+                    );
+
+
+                    showMessage(
+                        error.message ||
+                        "FINORA could not submit your deposit. Please try again.",
+                        "error"
+                    );
+
+
+                } finally {
+
+                    submitting = false;
+
+                    submitButton.disabled =
+                        false;
+
+                    submitButton.removeAttribute(
+                        "aria-busy"
+                    );
+
+                    submitButton.textContent =
+                        originalButtonText;
+                }
 
             }
+        );
+    }
 
 
-            /* ---------------------------------------------
-               IMPORTANT
-               
-               Backend submission will be connected
-               after the exact FINORA deposit endpoint
-               is confirmed.
-            --------------------------------------------- */
+    /* =========================================================
+       INITIAL STATE
+    ========================================================= */
 
-            showMessage(
-                "Your deposit details are ready. Payment verification will be connected to the FINORA backend.",
-                "success"
-            );
-
-
-            console.log(
-                "FINORA deposit prepared:",
-                {
-                    amount: amount,
-                    paymentMethod: paymentMethod,
-                    merchantCode: payment.code,
-                    paymentReference: reference
-                }
-            );
-
-        }
+    selectPaymentMethod(
+        "MTN"
     );
 
-}
-
-
-/* =========================================================
-   INITIAL PAYMENT STATE
-========================================================= */
-
-updatePaymentDetails();
+});
