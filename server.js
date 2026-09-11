@@ -9,6 +9,7 @@ const { connectDB, mongoose } = require("./database");
 const User = require("./user");
 const userRoutes = require("./userRoutes");
 const investmentRoutes = require("./investmentRoutes");
+const depositRoutes = require("./depositRoutes");
 const app = express();
 
 const PORT = process.env.PORT || 8080;
@@ -158,14 +159,19 @@ app.use(
 /* =========================================================
    USER ROUTES
 ========================================================= */
-
 app.use(
     "/api/users",
     userRoutes
 );
+
 app.use(
     "/api/investments",
     investmentRoutes
+);
+
+app.use(
+    "/api/deposits",
+    depositRoutes
 );
 
 /* =========================================================
