@@ -1,548 +1,1195 @@
-<!DOCTYPE html>
-<html lang="en">
+/* =========================================================
+   FINORA DEPOSIT PAGE
+   deposit.js
 
-<head>
+   MATCHED DIRECTLY TO:
+   deposit.html
 
-    <meta charset="UTF-8">
+   BACKEND:
+   https://finora-platform-production.up.railway.app/api/deposits
+========================================================= */
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+document.addEventListener("DOMContentLoaded", function () {
 
-    <meta
-        name="theme-color"
-        content="#08050b"
-    >
+    "use strict";
 
-    <meta
-        name="description"
-        content="FINORA Deposit Funds"
-    >
 
-    <title>FINORA | Deposit</title>
+    /* =====================================================
+       CONFIGURATION
+    ===================================================== */
 
-    <link
-        rel="stylesheet"
-        href="deposit.css?v=4"
-    >
+    const API_URL =
+        "https://finora-platform-production.up.railway.app/api/deposits";
 
-</head>
+    const MIN_DEPOSIT = 10000;
 
 
-<body>
+    const PAYMENT_DETAILS = {
 
+        MTN: {
+            network: "MTN MOBILE MONEY",
+            merchantCode: "52200475",
+            ussd:
+                "Dial *165*3# on your MTN line, select the merchant payment option, and enter merchant code 52200475."
+        },
 
-    <main class="page">
+        Airtel: {
+            network: "AIRTEL MONEY",
+            merchantCode: "7157334",
+            ussd:
+                "Dial *185*9# on your Airtel line, select the merchant payment option, and enter merchant code 7157334."
+        }
 
+    };
 
-        <!-- =================================================
-             FINORA BRAND
-        ================================================= -->
 
-        <header class="brand">
+    /* =====================================================
+       GET HTML ELEMENTS
+    ===================================================== */
 
-            <div class="brand-title">
-                <span class="fin">FIN</span><span class="ora">ORA</span>
-            </div>
+    const amountInput =
+        document.getElementById("amount");
 
-            <div class="brand-tagline">
-                INVEST • GROW • EARN
-            </div>
+    const mtnRadio =
+        document.getElementById("mtn");
 
-        </header>
+    const airtelRadio =
+        document.getElementById("airtel");
 
+    const merchantBox =
+        document.getElementById("merchantBox");
 
-        <!-- =================================================
-             PAGE HEADER
-        ================================================= -->
+    const merchantNetwork =
+        document.getElementById("merchantNetwork");
 
-        <section class="page-header">
+    const merchantCode =
+        document.getElementById("merchantCode");
 
-            <div class="page-badge">
-                SECURE WALLET FUNDING
-            </div>
+    const copyButton =
+        document.getElementById("copyCode");
 
-            <h1>
-                Deposit Funds
-            </h1>
+    const ussdText =
+        document.getElementById("ussdText");
 
-            <p>
-                Add funds to your FINORA wallet
-                securely using Mobile Money.
-            </p>
+    const paymentReference =
+        document.getElementById("paymentReference");
 
-        </section>
+    const submitButton =
+        document.getElementById("submitDeposit");
 
+    const messageBox =
+        document.getElementById("message");
 
-        <!-- =================================================
-             STATUS MESSAGE
-        ================================================= -->
 
-        <div
-            id="message"
-            class="message"
-            role="alert"
-            aria-live="polite"
-        ></div>
+    /* =====================================================
+       CHECK REQUIRED ELEMENTS
+    ===================================================== */
 
+    const missingElements = [];
 
-        <!-- =================================================
-             DEPOSIT FORM CARD
-        ================================================= -->
+    if (!amountInput) {
+        missingElements.push("#amount");
+    }
 
-        <section class="deposit-card">
+    if (!mtnRadio) {
+        missingElements.push("#mtn");
+    }
 
+    if (!airtelRadio) {
+        missingElements.push("#airtel");
+    }
 
-            <div class="card-top">
+    if (!merchantNetwork) {
+        missingElements.push("#merchantNetwork");
+    }
 
-                <div>
+    if (!merchantCode) {
+        missingElements.push("#merchantCode");
+    }
 
-                    <span class="card-eyebrow">
-                        WALLET
-                    </span>
+    if (!ussdText) {
+        missingElements.push("#ussdText");
+    }
 
-                    <h2 class="section-title">
-                        Make a Deposit
-                    </h2>
+    if (!copyButton) {
+        missingElements.push("#copyCode");
+    }
 
-                </div>
+    if (!paymentReference) {
+        missingElements.push("#paymentReference");
+    }
 
-                <div class="secure-mark">
-                    <span class="secure-dot"></span>
-                    SECURE
-                </div>
+    if (!submitButton) {
+        missingElements.push("#submitDeposit");
+    }
 
-            </div>
+    if (!messageBox) {
+        missingElements.push("#message");
+    }
 
 
-            <!-- =================================================
-                 AMOUNT
-            ================================================= -->
+    if (missingElements.length > 0) {
 
-            <div class="field amount-field">
+        console.error(
+            "❌ FINORA deposit.js: Missing HTML elements:",
+            missingElements
+        );
 
-                <label for="amount">
-                    Deposit Amount
-                </label>
+        return;
+    }
 
-                <div class="amount-input-wrap">
 
-                    <span class="currency">
-                        UGX
-                    </span>
+    /* =====================================================
+       CURRENT PAYMENT METHOD
+    ===================================================== */
 
-                    <input
-                        type="number"
-                        id="amount"
-                        name="amount"
-                        min="10000"
-                        step="1"
-                        placeholder="10,000"
-                        inputmode="numeric"
-                        autocomplete="off"
-                    >
+    let selectedPaymentMethod = "MTN";
 
-                </div>
 
-                <div class="input-hint">
-                    Minimum deposit: UGX 10,000
-                </div>
+    /* =====================================================
+       MESSAGE FUNCTION
+    ===================================================== */
 
-            </div>
+    function showMessage(text, type) {
 
+        messageBox.textContent = text;
 
-            <!-- =================================================
-                 PAYMENT METHOD
-            ================================================= -->
+        /*
+           Explicitly make the message visible.
+           This prevents the message from depending
+           entirely on CSS.
+        */
 
-            <div class="field payment-field">
+        messageBox.style.display = "block";
+        messageBox.style.visibility = "visible";
+        messageBox.style.opacity = "1";
 
-                <label>
-                    Select Payment Method
-                </label>
+        messageBox.classList.remove(
+            "success",
+            "error",
+            "info",
+            "warning"
+        );
 
-                <div class="payment-methods">
+        messageBox.classList.add(
+            type || "info"
+        );
 
+    }
 
-                    <!-- =================================================
-                         MTN MOBILE MONEY
-                    ================================================= -->
 
-                    <div class="payment-option">
+    function clearMessage() {
 
-                        <input
-                            type="radio"
-                            id="mtn"
-                            name="paymentMethod"
-                            value="MTN"
-                            checked
-                        >
+        messageBox.textContent = "";
 
-                        <label
-                            for="mtn"
-                            class="payment-label"
-                        >
+        messageBox.classList.remove(
+            "success",
+            "error",
+            "info",
+            "warning"
+        );
 
-                            <div class="payment-logo-wrap">
+    }
 
-                                <img
-                                    src="assets/mtn.png"
-                                    alt="MTN Mobile Money"
-                                    class="payment-logo"
-                                >
 
-                            </div>
+    /* =====================================================
+       GET VISIBLE PAYMENT CARD
+    ===================================================== */
 
-                            <div class="payment-details">
+    function getPaymentLabel(radio) {
 
-                                <span class="payment-name">
-                                    MTN Mobile Money
-                                </span>
+        if (!radio) {
+            return null;
+        }
 
-                                <span class="payment-network">
-                                    MTN Uganda
-                                </span>
+        /*
+           Your HTML is:
 
-                            </div>
+           <div class="payment-option">
+               <input ...>
+               <label ...>
+           </div>
 
-                            <span class="payment-check"></span>
+           Therefore we get the label from the
+           radio button's parent.
+        */
 
-                        </label>
+        const option =
+            radio.closest(".payment-option");
 
-                    </div>
+        if (!option) {
+            return null;
+        }
 
+        return option.querySelector(
+            ".payment-label"
+        );
 
-                    <!-- =================================================
-                         AIRTEL MONEY
-                    ================================================= -->
+    }
 
-                    <div class="payment-option">
 
-                        <input
-                            type="radio"
-                            id="airtel"
-                            name="paymentMethod"
-                            value="Airtel"
-                        >
+    /* =====================================================
+       UPDATE PAYMENT DISPLAY
+    ===================================================== */
 
-                        <label
-                            for="airtel"
-                            class="payment-label"
-                        >
+    function updatePaymentMethod(method) {
 
-                            <div class="payment-logo-wrap">
+        const details =
+            PAYMENT_DETAILS[method];
 
-                                <img
-                                    src="assets/airtel.png"
-                                    alt="Airtel Money"
-                                    class="payment-logo"
-                                >
+        if (!details) {
+            return;
+        }
 
-                            </div>
 
-                            <div class="payment-details">
+        selectedPaymentMethod =
+            method;
 
-                                <span class="payment-name">
-                                    Airtel Money
-                                </span>
 
-                                <span class="payment-network">
-                                    Airtel Uganda
-                                </span>
+        /* ---------------------------------------------
+           MAKE THE CORRECT RADIO ACTIVE
+        --------------------------------------------- */
 
-                            </div>
+        if (method === "MTN") {
 
-                            <span class="payment-check"></span>
+            mtnRadio.checked = true;
+            airtelRadio.checked = false;
 
-                        </label>
+        } else {
 
-                    </div>
+            mtnRadio.checked = false;
+            airtelRadio.checked = true;
 
+        }
 
-                </div>
 
-            </div>
+        /* ---------------------------------------------
+           GET VISIBLE CARDS
+        --------------------------------------------- */
 
+        const mtnLabel =
+            getPaymentLabel(mtnRadio);
 
-            <!-- =================================================
-                 PAYMENT INSTRUCTIONS
-            ================================================= -->
+        const airtelLabel =
+            getPaymentLabel(airtelRadio);
 
-            <div
-                id="merchantBox"
-                class="merchant-box"
-            >
 
-                <div class="merchant-top">
+        /* ---------------------------------------------
+           UPDATE VISUAL SELECTED STATE
+        --------------------------------------------- */
 
-                    <div>
+        if (mtnLabel) {
 
-                        <div class="merchant-heading">
-                            PAYMENT DETAILS
-                        </div>
+            mtnLabel.classList.toggle(
+                "selected",
+                method === "MTN"
+            );
 
-                        <div
-                            id="merchantNetwork"
-                            class="merchant-network"
-                        >
-                            MTN MOBILE MONEY
-                        </div>
+        }
 
-                    </div>
 
-                    <div class="payment-status">
+        if (airtelLabel) {
 
-                        <span></span>
-                        READY
+            airtelLabel.classList.toggle(
+                "selected",
+                method === "Airtel"
+            );
 
-                    </div>
+        }
 
-                </div>
 
+        /* ---------------------------------------------
+           UPDATE MERCHANT INFORMATION
+        --------------------------------------------- */
 
-                <div class="merchant-label">
-                    Merchant Code
-                </div>
+        merchantNetwork.textContent =
+            details.network;
 
+        merchantCode.textContent =
+            details.merchantCode;
 
-                <div class="merchant-row">
+        ussdText.textContent =
+            details.ussd;
 
-                    <div
-                        id="merchantCode"
-                        class="merchant-code"
-                    >
-                        52200475
-                    </div>
 
+        /* ---------------------------------------------
+           UPDATE DATA ATTRIBUTE
+        --------------------------------------------- */
 
-                    <button
-                        type="button"
-                        id="copyCode"
-                        class="copy-button"
-                    >
-                        Copy
-                    </button>
+        if (merchantBox) {
 
-                </div>
+            merchantBox.dataset.network =
+                method;
 
+        }
 
-                <div
-                    id="ussdText"
-                    class="ussd-text"
-                >
-                    Dial *165*3# on your MTN line,
-                    select the merchant payment option,
-                    and enter merchant code 52200475.
-                </div>
 
-            </div>
+        /* ---------------------------------------------
+           RESET COPY BUTTON
+        --------------------------------------------- */
 
+        copyButton.textContent =
+            "Copy";
 
-            <!-- =================================================
-                 TRANSACTION REFERENCE
-            ================================================= -->
+        copyButton.disabled =
+            false;
 
-            <div class="field reference-field">
+    }
 
-                <label for="paymentReference">
-                    Mobile Money Transaction Reference
-                </label>
 
-                <input
-                    type="text"
-                    id="paymentReference"
-                    name="paymentReference"
-                    maxlength="100"
-                    placeholder="Enter transaction reference"
-                    autocomplete="off"
-                >
+    /* =====================================================
+       MTN RADIO
+    ===================================================== */
 
-                <div class="input-hint">
-                    Enter the reference exactly as shown
-                    after completing your payment.
-                </div>
+    mtnRadio.addEventListener(
+        "change",
+        function () {
 
-            </div>
+            if (this.checked) {
 
+                updatePaymentMethod(
+                    "MTN"
+                );
 
-            <!-- =================================================
-                 SUBMIT
-            ================================================= -->
+                clearMessage();
 
-            <button
-                type="button"
-                id="submitDeposit"
-                class="submit-button"
-            >
+            }
 
-                <span>
-                    Submit Deposit
-                </span>
+        }
+    );
 
-                <span class="button-arrow">
-                    →
-                </span>
 
-            </button>
+    /* =====================================================
+       AIRTEL RADIO
+    ===================================================== */
 
+    airtelRadio.addEventListener(
+        "change",
+        function () {
 
-            <!-- =================================================
-                 SECURITY NOTICE
-            ================================================= -->
+            if (this.checked) {
 
-            <div class="security-notice">
+                updatePaymentMethod(
+                    "Airtel"
+                );
 
-                <div class="security-icon">
-                    ✓
-                </div>
+                clearMessage();
 
-                <div>
+            }
 
-                    <strong>
-                        Payment Verification
-                    </strong>
+        }
+    );
 
-                    <p>
-                        Make your Mobile Money payment first,
-                        then submit the transaction reference.
-                    </p>
 
-                </div>
+    /* =====================================================
+       ALSO ALLOW CLICKING THE WHOLE PAYMENT CARD
+    ===================================================== */
 
-            </div>
+    const mtnLabel =
+        getPaymentLabel(mtnRadio);
 
+    const airtelLabel =
+        getPaymentLabel(airtelRadio);
 
-        </section>
 
+    if (mtnLabel) {
 
-        <!-- =================================================
-             DEPOSIT GUIDELINES
-        ================================================= -->
+        mtnLabel.addEventListener(
+            "click",
+            function () {
 
-        <section class="rules-card">
+                /*
+                   The label automatically checks the
+                   radio because it has for="mtn".
+                */
 
-            <div class="rules-header">
+                setTimeout(function () {
 
-                <div>
+                    updatePaymentMethod(
+                        "MTN"
+                    );
 
-                    <span class="rules-eyebrow">
-                        IMPORTANT
-                    </span>
+                    clearMessage();
 
-                    <h2 class="rules-title">
-                        Deposit Guidelines
-                    </h2>
+                }, 0);
 
-                </div>
+            }
+        );
 
-            </div>
+    }
 
 
-            <div class="rule">
+    if (airtelLabel) {
 
-                <div class="rule-number">
-                    01
-                </div>
+        airtelLabel.addEventListener(
+            "click",
+            function () {
 
-                <div class="rule-text">
+                setTimeout(function () {
 
-                    <strong>
-                        Minimum Deposit
-                    </strong>
+                    updatePaymentMethod(
+                        "Airtel"
+                    );
 
-                    <p>
-                        The minimum deposit amount is
-                        UGX 10,000.
-                    </p>
+                    clearMessage();
 
-                </div>
+                }, 0);
 
-            </div>
+            }
+        );
 
+    }
 
-            <div class="rule">
 
-                <div class="rule-number">
-                    02
-                </div>
+    /* =====================================================
+       COPY MERCHANT CODE
+    ===================================================== */
 
-                <div class="rule-text">
+    copyButton.addEventListener(
+        "click",
+        async function (event) {
 
-                    <strong>
-                        Use the Correct Merchant Code
-                    </strong>
+            event.preventDefault();
 
-                    <p>
-                        Always use the official FINORA
-                        merchant code displayed for your
-                        selected payment method.
-                    </p>
+            const code =
+                merchantCode.textContent.trim();
 
-                </div>
 
-            </div>
+            if (!code) {
 
+                showMessage(
+                    "There is no merchant code to copy.",
+                    "error"
+                );
 
-            <div class="rule">
+                return;
+            }
 
-                <div class="rule-number">
-                    03
-                </div>
 
-                <div class="rule-text">
+            /* -----------------------------------------
+               TRY MODERN CLIPBOARD
+            ----------------------------------------- */
 
-                    <strong>
-                        Keep Your Transaction Reference
-                    </strong>
+            try {
 
-                    <p>
-                        Keep your Mobile Money transaction
-                        reference and enter it correctly
-                        when submitting your deposit.
-                    </p>
+                if (
+                    navigator.clipboard &&
+                    window.isSecureContext
+                ) {
 
-                </div>
+                    await navigator.clipboard.writeText(
+                        code
+                    );
 
-            </div>
+                } else {
 
+                    throw new Error(
+                        "Clipboard API unavailable"
+                    );
 
-        </section>
+                }
 
 
-        <!-- =================================================
-             FOOTER
-        ================================================= -->
+                copyButton.textContent =
+                    "Copied";
 
-        <footer class="footer">
+                copyButton.disabled =
+                    true;
 
-            <div class="footer-brand">
-                <span class="footer-fin">FIN</span><span class="footer-ora">ORA</span>
-            </div>
 
-            <div class="footer-tagline">
-                INVEST • GROW • EARN
-            </div>
+                showMessage(
+                    `${selectedPaymentMethod} merchant code copied successfully.`,
+                    "success"
+                );
 
-            <div class="footer-line"></div>
 
-            <p>
-                Secure Mobile Money deposits
-            </p>
+                setTimeout(function () {
 
-        </footer>
+                    copyButton.textContent =
+                        "Copy";
 
+                    copyButton.disabled =
+                        false;
 
-    </main>
+                }, 1800);
 
 
-    <!-- =====================================================
-         FRONTEND JAVASCRIPT
-    ===================================================== -->
+                return;
 
-    <script src="deposit.js?v=1"></script>
+            } catch (clipboardError) {
 
+                console.warn(
+                    "FINORA clipboard API unavailable. Using fallback.",
+                    clipboardError
+                );
 
-</body>
+            }
 
-</html>
+
+            /* -----------------------------------------
+               FALLBACK COPY METHOD
+            ----------------------------------------- */
+
+            try {
+
+                const temporaryInput =
+                    document.createElement("input");
+
+                temporaryInput.value =
+                    code;
+
+                temporaryInput.style.position =
+                    "fixed";
+
+                temporaryInput.style.left =
+                    "-9999px";
+
+                document.body.appendChild(
+                    temporaryInput
+                );
+
+                temporaryInput.focus();
+
+                temporaryInput.select();
+
+                const copied =
+                    document.execCommand(
+                        "copy"
+                    );
+
+                temporaryInput.remove();
+
+
+                if (!copied) {
+
+                    throw new Error(
+                        "Copy command failed"
+                    );
+
+                }
+
+
+                copyButton.textContent =
+                    "Copied";
+
+                copyButton.disabled =
+                    true;
+
+
+                showMessage(
+                    `${selectedPaymentMethod} merchant code copied successfully.`,
+                    "success"
+                );
+
+
+                setTimeout(function () {
+
+                    copyButton.textContent =
+                        "Copy";
+
+                    copyButton.disabled =
+                        false;
+
+                }, 1800);
+
+
+            } catch (copyError) {
+
+                console.error(
+                    "❌ FINORA COPY ERROR:",
+                    copyError
+                );
+
+
+                showMessage(
+                    `Please copy the merchant code manually: ${code}`,
+                    "error"
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       AMOUNT INPUT
+    ===================================================== */
+
+    amountInput.addEventListener(
+        "input",
+        function () {
+
+            clearMessage();
+
+            if (
+                Number(this.value) < 0
+            ) {
+
+                this.value = "";
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       TRANSACTION REFERENCE INPUT
+    ===================================================== */
+
+    paymentReference.addEventListener(
+        "input",
+        function () {
+
+            clearMessage();
+
+        }
+    );
+
+
+    /* =====================================================
+       VALIDATE DEPOSIT
+    ===================================================== */
+
+    function validateDeposit() {
+
+        const rawAmount =
+            amountInput.value.trim();
+
+        const amount =
+            Number(rawAmount);
+
+        const reference =
+            paymentReference.value.trim();
+
+
+        /* ---------------------------------------------
+           AMOUNT REQUIRED
+        --------------------------------------------- */
+
+        if (!rawAmount) {
+
+            showMessage(
+                "Please enter your deposit amount.",
+                "error"
+            );
+
+            amountInput.focus();
+
+            return null;
+        }
+
+
+        /* ---------------------------------------------
+           VALID NUMBER
+        --------------------------------------------- */
+
+        if (
+            !Number.isFinite(amount)
+        ) {
+
+            showMessage(
+                "Please enter a valid deposit amount.",
+                "error"
+            );
+
+            amountInput.focus();
+
+            return null;
+        }
+
+
+        /* ---------------------------------------------
+           WHOLE NUMBER
+        --------------------------------------------- */
+
+        if (
+            !Number.isInteger(amount)
+        ) {
+
+            showMessage(
+                "Deposit amount must be a whole number.",
+                "error"
+            );
+
+            amountInput.focus();
+
+            return null;
+        }
+
+
+        /* ---------------------------------------------
+           MINIMUM
+        --------------------------------------------- */
+
+        if (
+            amount < MIN_DEPOSIT
+        ) {
+
+            showMessage(
+                "Minimum deposit is UGX 10,000.",
+                "error"
+            );
+
+            amountInput.focus();
+
+            return null;
+        }
+
+
+        /* ---------------------------------------------
+           PAYMENT METHOD
+        --------------------------------------------- */
+
+        if (
+            !PAYMENT_DETAILS[
+                selectedPaymentMethod
+            ]
+        ) {
+
+            showMessage(
+                "Please select MTN or Airtel Mobile Money.",
+                "error"
+            );
+
+            return null;
+        }
+
+
+        /* ---------------------------------------------
+           REFERENCE REQUIRED
+        --------------------------------------------- */
+
+        if (!reference) {
+
+            showMessage(
+                "Please enter your Mobile Money transaction reference.",
+                "error"
+            );
+
+            paymentReference.focus();
+
+            return null;
+        }
+
+
+        /* ---------------------------------------------
+           REFERENCE LENGTH
+        --------------------------------------------- */
+
+        if (
+            reference.length < 4
+        ) {
+
+            showMessage(
+                "The transaction reference must contain at least 4 characters.",
+                "error"
+            );
+
+            paymentReference.focus();
+
+            return null;
+        }
+
+
+        if (
+            reference.length > 100
+        ) {
+
+            showMessage(
+                "The transaction reference is too long.",
+                "error"
+            );
+
+            paymentReference.focus();
+
+            return null;
+        }
+
+
+        return {
+            amount: amount,
+            paymentMethod:
+                selectedPaymentMethod,
+            paymentReference:
+                reference
+        };
+
+    }
+
+
+    /* =====================================================
+       SUBMIT DEPOSIT
+    ===================================================== */
+
+    async function submitDeposit() {
+
+        const deposit =
+            validateDeposit();
+
+
+        if (!deposit) {
+            return;
+        }
+
+
+        /* ---------------------------------------------
+           SAVE ORIGINAL BUTTON
+        --------------------------------------------- */
+
+        const originalHTML =
+            submitButton.innerHTML;
+
+
+        /* ---------------------------------------------
+           DISABLE SUBMIT
+        --------------------------------------------- */
+
+        submitButton.disabled =
+            true;
+
+        submitButton.innerHTML =
+            "<span>Submitting...</span><span class=\"button-arrow\">⏳</span>";
+
+
+        showMessage(
+            "Submitting your deposit...",
+            "info"
+        );
+
+
+        try {
+
+            console.log(
+                "FINORA deposit submission:",
+                deposit
+            );
+
+
+            /* -----------------------------------------
+               SEND TO BACKEND
+            ----------------------------------------- */
+
+            const response =
+                await fetch(
+                    API_URL,
+                    {
+                        method: "POST",
+
+                        credentials: "include",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json",
+
+                            "Accept":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(
+                                deposit
+                            )
+                    }
+                );
+
+
+            /* -----------------------------------------
+               READ RESPONSE
+            ----------------------------------------- */
+
+            let data = null;
+
+            try {
+
+                data =
+                    await response.json();
+
+            } catch (jsonError) {
+
+                console.warn(
+                    "FINORA: Server response was not JSON.",
+                    jsonError
+                );
+
+            }
+
+
+            console.log(
+                "FINORA deposit response:",
+                response.status,
+                data
+            );
+
+
+            /* -----------------------------------------
+               NOT LOGGED IN
+            ----------------------------------------- */
+
+            if (
+                response.status === 401
+            ) {
+
+                showMessage(
+                    data?.message ||
+                    "Your FINORA session has expired. Please log in again.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            /* -----------------------------------------
+               FROZEN ACCOUNT
+            ----------------------------------------- */
+
+            if (
+                response.status === 403
+            ) {
+
+                showMessage(
+                    data?.message ||
+                    "Your FINORA account cannot submit deposits.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            /* -----------------------------------------
+               DUPLICATE REFERENCE
+            ----------------------------------------- */
+
+            if (
+                response.status === 409
+            ) {
+
+                showMessage(
+                    data?.message ||
+                    "This payment reference has already been submitted.",
+                    "error"
+                );
+
+                paymentReference.focus();
+
+                return;
+            }
+
+
+            /* -----------------------------------------
+               VALIDATION ERROR
+            ----------------------------------------- */
+
+            if (
+                response.status === 400
+            ) {
+
+                showMessage(
+                    data?.message ||
+                    "Please check your deposit information.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            /* -----------------------------------------
+               SERVER ERROR
+            ----------------------------------------- */
+
+            if (
+                !response.ok
+            ) {
+
+                showMessage(
+                    data?.message ||
+                    "FINORA could not submit your deposit. Please try again.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            /* -----------------------------------------
+               SUCCESS
+            ----------------------------------------- */
+
+            if (
+                data &&
+                data.success === true
+            ) {
+
+                showMessage(
+                    "Deposit submitted successfully. Your deposit is now pending verification.",
+                    "success"
+                );
+
+
+                /* -------------------------------------
+                   CLEAR FORM
+                ------------------------------------- */
+
+                amountInput.value =
+                    "";
+
+                paymentReference.value =
+                    "";
+
+
+                console.log(
+                    "✅ FINORA deposit created:",
+                    data.deposit
+                );
+
+
+            } else {
+
+                showMessage(
+                    data?.message ||
+                    "FINORA could not submit your deposit.",
+                    "error"
+                );
+
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "❌ FINORA DEPOSIT ERROR:",
+                error
+            );
+
+
+            /*
+               This normally means:
+               - Internet problem
+               - Backend unavailable
+               - CORS problem
+               - Railway service unavailable
+            */
+
+            showMessage(
+                "FINORA could not connect to the server. Please check your internet connection and try again.",
+                "error"
+            );
+
+
+        } finally {
+
+            /* -----------------------------------------
+               RESTORE BUTTON
+            ----------------------------------------- */
+
+            submitButton.disabled =
+                false;
+
+            submitButton.innerHTML =
+                originalHTML;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       SUBMIT BUTTON
+    ===================================================== */
+
+    submitButton.addEventListener(
+        "click",
+        function (event) {
+
+            event.preventDefault();
+
+            submitDeposit();
+
+        }
+    );
+
+
+    /* =====================================================
+       ENTER KEY
+    ===================================================== */
+
+    amountInput.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                event.preventDefault();
+
+                submitDeposit();
+
+            }
+
+        }
+    );
+
+
+    paymentReference.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                event.preventDefault();
+
+                submitDeposit();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       INITIAL STATE
+    ===================================================== */
+
+    updatePaymentMethod(
+        "MTN"
+    );
+
+
+    console.log(
+        "======================================"
+    );
+
+    console.log(
+        "✅ FINORA DEPOSIT JS READY"
+    );
+
+    console.log(
+        "💰 MTN CODE: 52200475"
+    );
+
+    console.log(
+        "💰 AIRTEL CODE: 7157334"
+    );
+
+    console.log(
+        "💵 MINIMUM: UGX 10,000"
+    );
+
+    console.log(
+        "🌐 API:",
+        API_URL
+    );
+
+    console.log(
+        "======================================"
+
+    );
+
+});
