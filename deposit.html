@@ -12,55 +12,123 @@
 
     <meta
         name="theme-color"
-        content="#08050b"
+        content="#07040B"
     >
 
     <meta
         name="description"
-        content="FINORA Deposit Funds"
+        content="FINORA secure wallet deposit"
     >
 
     <title>FINORA | Deposit</title>
 
     <link
         rel="stylesheet"
-        href="deposit.css?v=4"
+        href="deposit.css?v=5"
     >
 
 </head>
 
+
 <body>
 
-    <main class="page">
+    <!-- PRE-RENDER PROTECTION -->
+    <div
+        id="pageLoader"
+        class="page-loader"
+    >
 
-        <header class="brand">
-            <div class="brand-title">
-                <span class="fin">FIN</span><span class="ora">ORA</span>
+        <div class="loader-brand">
+            <span class="loader-fin">FIN</span><span class="loader-ora">ORA</span>
+        </div>
+
+        <div class="loader-line"></div>
+
+        <span class="loader-text">
+            SECURING YOUR SESSION
+        </span>
+
+    </div>
+
+
+    <main
+        class="deposit-page"
+        id="depositPage"
+    >
+
+
+        <!-- =========================
+             BRAND HEADER
+        ========================== -->
+
+        <header class="top-header">
+
+            <a
+                href="dashboard.html"
+                class="brand"
+                aria-label="FINORA Dashboard"
+            >
+
+                <div class="brand-name">
+                    <span class="brand-fin">FIN</span><span class="brand-ora">ORA</span>
+                </div>
+
+                <div class="brand-tagline">
+                    INVEST • GROW • EARN
+                </div>
+
+            </a>
+
+
+            <div class="header-security">
+
+                <span class="security-pulse"></span>
+
+                <span>
+                    SECURE
+                </span>
+
             </div>
 
-            <div class="brand-tagline">
-                INVEST • GROW • EARN
-            </div>
         </header>
 
 
-        <section class="page-header">
 
-            <div class="page-badge">
-                SECURE WALLET FUNDING
+        <!-- =========================
+             PAGE INTRO
+        ========================== -->
+
+        <section class="deposit-intro">
+
+            <div class="intro-label">
+
+                <span class="intro-line"></span>
+
+                <span>
+                    WALLET FUNDING
+                </span>
+
             </div>
+
 
             <h1>
                 Deposit Funds
             </h1>
 
+
             <p>
-                Add funds to your FINORA wallet
-                securely using Mobile Money.
+                Fund your FINORA wallet securely
+                with Mobile Money and continue
+                growing your investment balance.
             </p>
 
         </section>
 
+
+
+        <!-- =========================
+             MESSAGE
+        ========================== -->
 
         <div
             id="message"
@@ -70,44 +138,63 @@
         ></div>
 
 
+
+        <!-- =========================
+             MAIN DEPOSIT CARD
+        ========================== -->
+
         <section class="deposit-card">
 
-            <div class="card-top">
+
+            <!-- CARD HEADER -->
+
+            <div class="deposit-card-header">
 
                 <div>
 
-                    <span class="card-eyebrow">
-                        WALLET
+                    <span class="card-label">
+                        SECURE TRANSACTION
                     </span>
 
-                    <h2 class="section-title">
-                        Make a Deposit
+                    <h2>
+                        Fund Your Wallet
                     </h2>
 
                 </div>
 
-                <div class="secure-mark">
 
-                    <span class="secure-dot"></span>
+                <div class="transaction-status">
 
-                    SECURE
+                    <span class="status-dot"></span>
+
+                    <span>
+                        ONLINE
+                    </span>
 
                 </div>
 
             </div>
 
 
-            <div class="field amount-field">
 
-                <label for="amount">
+            <!-- AMOUNT -->
+
+            <div class="form-section">
+
+                <label
+                    for="amount"
+                    class="field-label"
+                >
                     Deposit Amount
                 </label>
 
-                <div class="amount-input-wrap">
 
-                    <span class="currency">
+                <div class="amount-box">
+
+                    <span class="amount-currency">
                         UGX
                     </span>
+
 
                     <input
                         type="number"
@@ -115,29 +202,39 @@
                         name="amount"
                         min="10000"
                         step="1"
-                        placeholder="10,000"
                         inputmode="numeric"
                         autocomplete="off"
+                        placeholder="10,000"
+                        aria-describedby="amountHint"
                     >
 
                 </div>
 
-                <div class="input-hint">
-                    Minimum deposit: UGX 10,000
+
+                <div
+                    id="amountHint"
+                    class="field-hint"
+                >
+                    Minimum deposit is UGX 10,000
                 </div>
 
             </div>
 
 
-            <div class="field payment-field">
 
-                <label>
-                    Select Payment Method
-                </label>
+            <!-- PAYMENT METHOD -->
+
+            <div class="form-section">
+
+                <div class="field-label">
+                    Choose Payment Method
+                </div>
 
 
                 <div class="payment-methods">
 
+
+                    <!-- MTN -->
 
                     <div class="payment-option">
 
@@ -149,41 +246,48 @@
                             checked
                         >
 
+
                         <label
                             for="mtn"
-                            class="payment-label"
+                            class="payment-card"
                         >
 
-                            <div class="payment-logo-wrap">
+                            <div class="payment-logo">
 
                                 <img
                                     src="assets/mtn.png"
                                     alt="MTN Mobile Money"
-                                    class="payment-logo"
                                 >
 
                             </div>
 
 
-                            <div class="payment-details">
+                            <div class="payment-info">
 
-                                <span class="payment-name">
+                                <strong>
                                     MTN Mobile Money
-                                </span>
+                                </strong>
 
-                                <span class="payment-network">
+                                <span>
                                     MTN Uganda
                                 </span>
 
                             </div>
 
 
-                            <span class="payment-check"></span>
+                            <div class="payment-selected">
+
+                                <span></span>
+
+                            </div>
 
                         </label>
 
                     </div>
 
+
+
+                    <!-- AIRTEL -->
 
                     <div class="payment-option">
 
@@ -194,36 +298,40 @@
                             value="Airtel"
                         >
 
+
                         <label
                             for="airtel"
-                            class="payment-label"
+                            class="payment-card"
                         >
 
-                            <div class="payment-logo-wrap">
+                            <div class="payment-logo">
 
                                 <img
                                     src="assets/airtel.png"
                                     alt="Airtel Money"
-                                    class="payment-logo"
                                 >
 
                             </div>
 
 
-                            <div class="payment-details">
+                            <div class="payment-info">
 
-                                <span class="payment-name">
+                                <strong>
                                     Airtel Money
-                                </span>
+                                </strong>
 
-                                <span class="payment-network">
+                                <span>
                                     Airtel Uganda
                                 </span>
 
                             </div>
 
 
-                            <span class="payment-check"></span>
+                            <div class="payment-selected">
+
+                                <span></span>
+
+                            </div>
 
                         </label>
 
@@ -235,30 +343,30 @@
             </div>
 
 
+
+            <!-- PAYMENT INSTRUCTIONS -->
+
             <div
                 id="merchantBox"
-                class="merchant-box"
+                class="payment-details-card"
             >
 
-                <div class="merchant-top">
+                <div class="payment-details-header">
 
                     <div>
 
-                        <div class="merchant-heading">
-                            PAYMENT DETAILS
-                        </div>
+                        <span class="details-label">
+                            PAYMENT INSTRUCTIONS
+                        </span>
 
-                        <div
-                            id="merchantNetwork"
-                            class="merchant-network"
-                        >
+                        <h3 id="merchantNetwork">
                             MTN MOBILE MONEY
-                        </div>
+                        </h3>
 
                     </div>
 
 
-                    <div class="payment-status">
+                    <div class="ready-badge">
 
                         <span></span>
 
@@ -269,48 +377,73 @@
                 </div>
 
 
-                <div class="merchant-label">
-                    Merchant Code
-                </div>
+
+                <div class="merchant-section">
+
+                    <span class="merchant-title">
+                        Merchant Code
+                    </span>
 
 
-                <div class="merchant-row">
+                    <div class="merchant-code-row">
 
-                    <div
-                        id="merchantCode"
-                        class="merchant-code"
-                    >
-                        52200475
+                        <strong
+                            id="merchantCode"
+                        >
+                            52200475
+                        </strong>
+
+
+                        <button
+                            type="button"
+                            id="copyCode"
+                            class="copy-button"
+                        >
+
+                            <span class="copy-icon">
+                                ⧉
+                            </span>
+
+                            <span>
+                                Copy
+                            </span>
+
+                        </button>
+
                     </div>
 
-
-                    <button
-                        type="button"
-                        id="copyCode"
-                        class="copy-button"
-                    >
-                        Copy
-                    </button>
-
                 </div>
 
 
-                <div
-                    id="ussdText"
-                    class="ussd-text"
-                >
-                    Dial *165*3# on your MTN line,
-                    select the merchant payment option,
-                    and enter merchant code 52200475.
+
+                <div class="ussd-instruction">
+
+                    <span class="instruction-label">
+                        HOW TO PAY
+                    </span>
+
+
+                    <p id="ussdText">
+                        Dial *165*3# on your MTN line,
+                        select the merchant payment option,
+                        and enter merchant code 52200475.
+                    </p>
+
                 </div>
 
             </div>
 
 
-            <div class="field reference-field">
 
-                <label for="paymentReference">
-                    Mobile Money Transaction Reference
+            <!-- TRANSACTION REFERENCE -->
+
+            <div class="form-section reference-section">
+
+                <label
+                    for="paymentReference"
+                    class="field-label"
+                >
+                    Transaction Reference
                 </label>
 
 
@@ -319,18 +452,21 @@
                     id="paymentReference"
                     name="paymentReference"
                     maxlength="100"
-                    placeholder="Enter transaction reference"
                     autocomplete="off"
+                    placeholder="Enter Mobile Money reference"
                 >
 
 
-                <div class="input-hint">
-                    Enter the reference exactly as shown
-                    after completing your payment.
+                <div class="field-hint">
+                    Enter the exact transaction reference
+                    received after payment.
                 </div>
 
             </div>
 
+
+
+            <!-- SUBMIT -->
 
             <button
                 type="button"
@@ -338,156 +474,246 @@
                 class="submit-button"
             >
 
-                <span>
+                <span class="submit-text">
                     Submit Deposit
                 </span>
 
-                <span class="button-arrow">
+
+                <span class="submit-arrow">
                     →
                 </span>
 
             </button>
 
 
-            <div class="security-notice">
 
-                <div class="security-icon">
+            <!-- VERIFICATION NOTICE -->
+
+            <div class="verification-card">
+
+                <div class="verification-icon">
                     ✓
                 </div>
 
 
-                <div>
+                <div class="verification-content">
 
                     <strong>
                         Payment Verification
                     </strong>
 
                     <p>
-                        Make your Mobile Money payment first,
-                        then submit the transaction reference.
+                        Your deposit will remain pending
+                        until the FINORA team verifies
+                        your Mobile Money transaction.
                     </p>
 
                 </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =========================
+             HOW IT WORKS
+        ========================== -->
+
+        <section class="process-section">
+
+            <div class="section-heading">
+
+                <span>
+                    SIMPLE & SECURE
+                </span>
+
+                <h2>
+                    How Deposits Work
+                </h2>
+
+            </div>
+
+
+
+            <div class="process-list">
+
+
+                <div class="process-item">
+
+                    <div class="process-number">
+                        01
+                    </div>
+
+                    <div class="process-content">
+
+                        <h3>
+                            Enter Amount
+                        </h3>
+
+                        <p>
+                            Choose how much you want
+                            to add to your FINORA wallet.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="process-item">
+
+                    <div class="process-number">
+                        02
+                    </div>
+
+                    <div class="process-content">
+
+                        <h3>
+                            Make Payment
+                        </h3>
+
+                        <p>
+                            Send the selected amount using
+                            the official merchant details.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="process-item">
+
+                    <div class="process-number">
+                        03
+                    </div>
+
+                    <div class="process-content">
+
+                        <h3>
+                            Submit Reference
+                        </h3>
+
+                        <p>
+                            Enter your Mobile Money transaction
+                            reference and submit your deposit.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="process-item">
+
+                    <div class="process-number">
+                        04
+                    </div>
+
+                    <div class="process-content">
+
+                        <h3>
+                            Verification
+                        </h3>
+
+                        <p>
+                            FINORA verifies the payment before
+                            the deposit is credited to your wallet.
+                        </p>
+
+                    </div>
+
+                </div>
+
 
             </div>
 
         </section>
 
 
-        <section class="rules-card">
 
-            <div class="rules-header">
+        <!-- =========================
+             SECURITY
+        ========================== -->
 
-                <div>
+        <section class="security-section">
 
-                    <span class="rules-eyebrow">
-                        IMPORTANT
-                    </span>
-
-                    <h2 class="rules-title">
-                        Deposit Guidelines
-                    </h2>
-
-                </div>
-
+            <div class="security-symbol">
+                ✓
             </div>
 
 
-            <div class="rule">
+            <div>
 
-                <div class="rule-number">
-                    01
-                </div>
+                <span>
+                    FINORA SECURITY
+                </span>
 
+                <h2>
+                    Your payment is verified before credit.
+                </h2>
 
-                <div class="rule-text">
-
-                    <strong>
-                        Minimum Deposit
-                    </strong>
-
-                    <p>
-                        The minimum deposit amount is
-                        UGX 10,000.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="rule">
-
-                <div class="rule-number">
-                    02
-                </div>
-
-
-                <div class="rule-text">
-
-                    <strong>
-                        Use the Correct Merchant Code
-                    </strong>
-
-                    <p>
-                        Always use the official FINORA
-                        merchant code displayed for your
-                        selected payment method.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="rule">
-
-                <div class="rule-number">
-                    03
-                </div>
-
-
-                <div class="rule-text">
-
-                    <strong>
-                        Keep Your Transaction Reference
-                    </strong>
-
-                    <p>
-                        Keep your Mobile Money transaction
-                        reference and enter it correctly
-                        when submitting your deposit.
-                    </p>
-
-                </div>
+                <p>
+                    Never submit a transaction reference
+                    for a payment you have not completed.
+                </p>
 
             </div>
 
         </section>
 
+
+
+        <!-- =========================
+             FOOTER
+        ========================== -->
 
         <footer class="footer">
 
             <div class="footer-brand">
-                <span class="footer-fin">FIN</span><span class="footer-ora">ORA</span>
+
+                <span class="footer-fin">
+                    FIN
+                </span><span class="footer-ora">
+                    ORA
+                </span>
+
             </div>
+
 
             <div class="footer-tagline">
                 INVEST • GROW • EARN
             </div>
 
-            <div class="footer-line"></div>
+
+            <div class="footer-divider"></div>
+
 
             <p>
-                Secure Mobile Money deposits
+                Secure Mobile Money Funding
             </p>
 
+
+            <a
+                href="dashboard.html"
+                class="back-dashboard"
+            >
+                ← Back to Dashboard
+            </a>
+
         </footer>
+
 
     </main>
 
 
-    <script src="deposit.js?v=1"></script>
+
+    <script src="deposit.js?v=5"></script>
 
 </body>
 
