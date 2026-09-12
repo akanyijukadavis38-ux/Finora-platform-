@@ -12,25 +12,37 @@ document.addEventListener("DOMContentLoaded", () => {
     const MIN_DEPOSIT = 10000;
 
     const PAYMENT_DETAILS = {
+
         MTN: {
             network: "MTN MOBILE MONEY",
+
             merchantCode: "52200475",
+
             ussd:
                 "Dial *165*3# on your MTN line, select the merchant payment option, and enter merchant code 52200475."
         },
 
         Airtel: {
             network: "AIRTEL MONEY",
+
             merchantCode: "7157334",
+
             ussd:
                 "Dial *185*9# on your Airtel line, select the merchant payment option, and enter merchant code 7157334."
         }
+
     };
 
 
     /* =========================================================
        GET ELEMENTS
     ========================================================= */
+
+    const pageLoader =
+        document.getElementById("pageLoader");
+
+    const depositPage =
+        document.getElementById("depositPage");
 
     const amountInput =
         document.getElementById("amount");
@@ -67,10 +79,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       BASIC ELEMENT CHECK
+       ELEMENT CHECK
     ========================================================= */
 
     if (
+        !depositPage ||
         !amountInput ||
         !mtnRadio ||
         !airtelRadio ||
@@ -83,8 +96,9 @@ document.addEventListener("DOMContentLoaded", () => {
         !submitButton ||
         !messageBox
     ) {
+
         console.error(
-            "❌ FINORA Deposit: Required HTML elements are missing."
+            "FINORA Deposit: Required elements are missing."
         );
 
         return;
@@ -92,7 +106,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       MESSAGE HANDLER
+       PAGE LOADING PROTECTION
+    ========================================================= */
+
+    requestAnimationFrame(() => {
+
+        setTimeout(() => {
+
+            if (pageLoader) {
+
+                pageLoader.classList.add(
+                    "hidden"
+                );
+
+            }
+
+        }, 350);
+
+    });
+
+
+    /* =========================================================
+       MESSAGE SYSTEM
     ========================================================= */
 
     function showMessage(
@@ -103,14 +138,24 @@ document.addEventListener("DOMContentLoaded", () => {
         messageBox.textContent = text;
 
         messageBox.className =
-            "message " + type;
+            "message show " + type;
 
-        messageBox.style.display = "block";
+        window.setTimeout(() => {
 
-        messageBox.scrollIntoView({
-            behavior: "smooth",
-            block: "nearest"
-        });
+            if (
+                messageBox.classList.contains(
+                    "show"
+                )
+            ) {
+
+                messageBox.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest"
+                });
+
+            }
+
+        }, 50);
     }
 
 
@@ -118,14 +163,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         messageBox.textContent = "";
 
-        messageBox.className = "message";
-
-        messageBox.style.display = "none";
+        messageBox.className =
+            "message";
     }
 
 
     /* =========================================================
-       BUTTON LOADING STATE
+       SUBMIT BUTTON STATE
     ========================================================= */
 
     function setLoading(isLoading) {
@@ -134,26 +178,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
             submitButton.disabled = true;
 
-            submitButton.classList.add(
-                "loading"
-            );
-
             submitButton.innerHTML = `
-                <span>Submitting...</span>
-                <span class="button-arrow">⏳</span>
+                <span class="submit-text">
+                    Submitting...
+                </span>
+
+                <span class="submit-arrow">
+                    ⏳
+                </span>
             `;
 
         } else {
 
             submitButton.disabled = false;
 
-            submitButton.classList.remove(
-                "loading"
-            );
-
             submitButton.innerHTML = `
-                <span>Submit Deposit</span>
-                <span class="button-arrow">→</span>
+                <span class="submit-text">
+                    Submit Deposit
+                </span>
+
+                <span class="submit-arrow">
+                    →
+                </span>
             `;
         }
     }
@@ -178,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       UPDATE PAYMENT INFORMATION
+       UPDATE PAYMENT DETAILS
     ========================================================= */
 
     function updatePaymentMethod() {
@@ -202,42 +248,28 @@ document.addEventListener("DOMContentLoaded", () => {
         ussdText.textContent =
             details.ussd;
 
-        merchantBox.classList.add(
-            "method-updated"
+
+        /*
+         * Small visual refresh when
+         * switching payment networks.
+         */
+
+        merchantBox.animate(
+            [
+                {
+                    opacity: 0.72,
+                    transform: "translateY(2px)"
+                },
+                {
+                    opacity: 1,
+                    transform: "translateY(0)"
+                }
+            ],
+            {
+                duration: 220,
+                easing: "ease-out"
+            }
         );
-
-        setTimeout(() => {
-            merchantBox.classList.remove(
-                "method-updated"
-            );
-        }, 250);
-
-
-        /* Update visual selected state */
-
-        const mtnLabel =
-            document.querySelector(
-                'label[for="mtn"]'
-            );
-
-        const airtelLabel =
-            document.querySelector(
-                'label[for="airtel"]'
-            );
-
-        if (mtnLabel) {
-            mtnLabel.classList.toggle(
-                "selected",
-                method === "MTN"
-            );
-        }
-
-        if (airtelLabel) {
-            airtelLabel.classList.toggle(
-                "selected",
-                method === "Airtel"
-            );
-        }
     }
 
 
@@ -248,53 +280,23 @@ document.addEventListener("DOMContentLoaded", () => {
     mtnRadio.addEventListener(
         "change",
         () => {
+
+            clearMessage();
+
             updatePaymentMethod();
         }
     );
+
 
     airtelRadio.addEventListener(
         "change",
         () => {
+
+            clearMessage();
+
             updatePaymentMethod();
         }
     );
-
-
-    /* =========================================================
-       PAYMENT LABEL CLICK SUPPORT
-    ========================================================= */
-
-    const paymentLabels =
-        document.querySelectorAll(
-            ".payment-label"
-        );
-
-    paymentLabels.forEach(label => {
-
-        label.addEventListener(
-            "click",
-            () => {
-
-                const targetId =
-                    label.getAttribute(
-                        "for"
-                    );
-
-                const radio =
-                    document.getElementById(
-                        targetId
-                    );
-
-                if (!radio) {
-                    return;
-                }
-
-                radio.checked = true;
-
-                updatePaymentMethod();
-            }
-        );
-    });
 
 
     /* =========================================================
@@ -311,6 +313,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!code) {
                 return;
             }
+
+            const originalHTML =
+                copyCodeButton.innerHTML;
 
             try {
 
@@ -330,10 +335,19 @@ document.addEventListener("DOMContentLoaded", () => {
                             "textarea"
                         );
 
-                    temporaryInput.value = code;
+                    temporaryInput.value =
+                        code;
+
+                    temporaryInput.setAttribute(
+                        "readonly",
+                        ""
+                    );
 
                     temporaryInput.style.position =
                         "fixed";
+
+                    temporaryInput.style.top =
+                        "-9999px";
 
                     temporaryInput.style.opacity =
                         "0";
@@ -353,31 +367,37 @@ document.addEventListener("DOMContentLoaded", () => {
                     temporaryInput.remove();
                 }
 
-                const originalText =
-                    copyCodeButton.textContent;
 
-                copyCodeButton.textContent =
-                    "Copied!";
+                copyCodeButton.innerHTML = `
+                    <span>
+                        ✓
+                    </span>
+
+                    <span>
+                        Copied
+                    </span>
+                `;
 
                 copyCodeButton.classList.add(
                     "copied"
                 );
 
-                setTimeout(() => {
 
-                    copyCodeButton.textContent =
-                        originalText;
+                window.setTimeout(() => {
+
+                    copyCodeButton.innerHTML =
+                        originalHTML;
 
                     copyCodeButton.classList.remove(
                         "copied"
                     );
 
-                }, 1500);
+                }, 1600);
 
             } catch (error) {
 
                 console.error(
-                    "❌ FINORA COPY ERROR:",
+                    "FINORA COPY ERROR:",
                     error
                 );
 
@@ -391,7 +411,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       AMOUNT FORMATTING / VALIDATION
+       AMOUNT INPUT
     ========================================================= */
 
     amountInput.addEventListener(
@@ -400,35 +420,60 @@ document.addEventListener("DOMContentLoaded", () => {
 
             clearMessage();
 
-            let value =
-                amountInput.value;
+            /*
+             * Prevent negative values.
+             */
 
-            if (value.includes("-")) {
+            if (
+                Number(amountInput.value) < 0
+            ) {
 
-                value =
-                    value.replace(
-                        /-/g,
-                        ""
-                    );
-
-                amountInput.value =
-                    value;
+                amountInput.value = "";
             }
         }
     );
 
 
     /* =========================================================
-       REFERENCE INPUT
+       TRANSACTION REFERENCE
     ========================================================= */
 
     paymentReference.addEventListener(
         "input",
         () => {
+
             clearMessage();
 
+            /*
+             * Remove accidental leading spaces.
+             */
+
             paymentReference.value =
-                paymentReference.value.trimStart();
+                paymentReference.value.replace(
+                    /^\s+/,
+                    ""
+                );
+        }
+    );
+
+
+    /* =========================================================
+       ENTER KEY SUPPORT
+    ========================================================= */
+
+    paymentReference.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Enter" &&
+                !submitButton.disabled
+            ) {
+
+                event.preventDefault();
+
+                submitButton.click();
+            }
         }
     );
 
@@ -505,7 +550,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             /* ---------------------------------------------
-               PAYMENT REFERENCE
+               TRANSACTION REFERENCE
             --------------------------------------------- */
 
             const reference =
@@ -541,12 +586,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             /* ---------------------------------------------
-               CONFIRM USER HAS PAID
+               PAYMENT CONFIRMATION
             --------------------------------------------- */
 
             const confirmed =
                 window.confirm(
-                    `Please confirm that you have completed the ${paymentMethod} Mobile Money payment using merchant code ${PAYMENT_DETAILS[paymentMethod].merchantCode}.\n\nTransaction reference: ${reference}\n\nSubmit this deposit for verification?`
+                    `Confirm that you have completed the ${paymentMethod} Mobile Money payment using merchant code ${PAYMENT_DETAILS[paymentMethod].merchantCode}.\n\nTransaction reference: ${reference}\n\nSubmit this deposit for verification?`
                 );
 
             if (!confirmed) {
@@ -555,7 +600,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             /* ---------------------------------------------
-               START REQUEST
+               LOADING
             --------------------------------------------- */
 
             setLoading(true);
@@ -594,6 +639,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
 
+                /* -----------------------------------------
+                   READ SERVER RESPONSE
+                ----------------------------------------- */
+
                 let data = null;
 
                 try {
@@ -601,19 +650,22 @@ document.addEventListener("DOMContentLoaded", () => {
                     data =
                         await response.json();
 
-                } catch (jsonError) {
+                } catch (error) {
 
                     data = null;
                 }
 
 
                 /* -----------------------------------------
-                   AUTHENTICATION ERROR
+                   SESSION EXPIRED
                 ----------------------------------------- */
 
-                if (response.status === 401) {
+                if (
+                    response.status === 401
+                ) {
 
                     showMessage(
+                        data?.message ||
                         "Your FINORA session has expired. Please log in again.",
                         "error"
                     );
@@ -625,10 +677,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 /* -----------------------------------------
-                   FROZEN ACCOUNT
+                   ACCOUNT FROZEN
                 ----------------------------------------- */
 
-                if (response.status === 403) {
+                if (
+                    response.status === 403
+                ) {
 
                     showMessage(
                         data?.message ||
@@ -646,7 +700,9 @@ document.addEventListener("DOMContentLoaded", () => {
                    DUPLICATE REFERENCE
                 ----------------------------------------- */
 
-                if (response.status === 409) {
+                if (
+                    response.status === 409
+                ) {
 
                     showMessage(
                         data?.message ||
@@ -661,7 +717,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 /* -----------------------------------------
-                   OTHER SERVER ERROR
+                   VALIDATION / SERVER ERROR
                 ----------------------------------------- */
 
                 if (!response.ok) {
@@ -693,23 +749,26 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
 
-                    /* Clear form */
+                    /*
+                     * Clear entered values after
+                     * successful submission.
+                     */
 
                     amountInput.value = "";
 
                     paymentReference.value = "";
 
 
-                    /* Keep selected payment method */
-
-
                     /*
-                     IMPORTANT:
-                     The wallet is NOT credited here.
-
-                     The deposit remains pending until
-                     FINORA admin verification/approval.
-                    */
+                     * IMPORTANT:
+                     *
+                     * The frontend does NOT credit
+                     * the user's wallet.
+                     *
+                     * The backend deposit remains
+                     * "pending" until administrator
+                     * verification and approval.
+                     */
 
                     setLoading(false);
 
@@ -718,7 +777,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 /* -----------------------------------------
-                   UNKNOWN RESPONSE
+                   UNEXPECTED RESPONSE
                 ----------------------------------------- */
 
                 showMessage(
@@ -731,7 +790,7 @@ document.addEventListener("DOMContentLoaded", () => {
             } catch (error) {
 
                 console.error(
-                    "❌ FINORA DEPOSIT REQUEST ERROR:",
+                    "FINORA DEPOSIT REQUEST ERROR:",
                     error
                 );
 
@@ -747,7 +806,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================================
-       INITIAL STATE
+       INITIALIZE PAYMENT METHOD
     ========================================================= */
 
     updatePaymentMethod();
