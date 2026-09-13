@@ -1,7 +1,40 @@
 /* =========================================================
    FINORA DEPOSIT PAGE
-   Premium Dark Finance Design
-   ========================================================= */
+   Premium Dark • Magenta • Gold
+========================================================= */
+
+:root {
+    --bg: #07040B;
+    --bg-soft: #0D0812;
+    --card: #100A17;
+    --card-2: #140C1B;
+
+    --magenta: #EA3CFF;
+    --magenta-bright: #FF72FF;
+    --magenta-dark: #9E18BD;
+
+    --gold: #F5A623;
+    --gold-bright: #FFD76A;
+    --gold-dark: #C97908;
+
+    --white: #FFFFFF;
+    --text: #F7F2FA;
+    --muted: #AFA5B6;
+    --muted-2: #7D7185;
+
+    --border: rgba(234, 60, 255, 0.20);
+    --gold-border: rgba(245, 166, 35, 0.24);
+
+    --shadow:
+        0 20px 55px rgba(0, 0, 0, 0.48);
+
+    --radius: 20px;
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
 
 * {
     box-sizing: border-box;
@@ -9,39 +42,65 @@
     padding: 0;
 }
 
+
 html {
+    min-height: 100%;
+    background: var(--bg);
     scroll-behavior: smooth;
 }
+
 
 body {
     min-height: 100vh;
     background:
         radial-gradient(
             circle at 15% 5%,
-            rgba(234, 60, 255, 0.14),
-            transparent 32%
-        ),
-        radial-gradient(
-            circle at 90% 20%,
-            rgba(245, 166, 35, 0.08),
+            rgba(158, 24, 189, 0.20),
             transparent 28%
         ),
-        #07040b;
+        radial-gradient(
+            circle at 88% 18%,
+            rgba(234, 60, 255, 0.12),
+            transparent 24%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(245, 166, 35, 0.07),
+            transparent 30%
+        ),
+        var(--bg);
 
-    color: #ffffff;
+    color: var(--text);
+
     font-family:
         Arial,
         Helvetica,
         sans-serif;
 
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+}
+
+
+button,
+input {
+    font: inherit;
+}
+
+
+button {
+    cursor: pointer;
+}
+
+
+a {
+    color: inherit;
+    text-decoration: none;
 }
 
 
 /* =========================================================
-   PAGE LOADER
-   ========================================================= */
+   PRE-RENDER LOADER
+========================================================= */
 
 .page-loader {
     position: fixed;
@@ -56,15 +115,16 @@ body {
     background:
         radial-gradient(
             circle at center,
-            rgba(234, 60, 255, 0.10),
-            transparent 40%
+            rgba(158, 24, 189, 0.13),
+            transparent 38%
         ),
-        #07040b;
+        #07040B;
 
     transition:
         opacity 0.35s ease,
         visibility 0.35s ease;
 }
+
 
 .page-loader.hidden {
     opacity: 0;
@@ -72,128 +132,190 @@ body {
     pointer-events: none;
 }
 
-.loader-brand {
-    font-family:
-        "Times New Roman",
-        Times,
-        serif;
 
-    font-size: 34px;
+.loader-brand {
+    font-family: "Times New Roman", serif;
+    font-size: 42px;
     font-weight: 700;
     letter-spacing: 1px;
 }
 
+
 .loader-fin {
-    color: #ffffff;
+    color: var(--white);
 }
+
 
 .loader-ora {
-    color: #f5a623;
+    color: var(--gold-bright);
 }
+
 
 .loader-line {
-    width: 90px;
+    width: 105px;
     height: 2px;
+    margin-top: 15px;
 
-    margin-top: 18px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--magenta-bright),
+        transparent
+    );
 
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            #ea3cff,
-            #f5a623,
-            transparent
-        );
-
-    box-shadow:
-        0 0 15px rgba(234, 60, 255, 0.5);
+    animation: loaderPulse 1.4s ease-in-out infinite;
 }
+
 
 .loader-text {
     margin-top: 13px;
 
-    color: rgba(255, 255, 255, 0.52);
+    color: var(--muted-2);
 
     font-size: 9px;
     font-weight: 700;
-
     letter-spacing: 2px;
 }
 
 
+@keyframes loaderPulse {
+    0%,
+    100% {
+        opacity: 0.35;
+        transform: scaleX(0.65);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scaleX(1);
+    }
+}
+
+
 /* =========================================================
-   MAIN PAGE
-   ========================================================= */
+   PAGE
+========================================================= */
 
 .deposit-page {
-    width: 100%;
-    max-width: 620px;
+    position: relative;
+
+    width: min(100%, 620px);
 
     margin: 0 auto;
 
     padding:
-        22px
+        24px
         18px
         50px;
+}
 
-    overflow: hidden;
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.back-button {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    margin-bottom: 13px;
+
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 13px;
+
+    background: rgba(255, 255, 255, 0.035);
+
+    color: var(--white);
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.back-button:hover {
+    border-color: rgba(234, 60, 255, 0.42);
+    background: rgba(234, 60, 255, 0.08);
+}
+
+
+.back-button:active {
+    transform: scale(0.94);
+}
+
+
+.back-button svg {
+    width: 21px;
+    height: 21px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 
 /* =========================================================
    HEADER
-   ========================================================= */
+========================================================= */
 
 .top-header {
-    width: 100%;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    margin-bottom: 42px;
+    min-height: 66px;
+
+    margin-bottom: 25px;
 }
+
 
 .brand {
     display: inline-flex;
     flex-direction: column;
-
-    text-decoration: none;
+    align-items: flex-start;
 }
+
 
 .brand-name {
-    font-family:
-        "Times New Roman",
-        Times,
-        serif;
+    font-family: "Times New Roman", serif;
 
-    font-size: 30px;
-    font-weight: 700;
-
+    font-size: 31px;
     line-height: 0.9;
 
-    letter-spacing: 0;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
+
 
 .brand-fin {
-    color: #ffffff;
+    color: var(--white);
 }
+
 
 .brand-ora {
-    color: #f5a623;
+    color: var(--gold-bright);
 }
+
 
 .brand-tagline {
-    margin-top: 8px;
+    margin-top: 7px;
 
-    color: #ea3cff;
+    color: var(--magenta-bright);
 
     font-size: 7px;
-    font-weight: 700;
-
-    letter-spacing: 2.1px;
+    font-weight: 800;
+    letter-spacing: 2px;
 }
+
 
 .header-security {
     display: flex;
@@ -202,191 +324,194 @@ body {
 
     padding: 8px 11px;
 
-    border:
-        1px solid
-        rgba(234, 60, 255, 0.18);
+    border: 1px solid rgba(234, 60, 255, 0.18);
+    border-radius: 999px;
 
-    border-radius: 20px;
+    background: rgba(234, 60, 255, 0.045);
 
-    background:
-        rgba(255, 255, 255, 0.025);
+    color: #D8CEDB;
 
-    color:
-        rgba(255, 255, 255, 0.58);
-
-    font-size: 8px;
-    font-weight: 700;
-
-    letter-spacing: 1.3px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
 }
 
-.security-pulse {
-    width: 6px;
-    height: 6px;
+
+.security-pulse,
+.status-dot {
+    display: inline-block;
+
+    width: 7px;
+    height: 7px;
 
     border-radius: 50%;
 
-    background: #ea3cff;
+    background: #37E89A;
 
     box-shadow:
-        0 0 10px
-        rgba(234, 60, 255, 0.9);
+        0 0 0 4px rgba(55, 232, 154, 0.08),
+        0 0 12px rgba(55, 232, 154, 0.65);
+
+    animation: onlinePulse 2s ease-in-out infinite;
+}
+
+
+@keyframes onlinePulse {
+    0%,
+    100% {
+        opacity: 0.65;
+    }
+
+    50% {
+        opacity: 1;
+    }
 }
 
 
 /* =========================================================
    INTRO
-   ========================================================= */
+========================================================= */
 
 .deposit-intro {
-    margin-bottom: 25px;
+    margin-bottom: 24px;
 }
+
 
 .intro-label {
     display: flex;
     align-items: center;
     gap: 9px;
 
-    margin-bottom: 11px;
+    margin-bottom: 10px;
 
-    color: #ea3cff;
+    color: var(--magenta-bright);
 
     font-size: 9px;
-    font-weight: 700;
-
+    font-weight: 800;
     letter-spacing: 2px;
 }
 
-.intro-line {
-    width: 28px;
-    height: 1px;
 
-    background:
-        linear-gradient(
-            90deg,
-            #ea3cff,
-            transparent
-        );
+.intro-line {
+    width: 25px;
+    height: 2px;
+
+    background: var(--magenta-bright);
+
+    box-shadow:
+        0 0 10px rgba(234, 60, 255, 0.6);
 }
 
-.deposit-intro h1 {
-    font-family:
-        "Times New Roman",
-        Times,
-        serif;
 
-    font-size: 36px;
+.deposit-intro h1 {
+    font-family: "Times New Roman", serif;
+
+    color: var(--white);
+
+    font-size: clamp(31px, 8vw, 43px);
     line-height: 1.05;
 
     font-weight: 700;
-
-    color: #ffffff;
-
-    margin-bottom: 12px;
+    letter-spacing: -0.5px;
 }
+
 
 .deposit-intro p {
     max-width: 520px;
 
-    color:
-        rgba(255, 255, 255, 0.56);
+    margin-top: 11px;
 
-    font-size: 13px;
+    color: var(--muted);
+
+    font-size: 14px;
     line-height: 1.7;
 }
 
 
 /* =========================================================
    MESSAGE
-   ========================================================= */
+========================================================= */
 
 .message {
     display: none;
 
     margin-bottom: 16px;
-
     padding: 13px 15px;
 
-    border-radius: 12px;
+    border: 1px solid rgba(234, 60, 255, 0.25);
+    border-radius: 13px;
 
-    font-size: 12px;
+    background: rgba(234, 60, 255, 0.07);
+
+    color: var(--text);
+
+    font-size: 13px;
     line-height: 1.5;
 }
+
 
 .message.show {
     display: block;
 }
 
-.message.error {
-    border:
-        1px solid
-        rgba(255, 75, 110, 0.3);
-
-    background:
-        rgba(255, 50, 90, 0.08);
-
-    color: #ff9aae;
-}
 
 .message.success {
-    border:
-        1px solid
-        rgba(50, 255, 170, 0.25);
+    border-color: rgba(55, 232, 154, 0.28);
+    background: rgba(55, 232, 154, 0.07);
+    color: #A8F5D2;
+}
 
-    background:
-        rgba(50, 255, 170, 0.07);
 
-    color: #8fffc9;
+.message.error {
+    border-color: rgba(255, 75, 112, 0.30);
+    background: rgba(255, 75, 112, 0.07);
+    color: #FFB3C3;
 }
 
 
 /* =========================================================
    MAIN DEPOSIT CARD
-   ========================================================= */
+========================================================= */
 
 .deposit-card {
     position: relative;
 
-    padding: 22px;
+    padding: 20px;
 
-    border:
-        1px solid
-        rgba(234, 60, 255, 0.18);
-
-    border-radius: 22px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
 
     background:
         linear-gradient(
             145deg,
-            rgba(255, 255, 255, 0.055),
-            rgba(255, 255, 255, 0.018)
-        );
+            rgba(234, 60, 255, 0.055),
+            rgba(255, 255, 255, 0.018) 42%,
+            rgba(245, 166, 35, 0.025)
+        ),
+        var(--card);
 
-    box-shadow:
-        0 25px 70px
-        rgba(0, 0, 0, 0.45),
+    box-shadow: var(--shadow);
 
-        inset 0 1px 0
-        rgba(255, 255, 255, 0.045);
+    overflow: hidden;
 }
+
 
 .deposit-card::before {
     content: "";
 
     position: absolute;
-
     top: 0;
-    left: 15%;
+    left: 10%;
 
-    width: 70%;
+    width: 80%;
     height: 1px;
 
     background:
         linear-gradient(
             90deg,
             transparent,
-            rgba(234, 60, 255, 0.65),
-            rgba(245, 166, 35, 0.55),
+            rgba(234, 60, 255, 0.75),
+            rgba(245, 166, 35, 0.6),
             transparent
         );
 }
@@ -394,7 +519,7 @@ body {
 
 /* =========================================================
    CARD HEADER
-   ========================================================= */
+========================================================= */
 
 .deposit-card-header {
     display: flex;
@@ -403,101 +528,82 @@ body {
 
     gap: 15px;
 
-    margin-bottom: 27px;
+    padding-bottom: 19px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.065);
+
+    margin-bottom: 21px;
 }
+
 
 .card-label {
     display: block;
 
-    margin-bottom: 7px;
+    margin-bottom: 6px;
 
-    color: #ea3cff;
+    color: var(--magenta-bright);
 
     font-size: 8px;
-    font-weight: 700;
-
-    letter-spacing: 1.8px;
+    font-weight: 800;
+    letter-spacing: 1.7px;
 }
 
-.deposit-card-header h2 {
-    font-family:
-        "Times New Roman",
-        Times,
-        serif;
 
-    color: #ffffff;
+.deposit-card-header h2 {
+    font-family: "Times New Roman", serif;
+
+    color: var(--white);
 
     font-size: 25px;
     line-height: 1.1;
 }
 
-.transaction-status {
-    flex-shrink: 0;
 
+.transaction-status {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
 
     padding: 7px 9px;
 
-    border-radius: 20px;
+    border: 1px solid rgba(55, 232, 154, 0.16);
+    border-radius: 8px;
 
-    background:
-        rgba(50, 255, 170, 0.05);
+    color: #9BE8C5;
 
-    border:
-        1px solid
-        rgba(50, 255, 170, 0.15);
+    background: rgba(55, 232, 154, 0.035);
 
-    color: rgba(255, 255, 255, 0.5);
-
-    font-size: 7px;
-    font-weight: 700;
-
+    font-size: 8px;
+    font-weight: 800;
     letter-spacing: 1px;
-}
-
-.status-dot {
-    width: 5px;
-    height: 5px;
-
-    border-radius: 50%;
-
-    background: #62ffb2;
-
-    box-shadow:
-        0 0 8px
-        rgba(98, 255, 178, 0.8);
 }
 
 
 /* =========================================================
    FORM SECTIONS
-   ========================================================= */
+========================================================= */
 
 .form-section {
     margin-bottom: 22px;
 }
+
 
 .field-label {
     display: block;
 
     margin-bottom: 9px;
 
-    color:
-        rgba(255, 255, 255, 0.78);
+    color: #EDE5F0;
 
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 700;
-
-    letter-spacing: 0.4px;
 }
+
 
 .field-hint {
     margin-top: 8px;
 
-    color:
-        rgba(255, 255, 255, 0.35);
+    color: var(--muted-2);
 
     font-size: 10px;
     line-height: 1.5;
@@ -506,7 +612,7 @@ body {
 
 /* =========================================================
    AMOUNT
-   ========================================================= */
+========================================================= */
 
 .amount-box {
     display: flex;
@@ -514,322 +620,322 @@ body {
 
     min-height: 65px;
 
-    border:
-        1px solid
-        rgba(234, 60, 255, 0.2);
-
+    border: 1px solid rgba(234, 60, 255, 0.22);
     border-radius: 14px;
 
-    background:
-        rgba(0, 0, 0, 0.25);
+    background: #0A060F;
 
     transition:
         border-color 0.2s ease,
         box-shadow 0.2s ease;
 }
 
+
 .amount-box:focus-within {
-    border-color:
-        rgba(234, 60, 255, 0.65);
+    border-color: rgba(234, 60, 255, 0.72);
 
     box-shadow:
-        0 0 0 3px
-        rgba(234, 60, 255, 0.07);
+        0 0 0 3px rgba(234, 60, 255, 0.08),
+        0 0 22px rgba(234, 60, 255, 0.08);
 }
+
 
 .amount-currency {
-    padding-left: 18px;
+    padding-left: 17px;
 
-    color: #f5a623;
+    color: var(--gold-bright);
 
-    font-size: 12px;
-    font-weight: 800;
+    font-family: "Times New Roman", serif;
 
-    letter-spacing: 1px;
+    font-size: 16px;
+    font-weight: 700;
 }
+
 
 .amount-box input {
     width: 100%;
 
-    min-width: 0;
+    padding: 0 17px;
 
-    padding:
-        13px
-        17px;
-
-    border: none;
-    outline: none;
+    border: 0;
+    outline: 0;
 
     background: transparent;
 
-    color: #ffffff;
+    color: var(--white);
 
-    font-size: 25px;
+    font-size: 23px;
     font-weight: 700;
 }
 
+
 .amount-box input::placeholder {
-    color:
-        rgba(255, 255, 255, 0.18);
+    color: #514858;
 }
+
+
+/* Remove number arrows */
 
 .amount-box input::-webkit-inner-spin-button,
 .amount-box input::-webkit-outer-spin-button {
     margin: 0;
-    -webkit-appearance: none;
+    appearance: none;
 }
 
-.amount-box input {
+
+.amount-box input[type="number"] {
     appearance: textfield;
 }
 
 
 /* =========================================================
    PAYMENT METHODS
-   ========================================================= */
+========================================================= */
 
 .payment-methods {
     display: grid;
+    grid-template-columns: 1fr 1fr;
 
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-    gap: 11px;
+    gap: 10px;
 }
+
 
 .payment-option {
     position: relative;
 }
 
+
 .payment-option input {
     position: absolute;
 
     opacity: 0;
-
     pointer-events: none;
 }
 
+
 .payment-card {
-    min-height: 92px;
+    position: relative;
 
     display: flex;
     align-items: center;
 
-    gap: 11px;
+    min-height: 77px;
 
-    padding: 12px;
+    padding: 11px;
 
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.075);
+    border-radius: 14px;
 
-    border-radius: 15px;
-
-    background:
-        rgba(0, 0, 0, 0.23);
+    background: rgba(255, 255, 255, 0.025);
 
     cursor: pointer;
 
     transition:
         border-color 0.2s ease,
         background 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        transform 0.2s ease;
 }
+
 
 .payment-card:hover {
-    transform: translateY(-1px);
-
-    border-color:
-        rgba(234, 60, 255, 0.28);
+    border-color: rgba(234, 60, 255, 0.3);
+    background: rgba(234, 60, 255, 0.04);
 }
 
+
+.payment-card:active {
+    transform: scale(0.985);
+}
+
+
 .payment-option input:checked + .payment-card {
-    border-color:
-        rgba(234, 60, 255, 0.65);
+    border-color: rgba(234, 60, 255, 0.72);
 
     background:
         linear-gradient(
             135deg,
-            rgba(234, 60, 255, 0.09),
+            rgba(234, 60, 255, 0.10),
             rgba(245, 166, 35, 0.035)
         );
 
     box-shadow:
-        0 10px 30px
-        rgba(0, 0, 0, 0.25);
+        inset 0 0 22px rgba(234, 60, 255, 0.035),
+        0 0 20px rgba(234, 60, 255, 0.06);
 }
 
+
 .payment-logo {
-    width: 42px;
-    height: 42px;
-
-    flex-shrink: 0;
-
     display: flex;
     align-items: center;
     justify-content: center;
 
+    flex-shrink: 0;
+
+    width: 45px;
+    height: 45px;
+
     overflow: hidden;
 
-    border-radius: 10px;
+    border-radius: 9px;
 
-    background: #ffffff;
+    background: #FFFFFF;
 }
 
+
 .payment-logo img {
+    display: block;
+
     width: 100%;
     height: 100%;
 
     object-fit: contain;
-
-    display: block;
 }
 
-.payment-info {
-    min-width: 0;
 
+.payment-info {
     display: flex;
     flex-direction: column;
 
-    gap: 4px;
+    min-width: 0;
+
+    margin-left: 10px;
 }
+
 
 .payment-info strong {
-    color: #ffffff;
+    color: var(--white);
 
     font-size: 11px;
-    line-height: 1.3;
+    line-height: 1.25;
 }
+
 
 .payment-info span {
-    color:
-        rgba(255, 255, 255, 0.38);
+    margin-top: 4px;
 
-    font-size: 9px;
+    color: var(--muted-2);
+
+    font-size: 8px;
 }
 
+
 .payment-selected {
-    margin-left: auto;
+    position: absolute;
 
-    width: 15px;
-    height: 15px;
-
-    flex-shrink: 0;
+    top: 9px;
+    right: 9px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.18);
+    width: 14px;
+    height: 14px;
 
+    border: 1px solid #514858;
     border-radius: 50%;
 }
 
+
 .payment-selected span {
-    width: 7px;
-    height: 7px;
+    width: 6px;
+    height: 6px;
 
     border-radius: 50%;
 
     background: transparent;
 }
 
-.payment-option input:checked + .payment-card
-.payment-selected {
-    border-color: #ea3cff;
+
+.payment-option input:checked + .payment-card .payment-selected {
+    border-color: var(--magenta-bright);
 }
 
-.payment-option input:checked + .payment-card
-.payment-selected span {
-    background: #ea3cff;
+
+.payment-option input:checked + .payment-card .payment-selected span {
+    background: var(--magenta-bright);
 
     box-shadow:
-        0 0 8px
-        rgba(234, 60, 255, 0.7);
+        0 0 8px rgba(234, 60, 255, 0.8);
 }
 
 
 /* =========================================================
    PAYMENT DETAILS
-   ========================================================= */
+========================================================= */
 
 .payment-details-card {
-    margin:
-        4px
-        0
-        23px;
+    margin-bottom: 23px;
 
-    padding: 18px;
+    padding: 17px;
 
-    border:
-        1px solid
-        rgba(245, 166, 35, 0.18);
-
-    border-radius: 17px;
+    border: 1px solid var(--gold-border);
+    border-radius: 16px;
 
     background:
         linear-gradient(
             145deg,
-            rgba(245, 166, 35, 0.055),
-            rgba(234, 60, 255, 0.025)
-        );
+            rgba(245, 166, 35, 0.045),
+            rgba(234, 60, 255, 0.035)
+        ),
+        #0C0810;
 }
+
 
 .payment-details-header {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
 
     gap: 12px;
 
-    margin-bottom: 18px;
+    padding-bottom: 14px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+    margin-bottom: 15px;
 }
+
 
 .details-label {
     display: block;
 
-    margin-bottom: 6px;
+    margin-bottom: 5px;
 
-    color:
-        rgba(245, 166, 35, 0.75);
+    color: var(--gold-bright);
 
-    font-size: 7px;
+    font-size: 8px;
     font-weight: 800;
-
     letter-spacing: 1.6px;
 }
 
-.payment-details-header h3 {
-    color: #ffffff;
 
-    font-size: 13px;
-    font-weight: 800;
+.payment-details-header h3 {
+    color: var(--white);
+
+    font-family: "Times New Roman", serif;
+
+    font-size: 18px;
 }
+
 
 .ready-badge {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
 
     padding: 6px 8px;
 
-    border:
-        1px solid
-        rgba(98, 255, 178, 0.14);
+    border: 1px solid rgba(55, 232, 154, 0.16);
+    border-radius: 7px;
 
-    border-radius: 20px;
-
-    color:
-        rgba(255, 255, 255, 0.45);
+    color: #9BE8C5;
 
     font-size: 7px;
-    font-weight: 700;
-
+    font-weight: 800;
     letter-spacing: 1px;
 }
+
 
 .ready-badge span {
     width: 5px;
@@ -837,33 +943,36 @@ body {
 
     border-radius: 50%;
 
-    background: #62ffb2;
-
-    box-shadow:
-        0 0 7px
-        rgba(98, 255, 178, 0.8);
+    background: #37E89A;
 }
+
+
+/* =========================================================
+   MERCHANT CODE
+========================================================= */
 
 .merchant-section {
-    padding-bottom: 15px;
+    padding: 14px;
 
-    border-bottom:
-        1px solid
-        rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.022);
 }
+
 
 .merchant-title {
     display: block;
 
     margin-bottom: 8px;
 
-    color:
-        rgba(255, 255, 255, 0.4);
+    color: var(--muted);
 
     font-size: 9px;
-
+    font-weight: 700;
     letter-spacing: 0.8px;
 }
+
 
 .merchant-code-row {
     display: flex;
@@ -873,122 +982,114 @@ body {
     gap: 10px;
 }
 
+
 .merchant-code-row strong {
-    color: #f5a623;
+    color: var(--gold-bright);
 
-    font-family:
-        "Courier New",
-        monospace;
+    font-family: "Times New Roman", serif;
 
-    font-size: 25px;
-
-    letter-spacing: 2px;
+    font-size: 27px;
+    letter-spacing: 1.5px;
 }
+
 
 .copy-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     gap: 6px;
 
-    padding:
-        8px
-        10px;
+    min-height: 34px;
 
-    border:
-        1px solid
-        rgba(234, 60, 255, 0.2);
+    padding: 7px 10px;
 
-    border-radius: 9px;
+    border: 1px solid rgba(234, 60, 255, 0.25);
+    border-radius: 8px;
 
-    background:
-        rgba(234, 60, 255, 0.06);
+    background: rgba(234, 60, 255, 0.06);
 
-    color: #ffffff;
+    color: var(--magenta-bright);
 
     font-size: 9px;
-    font-weight: 700;
-
-    cursor: pointer;
+    font-weight: 800;
 
     transition:
         background 0.2s ease,
         border-color 0.2s ease;
 }
 
+
 .copy-button:hover {
-    border-color:
-        rgba(234, 60, 255, 0.5);
-
-    background:
-        rgba(234, 60, 255, 0.12);
+    border-color: rgba(234, 60, 255, 0.6);
+    background: rgba(234, 60, 255, 0.12);
 }
 
-.copy-button.copied {
-    border-color:
-        rgba(98, 255, 178, 0.3);
-
-    color: #8fffc9;
-}
 
 .copy-icon {
-    font-size: 13px;
+    font-size: 14px;
+    line-height: 1;
 }
 
+
+/* =========================================================
+   HOW TO PAY
+========================================================= */
+
 .ussd-instruction {
-    padding-top: 15px;
+    margin-top: 14px;
+    padding: 13px 14px;
+
+    border-left: 2px solid var(--magenta);
+
+    background: rgba(234, 60, 255, 0.035);
 }
+
 
 .instruction-label {
     display: block;
 
-    margin-bottom: 7px;
+    margin-bottom: 6px;
 
-    color:
-        rgba(255, 255, 255, 0.35);
+    color: var(--magenta-bright);
 
     font-size: 8px;
     font-weight: 800;
-
-    letter-spacing: 1px;
+    letter-spacing: 1.4px;
 }
 
+
 .ussd-instruction p {
-    color:
-        rgba(255, 255, 255, 0.57);
+    color: var(--muted);
 
     font-size: 11px;
+    line-height: 1.65;
+}
 
-    line-height: 1.6;
+
+.ussd-instruction strong {
+    color: var(--white);
 }
 
 
 /* =========================================================
    REFERENCE INPUT
-   ========================================================= */
+========================================================= */
 
-.reference-section input {
+.reference-input {
     width: 100%;
 
-    min-height: 54px;
+    min-height: 57px;
 
-    padding:
-        14px
-        15px;
+    padding: 0 15px;
 
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.09);
-
-    border-radius: 12px;
+    border: 1px solid rgba(234, 60, 255, 0.20);
+    border-radius: 13px;
 
     outline: none;
 
-    background:
-        rgba(0, 0, 0, 0.24);
+    background: #0A060F;
 
-    color: #ffffff;
+    color: var(--white);
 
     font-size: 13px;
 
@@ -997,62 +1098,57 @@ body {
         box-shadow 0.2s ease;
 }
 
-.reference-section input::placeholder {
-    color:
-        rgba(255, 255, 255, 0.22);
-}
 
-.reference-section input:focus {
-    border-color:
-        rgba(234, 60, 255, 0.6);
+.reference-input:focus {
+    border-color: rgba(234, 60, 255, 0.70);
 
     box-shadow:
-        0 0 0 3px
-        rgba(234, 60, 255, 0.06);
+        0 0 0 3px rgba(234, 60, 255, 0.07);
+}
+
+
+.reference-input::placeholder {
+    color: #514858;
 }
 
 
 /* =========================================================
    SUBMIT BUTTON
-   ========================================================= */
+========================================================= */
 
 .submit-button {
-    width: 100%;
-
-    min-height: 58px;
+    position: relative;
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 
-    padding:
-        0
-        18px;
+    width: 100%;
+    min-height: 58px;
 
-    border: none;
+    margin-top: 3px;
 
-    border-radius: 13px;
+    border: 0;
+    border-radius: 14px;
 
     background:
         linear-gradient(
             100deg,
-            #9e18bd,
-            #ea3cff 55%,
-            #f5a623
+            #B91FD0,
+            #EA3CFF 50%,
+            #C62DDC
         );
 
-    color: #ffffff;
+    color: #FFFFFF;
 
     font-size: 13px;
     font-weight: 800;
-
     letter-spacing: 0.3px;
 
-    cursor: pointer;
-
     box-shadow:
-        0 12px 35px
-        rgba(234, 60, 255, 0.18);
+        0 10px 28px rgba(234, 60, 255, 0.20);
+
+    overflow: hidden;
 
     transition:
         transform 0.2s ease,
@@ -1060,553 +1156,352 @@ body {
         opacity 0.2s ease;
 }
 
-.submit-button:hover {
-    transform: translateY(-1px);
 
-    box-shadow:
-        0 16px 42px
-        rgba(234, 60, 255, 0.25);
-}
+.submit-button::before {
+    content: "";
 
-.submit-button:active {
-    transform: translateY(0);
-}
-
-.submit-button:disabled {
-    opacity: 0.55;
-
-    cursor: not-allowed;
-
-    transform: none;
-}
-
-.submit-text {
-    padding-left: 2px;
-}
-
-.submit-arrow {
-    font-size: 22px;
-    line-height: 1;
-}
-
-
-/* =========================================================
-   VERIFICATION CARD
-   ========================================================= */
-
-.verification-card {
-    display: flex;
-    align-items: flex-start;
-
-    gap: 12px;
-
-    margin-top: 17px;
-
-    padding: 14px;
-
-    border:
-        1px solid
-        rgba(98, 255, 178, 0.12);
-
-    border-radius: 13px;
+    position: absolute;
+    inset: 0;
 
     background:
-        rgba(98, 255, 178, 0.035);
+        linear-gradient(
+            120deg,
+            transparent 30%,
+            rgba(255, 255, 255, 0.16),
+            transparent 70%
+        );
+
+    transform: translateX(-100%);
+
+    transition: transform 0.55s ease;
 }
 
-.verification-icon {
-    width: 27px;
-    height: 27px;
 
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border:
-        1px solid
-        rgba(98, 255, 178, 0.25);
-
-    border-radius: 50%;
-
-    color: #62ffb2;
-
-    font-size: 13px;
+.submit-button:hover::before {
+    transform: translateX(100%);
 }
 
-.verification-content strong {
-    display: block;
 
-    margin-bottom: 4px;
-
-    color: rgba(255, 255, 255, 0.8);
-
-    font-size: 10px;
+.submit-button:hover {
+    box-shadow:
+        0 13px 34px rgba(234, 60, 255, 0.28);
 }
 
-.verification-content p {
-    color:
-        rgba(255, 255, 255, 0.38);
 
-    font-size: 9px;
+.submit-button:active {
+    transform: scale(0.985);
+}
 
-    line-height: 1.55;
+
+.submit-button.loading {
+    opacity: 0.65;
+    pointer-events: none;
+}
+
+
+.submit-text,
+.submit-arrow {
+    position: relative;
+    z-index: 1;
+}
+
+
+.submit-arrow {
+    margin-left: 11px;
+
+    font-size: 18px;
 }
 
 
 /* =========================================================
-   HOW IT WORKS
-   ========================================================= */
+   HOW DEPOSITS WORK
+========================================================= */
 
 .process-section {
-    margin-top: 50px;
+    margin-top: 42px;
 }
+
 
 .section-heading {
-    margin-bottom: 20px;
+    margin-bottom: 19px;
 }
 
+
 .section-heading > span {
-    color: #ea3cff;
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: var(--magenta-bright);
 
     font-size: 8px;
     font-weight: 800;
-
     letter-spacing: 1.8px;
 }
 
+
 .section-heading h2 {
-    margin-top: 7px;
+    font-family: "Times New Roman", serif;
 
-    color: #ffffff;
+    color: var(--white);
 
-    font-family:
-        "Times New Roman",
-        Times,
-        serif;
-
-    font-size: 25px;
+    font-size: 27px;
 }
+
 
 .process-list {
-    display: flex;
-    flex-direction: column;
-
-    gap: 0;
+    position: relative;
 }
+
+
+.process-list::before {
+    content: "";
+
+    position: absolute;
+
+    top: 23px;
+    bottom: 23px;
+    left: 20px;
+
+    width: 1px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(234, 60, 255, 0.65),
+            rgba(245, 166, 35, 0.20),
+            transparent
+        );
+}
+
 
 .process-item {
     position: relative;
 
     display: flex;
 
-    gap: 16px;
+    gap: 15px;
 
-    padding-bottom: 24px;
+    padding: 13px 0;
 }
 
-.process-item:not(:last-child)::after {
-    content: "";
-
-    position: absolute;
-
-    left: 17px;
-    top: 39px;
-
-    width: 1px;
-    height: calc(100% - 23px);
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(234, 60, 255, 0.3),
-            rgba(255, 255, 255, 0.03)
-        );
-}
 
 .process-number {
     position: relative;
-    z-index: 1;
-
-    width: 35px;
-    height: 35px;
-
-    flex-shrink: 0;
+    z-index: 2;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border:
-        1px solid
-        rgba(234, 60, 255, 0.25);
+    flex-shrink: 0;
 
-    border-radius: 50%;
+    width: 41px;
+    height: 41px;
 
-    background:
-        #0d0812;
+    border: 1px solid rgba(234, 60, 255, 0.30);
+    border-radius: 12px;
 
-    color: #ea3cff;
+    background: #0B0710;
+
+    color: var(--magenta-bright);
 
     font-size: 9px;
     font-weight: 800;
-
     letter-spacing: 0.5px;
 }
+
 
 .process-content {
     padding-top: 2px;
 }
 
+
 .process-content h3 {
-    margin-bottom: 5px;
+    color: var(--white);
 
-    color: #ffffff;
-
-    font-size: 12px;
+    font-size: 13px;
+    font-weight: 700;
 }
+
 
 .process-content p {
     max-width: 470px;
 
-    color:
-        rgba(255, 255, 255, 0.42);
+    margin-top: 5px;
 
-    font-size: 10px;
+    color: var(--muted-2);
 
+    font-size: 11px;
     line-height: 1.6;
 }
 
 
 /* =========================================================
-   SECURITY SECTION
-   ========================================================= */
-
-.security-section {
-    display: flex;
-    align-items: flex-start;
-
-    gap: 15px;
-
-    margin-top: 22px;
-    padding: 19px;
-
-    border:
-        1px solid
-        rgba(245, 166, 35, 0.15);
-
-    border-radius: 17px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(245, 166, 35, 0.045),
-            rgba(234, 60, 255, 0.025)
-        );
-}
-
-.security-symbol {
-    width: 32px;
-    height: 32px;
-
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border:
-        1px solid
-        rgba(245, 166, 35, 0.28);
-
-    border-radius: 50%;
-
-    color: #f5a623;
-
-    font-size: 14px;
-    font-weight: 800;
-}
-
-.security-section span {
-    display: block;
-
-    margin-bottom: 5px;
-
-    color:
-        rgba(245, 166, 35, 0.75);
-
-    font-size: 7px;
-    font-weight: 800;
-
-    letter-spacing: 1.5px;
-}
-
-.security-section h2 {
-    margin-bottom: 5px;
-
-    color: #ffffff;
-
-    font-family:
-        "Times New Roman",
-        Times,
-        serif;
-
-    font-size: 16px;
-
-    line-height: 1.25;
-}
-
-.security-section p {
-    color:
-        rgba(255, 255, 255, 0.38);
-
-    font-size: 9px;
-
-    line-height: 1.5;
-}
-
-
-/* =========================================================
    FOOTER
-   ========================================================= */
+========================================================= */
 
 .footer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
     margin-top: 55px;
+
+    padding-top: 27px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.065);
 
     text-align: center;
 }
 
+
 .footer-brand {
-    font-family:
-        "Times New Roman",
-        Times,
-        serif;
+    font-family: "Times New Roman", serif;
 
-    font-size: 24px;
+    font-size: 27px;
     font-weight: 700;
-
     line-height: 1;
 }
 
+
 .footer-fin {
-    color: #ffffff;
+    color: var(--white);
 }
 
+
 .footer-ora {
-    color: #f5a623;
+    color: var(--gold-bright);
 }
+
 
 .footer-tagline {
     margin-top: 7px;
 
-    color: #ea3cff;
+    color: var(--magenta-bright);
 
-    font-size: 6px;
+    font-size: 7px;
     font-weight: 800;
-
-    letter-spacing: 1.8px;
+    letter-spacing: 2px;
 }
 
+
 .footer-divider {
-    width: 65px;
+    width: 55px;
     height: 1px;
 
-    margin: 17px 0 12px;
+    margin: 16px auto;
 
     background:
         linear-gradient(
             90deg,
             transparent,
-            rgba(234, 60, 255, 0.5),
+            var(--magenta),
             transparent
         );
 }
 
+
 .footer p {
-    color:
-        rgba(255, 255, 255, 0.3);
-
-    font-size: 8px;
-
-    letter-spacing: 0.4px;
-}
-
-.back-dashboard {
-    margin-top: 15px;
-
-    color:
-        rgba(255, 255, 255, 0.5);
+    color: var(--muted-2);
 
     font-size: 9px;
-    font-weight: 700;
-
-    text-decoration: none;
-
-    transition:
-        color 0.2s ease;
-}
-
-.back-dashboard:hover {
-    color: #ea3cff;
+    letter-spacing: 0.5px;
 }
 
 
 /* =========================================================
-   RESPONSIVE — TABLET / SMALL DESKTOP
-   ========================================================= */
+   HIDDEN
+========================================================= */
 
-@media (min-width: 621px) {
-
-    .deposit-page {
-        padding-top: 35px;
-    }
-
-    .deposit-card {
-        padding: 28px;
-    }
-
+[hidden] {
+    display: none !important;
 }
 
 
 /* =========================================================
-   RESPONSIVE — MOBILE
-   ========================================================= */
+   RESPONSIVE
+========================================================= */
 
 @media (max-width: 480px) {
 
     .deposit-page {
         padding:
             18px
-            13px
-            40px;
+            14px
+            42px;
     }
+
 
     .top-header {
-        margin-bottom: 34px;
+        margin-bottom: 21px;
     }
+
 
     .brand-name {
-        font-size: 27px;
+        font-size: 28px;
     }
 
-    .deposit-intro h1 {
-        font-size: 32px;
+
+    .header-security {
+        padding: 7px 9px;
+        font-size: 8px;
     }
+
 
     .deposit-card {
-        padding: 17px;
-
-        border-radius: 19px;
+        padding: 16px;
+        border-radius: 18px;
     }
+
 
     .deposit-card-header h2 {
-        font-size: 22px;
+        font-size: 23px;
     }
+
 
     .payment-methods {
         grid-template-columns: 1fr;
     }
 
+
     .payment-card {
-        min-height: 76px;
+        min-height: 72px;
     }
+
 
     .merchant-code-row strong {
-        font-size: 21px;
+        font-size: 24px;
     }
-
 }
 
 
-/* =========================================================
-   RESPONSIVE — VERY SMALL PHONES
-   ========================================================= */
-
-@media (max-width: 360px) {
+@media (max-width: 350px) {
 
     .deposit-page {
-        padding-left: 10px;
-        padding-right: 10px;
+        padding-left: 11px;
+        padding-right: 11px;
     }
 
-    .header-security {
-        padding: 7px 8px;
-    }
-
-    .deposit-intro h1 {
-        font-size: 29px;
-    }
 
     .deposit-card {
         padding: 14px;
     }
 
+
     .deposit-card-header {
-        gap: 8px;
+        flex-direction: column;
     }
+
 
     .transaction-status {
-        font-size: 6px;
+        align-self: flex-start;
     }
 
-    .amount-box input {
-        font-size: 22px;
+
+    .merchant-code-row {
+        align-items: flex-start;
+        flex-direction: column;
     }
 
-    .merchant-code-row strong {
-        font-size: 18px;
-        letter-spacing: 1px;
-    }
 
     .copy-button {
-        padding: 7px 8px;
+        width: 100%;
     }
-
-}
-
-
-/* =========================================================
-   ACCESSIBILITY
-   ========================================================= */
-
-button,
-input,
-a {
-    -webkit-tap-highlight-color: transparent;
-}
-
-button:focus-visible,
-input:focus-visible,
-a:focus-visible {
-    outline:
-        2px solid
-        rgba(234, 60, 255, 0.8);
-
-    outline-offset: 3px;
-}
-
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    html {
-        scroll-behavior: auto;
-    }
-
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-
 }
