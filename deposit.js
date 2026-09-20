@@ -5,9 +5,9 @@ document.addEventListener("DOMContentLoaded", () => {
     /* =====================================================
        CONFIGURATION
     ====================================================== */
-
-    const API_URL =
-        "https://finora-platform-production.up.railway.app/api/deposits";
+const API_URL =
+    "https://finora-platform.onrender.com/api/deposits";
+    
 
     const MIN_DEPOSIT = 10000;
 
