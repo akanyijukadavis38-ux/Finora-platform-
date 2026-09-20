@@ -2,12 +2,13 @@ const express = require("express");
 
 const Investment = require("./investment");
 const User = require("./user");
+const Transaction = require("./Transaction");
 
 const router = express.Router();
 
 
 /* =========================================================
-   FINORA INVESTMENT SETTINGS
+   FINORA INVEST SETTINGS
 ========================================================= */
 
 const MIN_INVESTMENT = 10000;
@@ -16,18 +17,20 @@ const INVESTMENT_DURATION = 20;
 
 
 /* =========================================================
-   CREATE INVESTMENT
+   CREATE INVEST
 
    POST /api/investments
 
    USER:
    1. Must be authenticated
-   2. Enters investment amount
-   3. Amount is taken from wallet balance
-   4. Investment is created as ACTIVE
+   2. Enters any amount >= UGX 10,000
+   3. Amount must be available in wallet
+   4. Amount is deducted from wallet
+   5. Invest record is created as ACTIVE
+   6. Transaction record is created for RECORDS
 
    IMPORTANT:
-   Investment money comes only from the user's
+   Invest money comes only from the user's
    existing FINORA wallet balance.
 ========================================================= */
 
@@ -105,7 +108,7 @@ router.post(
 
 
             /* -----------------------------------------
-               READ INVESTMENT AMOUNT
+               READ INVEST AMOUNT
             ----------------------------------------- */
 
             const amount =
@@ -167,11 +170,12 @@ router.post(
             ----------------------------------------- */
 
             const dailyEarnings =
-                amount * (DAILY_RATE / 100);
+                amount *
+                (DAILY_RATE / 100);
 
 
             /* -----------------------------------------
-               CALCULATE END DATE
+               CALCULATE DATES
             ----------------------------------------- */
 
             const startDate =
@@ -194,7 +198,7 @@ router.post(
 
 
             /* -----------------------------------------
-               CREATE INVESTMENT
+               CREATE INVEST
             ----------------------------------------- */
 
             const investment =
@@ -233,6 +237,38 @@ router.post(
                     status:
                         "active"
                 });
+
+
+            /* -----------------------------------------
+               CREATE TRANSACTION RECORD
+
+               This connects INVEST with
+               RECORDS / TRANSACTION HISTORY.
+            ----------------------------------------- */
+
+            await Transaction.create({
+
+                user:
+                    user._id,
+
+                type:
+                    "investment",
+
+                amount:
+                    amount,
+
+                direction:
+                    "debit",
+
+                status:
+                    "completed",
+
+                description:
+                    "FINORA investment",
+
+                relatedId:
+                    investment._id
+            });
 
 
             /* -----------------------------------------
@@ -296,7 +332,7 @@ router.post(
         } catch (error) {
 
             console.error(
-                "❌ FINORA CREATE INVESTMENT ERROR:",
+                "❌ FINORA CREATE INVEST ERROR:",
                 error
             );
 
@@ -317,8 +353,8 @@ router.post(
 
    GET /api/investments/mine
 
-   Returns only investments belonging to the
-   currently authenticated FINORA user.
+   This is the data used by MINE /
+   MY INVESTMENTS.
 ========================================================= */
 
 router.get(
@@ -395,12 +431,13 @@ router.get(
 
 
             /* -----------------------------------------
-               LOAD USER INVESTMENTS
+               LOAD USER INVESTS
             ----------------------------------------- */
 
             const investments =
                 await Investment.find({
-                    user: user._id
+                    user:
+                        user._id
                 })
                 .sort({
                     createdAt: -1
@@ -409,7 +446,7 @@ router.get(
 
 
             /* -----------------------------------------
-               RETURN INVESTMENTS
+               RETURN INVESTS
             ----------------------------------------- */
 
             return res.status(200).json({
