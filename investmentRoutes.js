@@ -1,14 +1,13 @@
 const express = require("express");
-
-const Investment = require("./investment");
-const User = require("./user");
-const Transaction = require("./Transaction");
-
 const router = express.Router();
+
+const User = require("./user");
+const Investment = require("./investment");
+const Transaction = require("./Transaction");
 
 
 /* =========================================================
-   FINORA INVEST SETTINGS
+   FINORA INVESTMENT SETTINGS
 ========================================================= */
 
 const MIN_INVESTMENT = 10000;
@@ -17,33 +16,22 @@ const INVESTMENT_DURATION = 20;
 
 
 /* =========================================================
-   CREATE INVEST
-
+   CREATE INVESTMENT
    POST /api/investments
-
-   USER:
-   1. Must be authenticated
-   2. Enters any amount >= UGX 10,000
-   3. Amount must be available in wallet
-   4. Wallet deduction + investment + transaction
-      are completed atomically
-   5. Investment is created as ACTIVE
-   6. Investment transaction is created as COMPLETED
-
-   IMPORTANT:
-   Invest money comes only from the user's
-   existing FINORA wallet balance.
 ========================================================= */
 
 router.post(
     "/",
     async (req, res) => {
 
+        const session =
+            await User.startSession();
+
         try {
 
-            /* -----------------------------------------
-               CHECK SESSION
-            ----------------------------------------- */
+            /* =================================================
+               AUTHENTICATION
+            ================================================= */
 
             if (
                 !req.session ||
@@ -55,379 +43,391 @@ router.post(
                     success: false,
 
                     message:
-                        "No authenticated FINORA session."
+                        "Please log in to invest."
                 });
             }
 
 
-            /* -----------------------------------------
-               FIND USER
-            ----------------------------------------- */
+            /* =================================================
+               START TRANSACTION
+            ================================================= */
 
-            const user =
-                await User.findById(
-                    req.session.userId
-                );
+            let createdInvestment;
 
 
-            if (!user) {
+            await session.withTransaction(
+                async () => {
 
-                req.session.destroy(
-                    () => {}
-                );
+                    /* =========================================
+                       GET CURRENT USER INSIDE TRANSACTION
+                    ========================================= */
 
-                return res.status(401).json({
-
-                    success: false,
-
-                    message:
-                        "FINORA user account could not be found."
-                });
-            }
+                    const user =
+                        await User.findById(
+                            req.session.userId
+                        ).session(session);
 
 
-            /* -----------------------------------------
-               CHECK ACCOUNT STATUS
-            ----------------------------------------- */
+                    if (!user) {
 
-            if (
-                user.status === "frozen"
-            ) {
+                        const error =
+                            new Error(
+                                "User account not found."
+                            );
 
-                req.session.destroy(
-                    () => {}
-                );
+                        error.statusCode = 401;
 
-                return res.status(403).json({
-
-                    success: false,
-
-                    message:
-                        "Your FINORA account has been frozen."
-                });
-            }
+                        throw error;
+                    }
 
 
-            /* -----------------------------------------
-               READ INVESTMENT AMOUNT
-            ----------------------------------------- */
+                    /* =========================================
+                       ACCOUNT STATUS
+                    ========================================= */
 
-            const amount =
-                Number(req.body.amount);
+                    if (
+                        user.status === "frozen"
+                    ) {
 
+                        const error =
+                            new Error(
+                                "Your FINORA account is frozen."
+                            );
 
-            /* -----------------------------------------
-               VALIDATE AMOUNT
-            ----------------------------------------- */
+                        error.statusCode = 403;
 
-            if (
-                !Number.isFinite(amount)
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "Please enter a valid investment amount."
-                });
-            }
+                        throw error;
+                    }
 
 
-            if (
-                amount < MIN_INVESTMENT
-            ) {
+                    /* =========================================
+                       AMOUNT
+                    ========================================= */
 
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "Minimum investment is UGX 10,000."
-                });
-            }
+                    const amount =
+                        Number(req.body.amount);
 
 
-            /* -----------------------------------------
-               ONLY ALLOW UP TO 2 DECIMAL PLACES
-            ----------------------------------------- */
+                    if (
+                        !Number.isFinite(amount)
+                    ) {
 
-            if (
-                Math.round(amount * 100) / 100 !== amount
-            ) {
+                        const error =
+                            new Error(
+                                "Please enter a valid investment amount."
+                            );
 
-                return res.status(400).json({
+                        error.statusCode = 400;
 
-                    success: false,
-
-                    message:
-                        "Investment amount can have a maximum of 2 decimal places."
-                });
-            }
+                        throw error;
+                    }
 
 
-            /* -----------------------------------------
-               CHECK WALLET BALANCE
-            ----------------------------------------- */
+                    if (
+                        amount < MIN_INVESTMENT
+                    ) {
 
-            if (
-                amount > user.balance
-            ) {
+                        const error =
+                            new Error(
+                                `Minimum investment is UGX ${MIN_INVESTMENT.toLocaleString("en-UG")}.`
+                            );
 
-                return res.status(400).json({
+                        error.statusCode = 400;
 
-                    success: false,
-
-                    message:
-                        "Insufficient wallet balance."
-                });
-            }
+                        throw error;
+                    }
 
 
-            /* -----------------------------------------
-               CALCULATE DAILY EARNINGS
-            ----------------------------------------- */
+                    /* =========================================
+                       MAXIMUM TWO DECIMAL PLACES
+                    ========================================= */
 
-            const dailyEarnings =
-                amount *
-                (DAILY_RATE / 100);
+                    if (
+                        Math.round(
+                            amount * 100
+                        ) !==
+                        Math.round(amount) * 100
+                    ) {
+
+                        /*
+                           This condition intentionally does not
+                           reject normal whole-number UGX amounts.
+
+                           The actual decimal validation is below.
+                        */
+                    }
 
 
-            /* -----------------------------------------
-               CALCULATE DATES
-            ----------------------------------------- */
+                    const decimalAmount =
+                        Math.round(
+                            amount * 100
+                        ) / 100;
 
-            const startDate =
-                new Date();
 
-            const endDate =
-                new Date(startDate);
+                    if (
+                        Math.abs(
+                            amount - decimalAmount
+                        ) > 0.000001
+                    ) {
 
-            endDate.setDate(
-                endDate.getDate() +
-                INVESTMENT_DURATION
+                        const error =
+                            new Error(
+                                "Investment amount can have a maximum of two decimal places."
+                            );
+
+                        error.statusCode = 400;
+
+                        throw error;
+                    }
+
+
+                    /* =========================================
+                       WALLET CHECK
+                    ========================================= */
+
+                    if (
+                        amount > user.balance
+                    ) {
+
+                        const error =
+                            new Error(
+                                "Insufficient wallet balance."
+                            );
+
+                        error.statusCode = 400;
+
+                        throw error;
+                    }
+
+
+                    /* =========================================
+                       INVESTMENT TIMING
+                    ========================================= */
+
+                    const startDate =
+                        new Date();
+
+
+                    const endDate =
+                        new Date(
+                            startDate.getTime() +
+                            (
+                                INVESTMENT_DURATION *
+                                24 *
+                                60 *
+                                60 *
+                                1000
+                            )
+                        );
+
+
+                    const nextEarningAt =
+                        new Date(
+                            startDate.getTime() +
+                            (
+                                24 *
+                                60 *
+                                60 *
+                                1000
+                            )
+                        );
+
+
+                    /* =========================================
+                       DAILY EARNING
+                    ========================================= */
+
+                    const dailyEarnings =
+                        Math.round(
+                            (
+                                amount *
+                                (
+                                    DAILY_RATE /
+                                    100
+                                )
+                            ) *
+                            100
+                        ) / 100;
+
+
+                    /* =========================================
+                       CREATE INVESTMENT
+                    ========================================= */
+
+                    const investment =
+                        new Investment({
+
+                            user:
+                                user._id,
+
+                            amount:
+                                amount,
+
+                            dailyRate:
+                                DAILY_RATE,
+
+                            dailyEarnings:
+                                dailyEarnings,
+
+                            duration:
+                                INVESTMENT_DURATION,
+
+                            earned:
+                                0,
+
+                            daysCompleted:
+                                0,
+
+                            daysRemaining:
+                                INVESTMENT_DURATION,
+
+                            startDate:
+                                startDate,
+
+                            endDate:
+                                endDate,
+
+                            nextEarningAt:
+                                nextEarningAt,
+
+                            status:
+                                "active"
+                        });
+
+
+                    await investment.save({
+                        session
+                    });
+
+
+                    /* =========================================
+                       DEDUCT INVESTMENT FROM WALLET
+                    ========================================= */
+
+                    user.balance =
+                        Math.round(
+                            (
+                                user.balance -
+                                amount
+                            ) *
+                            100
+                        ) / 100;
+
+
+                    await user.save({
+                        session
+                    });
+
+
+                    /* =========================================
+                       CREATE INVESTMENT TRANSACTION
+                    ========================================= */
+
+                    const transaction =
+                        new Transaction({
+
+                            user:
+                                user._id,
+
+                            type:
+                                "investment",
+
+                            amount:
+                                amount,
+
+                            direction:
+                                "debit",
+
+                            status:
+                                "completed",
+
+                            description:
+                                "FINORA investment",
+
+                            reference:
+                                `INV-${investment._id}`,
+
+                            relatedId:
+                                investment._id
+                        });
+
+
+                    await transaction.save({
+                        session
+                    });
+
+
+                    createdInvestment =
+                        investment;
+
+                    /* =========================================
+                       SAVE TRANSACTION ID
+                       ONLY IF MODEL SUPPORTS IT
+                    ========================================= */
+
+                    /*
+                       The Investment model currently does not
+                       contain a transactionId field, so we do
+                       not add an unsupported field here.
+                    */
+                }
             );
 
 
             /* =================================================
-               ATOMIC DATABASE TRANSACTION
-
-               Wallet deduction,
-               investment creation,
-               transaction creation,
-               and user save must all succeed together.
-
-               If anything fails, MongoDB rolls everything back.
+               RESPONSE
             ================================================= */
 
-            const session =
-                await User.startSession();
+            const updatedUser =
+                await User.findById(
+                    req.session.userId
+                ).select("balance");
 
-
-            let investment;
-
-
-            try {
-
-                await session.withTransaction(
-                    async () => {
-
-                        /* -----------------------------------------
-                           DEDUCT WALLET
-                        ----------------------------------------- */
-
-                        user.balance -= amount;
-
-
-                        /* -----------------------------------------
-                           CREATE INVESTMENT
-                        ----------------------------------------- */
-
-                        const investments =
-                            await Investment.create(
-                                [
-                                    {
-
-                                        user:
-                                            user._id,
-
-                                        amount:
-                                            amount,
-
-                                        dailyRate:
-                                            DAILY_RATE,
-
-                                        dailyEarnings:
-                                            dailyEarnings,
-
-                                        duration:
-                                            INVESTMENT_DURATION,
-
-                                        earned:
-                                            0,
-
-                                        daysCompleted:
-                                            0,
-
-                                        daysRemaining:
-                                            INVESTMENT_DURATION,
-
-                                        startDate:
-                                            startDate,
-
-                                        endDate:
-                                            endDate,
-
-                                        status:
-                                            "active"
-                                    }
-                                ],
-                                {
-                                    session
-                                }
-                            );
-
-
-                        investment =
-                            investments[0];
-
-
-                        /* -----------------------------------------
-                           CREATE TRANSACTION RECORD
-
-                           This is the SAME investment record
-                           that appears in Transaction History.
-                        ----------------------------------------- */
-
-                        await Transaction.create(
-                            [
-                                {
-
-                                    user:
-                                        user._id,
-
-                                    type:
-                                        "investment",
-
-                                    amount:
-                                        amount,
-
-                                    direction:
-                                        "debit",
-
-                                    status:
-                                        "completed",
-
-                                    description:
-                                        "FINORA investment",
-
-                                    relatedId:
-                                        investment._id
-                                }
-                            ],
-                            {
-                                session
-                            }
-                        );
-
-
-                        /* -----------------------------------------
-                           SAVE UPDATED WALLET
-                        ----------------------------------------- */
-
-                        await user.save({
-                            session
-                        });
-                    }
-                );
-
-            } finally {
-
-                await session.endSession();
-            }
-
-
-            /* -----------------------------------------
-               SAFETY CHECK
-            ----------------------------------------- */
-
-            if (!investment) {
-
-                return res.status(500).json({
-
-                    success: false,
-
-                    message:
-                        "FINORA could not complete the investment."
-                });
-            }
-
-
-            /* -----------------------------------------
-               SUCCESS
-            ----------------------------------------- */
 
             return res.status(201).json({
 
-                success: true,
+                success:
+                    true,
 
                 message:
                     "Investment created successfully.",
 
-                investment: {
-
-                    id:
-                        investment._id,
-
-                    amount:
-                        investment.amount,
-
-                    dailyRate:
-                        investment.dailyRate,
-
-                    dailyEarnings:
-                        investment.dailyEarnings,
-
-                    duration:
-                        investment.duration,
-
-                    earned:
-                        investment.earned,
-
-                    daysCompleted:
-                        investment.daysCompleted,
-
-                    daysRemaining:
-                        investment.daysRemaining,
-
-                    startDate:
-                        investment.startDate,
-
-                    endDate:
-                        investment.endDate,
-
-                    status:
-                        investment.status
-                },
+                investment:
+                    createdInvestment,
 
                 walletBalance:
-                    user.balance
+                    updatedUser
+                        ? updatedUser.balance
+                        : null
             });
+
 
         } catch (error) {
 
             console.error(
-                "❌ FINORA CREATE INVEST ERROR:",
+                "❌ FINORA INVESTMENT ERROR:",
                 error
             );
 
-            return res.status(500).json({
 
-                success: false,
+            return res.status(
+                error.statusCode || 500
+            ).json({
+
+                success:
+                    false,
 
                 message:
-                    "FINORA could not create your investment."
+                    error.statusCode
+                        ? error.message
+                        : "FINORA could not create your investment."
             });
+
+
+        } finally {
+
+            await session.endSession();
+
         }
     }
 );
@@ -435,11 +435,7 @@ router.post(
 
 /* =========================================================
    GET MY INVESTMENTS
-
    GET /api/investments/mine
-
-   This is the data used by MINE /
-   MY INVESTMENTS.
 ========================================================= */
 
 router.get(
@@ -448,9 +444,9 @@ router.get(
 
         try {
 
-            /* -----------------------------------------
-               CHECK SESSION
-            ----------------------------------------- */
+            /* =================================================
+               AUTHENTICATION
+            ================================================= */
 
             if (
                 !req.session ||
@@ -459,17 +455,18 @@ router.get(
 
                 return res.status(401).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
-                        "No authenticated FINORA session."
+                        "Please log in."
                 });
             }
 
 
-            /* -----------------------------------------
-               FIND USER
-            ----------------------------------------- */
+            /* =================================================
+               USER CHECK
+            ================================================= */
 
             const user =
                 await User.findById(
@@ -479,45 +476,35 @@ router.get(
 
             if (!user) {
 
-                req.session.destroy(
-                    () => {}
-                );
-
                 return res.status(401).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
-                        "FINORA user account could not be found."
+                        "User account not found."
                 });
             }
 
-
-            /* -----------------------------------------
-               CHECK ACCOUNT STATUS
-            ----------------------------------------- */
 
             if (
                 user.status === "frozen"
             ) {
 
-                req.session.destroy(
-                    () => {}
-                );
-
                 return res.status(403).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
-                        "Your FINORA account has been frozen."
+                        "Your FINORA account is frozen."
                 });
             }
 
 
-            /* -----------------------------------------
-               LOAD USER INVESTMENTS
-            ----------------------------------------- */
+            /* =================================================
+               GET INVESTMENTS
+            ================================================= */
 
             const investments =
                 await Investment.find({
@@ -525,33 +512,33 @@ router.get(
                         user._id
                 })
                 .sort({
-                    createdAt: -1
-                })
-                .lean();
+                    createdAt:
+                        -1
+                });
 
-
-            /* -----------------------------------------
-               RETURN INVESTMENTS
-            ----------------------------------------- */
 
             return res.status(200).json({
 
-                success: true,
+                success:
+                    true,
 
                 investments
 
             });
 
+
         } catch (error) {
 
             console.error(
-                "❌ FINORA GET MY INVESTMENTS ERROR:",
+                "❌ FINORA GET INVESTMENTS ERROR:",
                 error
             );
 
+
             return res.status(500).json({
 
-                success: false,
+                success:
+                    false,
 
                 message:
                     "FINORA could not load your investments."
