@@ -11,9 +11,8 @@ const router = express.Router();
 ========================================================= */
 
 const MIN_DEPOSIT = 10000;
-
 const MERCHANT_CODES = {
-    MTN: "52200475",
+    MTN: "26127911",
     Airtel: "7157334"
 };
 
