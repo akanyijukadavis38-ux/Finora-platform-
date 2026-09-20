@@ -1,6 +1,7 @@
 const express = require("express");
 
 const Deposit = require("./Deposit");
+const Transaction = require("./Transaction");
 const User = require("./user");
 
 const router = express.Router();
@@ -11,6 +12,7 @@ const router = express.Router();
 ========================================================= */
 
 const MIN_DEPOSIT = 10000;
+
 const MERCHANT_CODES = {
     MTN: "26127911",
     Airtel: "7157334"
@@ -31,6 +33,7 @@ const MERCHANT_CODES = {
 
    RESULT:
    Deposit is created as PENDING.
+   A matching Transaction record is also created.
 
    IMPORTANT:
    No wallet money is added here.
@@ -282,6 +285,39 @@ router.post(
 
 
             /* -----------------------------------------
+               CREATE MATCHING TRANSACTION RECORD
+            ----------------------------------------- */
+
+            const transaction =
+                await Transaction.create({
+
+                    user:
+                        user._id,
+
+                    type:
+                        "deposit",
+
+                    amount:
+                        amount,
+
+                    direction:
+                        "credit",
+
+                    status:
+                        "pending",
+
+                    description:
+                        "FINORA Mobile Money deposit",
+
+                    reference:
+                        paymentReference,
+
+                    relatedId:
+                        deposit._id
+                });
+
+
+            /* -----------------------------------------
                SUCCESS
             ----------------------------------------- */
 
@@ -314,6 +350,30 @@ router.post(
 
                     createdAt:
                         deposit.createdAt
+                },
+
+                transaction: {
+
+                    id:
+                        transaction._id,
+
+                    type:
+                        transaction.type,
+
+                    amount:
+                        transaction.amount,
+
+                    direction:
+                        transaction.direction,
+
+                    status:
+                        transaction.status,
+
+                    reference:
+                        transaction.reference,
+
+                    createdAt:
+                        transaction.createdAt
                 }
             });
 
