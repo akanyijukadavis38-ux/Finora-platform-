@@ -1,0 +1,2526 @@
+/* =========================================================
+   FINORA INVEST — PREMIUM INVESTMENT PAGE
+   ========================================================= */
+
+
+/* =========================================================
+   ROOT
+   ========================================================= */
+
+:root {
+
+    --finora-pink: #EA3CFF;
+    --finora-pink-light: #FF72FF;
+    --finora-pink-dark: #9E18BD;
+
+    --finora-gold: #F5A623;
+    --finora-gold-light: #FFD76A;
+    --finora-gold-dark: #C97908;
+
+    --bg-main: #050409;
+    --bg-secondary: #08050D;
+    --bg-card: #0C0812;
+    --bg-card-soft: #100A17;
+
+    --border-pink: rgba(234, 60, 255, 0.22);
+    --border-gold: rgba(245, 166, 35, 0.24);
+
+    --text-main: #FFFFFF;
+    --text-soft: #CFC6D4;
+    --text-muted: #8D8295;
+
+    --danger: #FF5C72;
+    --success: #53E6A5;
+
+    --shadow-pink:
+        0 18px 50px rgba(234, 60, 255, 0.10);
+
+    --shadow-dark:
+        0 18px 55px rgba(0, 0, 0, 0.42);
+
+    --radius-large: 24px;
+    --radius-medium: 18px;
+    --radius-small: 12px;
+
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+
+    box-sizing: border-box;
+
+    margin: 0;
+
+    padding: 0;
+
+}
+
+
+html {
+
+    scroll-behavior: smooth;
+
+}
+
+
+body {
+
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 50% -10%,
+            rgba(234, 60, 255, 0.13),
+            transparent 34%
+        ),
+        linear-gradient(
+            180deg,
+            #08050D 0%,
+            #050409 45%,
+            #050409 100%
+        );
+
+    color: var(--text-main);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+
+    text-rendering: optimizeLegibility;
+
+}
+
+
+button,
+input {
+
+    font: inherit;
+
+}
+
+
+button {
+
+    border: 0;
+
+}
+
+
+a {
+
+    color: inherit;
+
+    text-decoration: none;
+
+}
+
+
+svg {
+
+    display: block;
+
+}
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.invest-page {
+
+    position: relative;
+
+    min-height: 100vh;
+
+    overflow-x: hidden;
+
+}
+
+
+.invest-page::before {
+
+    content: "";
+
+    position: fixed;
+
+    top: 0;
+
+    left: 50%;
+
+    width: 520px;
+
+    height: 520px;
+
+    transform: translateX(-50%);
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(234, 60, 255, 0.055),
+            transparent 68%
+        );
+
+    pointer-events: none;
+
+    z-index: -1;
+
+}
+
+
+/* =========================================================
+   CONTAINER
+   ========================================================= */
+
+.invest-container {
+
+    width: min(
+        calc(100% - 32px),
+        760px
+    );
+
+    margin-left: auto;
+
+    margin-right: auto;
+
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.invest-header {
+
+    position: relative;
+
+    z-index: 20;
+
+    background:
+        rgba(5, 4, 9, 0.94);
+
+    border-bottom:
+        1px solid
+        rgba(234, 60, 255, 0.12);
+
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
+
+}
+
+
+.invest-top-header {
+
+    position: relative;
+
+    min-height: 78px;
+
+    display: grid;
+
+    grid-template-columns:
+        46px
+        1fr
+        46px;
+
+    align-items: center;
+
+}
+
+
+.page-back-button {
+
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: #FFFFFF;
+
+    background:
+        rgba(255, 255, 255, 0.045);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.09);
+
+    border-radius: 13px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+
+}
+
+
+.page-back-button svg {
+
+    width: 21px;
+
+    height: 21px;
+
+}
+
+
+.page-back-button:active {
+
+    transform: scale(0.94);
+
+}
+
+
+.page-back-button:hover {
+
+    background:
+        rgba(234, 60, 255, 0.10);
+
+    border-color:
+        rgba(234, 60, 255, 0.28);
+
+}
+
+
+/* =========================================================
+   FINORA BRAND
+   ========================================================= */
+
+.finora-brand {
+
+    justify-self: center;
+
+    text-align: center;
+
+    line-height: 1;
+
+}
+
+
+.finora-name {
+
+    font-family:
+        "Times New Roman",
+        Times,
+        serif;
+
+    font-size: 25px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    line-height: 0.95;
+
+}
+
+
+.fin-fin {
+
+    color: #FFFFFF;
+
+}
+
+
+.fin-ora {
+
+    color: var(--finora-gold-light);
+
+}
+
+
+.finora-tagline {
+
+    margin-top: 6px;
+
+    color: var(--finora-pink-light);
+
+    font-size: 7px;
+
+    font-weight: 700;
+
+    letter-spacing: 2.3px;
+
+}
+
+
+.header-security {
+
+    width: 42px;
+
+    height: 42px;
+
+    justify-self: end;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: var(--finora-gold-light);
+
+    background:
+        rgba(245, 166, 35, 0.055);
+
+    border:
+        1px solid
+        rgba(245, 166, 35, 0.15);
+
+    border-radius: 13px;
+
+}
+
+
+.header-security svg {
+
+    width: 20px;
+
+    height: 20px;
+
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.invest-main {
+
+    padding-top: 42px;
+
+    padding-bottom: 120px;
+
+}
+
+
+/* =========================================================
+   INTRO
+   ========================================================= */
+
+.invest-intro {
+
+    text-align: center;
+
+    margin-bottom: 30px;
+
+}
+
+
+.invest-kicker {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 7px 13px;
+
+    color: var(--finora-pink-light);
+
+    background:
+        rgba(234, 60, 255, 0.075);
+
+    border:
+        1px solid
+        rgba(234, 60, 255, 0.19);
+
+    border-radius: 999px;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.8px;
+
+}
+
+
+.invest-intro h1 {
+
+    margin-top: 15px;
+
+    color: #FFFFFF;
+
+    font-family:
+        "Times New Roman",
+        Times,
+        serif;
+
+    font-size:
+        clamp(34px, 9vw, 52px);
+
+    font-weight: 700;
+
+    line-height: 1.02;
+
+    letter-spacing: -0.7px;
+
+}
+
+
+.invest-intro h1 span {
+
+    display: block;
+
+    color: var(--finora-gold-light);
+
+    text-shadow:
+        0 0 28px
+        rgba(245, 166, 35, 0.12);
+
+}
+
+
+.invest-intro p {
+
+    max-width: 520px;
+
+    margin:
+        15px auto 0;
+
+    color: var(--text-muted);
+
+    font-size: 14px;
+
+    line-height: 1.7;
+
+}
+
+
+/* =========================================================
+   OVERVIEW CARD
+   ========================================================= */
+
+.invest-overview-card {
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(234, 60, 255, 0.075),
+            rgba(12, 8, 18, 0.96) 44%,
+            rgba(245, 166, 35, 0.035)
+        );
+
+    border:
+        1px solid
+        var(--border-pink);
+
+    border-radius:
+        var(--radius-large);
+
+    box-shadow:
+        var(--shadow-pink),
+        var(--shadow-dark);
+
+}
+
+
+.invest-overview-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: -100px;
+
+    right: -90px;
+
+    width: 220px;
+
+    height: 220px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(234, 60, 255, 0.12),
+            transparent 68%
+        );
+
+    pointer-events: none;
+
+}
+
+
+.overview-top {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+}
+
+
+.overview-user {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    min-width: 0;
+
+}
+
+
+.overview-avatar {
+
+    flex: 0 0 48px;
+
+    width: 48px;
+
+    height: 48px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: var(--finora-pink-light);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(234, 60, 255, 0.15),
+            rgba(158, 24, 189, 0.07)
+        );
+
+    border:
+        1px solid
+        rgba(234, 60, 255, 0.22);
+
+    border-radius: 15px;
+
+}
+
+
+.overview-avatar svg {
+
+    width: 24px;
+
+    height: 24px;
+
+}
+
+
+.overview-user-details {
+
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+
+.overview-label {
+
+    color: var(--text-muted);
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.6px;
+
+}
+
+
+.overview-user-details strong {
+
+    margin-top: 4px;
+
+    overflow: hidden;
+
+    color: #FFFFFF;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+
+}
+
+
+.overview-phone {
+
+    margin-top: 4px;
+
+    color: var(--text-soft);
+
+    font-size: 12px;
+
+    white-space: nowrap;
+
+}
+
+
+.overview-secure {
+
+    flex: 0 0 auto;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 7px 9px;
+
+    color: var(--success);
+
+    background:
+        rgba(83, 230, 165, 0.055);
+
+    border:
+        1px solid
+        rgba(83, 230, 165, 0.13);
+
+    border-radius: 999px;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+
+}
+
+
+.overview-secure svg {
+
+    width: 14px;
+
+    height: 14px;
+
+}
+
+
+/* =========================================================
+   WALLET BALANCE
+   ========================================================= */
+
+.wallet-balance-area {
+
+    position: relative;
+
+    margin-top: 21px;
+
+    padding-top: 19px;
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.065);
+
+}
+
+
+.wallet-label {
+
+    display: block;
+
+    color: var(--text-muted);
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.6px;
+
+}
+
+
+.wallet-balance-area strong {
+
+    display: block;
+
+    margin-top: 7px;
+
+    color: var(--finora-gold-light);
+
+    font-family:
+        "Times New Roman",
+        Times,
+        serif;
+
+    font-size:
+        clamp(27px, 7vw, 38px);
+
+    font-weight: 700;
+
+    letter-spacing: 0.2px;
+
+}
+
+
+.wallet-note {
+
+    display: block;
+
+    margin-top: 5px;
+
+    color: var(--text-muted);
+
+    font-size: 11px;
+
+}
+
+
+/* =========================================================
+   INVESTMENT PANEL
+   ========================================================= */
+
+.investment-panel {
+
+    position: relative;
+
+    margin-top: 20px;
+
+    padding: 23px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(16, 10, 23, 0.98),
+            rgba(8, 5, 13, 0.98)
+        );
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    border-radius:
+        var(--radius-large);
+
+    box-shadow:
+        var(--shadow-dark);
+
+}
+
+
+.panel-heading {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+}
+
+
+.panel-kicker {
+
+    color: var(--finora-pink-light);
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.7px;
+
+}
+
+
+.panel-heading h2 {
+
+    margin-top: 7px;
+
+    color: #FFFFFF;
+
+    font-family:
+        "Times New Roman",
+        Times,
+        serif;
+
+    font-size: 26px;
+
+    font-weight: 700;
+
+}
+
+
+.rate-badge {
+
+    flex: 0 0 auto;
+
+    min-width: 72px;
+
+    padding: 10px 11px;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(245, 166, 35, 0.13),
+            rgba(201, 121, 8, 0.045)
+        );
+
+    border:
+        1px solid
+        var(--border-gold);
+
+    border-radius: 14px;
+
+}
+
+
+.rate-badge strong {
+
+    display: block;
+
+    color: var(--finora-gold-light);
+
+    font-family:
+        "Times New Roman",
+        Times,
+        serif;
+
+    font-size: 22px;
+
+    line-height: 1;
+
+}
+
+
+.rate-badge span {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: var(--text-muted);
+
+    font-size: 7px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+
+}
+
+
+/* =========================================================
+   AMOUNT FIELD
+   ========================================================= */
+
+.amount-field {
+
+    margin-top: 25px;
+
+}
+
+
+.amount-field label {
+
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: var(--text-muted);
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+
+}
+
+
+.amount-input-wrapper {
+
+    display: flex;
+
+    align-items: center;
+
+    min-height: 62px;
+
+    padding:
+        0 17px;
+
+    background:
+        rgba(255, 255, 255, 0.035);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
+
+    border-radius: 16px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+
+}
+
+
+.amount-input-wrapper:focus-within {
+
+    background:
+        rgba(234, 60, 255, 0.035);
+
+    border-color:
+        rgba(234, 60, 255, 0.52);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(234, 60, 255, 0.075);
+
+}
+
+
+.currency-prefix {
+
+    margin-right: 11px;
+
+    color: var(--finora-gold-light);
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+
+}
+
+
+.amount-input-wrapper input {
+
+    width: 100%;
+
+    min-width: 0;
+
+    border: 0;
+
+    outline: 0;
+
+    color: #FFFFFF;
+
+    background: transparent;
+
+    font-size: 22px;
+
+    font-weight: 700;
+
+}
+
+
+.amount-input-wrapper input::placeholder {
+
+    color: #514856;
+
+}
+
+
+.amount-input-wrapper input::-webkit-inner-spin-button,
+.amount-input-wrapper input::-webkit-outer-spin-button {
+
+    margin: 0;
+
+    -webkit-appearance: none;
+
+}
+
+
+.amount-input-wrapper input[type="number"] {
+
+    -moz-appearance: textfield;
+
+}
+
+
+.amount-help {
+
+    margin-top: 8px;
+
+    color: var(--text-muted);
+
+    font-size: 11px;
+
+}
+
+
+.amount-help strong {
+
+    color: var(--text-soft);
+
+}
+
+
+.amount-error {
+
+    min-height: 18px;
+
+    margin-top: 7px;
+
+    color: var(--danger);
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+}
+
+
+/* =========================================================
+   RETURN PREVIEW
+   ========================================================= */
+
+.return-preview {
+
+    margin-top: 7px;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(234, 60, 255, 0.065),
+            rgba(255, 255, 255, 0.018)
+        );
+
+    border:
+        1px solid
+        rgba(234, 60, 255, 0.14);
+
+    border-radius: 18px;
+
+}
+
+
+.preview-heading {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    padding:
+        14px 15px;
+
+    border-bottom:
+        1px solid
+        rgba(255, 255, 255, 0.055);
+
+}
+
+
+.preview-heading span {
+
+    color: var(--text-soft);
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.25px;
+
+}
+
+
+.preview-heading small {
+
+    padding: 5px 8px;
+
+    color: var(--finora-gold-light);
+
+    background:
+        rgba(245, 166, 35, 0.08);
+
+    border-radius: 7px;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.8px;
+
+}
+
+
+.preview-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+}
+
+
+.preview-item {
+
+    min-height: 89px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    padding:
+        15px;
+
+    border-right:
+        1px solid
+        rgba(255, 255, 255, 0.055);
+
+    border-bottom:
+        1px solid
+        rgba(255, 255, 255, 0.055);
+
+}
+
+
+.preview-item:nth-child(2) {
+
+    border-right: 0;
+
+}
+
+
+.preview-item:nth-child(3) {
+
+    grid-column: 1 / -1;
+
+    border-right: 0;
+
+    border-bottom: 0;
+
+}
+
+
+.preview-item span {
+
+    color: var(--text-muted);
+
+    font-size: 10px;
+
+    line-height: 1.4;
+
+}
+
+
+.preview-item strong {
+
+    margin-top: 6px;
+
+    color: #FFFFFF;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+}
+
+
+.preview-item .gold-text {
+
+    color: var(--finora-gold-light);
+
+}
+
+
+.preview-total {
+
+    background:
+        rgba(245, 166, 35, 0.035);
+
+}
+
+
+.preview-total strong {
+
+    font-family:
+        "Times New Roman",
+        Times,
+        serif;
+
+    font-size: 22px;
+
+}
+
+
+/* =========================================================
+   WALLET AFTER INVESTMENT
+   ========================================================= */
+
+.wallet-after-card {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-top: 14px;
+
+    padding:
+        14px 15px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.065);
+
+    border-radius: 16px;
+
+}
+
+
+.wallet-after-icon {
+
+    flex: 0 0 40px;
+
+    width: 40px;
+
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: var(--finora-pink-light);
+
+    background:
+        rgba(234, 60, 255, 0.075);
+
+    border-radius: 12px;
+
+}
+
+
+.wallet-after-icon svg {
+
+    width: 20px;
+
+    height: 20px;
+
+}
+
+
+.wallet-after-content {
+
+    min-width: 0;
+
+    flex: 1;
+
+}
+
+
+.wallet-after-content span {
+
+    display: block;
+
+    color: var(--text-muted);
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+
+}
+
+
+.wallet-after-content strong {
+
+    display: block;
+
+    margin-top: 4px;
+
+    overflow: hidden;
+
+    color: #FFFFFF;
+
+    font-size: 15px;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+
+}
+
+
+.wallet-after-status {
+
+    flex: 0 0 auto;
+
+    color: var(--text-muted);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+}
+
+
+.wallet-after-status.success {
+
+    color: var(--success);
+
+}
+
+
+.wallet-after-status.warning {
+
+    color: var(--danger);
+
+}
+
+
+/* =========================================================
+   INVEST NOW BUTTON
+   ========================================================= */
+
+.invest-now-button {
+
+    position: relative;
+
+    width: 100%;
+
+    min-height: 60px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-top: 17px;
+
+    overflow: hidden;
+
+    color: #FFFFFF;
+
+    background:
+        linear-gradient(
+            105deg,
+            var(--finora-pink-dark),
+            var(--finora-pink),
+            var(--finora-pink-light)
+        );
+
+    border:
+        1px solid
+        rgba(255, 114, 255, 0.45);
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 12px 32px
+        rgba(234, 60, 255, 0.18);
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    font-weight: 900;
+
+    letter-spacing: 1.4px;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+
+}
+
+
+.invest-now-button::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+
+    left: -120%;
+
+    width: 70%;
+
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.17),
+            transparent
+        );
+
+    transform: skewX(-18deg);
+
+    transition:
+        left 0.55s ease;
+
+}
+
+
+.invest-now-button:hover::before {
+
+    left: 140%;
+
+}
+
+
+.invest-now-button:hover {
+
+    box-shadow:
+        0 16px 38px
+        rgba(234, 60, 255, 0.26);
+
+}
+
+
+.invest-now-button:active {
+
+    transform: scale(0.985);
+
+}
+
+
+.invest-now-button:disabled {
+
+    cursor: not-allowed;
+
+    opacity: 0.68;
+
+    box-shadow: none;
+
+}
+
+
+.button-content {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+}
+
+
+.button-content svg {
+
+    width: 19px;
+
+    height: 19px;
+
+}
+
+
+.button-loader {
+
+    position: absolute;
+
+    z-index: 3;
+
+    width: 20px;
+
+    height: 20px;
+
+    display: none;
+
+    border:
+        2px solid
+        rgba(255, 255, 255, 0.35);
+
+    border-top-color:
+        #FFFFFF;
+
+    border-radius: 50%;
+
+    animation:
+        finoraSpin 0.75s linear infinite;
+
+}
+
+
+.invest-now-button.loading
+.button-content {
+
+    opacity: 0;
+
+}
+
+
+.invest-now-button.loading
+.button-loader {
+
+    display: block;
+
+}
+
+
+.invest-now-button.success {
+
+    background:
+        linear-gradient(
+            105deg,
+            #159b6c,
+            #27c88b
+        );
+
+    border-color:
+        rgba(83, 230, 165, 0.4);
+
+    box-shadow:
+        0 12px 32px
+        rgba(83, 230, 165, 0.13);
+
+}
+
+
+/* =========================================================
+   INVESTMENT MESSAGE
+   ========================================================= */
+
+.investment-message {
+
+    min-height: 20px;
+
+    margin-top: 12px;
+
+    text-align: center;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    line-height: 1.5;
+
+}
+
+
+.investment-message.success {
+
+    color: var(--success);
+
+}
+
+
+.investment-message.error {
+
+    color: var(--danger);
+
+}
+
+
+.investment-message.loading {
+
+    color: var(--text-soft);
+
+}
+
+
+/* =========================================================
+   SECURITY NOTE
+   ========================================================= */
+
+.secure-note {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 9px;
+
+    margin-top: 14px;
+
+    padding:
+        11px 12px;
+
+    background:
+        rgba(245, 166, 35, 0.035);
+
+    border:
+        1px solid
+        rgba(245, 166, 35, 0.09);
+
+    border-radius: 12px;
+
+}
+
+
+.secure-note svg {
+
+    flex: 0 0 17px;
+
+    width: 17px;
+
+    height: 17px;
+
+    color: var(--finora-gold-light);
+
+}
+
+
+.secure-note p {
+
+    color: var(--text-muted);
+
+    font-size: 10px;
+
+    line-height: 1.55;
+
+}
+
+
+/* =========================================================
+   HOW INVESTING WORKS
+   ========================================================= */
+
+.how-invest-works {
+
+    margin-top: 30px;
+
+    padding:
+        25px 22px;
+
+    background:
+        rgba(255, 255, 255, 0.018);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.065);
+
+    border-radius:
+        var(--radius-large);
+
+}
+
+
+.section-kicker {
+
+    color: var(--finora-pink-light);
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.6px;
+
+}
+
+
+.how-invest-works h2 {
+
+    margin-top: 7px;
+
+    color: #FFFFFF;
+
+    font-family:
+        "Times New Roman",
+        Times,
+        serif;
+
+    font-size: 27px;
+
+}
+
+
+.steps-list {
+
+    margin-top: 23px;
+
+}
+
+
+.invest-step {
+
+    position: relative;
+
+    display: flex;
+
+    gap: 15px;
+
+    padding-bottom: 22px;
+
+}
+
+
+.invest-step:last-child {
+
+    padding-bottom: 0;
+
+}
+
+
+.invest-step:not(:last-child)::after {
+
+    content: "";
+
+    position: absolute;
+
+    top: 38px;
+
+    left: 17px;
+
+    width: 1px;
+
+    height: calc(100% - 26px);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(234, 60, 255, 0.32),
+            rgba(234, 60, 255, 0.04)
+        );
+
+}
+
+
+.step-number {
+
+    position: relative;
+
+    z-index: 2;
+
+    flex: 0 0 35px;
+
+    width: 35px;
+
+    height: 35px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: var(--finora-pink-light);
+
+    background:
+        #0B0710;
+
+    border:
+        1px solid
+        rgba(234, 60, 255, 0.24);
+
+    border-radius: 11px;
+
+    font-size: 9px;
+
+    font-weight: 900;
+
+}
+
+
+.invest-step h3 {
+
+    color: #FFFFFF;
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    line-height: 1.3;
+
+}
+
+
+.invest-step p {
+
+    margin-top: 6px;
+
+    color: var(--text-muted);
+
+    font-size: 11px;
+
+    line-height: 1.65;
+
+}
+
+
+/* =========================================================
+   QUICK LINKS
+   ========================================================= */
+
+.invest-quick-links {
+
+    display: grid;
+
+    gap: 11px;
+
+    margin-top: 20px;
+
+}
+
+
+.quick-link-card {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    min-height: 72px;
+
+    padding:
+        11px 13px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.035),
+            rgba(255, 255, 255, 0.015)
+        );
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.075);
+
+    border-radius: 16px;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+
+}
+
+
+.quick-link-card:hover {
+
+    transform: translateY(-2px);
+
+    background:
+        rgba(234, 60, 255, 0.045);
+
+    border-color:
+        rgba(234, 60, 255, 0.19);
+
+}
+
+
+.quick-link-card > div:nth-child(2) {
+
+    min-width: 0;
+
+    flex: 1;
+
+}
+
+
+.quick-link-icon {
+
+    flex: 0 0 42px;
+
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: var(--finora-pink-light);
+
+    background:
+        rgba(234, 60, 255, 0.075);
+
+    border-radius: 12px;
+
+}
+
+
+.quick-link-icon.gold-icon {
+
+    color: var(--finora-gold-light);
+
+    background:
+        rgba(245, 166, 35, 0.075);
+
+}
+
+
+.quick-link-icon svg {
+
+    width: 21px;
+
+    height: 21px;
+
+}
+
+
+.quick-link-card strong {
+
+    display: block;
+
+    color: #FFFFFF;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+}
+
+
+.quick-link-card span {
+
+    display: block;
+
+    margin-top: 4px;
+
+    overflow: hidden;
+
+    color: var(--text-muted);
+
+    font-size: 10px;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+
+}
+
+
+.quick-link-arrow {
+
+    flex: 0 0 18px;
+
+    width: 18px;
+
+    height: 18px;
+
+    color: var(--text-muted);
+
+}
+
+
+/* =========================================================
+   BOTTOM NAVIGATION
+   ========================================================= */
+
+.bottom-navigation {
+
+    position: fixed;
+
+    right: 0;
+
+    bottom: 0;
+
+    left: 0;
+
+    z-index: 50;
+
+    height: 76px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    padding:
+        7px max(10px, env(safe-area-inset-right))
+        calc(7px + env(safe-area-inset-bottom))
+        max(10px, env(safe-area-inset-left));
+
+    background:
+        rgba(5, 4, 9, 0.96);
+
+    border-top:
+        1px solid
+        rgba(234, 60, 255, 0.13);
+
+    box-shadow:
+        0 -12px 35px
+        rgba(0, 0, 0, 0.34);
+
+    backdrop-filter:
+        blur(20px);
+
+    -webkit-backdrop-filter:
+        blur(20px);
+
+}
+
+
+.bottom-nav-item {
+
+    position: relative;
+
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    color: #766B7B;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.bottom-nav-item svg {
+
+    width: 21px;
+
+    height: 21px;
+
+}
+
+
+.bottom-nav-item[data-page="mine"] {
+
+    color: var(--finora-pink-light);
+
+}
+
+
+.bottom-nav-item[data-page="mine"]::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: -7px;
+
+    width: 30px;
+
+    height: 2px;
+
+    border-radius: 999px;
+
+    background:
+        var(--finora-pink);
+
+    box-shadow:
+        0 0 12px
+        rgba(234, 60, 255, 0.48);
+
+}
+
+
+.bottom-nav-item:active {
+
+    transform: scale(0.93);
+
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.site-footer {
+
+    padding:
+        38px 0
+        calc(102px + env(safe-area-inset-bottom));
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            180deg,
+            #050409,
+            #030207
+        );
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.055);
+
+}
+
+
+.footer-brand {
+
+    font-family:
+        "Times New Roman",
+        Times,
+        serif;
+
+    font-size: 24px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+}
+
+
+.footer-brand .fin {
+
+    color: #FFFFFF;
+
+}
+
+
+.footer-brand .ora {
+
+    color: var(--finora-gold-light);
+
+}
+
+
+.footer-tagline {
+
+    margin-top: 5px;
+
+    color: var(--finora-pink-light);
+
+    font-size: 7px;
+
+    font-weight: 800;
+
+    letter-spacing: 2.2px;
+
+}
+
+
+.footer-text {
+
+    max-width: 430px;
+
+    margin:
+        14px auto 0;
+
+    color: #6F6674;
+
+    font-size: 10px;
+
+    line-height: 1.65;
+
+}
+
+
+.footer-copy {
+
+    margin-top: 17px;
+
+    color: #4D4652;
+
+    font-size: 9px;
+
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes finoraSpin {
+
+    from {
+
+        transform: rotate(0deg);
+
+    }
+
+    to {
+
+        transform: rotate(360deg);
+
+    }
+
+}
+
+
+@keyframes finoraFadeUp {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(10px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+
+.invest-intro,
+.invest-overview-card,
+.investment-panel,
+.how-invest-works,
+.invest-quick-links {
+
+    animation:
+        finoraFadeUp 0.45s ease both;
+
+}
+
+
+.invest-overview-card {
+
+    animation-delay: 0.05s;
+
+}
+
+
+.investment-panel {
+
+    animation-delay: 0.10s;
+
+}
+
+
+.how-invest-works {
+
+    animation-delay: 0.15s;
+
+}
+
+
+.invest-quick-links {
+
+    animation-delay: 0.20s;
+
+}
+
+
+/* =========================================================
+   TABLET / LARGER PHONES
+   ========================================================= */
+
+@media (min-width: 600px) {
+
+    .invest-container {
+
+        width: min(
+            calc(100% - 48px),
+            760px
+        );
+
+    }
+
+
+    .invest-main {
+
+        padding-top: 55px;
+
+    }
+
+
+    .invest-overview-card,
+    .investment-panel {
+
+        padding: 28px;
+
+    }
+
+
+    .how-invest-works {
+
+        padding: 29px 28px;
+
+    }
+
+
+    .quick-link-card {
+
+        min-height: 78px;
+
+        padding:
+            13px 16px;
+
+    }
+
+}
+
+
+/* =========================================================
+   DESKTOP
+   ========================================================= */
+
+@media (min-width: 900px) {
+
+    .invest-container {
+
+        width: min(
+            calc(100% - 70px),
+            820px
+        );
+
+    }
+
+
+    .invest-top-header {
+
+        min-height: 86px;
+
+    }
+
+
+    .invest-main {
+
+        padding-top: 65px;
+
+    }
+
+
+    .invest-intro {
+
+        margin-bottom: 35px;
+
+    }
+
+
+    .invest-intro h1 {
+
+        font-size: 56px;
+
+    }
+
+
+    .invest-overview-card {
+
+        padding: 30px;
+
+    }
+
+
+    .investment-panel {
+
+        padding: 30px;
+
+    }
+
+
+    .bottom-navigation {
+
+        width: min(
+            calc(100% - 40px),
+            820px
+        );
+
+        right: 50%;
+
+        left: auto;
+
+        transform: translateX(50%);
+
+        bottom: 14px;
+
+        height: 70px;
+
+        padding:
+            6px 14px
+            calc(6px + env(safe-area-inset-bottom))
+            14px;
+
+        border:
+            1px solid
+            rgba(234, 60, 255, 0.14);
+
+        border-radius: 20px;
+
+    }
+
+
+    .site-footer {
+
+        padding-bottom: 105px;
+
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+
+        scroll-behavior: auto;
+
+    }
+
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        transition-duration: 0.01ms !important;
+
+    }
+
+}
