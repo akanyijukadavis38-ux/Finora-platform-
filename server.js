@@ -17,12 +17,10 @@ const PORT = process.env.PORT || 8080;
    FINORA PRODUCTION CONFIGURATION
 ========================================================= */
 const FRONTEND_URL =
-    "https://finora-platform.netlify.app";
-
+    "https://finora-platform.pages.dev";
 
 const allowedOrigins = [
-    
-    "https://finora-platform.netlify.app"
+    "https://finora-platform.pages.dev"
 ];
 
 
