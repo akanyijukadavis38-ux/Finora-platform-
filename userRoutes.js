@@ -2,15 +2,304 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 
 const User = require("./user");
+const Investment = require("./investment");
+const Transaction = require("./Transaction");
+const ReferralCommission = require("./ReferralCommission");
 
 const router = express.Router();
 
-const FRONTEND_URL = "https://finora-platform.pages.dev";
+const FRONTEND_URL =
+    "https://finora-platform.pages.dev";
+
+
 /* =========================================================
-   FRONTEND
+   REAL FINORA DASHBOARD STATISTICS
 ========================================================= */
 
-   
+async function getDashboardStatistics(userId) {
+
+    const now =
+        new Date();
+
+
+    /* =====================================================
+       UGANDA CURRENT DAY
+
+       Uganda = Africa/Kampala = UTC+3
+
+       Database timestamps remain real UTC instants.
+       This calculation only determines the beginning
+       of today's Uganda calendar day.
+    ===================================================== */
+
+    const ugandaNow =
+        new Date(
+            now.getTime() +
+            (
+                3 *
+                60 *
+                60 *
+                1000
+            )
+        );
+
+
+    const year =
+        ugandaNow.getUTCFullYear();
+
+    const month =
+        ugandaNow.getUTCMonth();
+
+    const day =
+        ugandaNow.getUTCDate();
+
+
+    const startOfUgandaDay =
+        new Date(
+            Date.UTC(
+                year,
+                month,
+                day
+            ) -
+            (
+                3 *
+                60 *
+                60 *
+                1000
+            )
+        );
+
+
+    /* =====================================================
+       TOTAL INVESTED
+
+       This comes from actual Investment records.
+       Deposits are NOT treated as investments.
+    ===================================================== */
+
+    const investmentSummary =
+        await Investment.aggregate([
+
+            {
+                $match: {
+                    user:
+                        userId
+                }
+            },
+
+            {
+                $group: {
+
+                    _id:
+                        null,
+
+                    totalInvested: {
+                        $sum:
+                            "$amount"
+                    },
+
+                    activeInvestments: {
+                        $sum: {
+                            $cond: [
+                                {
+                                    $eq: [
+                                        "$status",
+                                        "active"
+                                    ]
+                                },
+                                1,
+                                0
+                            ]
+                        }
+                    }
+                }
+            }
+        ]);
+
+
+    const totalInvested =
+        investmentSummary.length > 0
+            ? Number(
+                investmentSummary[0].totalInvested
+            ) || 0
+            : 0;
+
+
+    const activeInvestments =
+        investmentSummary.length > 0
+            ? Number(
+                investmentSummary[0].activeInvestments
+            ) || 0
+            : 0;
+
+
+    /* =====================================================
+       TOTAL EARNINGS
+
+       Only actual completed earning transactions count.
+    ===================================================== */
+
+    const earningsSummary =
+        await Transaction.aggregate([
+
+            {
+                $match: {
+
+                    user:
+                        userId,
+
+                    type:
+                        "earning",
+
+                    direction:
+                        "credit",
+
+                    status:
+                        "completed"
+                }
+            },
+
+            {
+                $group: {
+
+                    _id:
+                        null,
+
+                    totalEarnings: {
+                        $sum:
+                            "$amount"
+                    }
+                }
+            }
+        ]);
+
+
+    const totalEarnings =
+        earningsSummary.length > 0
+            ? Number(
+                earningsSummary[0].totalEarnings
+            ) || 0
+            : 0;
+
+
+    /* =====================================================
+       TODAY'S EARNINGS
+
+       Only completed earning transactions created
+       from midnight today in Uganda time.
+    ===================================================== */
+
+    const todayEarningsSummary =
+        await Transaction.aggregate([
+
+            {
+                $match: {
+
+                    user:
+                        userId,
+
+                    type:
+                        "earning",
+
+                    direction:
+                        "credit",
+
+                    status:
+                        "completed",
+
+                    createdAt: {
+                        $gte:
+                            startOfUgandaDay
+                    }
+                }
+            },
+
+            {
+                $group: {
+
+                    _id:
+                        null,
+
+                    todayEarnings: {
+                        $sum:
+                            "$amount"
+                    }
+                }
+            }
+        ]);
+
+
+    const todayEarnings =
+        todayEarningsSummary.length > 0
+            ? Number(
+                todayEarningsSummary[0].todayEarnings
+            ) || 0
+            : 0;
+
+
+    /* =====================================================
+       TOTAL REFERRAL BONUS
+
+       Only actual credited commissions count.
+    ===================================================== */
+
+    const referralSummary =
+        await ReferralCommission.aggregate([
+
+            {
+                $match: {
+
+                    recipient:
+                        userId,
+
+                    status:
+                        "credited"
+                }
+            },
+
+            {
+                $group: {
+
+                    _id:
+                        null,
+
+                    referralIncome: {
+                        $sum:
+                            "$amount"
+                    }
+                }
+            }
+        ]);
+
+
+    const referralIncome =
+        referralSummary.length > 0
+            ? Number(
+                referralSummary[0].referralIncome
+            ) || 0
+            : 0;
+
+
+    return {
+
+        totalEarnings:
+            totalEarnings,
+
+        todayEarnings:
+            todayEarnings,
+
+        totalInvested:
+            totalInvested,
+
+        referralIncome:
+            referralIncome,
+
+        activeInvestments:
+            activeInvestments
+
+    };
+}
+
 
 /* =========================================================
    REGISTER
@@ -44,7 +333,8 @@ router.post("/register", async (req, res) => {
 
             return res.status(400).json({
                 success: false,
-                message: "Please fill in all required fields."
+                message:
+                    "Please fill in all required fields."
             });
 
         }
@@ -77,17 +367,24 @@ router.post("/register", async (req, res) => {
            VALIDATION
         ================================================= */
 
-        if (cleanName.length < 2) {
+        if (
+            cleanName.length < 2
+        ) {
 
             return res.status(400).json({
                 success: false,
-                message: "Full name is too short."
+                message:
+                    "Full name is too short."
             });
 
         }
 
 
-        if (!/^07[0-9]{8}$/.test(cleanPhone)) {
+        if (
+            !/^07[0-9]{8}$/.test(
+                cleanPhone
+            )
+        ) {
 
             return res.status(400).json({
                 success: false,
@@ -113,7 +410,9 @@ router.post("/register", async (req, res) => {
         }
 
 
-        if (password.length < 6) {
+        if (
+            password.length < 6
+        ) {
 
             return res.status(400).json({
                 success: false,
@@ -124,7 +423,10 @@ router.post("/register", async (req, res) => {
         }
 
 
-        if (password !== confirmPassword) {
+        if (
+            password !==
+            confirmPassword
+        ) {
 
             return res.status(400).json({
                 success: false,
@@ -139,7 +441,9 @@ router.post("/register", async (req, res) => {
            REFERRER
         ================================================= */
 
-        if (cleanReferralCode) {
+        if (
+            cleanReferralCode
+        ) {
 
             const referringUser =
                 await User.findOne({
@@ -147,7 +451,10 @@ router.post("/register", async (req, res) => {
                         cleanReferralCode
                 });
 
-            if (!referringUser) {
+
+            if (
+                !referringUser
+            ) {
 
                 return res.status(400).json({
                     success: false,
@@ -166,10 +473,14 @@ router.post("/register", async (req, res) => {
 
         const existingEmail =
             await User.findOne({
-                email: cleanEmail
+                email:
+                    cleanEmail
             });
 
-        if (existingEmail) {
+
+        if (
+            existingEmail
+        ) {
 
             return res.status(409).json({
                 success: false,
@@ -186,10 +497,14 @@ router.post("/register", async (req, res) => {
 
         const existingPhone =
             await User.findOne({
-                phone: cleanPhone
+                phone:
+                    cleanPhone
             });
 
-        if (existingPhone) {
+
+        if (
+            existingPhone
+        ) {
 
             return res.status(409).json({
                 success: false,
@@ -231,7 +546,8 @@ router.post("/register", async (req, res) => {
                     hashedPassword,
 
                 referredByCode:
-                    cleanReferralCode || null
+                    cleanReferralCode ||
+                    null
 
             });
 
@@ -271,11 +587,14 @@ router.post("/register", async (req, res) => {
 
         /* =================================================
            SUCCESS RESPONSE
+
+           New account has no investments or earnings yet.
         ================================================= */
 
         return res.status(201).json({
 
-            success: true,
+            success:
+                true,
 
             message:
                 "FINORA account created successfully.",
@@ -304,10 +623,12 @@ router.post("/register", async (req, res) => {
                     user.referralCode,
 
                 referredByCode:
-                    user.referredByCode || null,
+                    user.referredByCode ||
+                    null,
 
                 referred_by_code:
-                    user.referredByCode || null,
+                    user.referredByCode ||
+                    null,
 
                 balance:
                     user.balance,
@@ -319,25 +640,49 @@ router.post("/register", async (req, res) => {
                     user.balance,
 
                 totalIncome:
-                    user.totalIncome,
+                    0,
 
                 totalEarnings:
-                    user.totalIncome,
+                    0,
 
                 total_earnings:
-                    user.totalIncome,
+                    0,
 
                 totalDeposit:
                     user.totalDeposit,
 
                 totalInvested:
-                    user.totalDeposit,
+                    0,
 
                 total_invested:
-                    user.totalDeposit,
+                    0,
 
                 totalWithdrawal:
                     user.totalWithdrawal,
+
+                referralIncome:
+                    0,
+
+                referral_income:
+                    0,
+
+                activeInvestments:
+                    0,
+
+                active_investments:
+                    0,
+
+                todayEarnings:
+                    0,
+
+                today_earnings:
+                    0,
+
+                dailyIncome:
+                    0,
+
+                daily_income:
+                    0,
 
                 status:
                     user.status,
@@ -383,7 +728,8 @@ router.post("/register", async (req, res) => {
 
                 return res.status(409).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
                         "An account with this email already exists."
@@ -401,7 +747,8 @@ router.post("/register", async (req, res) => {
 
                 return res.status(409).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
                         "An account with this phone number already exists."
@@ -419,7 +766,8 @@ router.post("/register", async (req, res) => {
 
                 return res.status(409).json({
 
-                    success: false,
+                    success:
+                        false,
 
                     message:
                         "Please try creating the account again."
@@ -433,7 +781,8 @@ router.post("/register", async (req, res) => {
 
         return res.status(500).json({
 
-            success: false,
+            success:
+                false,
 
             message:
                 "FINORA could not create your account."
@@ -459,11 +808,15 @@ router.post("/login", async (req, res) => {
         } = req.body;
 
 
-        if (!identifier || !password) {
+        if (
+            !identifier ||
+            !password
+        ) {
 
             return res.status(400).json({
 
-                success: false,
+                success:
+                    false,
 
                 message:
                     "Please enter your email/phone and password."
@@ -482,11 +835,14 @@ router.post("/login", async (req, res) => {
         let user;
 
 
-        if (cleanIdentifier.includes("@")) {
+        if (
+            cleanIdentifier.includes("@")
+        ) {
 
             user =
                 await User.findOne({
-                    email: cleanIdentifier
+                    email:
+                        cleanIdentifier
                 });
 
         } else {
@@ -494,7 +850,9 @@ router.post("/login", async (req, res) => {
             user =
                 await User.findOne({
                     phone:
-                        String(identifier).trim()
+                        String(
+                            identifier
+                        ).trim()
                 });
 
         }
@@ -504,7 +862,8 @@ router.post("/login", async (req, res) => {
 
             return res.status(401).json({
 
-                success: false,
+                success:
+                    false,
 
                 message:
                     "Invalid login credentials."
@@ -518,11 +877,14 @@ router.post("/login", async (req, res) => {
            FROZEN ACCOUNT
         ================================================= */
 
-        if (user.status === "frozen") {
+        if (
+            user.status === "frozen"
+        ) {
 
             return res.status(403).json({
 
-                success: false,
+                success:
+                    false,
 
                 message:
                     "Your FINORA account has been frozen."
@@ -547,7 +909,8 @@ router.post("/login", async (req, res) => {
 
             return res.status(401).json({
 
-                success: false,
+                success:
+                    false,
 
                 message:
                     "Invalid login credentials."
@@ -561,7 +924,9 @@ router.post("/login", async (req, res) => {
            ENSURE REFERRAL CODE
         ================================================= */
 
-        if (!user.referralCode) {
+        if (
+            !user.referralCode
+        ) {
 
             await user.save();
 
@@ -599,12 +964,23 @@ router.post("/login", async (req, res) => {
 
 
         /* =================================================
+           LOAD REAL DASHBOARD STATISTICS
+        ================================================= */
+
+        const statistics =
+            await getDashboardStatistics(
+                user._id
+            );
+
+
+        /* =================================================
            RESPONSE
         ================================================= */
 
         return res.status(200).json({
 
-            success: true,
+            success:
+                true,
 
             message:
                 "FINORA login successful.",
@@ -633,40 +1009,76 @@ router.post("/login", async (req, res) => {
                     user.referralCode,
 
                 referredByCode:
-                    user.referredByCode || null,
+                    user.referredByCode ||
+                    null,
 
                 referred_by_code:
-                    user.referredByCode || null,
+                    user.referredByCode ||
+                    null,
 
                 balance:
-                    user.balance,
+                    Number(
+                        user.balance
+                    ) || 0,
 
                 walletBalance:
-                    user.balance,
+                    Number(
+                        user.balance
+                    ) || 0,
 
                 wallet_balance:
-                    user.balance,
+                    Number(
+                        user.balance
+                    ) || 0,
 
                 totalIncome:
-                    user.totalIncome,
+                    statistics.totalEarnings,
 
                 totalEarnings:
-                    user.totalIncome,
+                    statistics.totalEarnings,
 
                 total_earnings:
-                    user.totalIncome,
+                    statistics.totalEarnings,
 
                 totalDeposit:
-                    user.totalDeposit,
+                    Number(
+                        user.totalDeposit
+                    ) || 0,
 
                 totalInvested:
-                    user.totalDeposit,
+                    statistics.totalInvested,
 
                 total_invested:
-                    user.totalDeposit,
+                    statistics.totalInvested,
 
                 totalWithdrawal:
-                    user.totalWithdrawal,
+                    Number(
+                        user.totalWithdrawal
+                    ) || 0,
+
+                referralIncome:
+                    statistics.referralIncome,
+
+                referral_income:
+                    statistics.referralIncome,
+
+                activeInvestments:
+                    statistics.activeInvestments,
+
+                active_investments:
+                    statistics.activeInvestments,
+
+                todayEarnings:
+                    statistics.todayEarnings,
+
+                today_earnings:
+                    statistics.todayEarnings,
+
+                dailyIncome:
+                    statistics.todayEarnings,
+
+                daily_income:
+                    statistics.todayEarnings,
 
                 status:
                     user.status,
@@ -688,7 +1100,8 @@ router.post("/login", async (req, res) => {
 
         return res.status(500).json({
 
-            success: false,
+            success:
+                false,
 
             message:
                 "FINORA could not log you in."
@@ -721,7 +1134,8 @@ router.get("/me", async (req, res) => {
 
             return res.status(401).json({
 
-                success: false,
+                success:
+                    false,
 
                 message:
                     "No authenticated FINORA session."
@@ -741,7 +1155,8 @@ router.get("/me", async (req, res) => {
 
             return res.status(401).json({
 
-                success: false,
+                success:
+                    false,
 
                 message:
                     "FINORA user account could not be found."
@@ -751,7 +1166,9 @@ router.get("/me", async (req, res) => {
         }
 
 
-        if (user.status === "frozen") {
+        if (
+            user.status === "frozen"
+        ) {
 
             req.session.destroy(
                 () => {}
@@ -759,7 +1176,8 @@ router.get("/me", async (req, res) => {
 
             return res.status(403).json({
 
-                success: false,
+                success:
+                    false,
 
                 message:
                     "Your FINORA account has been frozen."
@@ -769,16 +1187,33 @@ router.get("/me", async (req, res) => {
         }
 
 
-        if (!user.referralCode) {
+        if (
+            !user.referralCode
+        ) {
 
             await user.save();
 
         }
 
 
+        /* =================================================
+           LOAD REAL DASHBOARD STATISTICS
+        ================================================= */
+
+        const statistics =
+            await getDashboardStatistics(
+                user._id
+            );
+
+
+        /* =================================================
+           RESPONSE
+        ================================================= */
+
         return res.status(200).json({
 
-            success: true,
+            success:
+                true,
 
             user: {
 
@@ -804,69 +1239,121 @@ router.get("/me", async (req, res) => {
                     user.referralCode,
 
                 referredByCode:
-                    user.referredByCode || null,
+                    user.referredByCode ||
+                    null,
 
                 referred_by_code:
-                    user.referredByCode || null,
+                    user.referredByCode ||
+                    null,
 
                 referralLink:
                     `${FRONTEND_URL}/?ref=${encodeURIComponent(
                         user.referralCode
                     )}`,
 
+                /* =========================================
+                   AVAILABLE WALLET
+                ========================================= */
+
                 balance:
-                    user.balance,
+                    Number(
+                        user.balance
+                    ) || 0,
 
                 walletBalance:
-                    user.balance,
+                    Number(
+                        user.balance
+                    ) || 0,
 
                 wallet_balance:
-                    user.balance,
+                    Number(
+                        user.balance
+                    ) || 0,
+
+
+                /* =========================================
+                   TOTAL EARNINGS
+                ========================================= */
 
                 totalIncome:
-                    user.totalIncome,
+                    statistics.totalEarnings,
 
                 totalEarnings:
-                    user.totalIncome,
+                    statistics.totalEarnings,
 
                 total_earnings:
-                    user.totalIncome,
+                    statistics.totalEarnings,
+
+
+                /* =========================================
+                   TOTAL DEPOSIT
+                ========================================= */
 
                 totalDeposit:
-                    user.totalDeposit,
+                    Number(
+                        user.totalDeposit
+                    ) || 0,
+
+
+                /* =========================================
+                   TOTAL INVESTED
+                ========================================= */
 
                 totalInvested:
-                    user.totalDeposit,
+                    statistics.totalInvested,
 
                 total_invested:
-                    user.totalDeposit,
+                    statistics.totalInvested,
+
+
+                /* =========================================
+                   TOTAL WITHDRAWAL
+                ========================================= */
 
                 totalWithdrawal:
-                    user.totalWithdrawal,
+                    Number(
+                        user.totalWithdrawal
+                    ) || 0,
+
+
+                /* =========================================
+                   TOTAL REFERRAL BONUS
+                ========================================= */
 
                 referralIncome:
-                    0,
+                    statistics.referralIncome,
 
                 referral_income:
-                    0,
+                    statistics.referralIncome,
+
+
+                /* =========================================
+                   ACTIVE INVESTMENTS
+                ========================================= */
 
                 activeInvestments:
-                    0,
+                    statistics.activeInvestments,
 
                 active_investments:
-                    0,
+                    statistics.activeInvestments,
+
+
+                /* =========================================
+                   TODAY'S EARNINGS
+                ========================================= */
 
                 todayEarnings:
-                    0,
+                    statistics.todayEarnings,
 
                 today_earnings:
-                    0,
+                    statistics.todayEarnings,
 
                 dailyIncome:
-                    0,
+                    statistics.todayEarnings,
 
                 daily_income:
-                    0,
+                    statistics.todayEarnings,
+
 
                 status:
                     user.status,
@@ -888,7 +1375,8 @@ router.get("/me", async (req, res) => {
 
         return res.status(500).json({
 
-            success: false,
+            success:
+                false,
 
             message:
                 "FINORA could not load your account."
@@ -919,7 +1407,8 @@ router.get("/team", async (req, res) => {
 
             return res.status(401).json({
 
-                success: false,
+                success:
+                    false,
 
                 message:
                     "No authenticated FINORA session."
@@ -945,7 +1434,8 @@ router.get("/team", async (req, res) => {
 
             return res.status(401).json({
 
-                success: false,
+                success:
+                    false,
 
                 message:
                     "FINORA user account could not be found."
@@ -955,7 +1445,9 @@ router.get("/team", async (req, res) => {
         }
 
 
-        if (currentUser.status === "frozen") {
+        if (
+            currentUser.status === "frozen"
+        ) {
 
             req.session.destroy(
                 () => {}
@@ -963,7 +1455,8 @@ router.get("/team", async (req, res) => {
 
             return res.status(403).json({
 
-                success: false,
+                success:
+                    false,
 
                 message:
                     "Your FINORA account has been frozen."
@@ -987,7 +1480,8 @@ router.get("/team", async (req, res) => {
                         "_id fullName phone referralCode referredByCode totalDeposit status createdAt"
                     )
                     .sort({
-                        createdAt: -1
+                        createdAt:
+                            -1
                     })
                 : [];
 
@@ -1017,7 +1511,8 @@ router.get("/team", async (req, res) => {
                         "_id fullName phone referralCode referredByCode totalDeposit status createdAt"
                     )
                     .sort({
-                        createdAt: -1
+                        createdAt:
+                            -1
                     })
                 : [];
 
@@ -1047,7 +1542,8 @@ router.get("/team", async (req, res) => {
                         "_id fullName phone referralCode referredByCode totalDeposit status createdAt"
                     )
                     .sort({
-                        createdAt: -1
+                        createdAt:
+                            -1
                     })
                 : [];
 
@@ -1092,10 +1588,12 @@ router.get("/team", async (req, res) => {
                         user.referralCode,
 
                     referredByCode:
-                        user.referredByCode || null,
+                        user.referredByCode ||
+                        null,
 
                     referred_by_code:
-                        user.referredByCode || null,
+                        user.referredByCode ||
+                        null,
 
                     totalDeposit:
                         totalDeposit,
@@ -1155,7 +1653,8 @@ router.get("/team", async (req, res) => {
 
         return res.status(200).json({
 
-            success: true,
+            success:
+                true,
 
             team:
                 members,
@@ -1205,7 +1704,8 @@ router.get("/team", async (req, res) => {
 
         return res.status(500).json({
 
-            success: false,
+            success:
+                false,
 
             message:
                 "FINORA could not load your team."
@@ -1221,564 +1721,601 @@ router.get("/team", async (req, res) => {
    CHANGE PASSWORD
 ========================================================= */
 
-router.post("/change-password", async (req, res) => {
+router.post(
+    "/change-password",
+    async (req, res) => {
 
-    try {
+        try {
 
-        /* =================================================
-           AUTHENTICATION
-        ================================================= */
+            /* =================================================
+               AUTHENTICATION
+            ================================================= */
 
-        if (
-            !req.session ||
-            !req.session.userId
-        ) {
+            if (
+                !req.session ||
+                !req.session.userId
+            ) {
 
-            return res.status(401).json({
+                return res.status(401).json({
 
-                success: false,
-
-                message:
-                    "You must be logged in to change your password."
-
-            });
-
-        }
-
-
-        /* =================================================
-           GET USER
-        ================================================= */
-
-        const user =
-            await User.findById(
-                req.session.userId
-            );
-
-
-        if (!user) {
-
-            return res.status(401).json({
-
-                success: false,
-
-                message:
-                    "FINORA user account could not be found."
-
-            });
-
-        }
-
-
-        /* =================================================
-           FROZEN ACCOUNT
-        ================================================= */
-
-        if (user.status === "frozen") {
-
-            req.session.destroy(
-                () => {}
-            );
-
-            return res.status(403).json({
-
-                success: false,
-
-                message:
-                    "Your FINORA account has been frozen."
-
-            });
-
-        }
-
-
-        /* =================================================
-           GET PASSWORDS
-        ================================================= */
-
-        const {
-            currentPassword,
-            newPassword,
-            confirmPassword
-        } = req.body;
-
-
-        /* =================================================
-           REQUIRED FIELDS
-        ================================================= */
-
-        if (
-            !currentPassword ||
-            !newPassword ||
-            !confirmPassword
-        ) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "Please fill in all password fields."
-
-            });
-
-        }
-
-
-        /* =================================================
-           PASSWORD LENGTH
-        ================================================= */
-
-        if (
-            String(newPassword).length < 6
-        ) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "New password must be at least 6 characters."
-
-            });
-
-        }
-
-
-        /* =================================================
-           CONFIRM PASSWORD
-        ================================================= */
-
-        if (
-            newPassword !==
-            confirmPassword
-        ) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "New passwords do not match."
-
-            });
-
-        }
-
-
-        /* =================================================
-           VERIFY CURRENT PASSWORD
-        ================================================= */
-
-        const passwordMatches =
-            await bcrypt.compare(
-                currentPassword,
-                user.password
-            );
-
-
-        if (!passwordMatches) {
-
-            return res.status(401).json({
-
-                success: false,
-
-                message:
-                    "Current password is incorrect."
-
-            });
-
-        }
-
-
-        /* =================================================
-           PREVENT SAME PASSWORD
-        ================================================= */
-
-        const samePassword =
-            await bcrypt.compare(
-                newPassword,
-                user.password
-            );
-
-
-        if (samePassword) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "New password must be different from your current password."
-
-            });
-
-        }
-
-
-        /* =================================================
-           HASH NEW PASSWORD
-        ================================================= */
-
-        const hashedPassword =
-            await bcrypt.hash(
-                newPassword,
-                12
-            );
-
-
-        /* =================================================
-           UPDATE PASSWORD
-        ================================================= */
-
-        user.password =
-            hashedPassword;
-
-
-        await user.save();
-
-
-        /* =================================================
-           SUCCESS
-        ================================================= */
-
-        return res.status(200).json({
-
-            success: true,
-
-            message:
-                "FINORA password changed successfully."
-
-        });
-
-
-    } catch (error) {
-
-        console.error(
-            "❌ FINORA CHANGE PASSWORD ERROR:",
-            error
-        );
-
-
-        return res.status(500).json({
-
-            success: false,
-
-            message:
-                "FINORA could not change your password right now."
-
-        });
-
-    }
-
-});
-
-
-/* =========================================================
-   FORGOT PASSWORD — SIMPLE ACCOUNT RECOVERY
-========================================================= */
-
-router.post("/forgot-password", async (req, res) => {
-
-    try {
-
-        const {
-            identifier,
-            newPassword,
-            confirmPassword
-        } = req.body;
-
-
-        /* =================================================
-           REQUIRED FIELDS
-        ================================================= */
-
-        if (
-            !identifier ||
-            !newPassword ||
-            !confirmPassword
-        ) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "Please fill in all required fields."
-
-            });
-
-        }
-
-
-        /* =================================================
-           CLEAN IDENTIFIER
-        ================================================= */
-
-        const cleanIdentifier =
-            String(identifier).trim();
-
-
-        /* =================================================
-           PASSWORD LENGTH
-        ================================================= */
-
-        if (
-            String(newPassword).length < 6
-        ) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "New password must be at least 6 characters."
-
-            });
-
-        }
-
-
-        /* =================================================
-           CONFIRM PASSWORD
-        ================================================= */
-
-        if (
-            newPassword !==
-            confirmPassword
-        ) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "New passwords do not match."
-
-            });
-
-        }
-
-
-        /* =================================================
-           FIND EXISTING ACCOUNT
-           
-           The identifier can be either:
-           - Registered email
-           - Registered phone number
-        ================================================= */
-
-        let user;
-
-
-        if (
-            cleanIdentifier.includes("@")
-        ) {
-
-            user =
-                await User.findOne({
-                    email:
-                        cleanIdentifier.toLowerCase()
-                });
-
-        } else {
-
-            user =
-                await User.findOne({
-                    phone:
-                        cleanIdentifier
-                });
-
-        }
-
-
-        /* =================================================
-           ACCOUNT NOT FOUND
-        ================================================= */
-
-        if (!user) {
-
-            return res.status(404).json({
-
-                success: false,
-
-                message:
-                    "No FINORA account was found with that email or phone number."
-
-            });
-
-        }
-
-
-        /* =================================================
-           FROZEN ACCOUNT
-        ================================================= */
-
-        if (
-            user.status === "frozen"
-        ) {
-
-            return res.status(403).json({
-
-                success: false,
-
-                message:
-                    "Your FINORA account has been frozen."
-
-            });
-
-        }
-
-
-        /* =================================================
-           PREVENT SAME PASSWORD
-        ================================================= */
-
-        const samePassword =
-            await bcrypt.compare(
-                newPassword,
-                user.password
-            );
-
-
-        if (samePassword) {
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    "New password must be different from your current password."
-
-            });
-
-        }
-
-
-        /* =================================================
-           HASH NEW PASSWORD
-        ================================================= */
-
-        const hashedPassword =
-            await bcrypt.hash(
-                newPassword,
-                12
-            );
-
-
-        /* =================================================
-           UPDATE EXISTING ACCOUNT
-           
-           IMPORTANT:
-           We only replace the password.
-           The existing account remains the same.
-        ================================================= */
-
-        user.password =
-            hashedPassword;
-
-
-        /*
-         * Clear any old reset-token information
-         * that may have been created by the previous
-         * password-reset system.
-         */
-
-        user.resetPasswordToken = null;
-        user.resetPasswordExpires = null;
-
-
-        await user.save();
-
-
-        /* =================================================
-           SUCCESS
-        ================================================= */
-
-        return res.status(200).json({
-
-            success: true,
-
-            message:
-                "Your FINORA password has been recovered successfully. Please log in to your account."
-
-        });
-
-
-    } catch (error) {
-
-        console.error(
-            "❌ FINORA FORGOT PASSWORD ERROR:",
-            error
-        );
-
-
-        return res.status(500).json({
-
-            success: false,
-
-            message:
-                "FINORA could not recover your password right now."
-
-        });
-
-    }
-
-});
-
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-router.post("/logout", (req, res) => {
-
-    req.session.destroy(
-        error => {
-
-            if (error) {
-
-                console.error(
-                    "❌ FINORA LOGOUT ERROR:",
-                    error
-                );
-
-                return res.status(500).json({
-
-                    success: false,
+                    success:
+                        false,
 
                     message:
-                        "FINORA could not log you out."
+                        "You must be logged in to change your password."
 
                 });
 
             }
 
 
-            res.clearCookie(
-                "finora.sid",
-                {
-                    httpOnly: true,
-                    secure: true,
-                    sameSite: "none",
-                    path: "/"
-                }
-            );
+            /* =================================================
+               GET USER
+            ================================================= */
 
+            const user =
+                await User.findById(
+                    req.session.userId
+                );
+
+
+            if (!user) {
+
+                return res.status(401).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "FINORA user account could not be found."
+
+                });
+
+            }
+
+
+            /* =================================================
+               FROZEN ACCOUNT
+            ================================================= */
+
+            if (
+                user.status === "frozen"
+            ) {
+
+                req.session.destroy(
+                    () => {}
+                );
+
+                return res.status(403).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "Your FINORA account has been frozen."
+
+                });
+
+            }
+
+
+            /* =================================================
+               GET PASSWORDS
+            ================================================= */
+
+            const {
+                currentPassword,
+                newPassword,
+                confirmPassword
+            } = req.body;
+
+
+            /* =================================================
+               REQUIRED FIELDS
+            ================================================= */
+
+            if (
+                !currentPassword ||
+                !newPassword ||
+                !confirmPassword
+            ) {
+
+                return res.status(400).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "Please fill in all password fields."
+
+                });
+
+            }
+
+
+            /* =================================================
+               PASSWORD LENGTH
+            ================================================= */
+
+            if (
+                String(
+                    newPassword
+                ).length < 6
+            ) {
+
+                return res.status(400).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "New password must be at least 6 characters."
+
+                });
+
+            }
+
+
+            /* =================================================
+               CONFIRM PASSWORD
+            ================================================= */
+
+            if (
+                newPassword !==
+                confirmPassword
+            ) {
+
+                return res.status(400).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "New passwords do not match."
+
+                });
+
+            }
+
+
+            /* =================================================
+               VERIFY CURRENT PASSWORD
+            ================================================= */
+
+            const passwordMatches =
+                await bcrypt.compare(
+                    currentPassword,
+                    user.password
+                );
+
+
+            if (!passwordMatches) {
+
+                return res.status(401).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "Current password is incorrect."
+
+                });
+
+            }
+
+
+            /* =================================================
+               PREVENT SAME PASSWORD
+            ================================================= */
+
+            const samePassword =
+                await bcrypt.compare(
+                    newPassword,
+                    user.password
+                );
+
+
+            if (
+                samePassword
+            ) {
+
+                return res.status(400).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "New password must be different from your current password."
+
+                });
+
+            }
+
+
+            /* =================================================
+               HASH NEW PASSWORD
+            ================================================= */
+
+            const hashedPassword =
+                await bcrypt.hash(
+                    newPassword,
+                    12
+                );
+
+
+            /* =================================================
+               UPDATE PASSWORD
+            ================================================= */
+
+            user.password =
+                hashedPassword;
+
+
+            await user.save();
+
+
+            /* =================================================
+               SUCCESS
+            ================================================= */
 
             return res.status(200).json({
 
-                success: true,
+                success:
+                    true,
 
                 message:
-                    "FINORA logout successful."
+                    "FINORA password changed successfully."
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "❌ FINORA CHANGE PASSWORD ERROR:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success:
+                    false,
+
+                message:
+                    "FINORA could not change your password right now."
 
             });
 
         }
-    );
 
-});
+    }
+);
+
+
+/* =========================================================
+   FORGOT PASSWORD
+========================================================= */
+
+router.post(
+    "/forgot-password",
+    async (req, res) => {
+
+        try {
+
+            const {
+                identifier,
+                newPassword,
+                confirmPassword
+            } = req.body;
+
+
+            /* =================================================
+               REQUIRED FIELDS
+            ================================================= */
+
+            if (
+                !identifier ||
+                !newPassword ||
+                !confirmPassword
+            ) {
+
+                return res.status(400).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "Please fill in all required fields."
+
+                });
+
+            }
+
+
+            /* =================================================
+               CLEAN IDENTIFIER
+            ================================================= */
+
+            const cleanIdentifier =
+                String(
+                    identifier
+                ).trim();
+
+
+            /* =================================================
+               PASSWORD LENGTH
+            ================================================= */
+
+            if (
+                String(
+                    newPassword
+                ).length < 6
+            ) {
+
+                return res.status(400).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "New password must be at least 6 characters."
+
+                });
+
+            }
+
+
+            /* =================================================
+               CONFIRM PASSWORD
+            ================================================= */
+
+            if (
+                newPassword !==
+                confirmPassword
+            ) {
+
+                return res.status(400).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "New passwords do not match."
+
+                });
+
+            }
+
+
+            /* =================================================
+               FIND EXISTING ACCOUNT
+            ================================================= */
+
+            let user;
+
+
+            if (
+                cleanIdentifier.includes("@")
+            ) {
+
+                user =
+                    await User.findOne({
+                        email:
+                            cleanIdentifier.toLowerCase()
+                    });
+
+            } else {
+
+                user =
+                    await User.findOne({
+                        phone:
+                            cleanIdentifier
+                    });
+
+            }
+
+
+            /* =================================================
+               ACCOUNT NOT FOUND
+            ================================================= */
+
+            if (!user) {
+
+                return res.status(404).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "No FINORA account was found with that email or phone number."
+
+                });
+
+            }
+
+
+            /* =================================================
+               FROZEN ACCOUNT
+            ================================================= */
+
+            if (
+                user.status === "frozen"
+            ) {
+
+                return res.status(403).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "Your FINORA account has been frozen."
+
+                });
+
+            }
+
+
+            /* =================================================
+               PREVENT SAME PASSWORD
+            ================================================= */
+
+            const samePassword =
+                await bcrypt.compare(
+                    newPassword,
+                    user.password
+                );
+
+
+            if (
+                samePassword
+            ) {
+
+                return res.status(400).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "New password must be different from your current password."
+
+                });
+
+            }
+
+
+            /* =================================================
+               HASH NEW PASSWORD
+            ================================================= */
+
+            const hashedPassword =
+                await bcrypt.hash(
+                    newPassword,
+                    12
+                );
+
+
+            /* =================================================
+               UPDATE EXISTING ACCOUNT
+            ================================================= */
+
+            user.password =
+                hashedPassword;
+
+
+            user.resetPasswordToken =
+                null;
+
+            user.resetPasswordExpires =
+                null;
+
+
+            await user.save();
+
+
+            /* =================================================
+               SUCCESS
+            ================================================= */
+
+            return res.status(200).json({
+
+                success:
+                    true,
+
+                message:
+                    "Your FINORA password has been recovered successfully. Please log in to your account."
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "❌ FINORA FORGOT PASSWORD ERROR:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success:
+                    false,
+
+                message:
+                    "FINORA could not recover your password right now."
+
+            });
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+router.post(
+    "/logout",
+    (req, res) => {
+
+        req.session.destroy(
+            error => {
+
+                if (error) {
+
+                    console.error(
+                        "❌ FINORA LOGOUT ERROR:",
+                        error
+                    );
+
+                    return res.status(500).json({
+
+                        success:
+                            false,
+
+                        message:
+                            "FINORA could not log you out."
+
+                    });
+
+                }
+
+
+                res.clearCookie(
+                    "finora.sid",
+                    {
+                        httpOnly:
+                            true,
+
+                        secure:
+                            true,
+
+                        sameSite:
+                            "none",
+
+                        path:
+                            "/"
+                    }
+                );
+
+
+                return res.status(200).json({
+
+                    success:
+                        true,
+
+                    message:
+                        "FINORA logout successful."
+
+                });
+
+            }
+        );
+
+    }
+);
 
 
 /* =========================================================
