@@ -5,19 +5,18 @@
    ONLINE / BACKEND VERSION
    SESSION AUTHENTICATION
    NO LOCAL STORAGE
-   NO DEPOSIT ROUTES
-   NO WITHDRAWAL ROUTES
-   NO INVESTMENT ROUTES
-   NO TRANSACTION ROUTES
 
-   CURRENT BACKEND CONNECTION:
+   CURRENT BACKEND CONNECTIONS:
    GET /api/users/me
+   GET /api/transactions?limit=3
 
-   The dashboard only connects to the existing
-   FINORA user/session system.
+   IMPORTANT:
+   Dashboard Recent Transactions and the full
+   Transaction History page use the SAME backend
+   transaction records.
 
-   Other systems will be connected later when their
-   own backend routes are created.
+   No fake transactions.
+   No localStorage.
 ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -27,11 +26,11 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
 
     const FINORA_API =
-    "https://finora-platform.onrender.com";
+        "https://finora-platform.onrender.com";
 
 
     const FRONTEND_URL =
-    "https://finora-platform.pages.dev";
+        "https://finora-platform.pages.dev";
 
 
     const AUTO_SLIDE_DELAY =
@@ -72,6 +71,44 @@ document.addEventListener("DOMContentLoaded", () => {
             "UGX " +
             amount.toLocaleString("en-UG")
         );
+    }
+
+
+    function formatDate(value) {
+
+        if (!value) {
+            return "";
+        }
+
+
+        const date =
+            new Date(value);
+
+
+        if (Number.isNaN(date.getTime())) {
+            return "";
+        }
+
+
+        return date.toLocaleDateString(
+            "en-UG",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            }
+        );
+    }
+
+
+    function escapeHTML(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
     }
 
 
@@ -199,9 +236,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
        IMPORTANT:
        credentials: "include"
-
-       This sends the FINORA session cookie
-       created by userRoutes.js.
     ===================================================== */
 
     async function loadCurrentUser() {
@@ -435,32 +469,25 @@ document.addEventListener("DOMContentLoaded", () => {
             return null;
         }
     }
-/* =====================================================
-   HANDLE UNAUTHENTICATED USER
-
-   IMPORTANT:
-   Do NOT replace the dashboard user's name with
-   "Guest" while authentication is being checked.
-
-   The existing dashboard UI remains untouched.
-
-   If the session is genuinely missing, notify the
-   user without destroying the current UI state.
-===================================================== */
-
-function handleUnauthenticatedUser() {
-
-    showTemporaryMessage(
-        "Your FINORA session has expired. Please log in again."
-    );
 
 
-    console.warn(
-        "FINORA: No authenticated session."
-    );
-}
+    /* =====================================================
+       HANDLE UNAUTHENTICATED USER
+    ===================================================== */
 
-  
+    function handleUnauthenticatedUser() {
+
+        showTemporaryMessage(
+            "Your FINORA session has expired. Please log in again."
+        );
+
+
+        console.warn(
+            "FINORA: No authenticated session."
+        );
+    }
+
+
     /* =====================================================
        UPDATE USER NAME
     ===================================================== */
@@ -475,18 +502,11 @@ function handleUnauthenticatedUser() {
             return;
         }
 
-if (!user) {
 
-    /*
-       Do not change the existing dashboard name.
+        if (!user) {
 
-       This prevents a temporary "Guest" state from
-       appearing while the backend session is being
-       checked.
-    */
-
-    return;
-}
+            return;
+        }
 
 
         const name =
@@ -728,13 +748,6 @@ if (!user) {
 
     /* =====================================================
        REFERRAL INFORMATION
-       
-       The current dashboard HTML does not contain a
-       referral-link field, so we do not try to create
-       elements that don't exist.
-
-       This function is prepared for future dashboard
-       referral components.
     ===================================================== */
 
     function updateReferralInformation(user) {
@@ -777,13 +790,6 @@ if (!user) {
             "FINORA USER REFERRAL LINK:",
             referralLink
         );
-
-
-        /*
-           Future referral elements can use this value.
-
-           We intentionally do not create fake UI elements.
-        */
     }
 
 
@@ -1428,14 +1434,6 @@ if (!user) {
                     );
 
 
-                /*
-                   The current HTML uses href="#".
-
-                   We prevent navigation and tell the user
-                   that the actual Telegram URL will be
-                   connected later.
-                */
-
                 if (
                     !href ||
                     href === "#"
@@ -1452,231 +1450,185 @@ if (!user) {
         );
     }
 
-/* =====================================================
-   MAIN BOTTOM NAVIGATION
 
-   MAIN NAVIGATION:
-   HOME
-   TEAM
-   RATES
-   MINE
-   PROFILE
+    /* =====================================================
+       MAIN BOTTOM NAVIGATION
+    ===================================================== */
 
-   Behavior:
-   - Only ONE item can be active.
-   - Active item gets the complete active state.
-   - Previous item immediately loses the active state.
-   - Navigation pages use normal HTML navigation.
-   - Secondary pages such as Deposit, Withdraw,
-     Reinvestment/Investment, Records and Support
-     are NOT part of this active navigation.
-===================================================== */
+    function initializeNavigation() {
 
-function initializeNavigation() {
-
-    const navigation =
-        document.querySelector(
-            ".bottom-navigation"
-        );
+        const navigation =
+            document.querySelector(
+                ".bottom-navigation"
+            );
 
 
-    if (!navigation) {
-        return;
-    }
+        if (!navigation) {
+            return;
+        }
 
 
-    const navigationItems =
-        Array.from(
-            navigation.querySelectorAll(
-                ".bottom-nav-item"
-            )
-        );
+        const navigationItems =
+            Array.from(
+                navigation.querySelectorAll(
+                    ".bottom-nav-item"
+                )
+            );
 
 
-    if (!navigationItems.length) {
-        return;
-    }
+        if (!navigationItems.length) {
+            return;
+        }
 
 
-    /* =================================================
-       DETERMINE CURRENT PAGE
-    ================================================= */
+        /* =============================================
+           DETERMINE CURRENT PAGE
+        ============================================= */
 
-    const currentPath =
-        window.location.pathname
-            .split("/")
-            .pop()
-            .toLowerCase();
-
-
-    /* =================================================
-       PAGE → NAVIGATION MAP
-    ================================================= */
-
-    const pageMap = {
-
-        "dashboard.html": "home",
-
-        "": "home",
-
-        "team.html": "team",
-
-        "rates.html": "rates",
-
-        "mine.html": "mine",
-
-        "profile.html": "profile"
-
-    };
+        const currentPath =
+            window.location.pathname
+                .split("/")
+                .pop()
+                .toLowerCase();
 
 
-    /* =================================================
-       SET ACTIVE NAVIGATION
-    ================================================= */
+        /* =============================================
+           PAGE → NAVIGATION MAP
+        ============================================= */
 
-    function setActiveNavigation(navName) {
+        const pageMap = {
+
+            "dashboard.html": "home",
+
+            "": "home",
+
+            "team.html": "team",
+
+            "rates.html": "rates",
+
+            "mine.html": "mine",
+
+            "profile.html": "profile"
+
+        };
+
+
+        /* =============================================
+           SET ACTIVE NAVIGATION
+        ============================================= */
+
+        function setActiveNavigation(navName) {
+
+            navigationItems.forEach(
+                (item) => {
+
+                    const isActive =
+                        item.dataset.nav === navName;
+
+
+                    item.classList.toggle(
+                        "active",
+                        isActive
+                    );
+
+
+                    if (isActive) {
+
+                        item.setAttribute(
+                            "aria-current",
+                            "page"
+                        );
+
+                    } else {
+
+                        item.removeAttribute(
+                            "aria-current"
+                        );
+                    }
+
+                }
+            );
+        }
+
+
+        const currentNavigation =
+            pageMap[currentPath];
+
+
+        if (currentNavigation) {
+
+            setActiveNavigation(
+                currentNavigation
+            );
+
+        } else {
+
+            setActiveNavigation(
+                null
+            );
+        }
+
+
+        /* =============================================
+           NAVIGATION CLICK
+        ============================================= */
 
         navigationItems.forEach(
             (item) => {
 
-                const isActive =
-                    item.dataset.nav === navName;
+                item.addEventListener(
+                    "click",
+                    () => {
+
+                        const navName =
+                            item.dataset.nav;
 
 
-                item.classList.toggle(
-                    "active",
-                    isActive
+                        if (!navName) {
+                            return;
+                        }
+
+
+                        setActiveNavigation(
+                            navName
+                        );
+
+                    }
                 );
-
-
-                if (isActive) {
-
-                    item.setAttribute(
-                        "aria-current",
-                        "page"
-                    );
-
-                } else {
-
-                    item.removeAttribute(
-                        "aria-current"
-                    );
-                }
 
             }
         );
     }
 
 
-    /* =================================================
-       INITIAL ACTIVE STATE
-
-       This makes the correct button active when a
-       page loads directly.
-
-       Example:
-
-       team.html
-       → Team active
-
-       rates.html
-       → Rates active
-
-       profile.html
-       → Profile active
-    ================================================= */
-
-    const currentNavigation =
-        pageMap[currentPath];
-
-
-    if (currentNavigation) {
-
-        setActiveNavigation(
-            currentNavigation
-        );
-
-    } else {
-
-        /*
-           Secondary pages are NOT assigned a main
-           navigation active state.
-
-           Examples:
-
-           deposit.html
-           withdraw.html
-           investment.html
-           my-investments.html
-           transaction-history.html
-           support.html
-        */
-
-        setActiveNavigation(
-            null
-        );
-    }
-
-
-    /* =================================================
-       NAVIGATION CLICK
-
-       Immediately move the complete active state
-       to the button that was tapped.
-
-       The browser is still allowed to navigate
-       normally through the HTML href.
-    ================================================= */
-
-    navigationItems.forEach(
-        (item) => {
-
-            item.addEventListener(
-                "click",
-                () => {
-
-                    const navName =
-                        item.dataset.nav;
-
-
-                    if (!navName) {
-                        return;
-                    }
-
-
-                    setActiveNavigation(
-                        navName
-                    );
-
-                }
-            );
-
-        }
-    );
-}
-
-
     /* =====================================================
        RECENT TRANSACTIONS
 
+       SOURCE:
+       GET /api/transactions?limit=3
+
        IMPORTANT:
+       These are the SAME transaction records used
+       by transaction-history.html.
 
-       There is currently NO transaction API in the backend.
+       This means:
 
-       Therefore we intentionally DO NOT call:
+       Deposit submitted
+       → appears here as Pending
 
-       /api/transactions/user
+       Investment
+       → appears here as Completed
 
-       because that route does not exist yet.
+       Withdrawal requested
+       → appears here as Pending
 
-       The HTML's existing:
-       "No recent transactions"
+       Later approval/rejection
+       → same transaction changes status
 
-       message remains visible until the transaction
-       system is built.
+       No duplicate transaction system.
     ===================================================== */
 
-    function initializeRecentTransactions() {
+    async function initializeRecentTransactions() {
 
         const container =
             getElement(
@@ -1689,23 +1641,351 @@ function initializeNavigation() {
         }
 
 
-        /*
-           Keep the HTML empty state.
+        try {
 
-           No fake transactions.
-           No localStorage.
-           No nonexistent API.
-        */
+            console.log(
+                "FINORA: Loading latest transactions..."
+            );
 
-        console.log(
-            "FINORA: Transaction system not connected yet."
+
+            const response =
+                await fetch(
+                    `${FINORA_API}/api/transactions?limit=3`,
+                    {
+                        method: "GET",
+
+                        credentials: "include",
+
+                        headers: {
+                            "Accept":
+                                "application/json"
+                        }
+                    }
+                );
+
+
+            console.log(
+                "FINORA TRANSACTION STATUS:",
+                response.status
+            );
+
+
+            /* =============================================
+               SESSION EXPIRED
+            ============================================= */
+
+            if (
+                response.status === 401
+            ) {
+
+                console.warn(
+                    "FINORA: Transaction session expired."
+                );
+
+
+                return;
+            }
+
+
+            /* =============================================
+               FROZEN ACCOUNT
+            ============================================= */
+
+            if (
+                response.status === 403
+            ) {
+
+                console.warn(
+                    "FINORA: Transaction access denied."
+                );
+
+
+                return;
+            }
+
+
+            /* =============================================
+               SERVER ERROR
+            ============================================= */
+
+            if (!response.ok) {
+
+                console.error(
+                    "FINORA: Transaction request failed.",
+                    response.status
+                );
+
+
+                return;
+            }
+
+
+            /* =============================================
+               READ RESPONSE
+            ============================================= */
+
+            const data =
+                await response.json();
+
+
+            if (
+                !data ||
+                data.success !== true
+            ) {
+
+                console.warn(
+                    "FINORA: Invalid transaction response."
+                );
+
+
+                return;
+            }
+
+
+            const transactions =
+                Array.isArray(
+                    data.transactions
+                )
+                    ? data.transactions
+                    : [];
+
+
+            /* =============================================
+               NO TRANSACTIONS
+
+               Keep the existing HTML empty state.
+            ============================================= */
+
+            if (!transactions.length) {
+
+                console.log(
+                    "FINORA: No transactions found."
+                );
+
+
+                return;
+            }
+
+
+            /* =============================================
+               DISPLAY LATEST TRANSACTIONS
+            ============================================= */
+
+            container.innerHTML =
+                transactions
+                    .slice(0, 3)
+                    .map(
+                        (
+                            transaction
+                        ) =>
+                            buildRecentTransaction(
+                                transaction
+                            )
+                    )
+                    .join("");
+
+
+            console.log(
+                "FINORA: Latest transactions displayed.",
+                transactions
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "❌ FINORA TRANSACTION REQUEST ERROR:",
+                error
+            );
+
+
+            /*
+               Keep the existing dashboard UI intact.
+               We do not replace it with a fake transaction
+               or a fake error card.
+            */
+        }
+    }
+
+
+    /* =====================================================
+       BUILD RECENT TRANSACTION
+
+       Compact dashboard version.
+
+       Full details remain available on:
+       transaction-history.html
+    ===================================================== */
+
+    function buildRecentTransaction(transaction) {
+
+        const type =
+            String(
+                transaction.type || ""
+            ).toLowerCase();
+
+
+        const status =
+            String(
+                transaction.status || "completed"
+            ).toLowerCase();
+
+
+        const direction =
+            String(
+                transaction.direction || ""
+            ).toLowerCase();
+
+
+        const amount =
+            safeNumber(
+                transaction.amount
+            );
+
+
+        const title =
+            getTransactionTitle(
+                type
+            );
+
+
+        const icon =
+            getTransactionIcon(
+                type
+            );
+
+
+        const statusText =
+            capitalizeFirstLetter(
+                status
+            );
+
+
+        const date =
+            formatDate(
+                transaction.createdAt
+            );
+
+
+        const amountClass =
+            direction === "debit"
+                ? "debit"
+                : "credit";
+
+
+        return `
+            <div class="transaction-item">
+                <div class="transaction-icon transaction-${escapeHTML(type)}">
+                    ${icon}
+                </div>
+
+                <div class="transaction-main">
+                    <div class="transaction-title">
+                        ${escapeHTML(title)}
+                    </div>
+
+                    <div class="transaction-meta">
+                        ${escapeHTML(statusText)}
+                        ${date ? ` • ${escapeHTML(date)}` : ""}
+                    </div>
+                </div>
+
+                <div class="transaction-amount ${amountClass}">
+                    ${direction === "debit" ? "-" : "+"}
+                    ${escapeHTML(formatUGX(amount))}
+                </div>
+            </div>
+        `;
+    }
+
+
+    /* =====================================================
+       TRANSACTION TITLE
+    ===================================================== */
+
+    function getTransactionTitle(type) {
+
+        const titles = {
+
+            deposit:
+                "Deposit",
+
+            investment:
+                "Investment",
+
+            withdrawal:
+                "Withdrawal",
+
+            earning:
+                "Daily Earnings",
+
+            referral:
+                "Referral Commission"
+
+        };
+
+
+        return (
+            titles[type] ||
+            "Transaction"
+        );
+    }
+
+
+    /* =====================================================
+       TRANSACTION ICON
+    ===================================================== */
+
+    function getTransactionIcon(type) {
+
+        const icons = {
+
+            deposit:
+                "↓",
+
+            investment:
+                "↗",
+
+            withdrawal:
+                "↑",
+
+            earning:
+                "✦",
+
+            referral:
+                "♢"
+
+        };
+
+
+        return (
+            icons[type] ||
+            "•"
+        );
+    }
+
+
+    /* =====================================================
+       CAPITALIZE
+    ===================================================== */
+
+    function capitalizeFirstLetter(value) {
+
+        if (!value) {
+            return "";
+        }
+
+
+        return (
+            value.charAt(0).toUpperCase() +
+            value.slice(1)
         );
     }
 
 
     /* =====================================================
        PREVENT ACCIDENTAL HASH NAVIGATION
-       
+
        Only affects links whose href is exactly "#".
     ===================================================== */
 
@@ -1730,104 +2010,97 @@ function initializeNavigation() {
     }
 
 
-  /* =====================================================
-   DASHBOARD INITIALIZATION
+    /* =====================================================
+       DASHBOARD INITIALIZATION
 
-   IMPORTANT:
-   The dashboard UI initializes immediately.
+       The dashboard UI initializes immediately.
 
-   The authenticated-user request runs in the
-   background and does NOT block the page.
+       User data and transaction data load in the
+       background.
 
-   No fake data.
-   No localStorage.
-   No loading-state replacement.
-===================================================== */
+       No fake data.
+       No localStorage.
+    ===================================================== */
 
-function initializeDashboard() {
+    function initializeDashboard() {
 
-    console.log(
-        "================================="
-    );
-
-
-    console.log(
-        "FINORA DASHBOARD INITIALIZING"
-    );
-
-
-    console.log(
-        "FINORA API:",
-        FINORA_API
-    );
-
-
-    console.log(
-        "================================="
-    );
-
-
-    /* =============================================
-       UI SYSTEMS START IMMEDIATELY
-    ============================================= */
-
-    initializeBannerCarousel();
-
-
-    initializeNotifications();
-
-
-    initializeCommunity();
-
-
-    initializeNavigation();
-
-
-    initializeRecentTransactions();
-
-
-    initializeEmptyLinks();
-
-
-    /* =============================================
-       AUTHENTICATED USER
-
-       IMPORTANT:
-       DO NOT await this.
-
-       The backend request runs silently
-       in the background while the dashboard
-       is already usable.
-    ============================================= */
-
-    loadCurrentUser()
-        .then(
-            (user) => {
-
-                if (user) {
-
-                    console.log(
-                        "FINORA DASHBOARD USER DATA READY"
-                    );
-
-                }
-            }
-        )
-        .catch(
-            (error) => {
-
-                console.error(
-                    "❌ FINORA BACKGROUND USER LOAD ERROR:",
-                    error
-                );
-            }
+        console.log(
+            "================================="
         );
 
 
-    console.log(
-        "FINORA DASHBOARD UI READY"
-    );
-}
+        console.log(
+            "FINORA DASHBOARD INITIALIZING"
+        );
+
+
+        console.log(
+            "FINORA API:",
+            FINORA_API
+        );
+
+
+        console.log(
+            "================================="
+        );
+
+
+        /* =============================================
+           UI SYSTEMS START IMMEDIATELY
+        ============================================= */
+
+        initializeBannerCarousel();
+
+
+        initializeNotifications();
+
+
+        initializeCommunity();
+
+
+        initializeNavigation();
+
+
+        initializeRecentTransactions();
+
+
+        initializeEmptyLinks();
+
+
+        /* =============================================
+           AUTHENTICATED USER
+
+           Runs in the background.
+        ============================================= */
+
+        loadCurrentUser()
+            .then(
+                (user) => {
+
+                    if (user) {
+
+                        console.log(
+                            "FINORA DASHBOARD USER DATA READY"
+                        );
+
+                    }
+                }
+            )
+            .catch(
+                (error) => {
+
+                    console.error(
+                        "❌ FINORA BACKGROUND USER LOAD ERROR:",
+                        error
+                    );
+                }
+            );
+
+
+        console.log(
+            "FINORA DASHBOARD UI READY"
+        );
+    }
 
 
     /* =====================================================
@@ -1835,6 +2108,5 @@ function initializeDashboard() {
     ===================================================== */
 
     initializeDashboard();
-    
 
 });
