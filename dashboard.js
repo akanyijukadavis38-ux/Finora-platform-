@@ -27,11 +27,11 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
 
     const FINORA_API =
-        "https://finora-platform-production.up.railway.app";
+    "https://finora-platform.onrender.com";
 
 
     const FRONTEND_URL =
-    "https://finora-platform.netlify.app";
+    "https://finora-platform.pages.dev";
 
 
     const AUTO_SLIDE_DELAY =
