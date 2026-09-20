@@ -67,12 +67,15 @@ const depositSchema = new mongoose.Schema(
 
         /* =================================================
            FINORA MERCHANT CODE USED
+
+           MTN     = 26127911
+           Airtel  = 7157334
         ================================================= */
 
         merchantCode: {
             type: String,
             enum: [
-                "52200475",
+                "26127911",
                 "7157334"
             ],
             required: true
