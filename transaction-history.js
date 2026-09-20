@@ -64,26 +64,28 @@ document.addEventListener("DOMContentLoaded", () => {
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
   }
-
-  function formatDate(dateValue) {
-    if (!dateValue) {
-      return "Date unavailable";
+function formatDate(value) {
+    if (!value) {
+        return "Date unavailable";
     }
 
-    const date = new Date(dateValue);
+    const date = new Date(value);
 
     if (Number.isNaN(date.getTime())) {
-      return "Date unavailable";
+        return "Date unavailable";
     }
 
-    return date.toLocaleString("en-UG", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit"
-    });
-  }
+    return new Intl.DateTimeFormat("en-UG", {
+        timeZone: "Africa/Kampala",
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true
+    }).format(date);
+}
+  
 
   function getTypeName(type) {
     const names = {
