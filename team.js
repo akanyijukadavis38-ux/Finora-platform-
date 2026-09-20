@@ -35,8 +35,8 @@ document.addEventListener(
     () => {
 
         const FINORA_API =
-            "https://finora-platform-production.up.railway.app";
-
+            
+    "https://finora-platform.onrender.com";
         const FRONTEND_URL =
             window.location.origin;
 
