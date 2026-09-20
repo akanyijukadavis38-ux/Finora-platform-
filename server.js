@@ -12,9 +12,16 @@ const investmentRoutes = require("./investmentRoutes");
 const depositRoutes = require("./depositRoutes");
 const transactionRoutes = require("./TransactionRoutes");
 const withdrawalRoutes = require("./WithdrawalRoutes");
+
+const {
+    processDueInvestmentEarnings
+} = require("./investmentEarningProcessor");
+
 const app = express();
 
-const PORT = process.env.PORT || 8080;
+const PORT =
+    process.env.PORT ||
+    8080;
 
 
 /* =========================================================
@@ -203,6 +210,8 @@ app.use(
     "/api/transactions",
     transactionRoutes
 );
+
+
 /* =========================================================
    WITHDRAWAL ROUTES
 ========================================================= */
@@ -211,6 +220,7 @@ app.use(
     "/api/withdrawals",
     withdrawalRoutes
 );
+
 
 /* =========================================================
    CURRENT USER
@@ -516,6 +526,62 @@ app.use(
 
 
 /* =========================================================
+   AUTOMATIC DAILY EARNING ENGINE
+========================================================= */
+
+let earningProcessorRunning =
+    false;
+
+
+async function runDailyEarningProcessor() {
+
+    if (
+        earningProcessorRunning
+    ) {
+
+        return;
+    }
+
+
+    earningProcessorRunning =
+        true;
+
+
+    try {
+
+        const result =
+            await processDueInvestmentEarnings();
+
+
+        if (
+            result &&
+            result.processed > 0
+        ) {
+
+            console.log(
+                "💰 FINORA DAILY EARNINGS:",
+                `checked=${result.checked}`,
+                `processed=${result.processed}`
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "❌ FINORA DAILY EARNING ENGINE ERROR:",
+            error
+        );
+
+    } finally {
+
+        earningProcessorRunning =
+            false;
+    }
+}
+
+
+/* =========================================================
    START SERVER
 ========================================================= */
 
@@ -574,6 +640,47 @@ async function startServer() {
         }
 
 
+        /* =====================================================
+           START DAILY EARNING ENGINE
+        ===================================================== */
+
+        console.log(
+            "💰 FINORA: Starting automatic daily earning engine..."
+        );
+
+
+        /*
+           Run immediately after the database connection is
+           ready. This also catches investments that became
+           due while the server was restarting.
+        */
+
+        await runDailyEarningProcessor();
+
+
+        /*
+           Continue checking once every minute.
+
+           The processor itself decides whether an investment
+           is actually due. It does NOT pay an earning merely
+           because this timer runs.
+        */
+
+        setInterval(
+            runDailyEarningProcessor,
+            60 * 1000
+        );
+
+
+        console.log(
+            "✅ FINORA: Automatic daily earning engine enabled"
+        );
+
+
+        /* =====================================================
+           START HTTP SERVER
+        ===================================================== */
+
         app.listen(
             PORT,
             "0.0.0.0",
@@ -603,6 +710,10 @@ async function startServer() {
 
                 console.log(
                     "🍪 CROSS-SITE SECURE COOKIE ENABLED"
+                );
+
+                console.log(
+                    "💰 DAILY EARNINGS ENGINE ENABLED"
                 );
 
                 console.log(
