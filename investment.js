@@ -18,33 +18,39 @@ const investmentSchema = new mongoose.Schema(
         dailyRate: {
             type: Number,
             required: true,
-            default: 10
+            default: 10,
+            min: 0
         },
 
         dailyEarnings: {
             type: Number,
-            required: true
+            required: true,
+            min: 0
         },
 
         duration: {
             type: Number,
             required: true,
-            default: 20
+            default: 20,
+            min: 1
         },
 
         earned: {
             type: Number,
-            default: 0
+            default: 0,
+            min: 0
         },
 
         daysCompleted: {
             type: Number,
-            default: 0
+            default: 0,
+            min: 0
         },
 
         daysRemaining: {
             type: Number,
-            default: 20
+            default: 20,
+            min: 0
         },
 
         startDate: {
@@ -61,9 +67,7 @@ const investmentSchema = new mongoose.Schema(
             type: String,
             enum: [
                 "active",
-                "completed",
-                "expired",
-                "finished"
+                "completed"
             ],
             default: "active",
             index: true
@@ -75,6 +79,10 @@ const investmentSchema = new mongoose.Schema(
     }
 );
 
+
+/* =========================================================
+   USER INVESTMENT LOOKUP
+========================================================= */
 
 investmentSchema.index({
     user: 1,
