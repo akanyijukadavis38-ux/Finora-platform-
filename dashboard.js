@@ -1349,26 +1349,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         communityLink.addEventListener(
             "click",
-            (event) => {
+            () => {
 
-                const href =
-                    communityLink.getAttribute(
-                        "href"
-                    );
-
-
-                if (
-                    !href ||
-                    href === "#"
-                ) {
-
-                    event.preventDefault();
-
-
-                    showTemporaryMessage(
-                        "FINORA Telegram community will be connected soon."
-                    );
-                }
+                console.log(
+                    "FINORA: Opening WhatsApp community."
+                );
             }
         );
     }
