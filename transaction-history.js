@@ -19,7 +19,13 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentFilter = "all";
 
   function formatUGX(amount) {
-    return `UGX ${Number(amount || 0).toLocaleString("en-US")}`;
+    const value = Number(amount);
+
+    if (!Number.isFinite(value)) {
+      return "UGX 0";
+    }
+
+    return `UGX ${value.toLocaleString("en-US")}`;
   }
 
   function hideLoader() {
@@ -60,7 +66,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function formatDate(dateValue) {
-    if (!dateValue) return "Date unavailable";
+    if (!dateValue) {
+      return "Date unavailable";
+    }
 
     const date = new Date(dateValue);
 
@@ -122,120 +130,348 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function getStatusName(status) {
-    if (!status) return "Pending";
+    const value = String(status || "pending").toLowerCase();
 
-    return String(status)
-      .charAt(0)
-      .toUpperCase() +
-      String(status).slice(1);
+    const names = {
+      pending: "Pending",
+      approved: "Approved",
+      completed: "Completed",
+      rejected: "Rejected",
+      failed: "Failed"
+    };
+
+    return names[value] || "Pending";
   }
 
   function getTransactionType(transaction) {
     return String(transaction?.type || "").toLowerCase();
   }
 
+  function getTransactionDirection(transaction) {
+    const direction = String(
+      transaction?.direction || ""
+    ).toLowerCase();
+
+    if (direction === "debit") {
+      return "debit";
+    }
+
+    return "credit";
+  }
+
   function getWithdrawalDetails(transaction) {
+    const withdrawal =
+      transaction?.withdrawal || {};
+
     return {
       phone:
         transaction?.phoneNumber ||
         transaction?.mobileNumber ||
         transaction?.phone ||
-        transaction?.withdrawal?.phoneNumber ||
+        withdrawal?.phoneNumber ||
         "",
 
       network:
         transaction?.network ||
         transaction?.paymentMethod ||
-        transaction?.withdrawal?.network ||
+        withdrawal?.network ||
         "",
+
+      fee:
+        transaction?.fee ??
+        withdrawal?.fee ??
+        null,
+
+      netAmount:
+        transaction?.netAmount ??
+        withdrawal?.netAmount ??
+        null,
 
       reference:
         transaction?.reference ||
+        withdrawal?.payoutReference ||
         ""
     };
   }
 
-  function renderTransaction(transaction) {
-    const type = getTransactionType(transaction);
-    const typeName = getTypeName(type);
-    const icon = getTypeIcon(type);
+  function getDepositDetails(transaction) {
+    const deposit =
+      transaction?.deposit || {};
 
-    const amount = Number(transaction?.amount || 0);
-    const direction = String(
-      transaction?.direction || "credit"
-    ).toLowerCase();
+    return {
+      network:
+        transaction?.paymentMethod ||
+        transaction?.network ||
+        deposit?.paymentMethod ||
+        "",
 
-    const status = getStatusClass(transaction?.status);
-    const statusName = getStatusName(transaction?.status);
+      reference:
+        transaction?.reference ||
+        deposit?.paymentReference ||
+        ""
+    };
+  }
 
-    const date = formatDate(transaction?.createdAt);
+  function getReferralDetails(transaction) {
+    const referral =
+      transaction?.referralCommission ||
+      transaction?.referral ||
+      {};
 
-    const withdrawalDetails =
-      type === "withdrawal"
-        ? getWithdrawalDetails(transaction)
-        : null;
+    return {
+      level:
+        transaction?.level ??
+        referral?.level ??
+        null,
 
-    let detailsHTML = "";
+      rate:
+        transaction?.rate ??
+        referral?.rate ??
+        null
+    };
+  }
 
-    if (type === "withdrawal") {
-      if (withdrawalDetails.network) {
-        detailsHTML += `
-          <div class="transaction-detail">
-            <span class="transaction-detail-label">Network</span>
-            <span class="transaction-detail-value">
-              ${escapeHTML(withdrawalDetails.network)}
-            </span>
-          </div>
-        `;
-      }
+  function getEarningDetails(transaction) {
+    const earning =
+      transaction?.earning ||
+      {};
 
-      if (withdrawalDetails.phone) {
-        detailsHTML += `
-          <div class="transaction-detail">
-            <span class="transaction-detail-label">Mobile Number</span>
-            <span class="transaction-detail-value">
-              ${escapeHTML(withdrawalDetails.phone)}
-            </span>
-          </div>
-        `;
-      }
+    return {
+      day:
+        transaction?.day ??
+        earning?.day ??
+        null
+    };
+  }
 
-      if (withdrawalDetails.reference) {
-        detailsHTML += `
-          <div class="transaction-detail">
-            <span class="transaction-detail-label">Reference</span>
-            <span class="transaction-detail-value">
-              ${escapeHTML(withdrawalDetails.reference)}
-            </span>
-          </div>
-        `;
-      }
-    } else {
-      if (transaction?.reference) {
-        detailsHTML += `
-          <div class="transaction-detail">
-            <span class="transaction-detail-label">Reference</span>
-            <span class="transaction-detail-value">
-              ${escapeHTML(transaction.reference)}
-            </span>
-          </div>
-        `;
-      }
-
-      if (transaction?.description) {
-        detailsHTML += `
-          <div class="transaction-detail">
-            <span class="transaction-detail-label">Details</span>
-            <span class="transaction-detail-value">
-              ${escapeHTML(transaction.description)}
-            </span>
-          </div>
-        `;
-      }
+  function addDetail(label, value) {
+    if (
+      value === null ||
+      value === undefined ||
+      value === ""
+    ) {
+      return "";
     }
 
     return `
-      <article class="transaction-card ${escapeHTML(type)}">
+      <div class="transaction-detail">
+        <span class="transaction-detail-label">
+          ${escapeHTML(label)}
+        </span>
+
+        <span class="transaction-detail-value">
+          ${escapeHTML(value)}
+        </span>
+      </div>
+    `;
+  }
+
+  function buildDetails(transaction, type) {
+    let html = "";
+
+    if (type === "deposit") {
+      const details =
+        getDepositDetails(transaction);
+
+      if (details.network) {
+        html += addDetail(
+          "Network",
+          details.network
+        );
+      }
+
+      if (details.reference) {
+        html += addDetail(
+          "Payment Reference",
+          details.reference
+        );
+      }
+
+      if (transaction?.description) {
+        html += addDetail(
+          "Details",
+          transaction.description
+        );
+      }
+
+      return html;
+    }
+
+    if (type === "withdrawal") {
+      const details =
+        getWithdrawalDetails(transaction);
+
+      if (details.network) {
+        html += addDetail(
+          "Network",
+          details.network
+        );
+      }
+
+      if (details.phone) {
+        html += addDetail(
+          "Mobile Number",
+          details.phone
+        );
+      }
+
+      if (
+        details.fee !== null &&
+        details.fee !== undefined
+      ) {
+        html += addDetail(
+          "Withdrawal Fee",
+          formatUGX(details.fee)
+        );
+      }
+
+      if (
+        details.netAmount !== null &&
+        details.netAmount !== undefined
+      ) {
+        html += addDetail(
+          "You Receive",
+          formatUGX(details.netAmount)
+        );
+      }
+
+      if (details.reference) {
+        html += addDetail(
+          "Reference",
+          details.reference
+        );
+      }
+
+      if (transaction?.description) {
+        html += addDetail(
+          "Details",
+          transaction.description
+        );
+      }
+
+      return html;
+    }
+
+    if (type === "referral") {
+      const details =
+        getReferralDetails(transaction);
+
+      if (details.level !== null) {
+        html += addDetail(
+          "Referral Level",
+          `Level ${details.level}`
+        );
+      }
+
+      if (
+        details.rate !== null &&
+        details.rate !== undefined
+      ) {
+        html += addDetail(
+          "Commission Rate",
+          `${details.rate}%`
+        );
+      }
+
+      if (transaction?.description) {
+        html += addDetail(
+          "Details",
+          transaction.description
+        );
+      }
+
+      if (transaction?.reference) {
+        html += addDetail(
+          "Reference",
+          transaction.reference
+        );
+      }
+
+      return html;
+    }
+
+    if (type === "earning") {
+      const details =
+        getEarningDetails(transaction);
+
+      if (details.day !== null) {
+        html += addDetail(
+          "Earning Day",
+          `Day ${details.day}`
+        );
+      }
+
+      if (transaction?.description) {
+        html += addDetail(
+          "Details",
+          transaction.description
+        );
+      }
+
+      if (transaction?.reference) {
+        html += addDetail(
+          "Reference",
+          transaction.reference
+        );
+      }
+
+      return html;
+    }
+
+    if (transaction?.reference) {
+      html += addDetail(
+        "Reference",
+        transaction.reference
+      );
+    }
+
+    if (transaction?.description) {
+      html += addDetail(
+        "Details",
+        transaction.description
+      );
+    }
+
+    return html;
+  }
+
+  function renderTransaction(transaction) {
+    const type =
+      getTransactionType(transaction);
+
+    const typeName =
+      getTypeName(type);
+
+    const icon =
+      getTypeIcon(type);
+
+    const amount =
+      Number(transaction?.amount || 0);
+
+    const direction =
+      getTransactionDirection(transaction);
+
+    const status =
+      getStatusClass(transaction?.status);
+
+    const statusName =
+      getStatusName(transaction?.status);
+
+    const date =
+      formatDate(transaction?.createdAt);
+
+    const detailsHTML =
+      buildDetails(
+        transaction,
+        type
+      );
+
+    return `
+      <article
+        class="transaction-card ${escapeHTML(type)}"
+        data-status="${escapeHTML(status)}"
+        data-type="${escapeHTML(type)}"
+      >
 
         <div class="transaction-top">
 
@@ -259,11 +495,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
           <div>
             <div class="transaction-amount">
-              ${escapeHTML(formatUGX(amount))}
+              ${escapeHTML(
+                formatUGX(amount)
+              )}
             </div>
 
-            <div class="transaction-direction ${escapeHTML(direction)}">
-              ${direction === "debit" ? "Debit" : "Credit"}
+            <div
+              class="transaction-direction ${escapeHTML(direction)}"
+            >
+              ${
+                direction === "debit"
+                  ? "Debit"
+                  : "Credit"
+              }
             </div>
           </div>
 
@@ -272,11 +516,17 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="transaction-bottom">
 
           <div class="transaction-detail">
-            <span class="transaction-detail-label">Status</span>
 
-            <span class="transaction-status ${escapeHTML(status)}">
+            <span class="transaction-detail-label">
+              Status
+            </span>
+
+            <span
+              class="transaction-status ${escapeHTML(status)}"
+            >
               ${escapeHTML(statusName)}
             </span>
+
           </div>
 
           ${detailsHTML}
@@ -292,9 +542,14 @@ document.addEventListener("DOMContentLoaded", () => {
       return allTransactions;
     }
 
-    return allTransactions.filter((transaction) => {
-      return getTransactionType(transaction) === currentFilter;
-    });
+    return allTransactions.filter(
+      (transaction) => {
+        return (
+          getTransactionType(transaction) ===
+          currentFilter
+        );
+      }
+    );
   }
 
   function updateTitle() {
@@ -307,52 +562,85 @@ document.addEventListener("DOMContentLoaded", () => {
       referral: "Referral Records"
     };
 
+    if (!recordsTitle) return;
+
     recordsTitle.textContent =
-      titles[currentFilter] || "Overall Records";
+      titles[currentFilter] ||
+      "Overall Records";
   }
 
   function renderRecords() {
-    const transactions = getFilteredTransactions();
+    const transactions =
+      getFilteredTransactions();
 
     updateTitle();
 
-    totalRecords.textContent = allTransactions.length;
-    visibleCount.textContent = transactions.length;
+    if (totalRecords) {
+      totalRecords.textContent =
+        allTransactions.length;
+    }
 
-    recordsList.innerHTML = "";
+    if (visibleCount) {
+      visibleCount.textContent =
+        transactions.length;
+    }
 
-    emptyState.hidden = transactions.length !== 0;
-    errorState.hidden = true;
+    if (recordsList) {
+      recordsList.innerHTML = "";
+    }
+
+    if (errorState) {
+      errorState.hidden = true;
+    }
+
+    if (emptyState) {
+      emptyState.hidden =
+        transactions.length !== 0;
+    }
 
     if (!transactions.length) {
       return;
     }
 
-    const fragment = document.createDocumentFragment();
+    const fragment =
+      document.createDocumentFragment();
 
-    transactions.forEach((transaction) => {
-      const wrapper = document.createElement("div");
+    transactions.forEach(
+      (transaction) => {
+        const wrapper =
+          document.createElement("div");
 
-      wrapper.innerHTML = renderTransaction(transaction);
+        wrapper.innerHTML =
+          renderTransaction(transaction);
 
-      const card = wrapper.firstElementChild;
+        const card =
+          wrapper.firstElementChild;
 
-      if (card) {
-        fragment.appendChild(card);
+        if (card) {
+          fragment.appendChild(card);
+        }
       }
-    });
+    );
 
-    recordsList.appendChild(fragment);
+    recordsList.appendChild(
+      fragment
+    );
   }
 
   function setActiveFilter(filter) {
-    currentFilter = filter;
+    currentFilter =
+      filter || "all";
 
     filterTabs.forEach((tab) => {
       const active =
-        tab.dataset.filter === filter;
+        tab.dataset.filter ===
+        currentFilter;
 
-      tab.classList.toggle("active", active);
+      tab.classList.toggle(
+        "active",
+        active
+      );
+
       tab.setAttribute(
         "aria-selected",
         active ? "true" : "false"
@@ -360,45 +648,66 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     clearMessage();
+
     renderRecords();
   }
 
   async function loadTransactions() {
     clearMessage();
 
-    recordsList.innerHTML = "";
-    emptyState.hidden = true;
-    errorState.hidden = true;
+    if (recordsList) {
+      recordsList.innerHTML = "";
+    }
+
+    if (emptyState) {
+      emptyState.hidden = true;
+    }
+
+    if (errorState) {
+      errorState.hidden = true;
+    }
 
     try {
-      const response = await fetch(
-        `${API_BASE}/api/transactions?limit=100`,
-        {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            Accept: "application/json"
+      const response =
+        await fetch(
+          `${API_BASE}/api/transactions?limit=100`,
+          {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              Accept:
+                "application/json"
+            }
           }
-        }
-      );
+        );
 
       if (response.status === 401) {
-        window.location.href = "login.html";
+        window.location.href =
+          "login.html";
         return;
       }
 
-      const data = await response.json().catch(() => ({}));
+      const data =
+        await response
+          .json()
+          .catch(() => ({}));
 
-      if (!response.ok || data.success !== true) {
+      if (
+        !response.ok ||
+        data.success !== true
+      ) {
         throw new Error(
           data.message ||
           "FINORA could not load your transaction records."
         );
       }
 
-      allTransactions = Array.isArray(data.transactions)
-        ? data.transactions
-        : [];
+      allTransactions =
+        Array.isArray(
+          data.transactions
+        )
+          ? data.transactions
+          : [];
 
       renderRecords();
 
@@ -410,9 +719,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
       allTransactions = [];
 
-      recordsList.innerHTML = "";
-      emptyState.hidden = true;
-      errorState.hidden = false;
+      if (recordsList) {
+        recordsList.innerHTML = "";
+      }
+
+      if (emptyState) {
+        emptyState.hidden = true;
+      }
+
+      if (errorState) {
+        errorState.hidden = false;
+      }
 
       showMessage(
         error.message ||
@@ -426,14 +743,24 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   filterTabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      setActiveFilter(tab.dataset.filter);
-    });
+    tab.addEventListener(
+      "click",
+      () => {
+        setActiveFilter(
+          tab.dataset.filter
+        );
+      }
+    );
   });
 
-  retryButton?.addEventListener("click", () => {
-    loadTransactions();
-  });
+  retryButton?.addEventListener(
+    "click",
+    () => {
+      loadTransactions();
+    }
+  );
+
+  setActiveFilter("all");
 
   loadTransactions();
 });
