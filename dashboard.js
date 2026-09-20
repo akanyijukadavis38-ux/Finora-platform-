@@ -74,6 +74,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    /* =====================================================
+       UGANDA / EAST AFRICA TIME
+
+       FINORA displays transaction times using
+       Africa/Kampala (EAT / UTC+3).
+
+       The database timestamp itself is NOT changed.
+    ===================================================== */
+
     function formatDate(value) {
 
         if (!value) {
@@ -90,14 +99,31 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        return date.toLocaleDateString(
+        return new Intl.DateTimeFormat(
             "en-UG",
             {
-                day: "2-digit",
-                month: "short",
-                year: "numeric"
+                timeZone:
+                    "Africa/Kampala",
+
+                day:
+                    "2-digit",
+
+                month:
+                    "short",
+
+                year:
+                    "numeric",
+
+                hour:
+                    "2-digit",
+
+                minute:
+                    "2-digit",
+
+                hour12:
+                    true
             }
-        );
+        ).format(date);
     }
 
 
@@ -269,10 +295,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-            /* =============================================
-               SESSION NOT FOUND
-            ============================================= */
-
             if (
                 response.status === 401
             ) {
@@ -288,10 +310,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 return null;
             }
 
-
-            /* =============================================
-               FROZEN ACCOUNT
-            ============================================= */
 
             if (
                 response.status === 403
@@ -333,10 +351,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            /* =============================================
-               OTHER SERVER ERRORS
-            ============================================= */
-
             if (!response.ok) {
 
                 console.error(
@@ -353,10 +367,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 return null;
             }
 
-
-            /* =============================================
-               READ RESPONSE
-            ============================================= */
 
             const data =
                 await response.json();
@@ -410,12 +420,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            /* =============================================
-               SAVE CURRENT USER IN MEMORY ONLY
-
-               NO localStorage.
-            ============================================= */
-
             currentUser =
                 user;
 
@@ -425,10 +429,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 currentUser
             );
 
-
-            /* =============================================
-               UPDATE DASHBOARD
-            ============================================= */
 
             updateDashboardUser(
                 currentUser
@@ -504,7 +504,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         if (!user) {
-
             return;
         }
 
@@ -541,10 +540,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /* =============================================
-           WALLET
-        ============================================= */
-
         const walletBalance =
             safeNumber(
                 user.walletBalance ??
@@ -553,10 +548,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-        /* =============================================
-           TOTAL EARNINGS
-        ============================================= */
-
         const totalEarnings =
             safeNumber(
                 user.totalEarnings ??
@@ -564,10 +555,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 user.totalIncome
             );
 
-
-        /* =============================================
-           TODAY'S EARNINGS
-        ============================================= */
 
         const todayEarnings =
             safeNumber(
@@ -578,10 +565,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-        /* =============================================
-           TOTAL INVESTED
-        ============================================= */
-
         const totalInvested =
             safeNumber(
                 user.totalInvested ??
@@ -590,10 +573,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 user.total_deposit
             );
 
-
-        /* =============================================
-           REFERRAL INCOME
-        ============================================= */
 
         const referralIncome =
             safeNumber(
@@ -604,10 +583,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-        /* =============================================
-           ACTIVE INVESTMENTS
-        ============================================= */
-
         const activeInvestments =
             safeNumber(
                 user.activeInvestments ??
@@ -616,10 +591,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 user.investment_count
             );
 
-
-        /* =============================================
-           HTML ELEMENTS
-        ============================================= */
 
         const walletElement =
             getElement(
@@ -668,10 +639,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 "overviewTotalEarnings"
             );
 
-
-        /* =============================================
-           DISPLAY
-        ============================================= */
 
         if (walletElement) {
 
@@ -871,10 +838,6 @@ document.addEventListener("DOMContentLoaded", () => {
             false;
 
 
-        /* =============================================
-           SHOW SLIDE
-        ============================================= */
-
         function showSlide(
             index,
             animate = true
@@ -938,10 +901,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /* =============================================
-           NEXT
-        ============================================= */
-
         function nextSlide() {
 
             showSlide(
@@ -949,10 +908,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
         }
 
-
-        /* =============================================
-           STOP AUTO SLIDE
-        ============================================= */
 
         function stopAutoSlide() {
 
@@ -969,10 +924,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /* =============================================
-           START AUTO SLIDE
-        ============================================= */
-
         function startAutoSlide() {
 
             stopAutoSlide();
@@ -985,10 +936,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
         }
 
-
-        /* =============================================
-           TEMPORARY PAUSE
-        ============================================= */
 
         function temporarilyPauseAutoSlide() {
 
@@ -1019,10 +966,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
         }
 
-
-        /* =============================================
-           DOT NAVIGATION
-        ============================================= */
 
         dots.forEach(
             (dot) => {
@@ -1055,10 +998,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         );
 
-
-        /* =============================================
-           TOUCH SWIPE
-        ============================================= */
 
         let touchStartX =
             0;
@@ -1200,10 +1139,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-        /* =============================================
-           DESKTOP DRAG
-        ============================================= */
-
         let mouseDown =
             false;
 
@@ -1311,10 +1246,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-        /* =============================================
-           MOUSE HOVER
-        ============================================= */
-
         bannerTrack.addEventListener(
             "mouseenter",
             () => {
@@ -1338,10 +1269,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-        /* =============================================
-           KEYBOARD FOCUS
-        ============================================= */
-
         bannerTrack.addEventListener(
             "focusin",
             () => {
@@ -1350,10 +1277,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         );
 
-
-        /* =============================================
-           INITIAL SLIDE
-        ============================================= */
 
         showSlide(
             0,
@@ -1481,20 +1404,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /* =============================================
-           DETERMINE CURRENT PAGE
-        ============================================= */
-
         const currentPath =
             window.location.pathname
                 .split("/")
                 .pop()
                 .toLowerCase();
 
-
-        /* =============================================
-           PAGE → NAVIGATION MAP
-        ============================================= */
 
         const pageMap = {
 
@@ -1512,10 +1427,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         };
 
-
-        /* =============================================
-           SET ACTIVE NAVIGATION
-        ============================================= */
 
         function setActiveNavigation(navName) {
 
@@ -1568,10 +1479,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
         }
 
-
-        /* =============================================
-           NAVIGATION CLICK
-        ============================================= */
 
         navigationItems.forEach(
             (item) => {
@@ -1670,10 +1577,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-            /* =============================================
-               SESSION EXPIRED
-            ============================================= */
-
             if (
                 response.status === 401
             ) {
@@ -1686,10 +1589,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-
-            /* =============================================
-               FROZEN ACCOUNT
-            ============================================= */
 
             if (
                 response.status === 403
@@ -1704,10 +1603,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            /* =============================================
-               SERVER ERROR
-            ============================================= */
-
             if (!response.ok) {
 
                 console.error(
@@ -1719,10 +1614,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-
-            /* =============================================
-               READ RESPONSE
-            ============================================= */
 
             const data =
                 await response.json();
@@ -1750,12 +1641,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     : [];
 
 
-            /* =============================================
-               NO TRANSACTIONS
-
-               Keep the existing HTML empty state.
-            ============================================= */
-
             if (!transactions.length) {
 
                 console.log(
@@ -1766,10 +1651,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-
-            /* =============================================
-               DISPLAY LATEST TRANSACTIONS
-            ============================================= */
 
             container.innerHTML =
                 transactions
@@ -1797,24 +1678,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 "❌ FINORA TRANSACTION REQUEST ERROR:",
                 error
             );
-
-
-            /*
-               Keep the existing dashboard UI intact.
-               We do not replace it with a fake transaction
-               or a fake error card.
-            */
         }
     }
 
 
     /* =====================================================
        BUILD RECENT TRANSACTION
-
-       Compact dashboard version.
-
-       Full details remain available on:
-       transaction-history.html
     ===================================================== */
 
     function buildRecentTransaction(transaction) {
@@ -1985,8 +1854,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        PREVENT ACCIDENTAL HASH NAVIGATION
-
-       Only affects links whose href is exactly "#".
     ===================================================== */
 
     function initializeEmptyLinks() {
@@ -2012,14 +1879,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        DASHBOARD INITIALIZATION
-
-       The dashboard UI initializes immediately.
-
-       User data and transaction data load in the
-       background.
-
-       No fake data.
-       No localStorage.
     ===================================================== */
 
     function initializeDashboard() {
@@ -2045,10 +1904,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-        /* =============================================
-           UI SYSTEMS START IMMEDIATELY
-        ============================================= */
-
         initializeBannerCarousel();
 
 
@@ -2066,12 +1921,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         initializeEmptyLinks();
 
-
-        /* =============================================
-           AUTHENTICATED USER
-
-           Runs in the background.
-        ============================================= */
 
         loadCurrentUser()
             .then(
