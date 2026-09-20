@@ -16,7 +16,7 @@ const API_URL =
 
         MTN: {
             network: "MTN MOBILE MONEY",
-            merchantCode: "52200475",
+            merchantCode: "26127911",
             ussd: "*165*3#"
         },
 
