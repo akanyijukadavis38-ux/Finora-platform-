@@ -11,7 +11,7 @@ const userRoutes = require("./userRoutes");
 const investmentRoutes = require("./investmentRoutes");
 const depositRoutes = require("./depositRoutes");
 const transactionRoutes = require("./TransactionRoutes");
-
+const withdrawalRoutes = require("./WithdrawalRoutes");
 const app = express();
 
 const PORT = process.env.PORT || 8080;
@@ -203,7 +203,14 @@ app.use(
     "/api/transactions",
     transactionRoutes
 );
+/* =========================================================
+   WITHDRAWAL ROUTES
+========================================================= */
 
+app.use(
+    "/api/withdrawals",
+    withdrawalRoutes
+);
 
 /* =========================================================
    CURRENT USER
