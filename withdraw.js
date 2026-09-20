@@ -32,6 +32,13 @@ document.addEventListener("DOMContentLoaded", () => {
     message.textContent = text;
     message.className = `message ${type}`;
     message.style.display = "block";
+    message.hidden = false;
+
+    // Make sure the message is actually visible on screen.
+    message.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
   }
 
   function clearMessage() {
@@ -40,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
     message.textContent = "";
     message.className = "message";
     message.style.display = "none";
+    message.hidden = true;
   }
 
   function hideLoader() {
@@ -126,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       if (!response.ok) {
-        throw new Error("Unable to load account details.");
+        throw new Error("Unable to load your account details.");
       }
 
       const data = await response.json();
@@ -153,10 +161,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       return true;
     } catch (error) {
-      console.error("FINORA withdrawal account error:", error);
+      console.error("FINORA account error:", error);
 
       showMessage(
-        "We could not load your wallet details. Please try again.",
+        error.message || "We could not load your wallet details.",
         "error"
       );
 
@@ -165,10 +173,23 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function validateAmount() {
-    const amount = Number(amountInput?.value || 0);
+    const rawValue = amountInput?.value?.trim() || "";
+
+    if (!rawValue) {
+      showMessage(
+        "Please enter the amount you want to withdraw.",
+        "error"
+      );
+      return null;
+    }
+
+    const amount = Number(rawValue);
 
     if (!Number.isFinite(amount) || amount <= 0) {
-      showMessage("Please enter a withdrawal amount.", "error");
+      showMessage(
+        "Please enter a valid withdrawal amount.",
+        "error"
+      );
       return null;
     }
 
@@ -190,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (amount > currentBalance) {
       showMessage(
-        "Your withdrawal amount is greater than your available wallet balance.",
+        `Insufficient funds. Your available balance is ${formatUGX(currentBalance)}.`,
         "error"
       );
       return null;
@@ -212,14 +233,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const amount = validateAmount();
 
-    if (amount === null) return;
+    if (amount === null) {
+      return;
+    }
 
-    if (submitWithdraw.disabled) return;
+    if (submitWithdraw.disabled) {
+      return;
+    }
 
     const originalText = submitWithdraw.textContent;
 
     submitWithdraw.disabled = true;
     submitWithdraw.textContent = "Processing...";
+
+    // Always give the user immediate feedback.
+    showMessage(
+      "Submitting your withdrawal request...",
+      "info"
+    );
 
     try {
       const response = await fetch(`${API_BASE}/api/withdrawals`, {
@@ -230,26 +261,33 @@ document.addEventListener("DOMContentLoaded", () => {
           Accept: "application/json"
         },
         body: JSON.stringify({
-          amount
+          amount: amount
         })
       });
 
       const data = await response.json().catch(() => ({}));
+
+      console.log("Withdrawal response:", response.status, data);
 
       if (response.status === 401) {
         window.location.href = "login.html";
         return;
       }
 
-      if (!response.ok || !data.success) {
-        throw new Error(
+      if (!response.ok || data.success !== true) {
+        showMessage(
           data.message ||
-          "Your withdrawal request could not be submitted."
+          "Your withdrawal request could not be submitted.",
+          "error"
         );
+        return;
       }
 
       if (data.walletBalance !== undefined) {
         currentBalance = Number(data.walletBalance);
+        walletBalance.textContent = formatUGX(currentBalance);
+      } else {
+        currentBalance -= amount;
         walletBalance.textContent = formatUGX(currentBalance);
       }
 
@@ -257,17 +295,18 @@ document.addEventListener("DOMContentLoaded", () => {
       updateSummary();
 
       showMessage(
-        "Your withdrawal request has been submitted successfully and is pending processing.",
+        "Withdrawal submitted successfully. Your request is pending processing.",
         "success"
       );
+
     } catch (error) {
       console.error("FINORA withdrawal error:", error);
 
       showMessage(
-        error.message ||
-        "Something went wrong while submitting your withdrawal request.",
+        "Unable to connect to the withdrawal service. Please try again.",
         "error"
       );
+
     } finally {
       submitWithdraw.disabled = false;
       submitWithdraw.textContent = originalText;
