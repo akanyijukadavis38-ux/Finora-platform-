@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="theme-color"
+        content="#08050D">
+
+    <meta
+        name="description"
+        content="FINORA — Invest and grow your portfolio">
+
+    <title>FINORA | Invest</title>
+
+    <link
+        rel="stylesheet"
+        href="invest.css">
+</head>
+
+<body>
+
+    <div class="invest-page">
+
+        <!-- =========================================
+             HEADER
+             ========================================= -->
+
+        <header class="invest-header">
+
+            <div class="invest-container invest-top-header">
+
+                <button
+                    type="button"
+                    class="page-back-button"
+                    id="backButton"
+                    aria-label="Go back">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+
+                        <path d="M19 12H5"></path>
+                        <path d="M12 19l-7-7 7-7"></path>
+
+                    </svg>
+
+                </button>
+
+
+                <a
+                    href="dashboard.html"
+                    class="finora-brand"
+                    aria-label="FINORA Home">
+
+                    <div class="finora-name">
+                        <span class="fin-fin">FIN</span><span class="fin-ora">ORA</span>
+                    </div>
+
+                    <div class="finora-tagline">
+                        INVEST • GROW • EARN
+                    </div>
+
+                </a>
+
+
+                <div
+                    class="header-security"
+                    aria-label="Secure">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+
+                        <rect
+                            x="5"
+                            y="10"
+                            width="14"
+                            height="10"
+                            rx="2">
+                        </rect>
+
+                        <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+                        <path d="M12 14v3"></path>
+
+                    </svg>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =========================================
+             MAIN
+             ========================================= -->
+
+        <main class="invest-container invest-main">
+
+            <!-- PAGE INTRO -->
+
+            <section class="invest-intro">
+
+                <div class="invest-kicker">
+                    FINORA INVEST
+                </div>
+
+                <h1>
+                    Grow Your
+                    <span>Portfolio</span>
+                </h1>
+
+                <p>
+                    Put your available wallet balance to work
+                    and build your investment portfolio.
+                </p>
+
+            </section>
+
+
+            <!-- =====================================
+                 USER AND WALLET OVERVIEW
+                 ===================================== -->
+
+            <section class="invest-overview-card">
+
+                <div class="overview-top">
+
+                    <div class="overview-user">
+
+                        <div class="overview-avatar">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true">
+
+                                <circle
+                                    cx="12"
+                                    cy="8"
+                                    r="4">
+                                </circle>
+
+                                <path d="M4 21a8 8 0 0 1 16 0"></path>
+
+                            </svg>
+
+                        </div>
+
+
+                        <div class="overview-user-details">
+
+                            <span class="overview-label">
+                                INVESTING AS
+                            </span>
+
+                            <strong id="investorName">
+                                Loading...
+                            </strong>
+
+                            <span
+                                id="investorPhone"
+                                class="overview-phone">
+                                Loading...
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="overview-secure">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.6"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true">
+
+                            <path d="M12 3l7 4v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V7l7-4z"></path>
+
+                            <path d="m9 12 2 2 4-4"></path>
+
+                        </svg>
+
+                        <span>
+                            Secure
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="wallet-balance-area">
+
+                    <span class="wallet-label">
+                        AVAILABLE WALLET BALANCE
+                    </span>
+
+                    <strong id="walletBalance">
+                        UGX 0
+                    </strong>
+
+                    <span class="wallet-note">
+                        Available for investment
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================
+                 INVESTMENT PANEL
+                 ===================================== -->
+
+            <section class="investment-panel">
+
+                <div class="panel-heading">
+
+                    <div>
+
+                        <div class="panel-kicker">
+                            START INVESTING
+                        </div>
+
+                        <h2>
+                            Choose Your Amount
+                        </h2>
+
+                    </div>
+
+
+                    <div class="rate-badge">
+
+                        <strong>
+                            10%
+                        </strong>
+
+                        <span>
+                            DAILY
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- AMOUNT -->
+
+                <div class="amount-field">
+
+                    <label for="investmentAmount">
+                        INVESTMENT AMOUNT
+                    </label>
+
+
+                    <div class="amount-input-wrapper">
+
+                        <span class="currency-prefix">
+                            UGX
+                        </span>
+
+                        <input
+                            type="number"
+                            id="investmentAmount"
+                            name="investmentAmount"
+                            inputmode="numeric"
+                            min="10000"
+                            step="1"
+                            placeholder="10,000"
+                            autocomplete="off"
+                            aria-describedby="amountHelp">
+
+                    </div>
+
+
+                    <div
+                        class="amount-help"
+                        id="amountHelp">
+
+                        Minimum investment:
+                        <strong>UGX 10,000</strong>
+
+                    </div>
+
+
+                    <div
+                        class="amount-error"
+                        id="amountError"
+                        role="alert"
+                        aria-live="polite">
+                    </div>
+
+                </div>
+
+
+                <!-- =================================
+                     RETURN PREVIEW
+                     ================================= -->
+
+                <div class="return-preview">
+
+                    <div class="preview-heading">
+
+                        <span>
+                            YOUR INVESTMENT PROJECTION
+                        </span>
+
+                        <small>
+                            20 DAYS
+                        </small>
+
+                    </div>
+
+
+                    <div class="preview-grid">
+
+                        <div class="preview-item">
+
+                            <span>
+                                Daily Earnings
+                            </span>
+
+                            <strong id="dailyEarnings">
+                                UGX 0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="preview-item">
+
+                            <span>
+                                Total Earnings
+                            </span>
+
+                            <strong
+                                id="totalEarnings"
+                                class="gold-text">
+                                UGX 0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="preview-item preview-total">
+
+                            <span>
+                                Total After 20 Days
+                            </span>
+
+                            <strong id="totalAfterInvestment">
+                                UGX 0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================
+                     WALLET AFTER INVESTMENT
+                     ================================= -->
+
+                <div class="wallet-after-card">
+
+                    <div class="wallet-after-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.6"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true">
+
+                            <rect
+                                x="3"
+                                y="6"
+                                width="18"
+                                height="14"
+                                rx="2">
+                            </rect>
+
+                            <path d="M16 10h5v6h-5a3 3 0 0 1 0-6z"></path>
+
+                            <circle
+                                cx="17"
+                                cy="13"
+                                r=".8"
+                                fill="currentColor"
+                                stroke="none">
+                            </circle>
+
+                            <path d="M7 6V4h10v2"></path>
+
+                        </svg>
+
+                    </div>
+
+
+                    <div class="wallet-after-content">
+
+                        <span>
+                            WALLET AFTER INVESTMENT
+                        </span>
+
+                        <strong id="walletAfterInvestment">
+                            UGX 0
+                        </strong>
+
+                    </div>
+
+
+                    <div
+                        class="wallet-after-status"
+                        id="walletAfterStatus">
+                        Ready
+                    </div>
+
+                </div>
+
+
+                <!-- =================================
+                     INVEST BUTTON
+                     ================================= -->
+
+                <button
+                    type="button"
+                    class="invest-now-button"
+                    id="investNowButton">
+
+                    <span class="button-content">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true">
+
+                            <path d="M12 3v18"></path>
+                            <path d="m7 8 5-5 5 5"></path>
+                            <path d="M5 21h14"></path>
+
+                        </svg>
+
+                        <span>
+                            INVEST NOW
+                        </span>
+
+                    </span>
+
+
+                    <span
+                        class="button-loader"
+                        id="buttonLoader"
+                        aria-hidden="true">
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="investment-message"
+                    id="investmentMessage"
+                    role="status"
+                    aria-live="polite">
+                </div>
+
+
+                <!-- SECURITY NOTE -->
+
+                <div class="secure-note">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+
+                        <path d="M12 3l7 4v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V7l7-4z"></path>
+
+                        <path d="m9 12 2 2 4-4"></path>
+
+                    </svg>
+
+                    <p>
+                        Your investment is created securely
+                        using your available FINORA wallet balance.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================
+                 HOW INVESTING WORKS
+                 ===================================== -->
+
+            <section class="how-invest-works">
+
+                <div class="section-kicker">
+                    SIMPLE &amp; CLEAR
+                </div>
+
+                <h2>
+                    How Investing Works
+                </h2>
+
+
+                <div class="steps-list">
+
+                    <div class="invest-step">
+
+                        <div class="step-number">
+                            01
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Choose Your Amount
+                            </h3>
+
+                            <p>
+                                Enter any amount of UGX 10,000
+                                or more from your available
+                                wallet balance.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="invest-step">
+
+                        <div class="step-number">
+                            02
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Start Your Investment
+                            </h3>
+
+                            <p>
+                                FINORA securely deducts the
+                                investment amount from your
+                                wallet and creates your active
+                                investment.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="invest-step">
+
+                        <div class="step-number">
+                            03
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Track Your Progress
+                            </h3>
+
+                            <p>
+                                Your investment will appear
+                                automatically in Mine, while
+                                the investment transaction is
+                                recorded in your transaction history.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================
+                 QUICK LINKS
+                 ===================================== -->
+
+            <section class="invest-quick-links">
+
+                <a
+                    href="mine.html"
+                    class="quick-link-card">
+
+                    <div class="quick-link-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true">
+
+                            <rect
+                                x="3"
+                                y="5"
+                                width="18"
+                                height="14"
+                                rx="2">
+                            </rect>
+
+                            <path d="M3 10h18"></path>
+                            <path d="M7 15h3"></path>
+
+                        </svg>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            My Investments
+                        </strong>
+
+                        <span>
+                            View your active portfolio
+                        </span>
+
+                    </div>
+
+
+                    <svg
+                        class="quick-link-arrow"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+
+                        <path d="M5 12h14"></path>
+                        <path d="m13 6 6 6-6 6"></path>
+
+                    </svg>
+
+                </a>
+
+
+                <a
+                    href="transaction-history.html"
+                    class="quick-link-card">
+
+                    <div class="quick-link-icon gold-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true">
+
+                            <path d="M4 6h16"></path>
+                            <path d="M4 12h16"></path>
+                            <path d="M4 18h16"></path>
+
+                            <circle
+                                cx="8"
+                                cy="6"
+                                r="1">
+                            </circle>
+
+                            <circle
+                                cx="15"
+                                cy="12"
+                                r="1">
+                            </circle>
+
+                            <circle
+                                cx="11"
+                                cy="18"
+                                r="1">
+                            </circle>
+
+                        </svg>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Transaction History
+                        </strong>
+
+                        <span>
+                            View your financial records
+                        </span>
+
+                    </div>
+
+
+                    <svg
+                        class="quick-link-arrow"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+
+                        <path d="M5 12h14"></path>
+                        <path d="m13 6 6 6-6 6"></path>
+
+                    </svg>
+
+                </a>
+
+            </section>
+
+        </main>
+
+
+        <!-- =========================================
+             BOTTOM NAVIGATION
+             ========================================= -->
+
+        <nav
+            class="bottom-navigation"
+            aria-label="Main navigation">
+
+            <a
+                href="dashboard.html"
+                class="bottom-nav-item"
+                data-page="home">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true">
+
+                    <path d="M3 10.5 12 3l9 7.5"></path>
+                    <path d="M5 9.5V21h14V9.5"></path>
+                    <path d="M9 21v-6h6v6"></path>
+
+                </svg>
+
+                <span>
+                    Home
+                </span>
+
+            </a>
+
+
+            <a
+                href="team.html"
+                class="bottom-nav-item"
+                data-page="team">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true">
+
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+
+                    <circle
+                        cx="9"
+                        cy="7"
+                        r="4">
+                    </circle>
+
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+
+                </svg>
+
+                <span>
+                    Team
+                </span>
+
+            </a>
+
+
+            <a
+                href="rates.html"
+                class="bottom-nav-item"
+                data-page="rates">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true">
+
+                    <path d="M4 19V5"></path>
+                    <path d="M4 19h16"></path>
+                    <path d="m7 15 4-4 3 2 6-7"></path>
+
+                </svg>
+
+                <span>
+                    Rates
+                </span>
+
+            </a>
+
+
+            <a
+                href="mine.html"
+                class="bottom-nav-item"
+                data-page="mine">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true">
+
+                    <rect
+                        x="3"
+                        y="5"
+                        width="18"
+                        height="14"
+                        rx="2">
+                    </rect>
+
+                    <path d="M3 10h18"></path>
+                    <path d="M7 15h3"></path>
+
+                </svg>
+
+                <span>
+                    Mine
+                </span>
+
+            </a>
+
+
+            <a
+                href="profile.html"
+                class="bottom-nav-item"
+                data-page="profile">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true">
+
+                    <circle
+                        cx="12"
+                        cy="8"
+                        r="4">
+                    </circle>
+
+                    <path d="M4 21a8 8 0 0 1 16 0"></path>
+
+                </svg>
+
+                <span>
+                    Profile
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <!-- =========================================
+             FOOTER
+             ========================================= -->
+
+        <footer class="site-footer">
+
+            <div class="invest-container">
+
+                <div class="footer-brand">
+                    <span class="fin">FIN</span><span class="ora">ORA</span>
+                </div>
+
+                <div class="footer-tagline">
+                    INVEST • GROW • EARN
+                </div>
+
+                <p class="footer-text">
+                    FINORA provides a simple and transparent
+                    investment experience designed around
+                    clear earning structures.
+                </p>
+
+                <div class="footer-copy">
+                    © 2026 FINORA. All rights reserved.
+                </div>
+
+            </div>
+
+        </footer>
+
+    </div>
+
+
+    <!-- =========================================
+         JAVASCRIPT
+         ========================================= -->
+
+    <script src="invest.js"></script>
+
+</body>
+
+</html>
