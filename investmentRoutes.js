@@ -25,9 +25,10 @@ const INVESTMENT_DURATION = 20;
    1. Must be authenticated
    2. Enters any amount >= UGX 10,000
    3. Amount must be available in wallet
-   4. Amount is deducted from wallet
-   5. Invest record is created as ACTIVE
-   6. Transaction record is created for RECORDS
+   4. Wallet deduction + investment + transaction
+      are completed atomically
+   5. Investment is created as ACTIVE
+   6. Investment transaction is created as COMPLETED
 
    IMPORTANT:
    Invest money comes only from the user's
@@ -108,7 +109,7 @@ router.post(
 
 
             /* -----------------------------------------
-               READ INVEST AMOUNT
+               READ INVESTMENT AMOUNT
             ----------------------------------------- */
 
             const amount =
@@ -143,6 +144,24 @@ router.post(
 
                     message:
                         "Minimum investment is UGX 10,000."
+                });
+            }
+
+
+            /* -----------------------------------------
+               ONLY ALLOW UP TO 2 DECIMAL PLACES
+            ----------------------------------------- */
+
+            if (
+                Math.round(amount * 100) / 100 !== amount
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Investment amount can have a maximum of 2 decimal places."
                 });
             }
 
@@ -190,92 +209,158 @@ router.post(
             );
 
 
+            /* =================================================
+               ATOMIC DATABASE TRANSACTION
+
+               Wallet deduction,
+               investment creation,
+               transaction creation,
+               and user save must all succeed together.
+
+               If anything fails, MongoDB rolls everything back.
+            ================================================= */
+
+            const session =
+                await User.startSession();
+
+
+            let investment;
+
+
+            try {
+
+                await session.withTransaction(
+                    async () => {
+
+                        /* -----------------------------------------
+                           DEDUCT WALLET
+                        ----------------------------------------- */
+
+                        user.balance -= amount;
+
+
+                        /* -----------------------------------------
+                           CREATE INVESTMENT
+                        ----------------------------------------- */
+
+                        const investments =
+                            await Investment.create(
+                                [
+                                    {
+
+                                        user:
+                                            user._id,
+
+                                        amount:
+                                            amount,
+
+                                        dailyRate:
+                                            DAILY_RATE,
+
+                                        dailyEarnings:
+                                            dailyEarnings,
+
+                                        duration:
+                                            INVESTMENT_DURATION,
+
+                                        earned:
+                                            0,
+
+                                        daysCompleted:
+                                            0,
+
+                                        daysRemaining:
+                                            INVESTMENT_DURATION,
+
+                                        startDate:
+                                            startDate,
+
+                                        endDate:
+                                            endDate,
+
+                                        status:
+                                            "active"
+                                    }
+                                ],
+                                {
+                                    session
+                                }
+                            );
+
+
+                        investment =
+                            investments[0];
+
+
+                        /* -----------------------------------------
+                           CREATE TRANSACTION RECORD
+
+                           This is the SAME investment record
+                           that appears in Transaction History.
+                        ----------------------------------------- */
+
+                        await Transaction.create(
+                            [
+                                {
+
+                                    user:
+                                        user._id,
+
+                                    type:
+                                        "investment",
+
+                                    amount:
+                                        amount,
+
+                                    direction:
+                                        "debit",
+
+                                    status:
+                                        "completed",
+
+                                    description:
+                                        "FINORA investment",
+
+                                    relatedId:
+                                        investment._id
+                                }
+                            ],
+                            {
+                                session
+                            }
+                        );
+
+
+                        /* -----------------------------------------
+                           SAVE UPDATED WALLET
+                        ----------------------------------------- */
+
+                        await user.save({
+                            session
+                        });
+                    }
+                );
+
+            } finally {
+
+                await session.endSession();
+            }
+
+
             /* -----------------------------------------
-               DEDUCT FROM WALLET
+               SAFETY CHECK
             ----------------------------------------- */
 
-            user.balance -= amount;
+            if (!investment) {
 
+                return res.status(500).json({
 
-            /* -----------------------------------------
-               CREATE INVEST
-            ----------------------------------------- */
+                    success: false,
 
-            const investment =
-                await Investment.create({
-
-                    user:
-                        user._id,
-
-                    amount:
-                        amount,
-
-                    dailyRate:
-                        DAILY_RATE,
-
-                    dailyEarnings:
-                        dailyEarnings,
-
-                    duration:
-                        INVESTMENT_DURATION,
-
-                    earned:
-                        0,
-
-                    daysCompleted:
-                        0,
-
-                    daysRemaining:
-                        INVESTMENT_DURATION,
-
-                    startDate:
-                        startDate,
-
-                    endDate:
-                        endDate,
-
-                    status:
-                        "active"
+                    message:
+                        "FINORA could not complete the investment."
                 });
-
-
-            /* -----------------------------------------
-               CREATE TRANSACTION RECORD
-
-               This connects INVEST with
-               RECORDS / TRANSACTION HISTORY.
-            ----------------------------------------- */
-
-            await Transaction.create({
-
-                user:
-                    user._id,
-
-                type:
-                    "investment",
-
-                amount:
-                    amount,
-
-                direction:
-                    "debit",
-
-                status:
-                    "completed",
-
-                description:
-                    "FINORA investment",
-
-                relatedId:
-                    investment._id
-            });
-
-
-            /* -----------------------------------------
-               SAVE UPDATED WALLET
-            ----------------------------------------- */
-
-            await user.save();
+            }
 
 
             /* -----------------------------------------
@@ -431,7 +516,7 @@ router.get(
 
 
             /* -----------------------------------------
-               LOAD USER INVESTS
+               LOAD USER INVESTMENTS
             ----------------------------------------- */
 
             const investments =
@@ -446,7 +531,7 @@ router.get(
 
 
             /* -----------------------------------------
-               RETURN INVESTS
+               RETURN INVESTMENTS
             ----------------------------------------- */
 
             return res.status(200).json({
