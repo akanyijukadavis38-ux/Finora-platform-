@@ -4,8 +4,8 @@ const bcrypt = require("bcrypt");
 const User = require("./user");
 
 const router = express.Router();
-const FRONTEND_URL = "https://finora-platform.netlify.app";
 
+const FRONTEND_URL = "https://finora-platform.pages.dev";
 /* =========================================================
    FRONTEND
 ========================================================= */
