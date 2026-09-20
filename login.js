@@ -24,9 +24,9 @@ document.addEventListener("DOMContentLoaded", function () {
     /* =====================================================
        FINORA BACKEND
     ===================================================== */
-
-    const API_URL =
-        "https://finora-platform-production.up.railway.app";
+const API_URL =
+    "https://finora-platform.onrender.com";
+    
 
     const LOGIN_URL =
         API_URL + "/api/users/login";
