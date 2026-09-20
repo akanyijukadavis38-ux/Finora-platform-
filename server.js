@@ -10,12 +10,17 @@ const User = require("./user");
 const userRoutes = require("./userRoutes");
 const investmentRoutes = require("./investmentRoutes");
 const depositRoutes = require("./depositRoutes");
+const transactionRoutes = require("./TransactionRoutes");
+
 const app = express();
 
 const PORT = process.env.PORT || 8080;
+
+
 /* =========================================================
    FINORA PRODUCTION CONFIGURATION
 ========================================================= */
+
 const FRONTEND_URL =
     "https://finora-platform.pages.dev";
 
@@ -157,23 +162,52 @@ app.use(
 /* =========================================================
    USER ROUTES
 ========================================================= */
+
 app.use(
     "/api/users",
     userRoutes
 );
+
+
+/* =========================================================
+   INVEST ROUTES
+========================================================= */
 
 app.use(
     "/api/investments",
     investmentRoutes
 );
 
+
+/* =========================================================
+   DEPOSIT ROUTES
+========================================================= */
+
 app.use(
     "/api/deposits",
     depositRoutes
 );
 
+
+/* =========================================================
+   TRANSACTION / RECORDS ROUTES
+
+   Used by:
+   1. Dashboard Recent Transactions
+   2. Records / Transaction History
+
+   Both read from the same Transaction model.
+========================================================= */
+
+app.use(
+    "/api/transactions",
+    transactionRoutes
+);
+
+
 /* =========================================================
    CURRENT USER
+
    GET /api/me
 
    Kept as a compatibility endpoint.
