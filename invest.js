@@ -372,8 +372,24 @@ function updateCalculation() {
         INVESTMENT_DURATION;
 
 
+    /*
+       FINORA PAYOUT RULE:
+
+       The original investment amount is NOT
+       added to the final payout.
+
+       The user receives the earnings generated
+       over the 20-day investment period.
+
+       Example:
+
+       Investment = UGX 10,000
+       Daily earnings = UGX 1,000
+       20-day earnings = UGX 20,000
+       Final payout = UGX 20,000
+    */
+
     const totalAfterInvestment =
-        amount +
         totalEarnings;
 
 
@@ -740,7 +756,7 @@ async function createInvestment() {
 
 
         /* -----------------------------------------
-           UPDATE LOCAL WALLET
+           UPDATE WALLET
         ----------------------------------------- */
 
         if (
