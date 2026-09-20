@@ -17,7 +17,6 @@ const investmentSchema = new mongoose.Schema(
 
         dailyRate: {
             type: Number,
-            required: true,
             default: 10,
             min: 0
         },
@@ -30,7 +29,6 @@ const investmentSchema = new mongoose.Schema(
 
         duration: {
             type: Number,
-            required: true,
             default: 20,
             min: 1
         },
@@ -63,6 +61,12 @@ const investmentSchema = new mongoose.Schema(
             required: true
         },
 
+        nextEarningAt: {
+            type: Date,
+            default: null,
+            index: true
+        },
+
         status: {
             type: String,
             enum: [
@@ -81,12 +85,17 @@ const investmentSchema = new mongoose.Schema(
 
 
 /* =========================================================
-   USER INVESTMENT LOOKUP
+   INDEXES
 ========================================================= */
 
 investmentSchema.index({
     user: 1,
     status: 1
+});
+
+investmentSchema.index({
+    status: 1,
+    nextEarningAt: 1
 });
 
 
