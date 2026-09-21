@@ -273,6 +273,25 @@ app.get(
     }
 );
 app.get(
+    "/admin.css",
+    requireAdmin,
+    (req, res) => {
+        res.sendFile(
+            path.join(__dirname, "admin.css")
+        );
+    }
+);
+
+app.get(
+    "/admin.js",
+    requireAdmin,
+    (req, res) => {
+        res.sendFile(
+            path.join(__dirname, "admin.js")
+        );
+    }
+);
+app.get(
     "/admin-forgot-password.html",
     (req, res) => {
         res.sendFile(
