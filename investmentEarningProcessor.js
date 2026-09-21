@@ -1,6 +1,7 @@
 const User = require("./user");
 const Investment = require("./investment");
 const Transaction = require("./Transaction");
+const Notification = require("./Notification");
 
 
 /* =========================================================
@@ -292,7 +293,33 @@ async function processInvestment(
                     session
                 });
 
+/* =============================================
+   CREATE DAILY EARNING NOTIFICATION
+============================================= */
 
+const notification =
+    new Notification({
+
+        userId:
+            user._id,
+
+        type:
+            "earning_credited",
+
+        title:
+            "Daily Earnings Credited",
+
+        message:
+            `UGX ${earning.toLocaleString()} daily earnings have been credited to your FINORA wallet.`,
+
+        isRead:
+            false
+    });
+
+
+await notification.save({
+    session
+});
                 /* =============================================
                    SAVE USER + INVESTMENT
                 ============================================= */
