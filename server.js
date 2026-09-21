@@ -271,6 +271,29 @@ app.get(
         );
     }
 );
+app.get(
+    "/admin-forgot-password.html",
+    (req, res) => {
+        res.sendFile(
+            path.join(
+                __dirname,
+                "admin-forgot-password.html"
+            )
+        );
+    }
+);
+
+app.get(
+    "/admin-forgot-password.css",
+    (req, res) => {
+        res.sendFile(
+            path.join(
+                __dirname,
+                "admin-forgot-password.css"
+            )
+        );
+    }
+);
 
 
 /* =========================================================
