@@ -1076,6 +1076,3 @@ router.post(
 module.exports =
     router;
 
-This file does not activate a user merely because a deposit is approved. Activation remains tied to the later lifecycle we established: registered → inactive → qualifying first deposit + first investment → active.
-
-The next required step is mounting this route in "server.js"; otherwise the file exists but "/api/admin/deposits/..." won't be reachable.
