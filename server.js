@@ -18,6 +18,8 @@ const {
     processDueInvestmentEarnings
 } = require("./investmentEarningProcessor");
 const adminRoutes = require("./adminRoutes");
+const requireAdmin = require("./adminAuth");
+const path = require("path");
 
 const app = express();
 
