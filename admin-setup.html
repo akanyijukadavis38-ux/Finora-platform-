@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FINORA Admin Setup</title>
+
+    <style>
+
+        :root {
+            --bg: #07050b;
+            --card: #0f0915;
+            --card-2: #140b1b;
+
+            --pink: #ea3cff;
+            --pink-light: #ff72ff;
+            --pink-dark: #9e18bd;
+
+            --gold: #f5a623;
+            --gold-light: #ffd76a;
+            --gold-dark: #c97908;
+
+            --white: #ffffff;
+            --text: #f5eef8;
+            --muted: #a99eae;
+
+            --border: rgba(234, 60, 255, 0.22);
+
+            --danger: #ff5c7c;
+            --success: #63e6a7;
+        }
+
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        html {
+            min-height: 100%;
+        }
+
+
+        body {
+            min-height: 100vh;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            color: var(--text);
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(234, 60, 255, 0.16),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at 90% 85%,
+                    rgba(245, 166, 35, 0.08),
+                    transparent 30%
+                ),
+                var(--bg);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 24px 16px;
+        }
+
+
+        button,
+        input {
+            font: inherit;
+        }
+
+
+        button {
+            cursor: pointer;
+        }
+
+
+        .setup-page {
+            width: 100%;
+            max-width: 520px;
+        }
+
+
+        .setup-card {
+            width: 100%;
+
+            padding: 34px 30px 28px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(20, 11, 27, 0.98),
+                    rgba(9, 6, 13, 0.98)
+                );
+
+            border: 1px solid var(--border);
+
+            border-radius: 24px;
+
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.55),
+                0 0 50px rgba(234, 60, 255, 0.08);
+
+            backdrop-filter: blur(18px);
+        }
+
+
+        /* =================================================
+           FINORA BRAND
+        ================================================= */
+
+        .brand {
+            text-align: center;
+
+            margin-bottom: 28px;
+        }
+
+
+        .brand-name {
+            font-family:
+                "Times New Roman",
+                Times,
+                serif;
+
+            font-size: 38px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            line-height: 1;
+        }
+
+
+        .brand-fin {
+            color: var(--white);
+        }
+
+
+        .brand-ora {
+            color: var(--gold);
+        }
+
+
+        .brand-tagline {
+            margin-top: 8px;
+
+            color: var(--pink-light);
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 3px;
+        }
+
+
+        /* =================================================
+           HEADING
+        ================================================= */
+
+        .setup-heading {
+            text-align: center;
+
+            margin-bottom: 24px;
+        }
+
+
+        .security-icon {
+            width: 58px;
+            height: 58px;
+
+            margin: 0 auto 16px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: var(--pink-light);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(234, 60, 255, 0.16),
+                    rgba(158, 24, 189, 0.08)
+                );
+
+            border:
+                1px solid
+                rgba(234, 60, 255, 0.28);
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 0 28px
+                rgba(234, 60, 255, 0.12);
+        }
+
+
+        .security-icon svg {
+            width: 29px;
+            height: 29px;
+        }
+
+
+        .setup-heading h1 {
+            font-family:
+                "Times New Roman",
+                Times,
+                serif;
+
+            font-size: 29px;
+
+            line-height: 1.15;
+
+            color: var(--white);
+
+            margin-bottom: 9px;
+        }
+
+
+        .setup-heading p {
+            color: var(--muted);
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =================================================
+           SECURITY NOTICE
+        ================================================= */
+
+        .security-notice {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 5px;
+
+            padding: 14px 15px;
+
+            margin-bottom: 22px;
+
+            background:
+                rgba(245, 166, 35, 0.055);
+
+            border:
+                1px solid
+                rgba(245, 166, 35, 0.18);
+
+            border-radius: 13px;
+        }
+
+
+        .security-notice strong {
+            color: var(--gold-light);
+
+            font-size: 12px;
+
+            letter-spacing: 0.5px;
+        }
+
+
+        .security-notice span {
+            color: var(--muted);
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =================================================
+           FORM
+        ================================================= */
+
+        #setupForm {
+            width: 100%;
+        }
+
+
+        #setupForm label {
+            display: block;
+
+            color: #ddd3e1;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            margin-bottom: 8px;
+        }
+
+
+        #setupForm input {
+            width: 100%;
+
+            height: 52px;
+
+            padding:
+                0 15px;
+
+            color: var(--white);
+
+            background:
+                rgba(255, 255, 255, 0.035);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.10);
+
+            border-radius: 13px;
+
+            outline: none;
+
+            margin-bottom: 17px;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        #setupForm input::placeholder {
+            color: #776d7d;
+        }
+
+
+        #setupForm input:focus {
+            border-color:
+                rgba(234, 60, 255, 0.65);
+
+            background:
+                rgba(234, 60, 255, 0.035);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(234, 60, 255, 0.09);
+        }
+
+
+        .password-field {
+            position: relative;
+        }
+
+
+        .password-field input {
+            padding-right: 72px !important;
+        }
+
+
+        .password-toggle {
+            position: absolute;
+
+            top: 0;
+
+            right: 8px;
+
+            height: 52px;
+
+            padding: 0 9px;
+
+            color: var(--pink-light);
+
+            background: transparent;
+
+            border: 0;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        .form-message {
+            min-height: 20px;
+
+            margin:
+                0 0 13px;
+
+            font-size: 13px;
+
+            line-height: 1.45;
+
+            text-align: center;
+        }
+
+
+        .form-message.error {
+            color: var(--danger);
+        }
+
+
+        .form-message.success {
+            color: var(--success);
+        }
+
+
+        /* =================================================
+           PRIMARY BUTTON
+        ================================================= */
+
+        .primary-button {
+            position: relative;
+
+            width: 100%;
+
+            height: 53px;
+
+            border: 0;
+
+            border-radius: 14px;
+
+            color: #ffffff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--pink),
+                    var(--pink-dark)
+                );
+
+            font-size: 14px;
+
+            font-weight: 800;
+
+            box-shadow:
+                0 12px 28px
+                rgba(234, 60, 255, 0.20);
+
+            transition:
+                transform 0.18s ease,
+                box-shadow 0.18s ease,
+                opacity 0.18s ease;
+        }
+
+
+        .primary-button:hover {
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 15px 32px
+                rgba(234, 60, 255, 0.28);
+        }
+
+
+        .primary-button:active {
+            transform: translateY(0);
+        }
+
+
+        .primary-button:disabled {
+            cursor: not-allowed;
+
+            opacity: 0.72;
+        }
+
+
+        .button-spinner {
+            display: none;
+
+            width: 18px;
+            height: 18px;
+
+            margin: 0 auto;
+
+            border:
+                2px solid
+                rgba(255, 255, 255, 0.30);
+
+            border-top-color:
+                #ffffff;
+
+            border-radius: 50%;
+
+            animation:
+                spin 0.75s linear infinite;
+        }
+
+
+        .primary-button.loading .button-text {
+            display: none;
+        }
+
+
+        .primary-button.loading .button-spinner {
+            display: block;
+        }
+
+
+        @keyframes spin {
+
+            to {
+                transform:
+                    rotate(360deg);
+            }
+
+        }
+
+
+        /* =================================================
+           SUCCESS PANEL
+        ================================================= */
+
+        .success-panel {
+            text-align: center;
+        }
+
+
+        .success-icon {
+            width: 62px;
+            height: 62px;
+
+            margin: 0 auto 17px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: var(--success);
+
+            background:
+                rgba(99, 230, 167, 0.08);
+
+            border:
+                1px solid
+                rgba(99, 230, 167, 0.20);
+
+            border-radius: 20px;
+        }
+
+
+        .success-icon svg {
+            width: 32px;
+            height: 32px;
+        }
+
+
+        .success-panel h2 {
+            font-family:
+                "Times New Roman",
+                Times,
+                serif;
+
+            color: var(--white);
+
+            font-size: 25px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .success-panel > p {
+            color: var(--muted);
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+            margin-bottom: 18px;
+        }
+
+
+        .key-warning {
+            padding: 13px 14px;
+
+            color: var(--gold-light);
+
+            background:
+                rgba(245, 166, 35, 0.07);
+
+            border:
+                1px solid
+                rgba(245, 166, 35, 0.18);
+
+            border-radius: 12px;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+
+            margin-bottom: 15px;
+        }
+
+
+        .key-warning strong {
+            display: block;
+
+            margin-bottom: 3px;
+        }
+
+
+        .recovery-key-box {
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 9px;
+
+            background: #08050c;
+
+            border:
+                1px solid
+                rgba(234, 60, 255, 0.25);
+
+            border-radius: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .recovery-key-box span {
+            flex: 1;
+
+            min-width: 0;
+
+            color: var(--pink-light);
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            line-height: 1.4;
+
+            overflow-wrap: anywhere;
+
+            text-align: left;
+
+            padding-left: 6px;
+        }
+
+
+        .recovery-key-box button {
+            flex-shrink: 0;
+
+            height: 38px;
+
+            padding: 0 13px;
+
+            color: var(--gold-light);
+
+            background:
+                rgba(245, 166, 35, 0.08);
+
+            border:
+                1px solid
+                rgba(245, 166, 35, 0.22);
+
+            border-radius: 9px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        .login-button {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 100%;
+
+            height: 50px;
+
+            color: #ffffff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--pink),
+                    var(--pink-dark)
+                );
+
+            border-radius: 13px;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 800;
+
+            box-shadow:
+                0 12px 28px
+                rgba(234, 60, 255, 0.18);
+        }
+
+
+        .login-button:hover {
+            box-shadow:
+                0 15px 32px
+                rgba(234, 60, 255, 0.27);
+        }
+
+
+        .hidden {
+            display: none !important;
+        }
+
+
+        /* =================================================
+           MOBILE
+        ================================================= */
+
+        @media (max-width: 480px) {
+
+            body {
+                padding:
+                    16px 12px;
+            }
+
+
+            .setup-card {
+                padding:
+                    28px 20px 23px;
+
+                border-radius: 21px;
+            }
+
+
+            .brand-name {
+                font-size: 34px;
+            }
+
+
+            .setup-heading h1 {
+                font-size: 27px;
+            }
+
+
+            .setup-heading p {
+                font-size: 13px;
+            }
+
+
+            .recovery-key-box {
+                align-items: stretch;
+
+                flex-direction: column;
+            }
+
+
+            .recovery-key-box span {
+                text-align: center;
+
+                padding:
+                    8px 5px;
+            }
+
+
+            .recovery-key-box button {
+                width: 100%;
+            }
+
+        }
+
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+
+                animation-duration:
+                    0.01ms !important;
+
+                animation-iteration-count:
+                    1 !important;
+
+                transition-duration:
+                    0.01ms !important;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <main class="setup-page">
+
+        <section class="setup-card">
+
+
+            <!-- =================================================
+                 FINORA BRAND
+            ================================================= -->
+
+            <div class="brand">
+
+                <div class="brand-name">
+
+                    <span class="brand-fin">
+                        FIN
+                    </span><span class="brand-ora">
+                        ORA
+                    </span>
+
+                </div>
+
+                <div class="brand-tagline">
+                    INVEST • GROW • EARN
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 HEADING
+            ================================================= -->
+
+            <div class="setup-heading">
+
+                <div class="security-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                    >
+
+                        <rect
+                            x="4"
+                            y="10"
+                            width="16"
+                            height="11"
+                            rx="2"
+                        />
+
+                        <path
+                            d="M8 10V7a4 4 0 0 1 8 0v3"
+                        />
+
+                        <circle
+                            cx="12"
+                            cy="15"
+                            r="1"
+                        />
+
+                        <path
+                            d="M12 16v2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <h1>
+                    Admin Account Setup
+                </h1>
+
+
+                <p>
+                    Create the permanent FINORA Admin account.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 SECURITY NOTICE
+            ================================================= -->
+
+            <div class="security-notice">
+
+                <strong>
+                    Private setup
+                </strong>
+
+                <span>
+                    Your password and setup key are sent securely
+                    to the FINORA server and are never stored as
+                    plain text.
+                </span>
+
+            </div>
+
+
+            <!-- =================================================
+                 SETUP FORM
+            ================================================= -->
+
+            <form id="setupForm">
+
+
+                <label for="username">
+                    Admin Username
+                </label>
+
+                <input
+                    id="username"
+                    name="username"
+                    type="text"
+                    value="davistash"
+                    autocomplete="username"
+                    required
+                >
+
+
+                <label for="email">
+                    Admin Email
+                </label>
+
+                <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value="akanyijukadavis38@gmail.com"
+                    autocomplete="email"
+                    required
+                >
+
+
+                <label for="password">
+                    Admin Password
+                </label>
+
+                <div class="password-field">
+
+                    <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        minlength="6"
+                        autocomplete="new-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        data-target="password"
+                    >
+                        Show
+                    </button>
+
+                </div>
+
+
+                <label for="confirmPassword">
+                    Confirm Admin Password
+                </label>
+
+                <div class="password-field">
+
+                    <input
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        type="password"
+                        minlength="6"
+                        autocomplete="new-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        data-target="confirmPassword"
+                    >
+                        Show
+                    </button>
+
+                </div>
+
+
+                <label for="setupKey">
+                    Private Setup Key
+                </label>
+
+                <div class="password-field">
+
+                    <input
+                        id="setupKey"
+                        name="setupKey"
+                        type="password"
+                        autocomplete="off"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        data-target="setupKey"
+                    >
+                        Show
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="formMessage"
+                    class="form-message"
+                ></div>
+
+
+                <button
+                    id="setupButton"
+                    class="primary-button"
+                    type="submit"
+                >
+
+                    <span class="button-text">
+                        Create Permanent Admin
+                    </span>
+
+                    <span
+                        class="button-spinner"
+                    ></span>
+
+                </button>
+
+            </form>
+
+
+            <!-- =================================================
+                 SUCCESS PANEL
+            ================================================= -->
+
+            <div
+                id="successPanel"
+                class="success-panel hidden"
+            >
+
+                <div class="success-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    >
+
+                        <path
+                            d="M5 12.5l4 4L19 6.5"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <h2>
+                    Admin Account Created
+                </h2>
+
+
+                <p>
+                    Your permanent FINORA Admin account has
+                    been created successfully.
+                </p>
+
+
+                <div class="key-warning">
+
+                    <strong>
+                        IMPORTANT
+                    </strong>
+
+                    <span>
+                        Save this recovery key now.
+                        It will not be shown again.
+                    </span>
+
+                </div>
+
+
+                <div class="recovery-key-box">
+
+                    <span id="recoveryKey"></span>
+
+                    <button
+                        id="copyKeyButton"
+                        type="button"
+                    >
+                        Copy
+                    </button>
+
+                </div>
+
+
+                <a
+                    class="login-button"
+                    href="/admin-login.html"
+                >
+                    Go to Admin Login
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+<script>
+
+/* =========================================================
+FINORA ADMIN SETUP
+========================================================= */
+
+const API_BASE = "";
+
+
+const setupForm =
+    document.getElementById(
+        "setupForm"
+    );
+
+
+const setupButton =
+    document.getElementById(
+        "setupButton"
+    );
+
+
+const formMessage =
+    document.getElementById(
+        "formMessage"
+    );
+
+
+const successPanel =
+    document.getElementById(
+        "successPanel"
+    );
+
+
+const recoveryKeyElement =
+    document.getElementById(
+        "recoveryKey"
+    );
+
+
+const copyKeyButton =
+    document.getElementById(
+        "copyKeyButton"
+    );
+
+
+/* =========================================================
+PASSWORD / SETUP KEY VISIBILITY
+========================================================= */
+
+document
+    .querySelectorAll(
+        ".password-toggle"
+    )
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const target =
+                        document.getElementById(
+                            button.dataset.target
+                        );
+
+
+                    if (
+                        target.type ===
+                        "password"
+                    ) {
+
+                        target.type =
+                            "text";
+
+                        button.textContent =
+                            "Hide";
+
+                    } else {
+
+                        target.type =
+                            "password";
+
+                        button.textContent =
+                            "Show";
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+/* =========================================================
+SUBMIT ADMIN SETUP
+========================================================= */
+
+setupForm.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+
+        formMessage.textContent =
+            "";
+
+        formMessage.className =
+            "form-message";
+
+
+        const username =
+            document
+                .getElementById(
+                    "username"
+                )
+                .value
+                .trim();
+
+
+        const email =
+            document
+                .getElementById(
+                    "email"
+                )
+                .value
+                .trim();
+
+
+        const password =
+            document
+                .getElementById(
+                    "password"
+                )
+                .value;
+
+
+        const confirmPassword =
+            document
+                .getElementById(
+                    "confirmPassword"
+                )
+                .value;
+
+
+        const setupKey =
+            document
+                .getElementById(
+                    "setupKey"
+                )
+                .value;
+
+
+        /* =============================================
+           CLIENT-SIDE PASSWORD CHECK
+        ============================================= */
+
+        if (
+            password !==
+            confirmPassword
+        ) {
+
+            formMessage.textContent =
+                "Passwords do not match.";
+
+            formMessage.className =
+                "form-message error";
+
+            return;
+        }
+
+
+        if (
+            password.length < 6
+        ) {
+
+            formMessage.textContent =
+                "Password must be at least 6 characters.";
+
+            formMessage.className =
+                "form-message error";
+
+            return;
+        }
+
+
+        /* =============================================
+           LOADING
+        ============================================= */
+
+        setupButton.disabled =
+            true;
+
+        setupButton.classList.add(
+            "loading"
+        );
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_BASE}/api/admin/setup`,
+                    {
+
+                        method:
+                            "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        credentials:
+                            "include",
+
+                        body:
+                            JSON.stringify({
+
+                                setupKey,
+
+                                username,
+
+                                email,
+
+                                password,
+
+                                confirmPassword
+                            })
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !response.ok
+            ) {
+
+                throw new Error(
+                    data.message ||
+                    "Admin setup failed."
+                );
+            }
+
+
+            /* =========================================
+               SHOW RECOVERY KEY
+            ========================================= */
+
+            recoveryKeyElement.textContent =
+                data.recoveryKey;
+
+
+            setupForm.classList.add(
+                "hidden"
+            );
+
+
+            successPanel.classList.remove(
+                "hidden"
+            );
+
+
+        } catch (error) {
+
+            formMessage.textContent =
+                error.message;
+
+            formMessage.className =
+                "form-message error";
+
+
+        } finally {
+
+            setupButton.disabled =
+                false;
+
+            setupButton.classList.remove(
+                "loading"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+COPY RECOVERY KEY
+========================================================= */
+
+copyKeyButton.addEventListener(
+    "click",
+    async () => {
+
+        const key =
+            recoveryKeyElement.textContent;
+
+
+        try {
+
+            await navigator.clipboard.writeText(
+                key
+            );
+
+
+            copyKeyButton.textContent =
+                "Copied";
+
+
+            setTimeout(
+                () => {
+
+                    copyKeyButton.textContent =
+                        "Copy";
+
+                },
+                1800
+            );
+
+
+        } catch {
+
+            copyKeyButton.textContent =
+                "Copy manually";
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
