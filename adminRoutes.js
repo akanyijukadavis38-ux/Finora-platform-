@@ -101,11 +101,12 @@ async (req, res) => {
         /* =============================================
            VALIDATE USERNAME
         ============================================= */
-
-        const cleanUsername =
-            String(
-                username || ""
-            ).trim();
+const cleanUsername =
+    String(
+        username || ""
+    )
+        .trim()
+        .toLowerCase();
 
 
         if (
