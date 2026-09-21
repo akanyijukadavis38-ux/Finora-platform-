@@ -17,6 +17,7 @@ const notificationRoutes = require("./notificationRoutes");
 const {
     processDueInvestmentEarnings
 } = require("./investmentEarningProcessor");
+const adminRoutes = require("./adminRoutes");
 
 const app = express();
 
@@ -236,6 +237,10 @@ app.use(
 app.use(
     "/api/notifications",
     notificationRoutes
+);
+app.use(
+    "/api/admin",
+    adminRoutes
 );
 /* =========================================================
    CURRENT USER
