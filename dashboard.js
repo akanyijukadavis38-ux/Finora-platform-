@@ -1292,43 +1292,118 @@ document.addEventListener("DOMContentLoaded", () => {
        NOTIFICATIONS
     ===================================================== */
 
-    function initializeNotifications() {
+function initializeNotifications() {
 
-        const notificationButton =
-            getElement(
-                "notificationButton"
-            );
-
-
-        const notificationCount =
-            getElement(
-                "notificationCount"
-            );
+    const notificationButton =
+        getElement(
+            "notificationButton"
+        );
 
 
-        if (!notificationButton) {
-            return;
-        }
+    const notificationCount =
+        getElement(
+            "notificationCount"
+        );
 
 
-        notificationButton.addEventListener(
-            "click",
-            () => {
+    if (!notificationButton) {
+        return;
+    }
 
-                showTemporaryMessage(
-                    "No new notifications."
+
+    async function loadNotificationCount() {
+
+        try {
+
+            const response =
+                await fetch(
+                    `${FINORA_API}/api/notifications`,
+                    {
+                        method:
+                            "GET",
+
+                        credentials:
+                            "include",
+
+                        headers: {
+                            "Accept":
+                                "application/json"
+                        }
+                    }
                 );
 
 
-                if (notificationCount) {
+            if (!response.ok) {
 
-                    notificationCount.style.display =
-                        "none";
-                }
+                throw new Error(
+                    "Could not load notifications."
+                );
             }
-        );
+
+
+            const data =
+                await response.json();
+
+
+            const unreadCount =
+                Number(
+                    data.unreadCount || 0
+                );
+
+
+            if (!notificationCount) {
+                return;
+            }
+
+
+            if (unreadCount > 0) {
+
+                notificationCount.textContent =
+                    unreadCount > 99
+                        ? "99+"
+                        : unreadCount;
+
+
+                notificationCount.style.display =
+                    "flex";
+
+            } else {
+
+                notificationCount.textContent =
+                    "";
+
+
+                notificationCount.style.display =
+                    "none";
+            }
+
+        } catch (error) {
+
+            console.error(
+                "❌ FINORA NOTIFICATION COUNT ERROR:",
+                error
+            );
+
+        }
     }
 
+
+    notificationButton.addEventListener(
+        "click",
+        async () => {
+
+            await loadNotificationCount();
+
+            showTemporaryMessage(
+                "No new notifications."
+            );
+
+        }
+    );
+
+
+    loadNotificationCount();
+}
 
     /* =====================================================
        COMMUNITY
