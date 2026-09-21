@@ -1,329 +1,771 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 
 const Admin = require("./Admin");
 const requireAdmin = require("./adminAuth");
 
 const router = express.Router();
 
+/* =========================================================
+FINORA ADMIN SECURITY SETTINGS
+========================================================= */
+
+const RECOVERY_SESSION_MINUTES = 10;
 
 /* =========================================================
-   FINORA ADMIN LOGIN
+GENERATE SECURE RECOVERY KEY
 
-   POST /api/admin/login
+The actual recovery key is returned only when the
+permanent Admin account is securely created.
 
-   Admin provides:
-      username OR email
-      password
+MongoDB stores only the bcrypt hash.
+========================================================= */
 
-   System:
-      verifies Admin
-      verifies password
-      creates Admin session
+function generateRecoveryKey() {
+
+return (
+    crypto.randomBytes(24).toString("base64url")
+);
+
+}
+
+/* =========================================================
+LOGIN
 ========================================================= */
 
 router.post(
-    "/login",
-    async (req, res) => {
+"/login",
+async (req, res) => {
 
-        try {
+    try {
 
-            const identifier =
-                String(
-                    req.body.identifier || ""
-                )
+        const identifier =
+            String(
+                req.body.identifier || ""
+            )
                 .trim()
                 .toLowerCase();
 
-            const password =
-                String(
-                    req.body.password || ""
-                );
-
-
-            /* -----------------------------------------
-               VALIDATE INPUT
-            ----------------------------------------- */
-
-            if (
-                !identifier ||
-                !password
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "Admin username/email and password are required."
-                });
-            }
-
-
-            /* -----------------------------------------
-               FIND ADMIN
-            ----------------------------------------- */
-
-            const admin =
-                await Admin.findOne({
-
-                    $or: [
-                        {
-                            username:
-                                identifier
-                        },
-                        {
-                            email:
-                                identifier
-                        }
-                    ]
-
-                })
-                .select("+passwordHash");
-
-
-            if (!admin) {
-
-                return res.status(401).json({
-
-                    success: false,
-
-                    message:
-                        "Invalid Admin credentials."
-                });
-            }
-
-
-            /* -----------------------------------------
-               CHECK ADMIN STATUS
-            ----------------------------------------- */
-
-            if (
-                admin.status !== "active"
-            ) {
-
-                return res.status(403).json({
-
-                    success: false,
-
-                    message:
-                        "This Admin account is disabled."
-                });
-            }
-
-
-            /* -----------------------------------------
-               VERIFY PASSWORD
-            ----------------------------------------- */
-
-            const passwordMatches =
-                await bcrypt.compare(
-                    password,
-                    admin.passwordHash
-                );
-
-
-            if (!passwordMatches) {
-
-                return res.status(401).json({
-
-                    success: false,
-
-                    message:
-                        "Invalid Admin credentials."
-                });
-            }
-
-
-            /* -----------------------------------------
-               CREATE ADMIN SESSION
-            ----------------------------------------- */
-
-            req.session.adminId =
-                admin._id.toString();
-
-
-            /* -----------------------------------------
-               UPDATE LAST LOGIN
-            ----------------------------------------- */
-
-            admin.lastLogin =
-                new Date();
-
-            await admin.save();
-
-
-            /* -----------------------------------------
-               SAVE SESSION
-            ----------------------------------------- */
-
-            await new Promise(
-                (resolve, reject) => {
-
-                    req.session.save(
-                        (error) => {
-
-                            if (error) {
-                                return reject(error);
-                            }
-
-                            resolve();
-                        }
-                    );
-
-                }
+        const password =
+            String(
+                req.body.password || ""
             );
 
 
-            /* -----------------------------------------
-               SUCCESS
-            ----------------------------------------- */
+        if (
+            !identifier ||
+            !password
+        ) {
 
-            return res.status(200).json({
-
-                success: true,
-
-                message:
-                    "Admin login successful.",
-
-                admin: {
-
-                    id:
-                        admin._id,
-
-                    username:
-                        admin.username,
-
-                    email:
-                        admin.email,
-
-                    status:
-                        admin.status,
-
-                    lastLogin:
-                        admin.lastLogin
-                }
-            });
-
-        } catch (error) {
-
-            console.error(
-                "❌ FINORA ADMIN LOGIN ERROR:",
-                error
-            );
-
-
-            return res.status(500).json({
+            return res.status(400).json({
 
                 success: false,
 
                 message:
-                    "FINORA Admin login failed."
+                    "Admin username/email and password are required."
             });
         }
-    }
-);
 
 
-/* =========================================================
-   CHECK ADMIN SESSION
+        const admin =
+            await Admin.findOne({
 
-   GET /api/admin/me
-========================================================= */
+                $or: [
+                    {
+                        username:
+                            identifier
+                    },
+                    {
+                        email:
+                            identifier
+                    }
+                ]
 
-router.get(
-    "/me",
-    requireAdmin,
-    async (req, res) => {
+            }).select(
+                "+passwordHash"
+            );
+
+
+        if (!admin) {
+
+            return res.status(401).json({
+
+                success: false,
+
+                message:
+                    "Invalid Admin credentials."
+            });
+        }
+
+
+        if (
+            admin.status !==
+            "active"
+        ) {
+
+            return res.status(403).json({
+
+                success: false,
+
+                message:
+                    "This Admin account is disabled."
+            });
+        }
+
+
+        const passwordMatches =
+            await bcrypt.compare(
+                password,
+                admin.passwordHash
+            );
+
+
+        if (!passwordMatches) {
+
+            return res.status(401).json({
+
+                success: false,
+
+                message:
+                    "Invalid Admin credentials."
+            });
+        }
+
+
+        /*
+           Store only the Admin identity in the
+           authenticated session.
+
+           The normal user session uses userId.
+           Admin authentication uses adminId.
+        */
+
+        req.session.adminId =
+            admin._id.toString();
+
+
+        /*
+           Remove any temporary recovery state from
+           the same session after successful login.
+        */
+
+        delete req.session.adminRecoveryId;
+        delete req.session.adminRecoveryExpires;
+
+
+        admin.lastLogin =
+            new Date();
+
+        await admin.save();
+
+
+        await new Promise(
+            (resolve, reject) => {
+
+                req.session.save(
+                    error => {
+
+                        if (error) {
+
+                            return reject(
+                                error
+                            );
+                        }
+
+                        resolve();
+                    }
+                );
+            }
+        );
+
 
         return res.status(200).json({
 
             success: true,
 
+            message:
+                "Admin login successful.",
+
             admin: {
 
                 id:
-                    req.admin._id,
+                    admin._id,
 
                 username:
-                    req.admin.username,
+                    admin.username,
 
                 email:
-                    req.admin.email,
+                    admin.email,
 
                 status:
-                    req.admin.status,
+                    admin.status,
 
                 lastLogin:
-                    req.admin.lastLogin
+                    admin.lastLogin
             }
         });
+
+    } catch (error) {
+
+        console.error(
+            "❌ FINORA ADMIN LOGIN ERROR:",
+            error
+        );
+
+
+        return res.status(500).json({
+
+            success: false,
+
+            message:
+                "FINORA Admin login failed."
+        });
     }
+}
+
 );
 
+/* =========================================================
+CURRENT ADMIN
+========================================================= */
+
+router.get(
+"/me",
+requireAdmin,
+async (req, res) => {
+
+    return res.status(200).json({
+
+        success: true,
+
+        admin: {
+
+            id:
+                req.admin._id,
+
+            username:
+                req.admin.username,
+
+            email:
+                req.admin.email,
+
+            status:
+                req.admin.status,
+
+            lastLogin:
+                req.admin.lastLogin
+        }
+    });
+}
+
+);
 
 /* =========================================================
-   ADMIN LOGOUT
+FORGOT PASSWORD — VERIFY RECOVERY KEY
 
-   POST /api/admin/logout
+Step 1:
+
+Admin enters:
+
+- Username OR Email
+- Recovery Key
+
+If valid, a short-lived recovery session is created.
+
+The password is NOT changed at this stage.
 ========================================================= */
 
 router.post(
-    "/logout",
-    requireAdmin,
-    async (req, res) => {
+"/forgot-password/verify",
+async (req, res) => {
 
-        try {
+    try {
 
-            req.session.destroy(
-                (error) => {
+        const identifier =
+            String(
+                req.body.identifier || ""
+            )
+                .trim()
+                .toLowerCase();
 
-                    if (error) {
-
-                        console.error(
-                            "❌ FINORA ADMIN LOGOUT ERROR:",
-                            error
-                        );
-
-                        return res.status(500).json({
-
-                            success: false,
-
-                            message:
-                                "Admin logout failed."
-                        });
-                    }
+        const recoveryKey =
+            String(
+                req.body.recoveryKey || ""
+            )
+                .trim();
 
 
-                    return res.status(200).json({
+        if (
+            !identifier ||
+            !recoveryKey
+        ) {
 
-                        success: true,
-
-                        message:
-                            "Admin logged out successfully."
-                    });
-
-                }
-            );
-
-        } catch (error) {
-
-            console.error(
-                "❌ FINORA ADMIN LOGOUT ERROR:",
-                error
-            );
-
-
-            return res.status(500).json({
+            return res.status(400).json({
 
                 success: false,
 
                 message:
-                    "Admin logout failed."
+                    "Admin username/email and recovery key are required."
             });
         }
+
+
+        const admin =
+            await Admin.findOne({
+
+                $or: [
+                    {
+                        username:
+                            identifier
+                    },
+                    {
+                        email:
+                            identifier
+                    }
+                ]
+
+            }).select(
+                "+recoveryKeyHash"
+            );
+
+
+        /*
+           Do not reveal whether the username/email
+           exists.
+        */
+
+        if (
+            !admin ||
+            admin.status !==
+                "active" ||
+            !admin.recoveryKeyHash
+        ) {
+
+            return res.status(401).json({
+
+                success: false,
+
+                message:
+                    "The recovery information could not be verified."
+            });
+        }
+
+
+        const recoveryMatches =
+            await bcrypt.compare(
+                recoveryKey,
+                admin.recoveryKeyHash
+            );
+
+
+        if (
+            !recoveryMatches
+        ) {
+
+            return res.status(401).json({
+
+                success: false,
+
+                message:
+                    "The recovery information could not be verified."
+            });
+        }
+
+
+        /*
+           Create a short-lived recovery state.
+
+           This does NOT give Admin access to the
+           dashboard.
+        */
+
+        req.session.adminRecoveryId =
+            admin._id.toString();
+
+        req.session.adminRecoveryExpires =
+            Date.now() +
+            (
+                RECOVERY_SESSION_MINUTES *
+                60 *
+                1000
+            );
+
+
+        await new Promise(
+            (resolve, reject) => {
+
+                req.session.save(
+                    error => {
+
+                        if (error) {
+
+                            return reject(
+                                error
+                            );
+                        }
+
+                        resolve();
+                    }
+                );
+            }
+        );
+
+
+        return res.status(200).json({
+
+            success: true,
+
+            message:
+                "Recovery key verified. You may now create a new Admin password."
+        });
+
+    } catch (error) {
+
+        console.error(
+            "❌ FINORA ADMIN RECOVERY VERIFICATION ERROR:",
+            error
+        );
+
+
+        return res.status(500).json({
+
+            success: false,
+
+            message:
+                "FINORA could not verify the recovery information."
+        });
     }
+}
+
 );
 
+/* =========================================================
+FORGOT PASSWORD — RESET PASSWORD
 
-module.exports = router;
+Step 2:
+
+Requires a successful recovery-key verification.
+
+Creates:
+
+- new password hash
+- new recovery key hash
+
+The old recovery key becomes invalid immediately.
+========================================================= */
+
+router.post(
+"/forgot-password/reset",
+async (req, res) => {
+
+    try {
+
+        if (
+            !req.session ||
+            !req.session.adminRecoveryId ||
+            !req.session.adminRecoveryExpires
+        ) {
+
+            return res.status(401).json({
+
+                success: false,
+
+                message:
+                    "Admin password recovery session is missing or expired."
+            });
+        }
+
+
+        if (
+            Date.now() >
+            Number(
+                req.session.adminRecoveryExpires
+            )
+        ) {
+
+            delete req.session.adminRecoveryId;
+            delete req.session.adminRecoveryExpires;
+
+
+            return res.status(401).json({
+
+                success: false,
+
+                message:
+                    "Admin password recovery session has expired. Please start again."
+            });
+        }
+
+
+        const newPassword =
+            String(
+                req.body.newPassword || ""
+            );
+
+        const confirmPassword =
+            String(
+                req.body.confirmPassword || ""
+            );
+
+
+        if (
+            !newPassword ||
+            !confirmPassword
+        ) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "New password and confirmation are required."
+            });
+        }
+
+
+        if (
+            newPassword.length <
+            6
+        ) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "Admin password must be at least 6 characters."
+            });
+        }
+
+
+        if (
+            newPassword !==
+            confirmPassword
+        ) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "Passwords do not match."
+            });
+        }
+
+
+        const admin =
+            await Admin.findById(
+                req.session.adminRecoveryId
+            ).select(
+                "+passwordHash +recoveryKeyHash"
+            );
+
+
+        if (!admin) {
+
+            return res.status(404).json({
+
+                success: false,
+
+                message:
+                    "Admin account could not be found."
+            });
+        }
+
+
+        if (
+            admin.status !==
+            "active"
+        ) {
+
+            return res.status(403).json({
+
+                success: false,
+
+                message:
+                    "This Admin account is disabled."
+            });
+        }
+
+
+        /*
+           Generate the new recovery key BEFORE
+           saving the Admin account.
+
+           The actual key will be returned once to the
+           Admin after the password reset.
+
+           Only its bcrypt hash is stored.
+        */
+
+        const newRecoveryKey =
+            generateRecoveryKey();
+
+
+        const newPasswordHash =
+            await bcrypt.hash(
+                newPassword,
+                12
+            );
+
+
+        const newRecoveryKeyHash =
+            await bcrypt.hash(
+                newRecoveryKey,
+                12
+            );
+
+
+        admin.passwordHash =
+            newPasswordHash;
+
+        admin.recoveryKeyHash =
+            newRecoveryKeyHash;
+
+        admin.recoveryKeyVersion =
+            Number(
+                admin.recoveryKeyVersion || 1
+            ) + 1;
+
+        await admin.save();
+
+
+        /*
+           Destroy the current recovery session.
+
+           The Admin must log in again using the new
+           password.
+        */
+
+        await new Promise(
+            (resolve, reject) => {
+
+                req.session.destroy(
+                    error => {
+
+                        if (error) {
+
+                            return reject(
+                                error
+                            );
+                        }
+
+                        resolve();
+                    }
+                );
+            }
+        );
+
+
+        return res.status(200).json({
+
+            success: true,
+
+            message:
+                "Admin password has been reset successfully.",
+
+            recoveryKey:
+                newRecoveryKey
+        });
+
+    } catch (error) {
+
+        console.error(
+            "❌ FINORA ADMIN PASSWORD RESET ERROR:",
+            error
+        );
+
+
+        return res.status(500).json({
+
+            success: false,
+
+            message:
+                "FINORA could not reset the Admin password."
+        });
+    }
+}
+
+);
+
+/* =========================================================
+LOGOUT
+========================================================= */
+
+router.post(
+"/logout",
+requireAdmin,
+async (req, res) => {
+
+    try {
+
+        req.session.destroy(
+            error => {
+
+                if (error) {
+
+                    console.error(
+                        "❌ FINORA ADMIN LOGOUT ERROR:",
+                        error
+                    );
+
+
+                    return res.status(500).json({
+
+                        success: false,
+
+                        message:
+                            "Admin logout failed."
+                    });
+                }
+
+
+                return res.status(200).json({
+
+                    success: true,
+
+                    message:
+                        "Admin logged out successfully."
+                });
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "❌ FINORA ADMIN LOGOUT ERROR:",
+            error
+        );
+
+
+        return res.status(500).json({
+
+            success: false,
+
+            message:
+                "Admin logout failed."
+        });
+    }
+}
+
+);
+
+/* =========================================================
+EXPORT ADMIN ROUTER
+========================================================= */
+
+module.exports =
+router;
+
+/* =========================================================
+EXPORT RECOVERY-KEY GENERATOR
+
+Kept available for the permanent Admin-account
+creation process we will build later.
+
+This does NOT create a public registration endpoint.
+========================================================= */
+
+module.exports.generateRecoveryKey =
+generateRecoveryKey;
