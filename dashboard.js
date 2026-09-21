@@ -1767,9 +1767,6 @@ document.addEventListener("DOMContentLoaded", () => {
         initializeCommunity();
 
 
-        initializeNavigation();
-
-
         initializeRecentTransactions();
 
 
