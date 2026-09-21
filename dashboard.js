@@ -1386,20 +1386,16 @@ function initializeNotifications() {
 
         }
     }
+notificationButton.addEventListener(
+    "click",
+    () => {
 
+        window.location.href =
+            "notifications.html";
 
-    notificationButton.addEventListener(
-        "click",
-        async () => {
+    }
+);
 
-            await loadNotificationCount();
-
-            showTemporaryMessage(
-                "No new notifications."
-            );
-
-        }
-    );
 
 
     loadNotificationCount();
