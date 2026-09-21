@@ -1448,21 +1448,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         const currentNavigation =
-            pageMap[currentPath];
+    pageMap[currentPath];
 
 
-        if (currentNavigation) {
+if (currentNavigation) {
 
-            setActiveNavigation(
-                currentNavigation
-            );
-
-        } else {
-
-            setActiveNavigation(
-                null
-            );
-        }
+    setActiveNavigation(
+        currentNavigation
+    );
+}
 
 
         navigationItems.forEach(
