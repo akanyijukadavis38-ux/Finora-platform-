@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Notifications — FINORA</title>
+
+    <link
+        rel="stylesheet"
+        href="notifications.css?v=1">
+
+</head>
+
+
+<body>
+
+    <div class="notifications-shell">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <header class="notifications-header">
+
+            <div class="notifications-header-inner">
+
+                <button
+                    class="back-button"
+                    id="backButton"
+                    type="button"
+                    aria-label="Go back">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+
+                        <path
+                            d="M15 18L9 12L15 6"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"/>
+
+                    </svg>
+
+                </button>
+
+
+                <div class="notifications-brand">
+
+                    <div class="notifications-name">
+
+                        <span class="notifications-fin">
+                            FIN
+                        </span>
+
+                        <span class="notifications-ora">
+                            ORA
+                        </span>
+
+                    </div>
+
+                    <div class="notifications-tagline">
+                        INVEST • GROW • EARN
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="mark-all-button"
+                    id="markAllButton"
+                    type="button">
+
+                    Mark all
+
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             MAIN
+        ================================================== -->
+
+        <main class="notifications-container">
+
+
+            <section class="notifications-intro">
+
+                <div>
+
+                    <div class="section-kicker">
+                        FINORA ACCOUNT
+                    </div>
+
+                    <h1>
+                        Notifications
+                    </h1>
+
+                    <p>
+                        Stay updated with your FINORA activity.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="unread-badge"
+                    id="unreadBadge">
+
+                    0 unread
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 NOTIFICATION LIST
+            ================================================== -->
+
+            <section
+                class="notification-list"
+                id="notificationList">
+
+                <div
+                    class="notification-loading"
+                    id="notificationLoading">
+
+                    Loading notifications...
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 EMPTY STATE
+            ================================================== -->
+
+            <section
+                class="notification-empty"
+                id="notificationEmpty"
+                style="display: none;">
+
+                <div class="empty-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+
+                        <path
+                            d="M18 8C18 4.686 15.314 2 12 2C8.686 2 6 4.686 6 8C6 15 3 15 3 17H21C21 15 18 15 18 8Z"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"/>
+
+                        <path
+                            d="M9.5 21C10.1 21.7 11 22 12 22C13 22 13.9 21.7 14.5 21"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
+
+                    </svg>
+
+                </div>
+
+
+                <h2>
+                    No notifications yet
+                </h2>
+
+
+                <p>
+                    Important updates about your FINORA account
+                    will appear here.
+                </p>
+
+            </section>
+
+
+        </main>
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer class="notifications-footer">
+
+            <div class="footer-brand">
+
+                <span class="fin">
+                    FIN
+                </span>
+
+                <span class="ora">
+                    ORA
+                </span>
+
+            </div>
+
+
+            <div class="footer-tagline">
+                INVEST • GROW • EARN
+            </div>
+
+
+            <p>
+                Your financial journey continues with FINORA.
+            </p>
+
+        </footer>
+
+
+    </div>
+
+
+    <script src="notifications.js"></script>
+
+</body>
+
+</html>
