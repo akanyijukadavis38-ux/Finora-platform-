@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#08050b">
+    <meta name="description" content="FINORA Administration Control Center">
+    <title>FINORA Admin Dashboard</title>
+
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+    <!-- =========================================================
+         ADMIN APPLICATION
+    ========================================================== -->
+    <div class="admin-app">
+
+        <!-- =====================================================
+             DESKTOP SIDEBAR
+        ====================================================== -->
+        <aside class="admin-sidebar" id="adminSidebar">
+
+            <div class="sidebar-brand">
+                <a href="admin.html" class="brand-link" aria-label="FINORA Admin Overview">
+                    <span class="brand-fin">FIN</span><span class="brand-ora">ORA</span>
+                </a>
+
+                <div class="brand-subtitle">
+                    ADMIN CONTROL CENTER
+                </div>
+            </div>
+
+            <nav class="sidebar-navigation" aria-label="Main administration navigation">
+
+                <div class="nav-section">
+                    <span class="nav-section-title">OVERVIEW</span>
+
+                    <a href="admin.html" class="sidebar-link active" data-page="overview">
+                        <span class="nav-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+                                <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                                <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+                                <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+                            </svg>
+                        </span>
+                        <span>Overview</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <span class="nav-section-title">MANAGEMENT</span>
+
+                    <a href="admin-users.html" class="sidebar-link" data-page="users">
+                        <span class="nav-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                        </span>
+                        <span>Users</span>
+                    </a>
+
+                    <a href="admin-finance.html" class="sidebar-link" data-page="finance">
+                        <span class="nav-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <rect x="3" y="5" width="18" height="15" rx="2"/>
+                                <path d="M16 14h.01"/>
+                                <path d="M3 9h18"/>
+                                <path d="M7 5V3"/>
+                                <path d="M17 5V3"/>
+                            </svg>
+                        </span>
+                        <span>Finance</span>
+                    </a>
+
+                    <a href="admin-records.html" class="sidebar-link" data-page="records">
+                        <span class="nav-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M6 3h12a2 2 0 0 1 2 2v16H4V5a2 2 0 0 1 2-2Z"/>
+                                <path d="M8 8h8"/>
+                                <path d="M8 12h8"/>
+                                <path d="M8 16h5"/>
+                            </svg>
+                        </span>
+                        <span>Records</span>
+                    </a>
+
+                    <a href="admin-referrals.html" class="sidebar-link" data-page="referrals">
+                        <span class="nav-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <circle cx="9" cy="8" r="3"/>
+                                <circle cx="17" cy="9" r="2.5"/>
+                                <path d="M3 20a6 6 0 0 1 12 0"/>
+                                <path d="M14 17a5 5 0 0 1 7 3"/>
+                            </svg>
+                        </span>
+                        <span>Referrals</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <span class="nav-section-title">COMMUNICATION</span>
+
+                    <a href="admin-communications.html?tab=notifications"
+                       class="sidebar-link"
+                       data-page="communications">
+                        <span class="nav-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+                                <path d="M10 21h4"/>
+                            </svg>
+                        </span>
+                        <span>Communications</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <span class="nav-section-title">SYSTEM</span>
+
+                    <a href="admin-system.html" class="sidebar-link" data-page="system">
+                        <span class="nav-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M12 3v3"/>
+                                <path d="M12 18v3"/>
+                                <path d="m4.22 4.22 2.12 2.12"/>
+                                <path d="m17.66 17.66 2.12 2.12"/>
+                                <path d="M3 12h3"/>
+                                <path d="M18 12h3"/>
+                                <path d="m4.22 19.78 2.12-2.12"/>
+                                <path d="m17.66 6.34 2.12-2.12"/>
+                                <circle cx="12" cy="12" r="4"/>
+                            </svg>
+                        </span>
+                        <span>System</span>
+                    </a>
+
+                    <a href="admin-account.html" class="sidebar-link" data-page="account">
+                        <span class="nav-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="8" r="4"/>
+                                <path d="M4 21a8 8 0 0 1 16 0"/>
+                            </svg>
+                        </span>
+                        <span>Admin Account</span>
+                    </a>
+                </div>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <div class="sidebar-security">
+                    <span class="security-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M12 3 5 6v5c0 4.5 2.9 8.6 7 10 4.1-1.4 7-5.5 7-10V6l-7-3Z"/>
+                            <path d="m9 12 2 2 4-4"/>
+                        </svg>
+                    </span>
+
+                    <div>
+                        <strong>Secure Session</strong>
+                        <span>Administrator access</span>
+                    </div>
+                </div>
+
+                <button type="button" class="sidebar-logout" id="sidebarLogout">
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M10 17l5-5-5-5"/>
+                            <path d="M15 12H3"/>
+                            <path d="M21 3v18"/>
+                        </svg>
+                    </span>
+                    <span>Logout</span>
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =====================================================
+             MAIN AREA
+        ====================================================== -->
+        <div class="admin-main-area">
+
+            <!-- =================================================
+                 TOP HEADER
+            ================================================== -->
+            <header class="admin-header">
+
+                <div class="header-left">
+
+                    <button
+                        type="button"
+                        class="mobile-menu-button"
+                        id="mobileMenuButton"
+                        aria-label="Open administration menu"
+                        aria-expanded="false">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+
+                    <div class="header-page-label">
+                        <span class="header-overline">FINORA ADMIN</span>
+                        <strong>Control Center</strong>
+                    </div>
+
+                </div>
+
+                <div class="header-right">
+
+                    <div class="header-live-status" id="headerLiveStatus">
+                        <span class="live-dot"></span>
+                        <span>Live</span>
+                    </div>
+
+                    <a
+                        href="admin-communications.html?tab=notifications"
+                        class="header-icon-button"
+                        aria-label="Open notifications">
+
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+                            <path d="M10 21h4"/>
+                        </svg>
+
+                        <span class="header-notification-badge"
+                              id="headerNotificationBadge"
+                              hidden>0</span>
+                    </a>
+
+                    <a href="admin-account.html" class="admin-profile-button">
+
+                        <span class="admin-avatar">DT</span>
+
+                        <span class="admin-profile-info">
+                            <strong id="adminName">Admin</strong>
+                            <small>Administrator</small>
+                        </span>
+
+                        <svg class="profile-chevron"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             aria-hidden="true">
+                            <path d="m6 9 6 6 6-6"/>
+                        </svg>
+
+                    </a>
+
+                </div>
+
+            </header>
+
+
+            <!-- ================================================
+                 PAGE CONTENT
+            ================================================= -->
+            <main class="admin-content">
+
+                <!-- ============================================
+                     PAGE INTRO
+                ============================================= -->
+                <section class="page-introduction">
+
+                    <div class="page-introduction-text">
+                        <span class="page-eyebrow">FINORA PLATFORM</span>
+
+                        <h1>Overview</h1>
+
+                        <p>
+                            Monitor users, money movement, investments,
+                            earnings and platform activity from one place.
+                        </p>
+                    </div>
+
+                    <div class="page-actions">
+
+                        <div class="last-updated" id="lastUpdated">
+                            <span class="update-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M3 12a9 9 0 1 0 3-6.7"/>
+                                    <path d="M3 4v6h6"/>
+                                </svg>
+                            </span>
+
+                            <span>
+                                <small>Last updated</small>
+                                <strong id="lastUpdatedText">Loading...</strong>
+                            </span>
+                        </div>
+
+                        <button
+                            type="button"
+                            class="refresh-button"
+                            id="refreshDashboard">
+
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M3 12a9 9 0 1 0 3-6.7"/>
+                                <path d="M3 4v6h6"/>
+                                <path d="M21 12a9 9 0 1 0-3 6.7"/>
+                                <path d="M21 20v-6h-6"/>
+                            </svg>
+
+                            <span>Refresh</span>
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ============================================
+                     PENDING ACTIVITY
+                     IMPORTANT: KEPT NEAR TOP
+                ============================================= -->
+                <section class="dashboard-section pending-section">
+
+                    <div class="section-heading">
+                        <div>
+                            <span class="section-kicker">ACTION REQUIRED</span>
+                            <h2>Pending Activity</h2>
+                            <p>Items currently waiting for administrator review.</p>
+                        </div>
+
+                        <span class="section-live-indicator">
+                            <span></span>
+                            Updates live
+                        </span>
+                    </div>
+
+
+                    <div class="pending-grid">
+
+                        <a
+                            href="admin-finance.html?tab=deposits&status=pending"
+                            class="pending-card pending-deposit">
+
+                            <div class="pending-card-top">
+
+                                <div class="pending-icon">
+                                    <svg viewBox="0 0 24 24" fill="none">
+                                        <path d="M12 3v14"/>
+                                        <path d="m7 8 5-5 5 5"/>
+                                        <path d="M5 13v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/>
+                                    </svg>
+                                </div>
+
+                                <span class="pending-arrow">
+                                    <svg viewBox="0 0 24 24" fill="none">
+                                        <path d="M5 12h14"/>
+                                        <path d="m13 6 6 6-6 6"/>
+                                    </svg>
+                                </span>
+
+                            </div>
+
+                            <div class="pending-card-content">
+                                <span>Pending Deposits</span>
+
+                                <strong id="pendingDepositsCount">—</strong>
+
+                                <p>
+                                    Mobile-money deposits awaiting approval
+                                </p>
+                            </div>
+
+                            <div class="pending-card-footer">
+                                <span>Review deposits</span>
+                                <span class="pending-status">Requires action</span>
+                            </div>
+
+                        </a>
+
+
+                        <a
+                            href="admin-finance.html?tab=withdrawals&status=pending"
+                            class="pending-card pending-withdrawal">
+
+                            <div class="pending-card-top">
+
+                                <div class="pending-icon">
+                                    <svg viewBox="0 0 24 24" fill="none">
+                                        <path d="M12 21V7"/>
+                                        <path d="m17 16-5 5-5-5"/>
+                                        <path d="M5 11V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v5"/>
+                                    </svg>
+                                </div>
+
+                                <span class="pending-arrow">
+                                    <svg viewBox="0 0 24 24" fill="none">
+                                        <path d="M5 12h14"/>
+                                        <path d="m13 6 6 6-6 6"/>
+                                    </svg>
+                                </span>
+
+                            </div>
+
+                            <div class="pending-card-content">
+                                <span>Pending Withdrawals</span>
+
+                                <strong id="pendingWithdrawalsCount">—</strong>
+
+                                <p>
+                                    Withdrawal requests awaiting approval
+                                </p>
+                            </div>
+
+                            <div class="pending-card-footer">
+                                <span>Review withdrawals</span>
+                                <span class="pending-status">Requires action</span>
+                            </div>
+
+                        </a>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ============================================
+                     USERS
+                ============================================= -->
+                <section class="dashboard-section">
+
+                    <div class="section-heading">
+                        <div>
+                            <span class="section-kicker">USER OVERVIEW</span>
+                            <h2>Users</h2>
+                            <p>A live view of the FINORA user base.</p>
+                        </div>
+
+                        <a href="admin-users.html" class="section-link">
+                            Manage users
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M5 12h14"/>
+                                <path d="m13 6 6 6-6 6"/>
+                            </svg>
+                        </a>
+                    </div>
+
+
+                    <div class="stats-grid users-stats">
+
+                        <a href="admin-users.html" class="stat-card">
+
+                            <div class="stat-card-icon">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="9" cy="7" r="4"/>
+                                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                </svg>
+                            </div>
+
+                            <div class="stat-card-body">
+                                <span>Total Users</span>
+                                <strong id="totalUsers">—</strong>
+                                <small>Registered accounts</small>
+                            </div>
+
+                            <span class="stat-card-arrow">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M5 12h14"/>
+                                    <path d="m13 6 6 6-6 6"/>
+                                </svg>
+                            </span>
+
+                        </a>
+
+
+                        <a
+                            href="admin-users.html?filter=active"
+                            class="stat-card">
+
+                            <div class="stat-card-icon">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <circle cx="12" cy="12" r="8"/>
+                                    <path d="m8.5 12 2.3 2.3 4.7-5"/>
+                                </svg>
+                            </div>
+
+                            <div class="stat-card-body">
+                                <span>Active Users</span>
+                                <strong id="activeUsers">—</strong>
+                                <small>Active accounts</small>
+                            </div>
+
+                            <span class="stat-card-arrow">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M5 12h14"/>
+                                    <path d="m13 6 6 6-6 6"/>
+                                </svg>
+                            </span>
+
+                        </a>
+
+
+                        <a
+                            href="admin-users.html?filter=frozen"
+                            class="stat-card">
+
+                            <div class="stat-card-icon">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <rect x="5" y="10" width="14" height="10" rx="2"/>
+                                    <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+                                    <path d="M12 14v2"/>
+                                </svg>
+                            </div>
+
+                            <div class="stat-card-body">
+                                <span>Frozen Users</span>
+                                <strong id="frozenUsers">—</strong>
+                                <small>Restricted accounts</small>
+                            </div>
+
+                            <span class="stat-card-arrow">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M5 12h14"/>
+                                    <path d="m13 6 6 6-6 6"/>
+                                </svg>
+                            </span>
+
+                        </a>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ============================================
+                     FINANCE
+                ============================================= -->
+                <section class="dashboard-section finance-section">
+
+                    <div class="section-heading">
+                        <div>
+                            <span class="section-kicker">FINANCIAL OVERVIEW</span>
+                            <h2>Platform Finance</h2>
+                            <p>Track the movement of funds across FINORA.</p>
+                        </div>
+
+                        <a href="admin-finance.html" class="section-link">
+                            Open finance
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M5 12h14"/>
+                                <path d="m13 6 6 6-6 6"/>
+                            </svg>
+                        </a>
+                    </div>
+
+
+                    <div class="stats-grid finance-stats">
+
+                        <a
+                            href="admin-finance.html?tab=deposits"
+                            class="stat-card financial-card">
+
+                            <div class="stat-card-icon">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M12 3v14"/>
+                                    <path d="m7 8 5-5 5 5"/>
+                                    <path d="M5 13v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/>
+                                </svg>
+                            </div>
+
+                            <div class="stat-card-body">
+                                <span>Total Deposited</span>
+                                <strong id="totalDeposited">—</strong>
+                                <small>Approved deposits</small>
+                            </div>
+
+                            <span class="stat-card-arrow">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M5 12h14"/>
+                                    <path d="m13 6 6 6-6 6"/>
+                                </svg>
+                            </span>
+
+                        </a>
+
+
+                        <a
+                            href="admin-finance.html?tab=withdrawals"
+                            class="stat-card financial-card">
+
+                            <div class="stat-card-icon">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M12 21V7"/>
+                                    <path d="m17 16-5 5-5-5"/>
+                                    <path d="M5 11V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v5"/>
+                                </svg>
+                            </div>
+
+                            <div class="stat-card-body">
+                                <span>Total Withdrawn</span>
+                                <strong id="totalWithdrawn">—</strong>
+                                <small>Approved withdrawals</small>
+                            </div>
+
+                            <span class="stat-card-arrow">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M5 12h14"/>
+                                    <path d="m13 6 6 6-6 6"/>
+                                </svg>
+                            </span>
+
+                        </a>
+
+
+                        <a
+                            href="admin-finance.html?tab=investments"
+                            class="stat-card financial-card">
+
+                            <div class="stat-card-icon">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M4 19V5"/>
+                                    <path d="M4 19h16"/>
+                                    <path d="m7 15 4-4 3 2 5-6"/>
+                                    <path d="M15 7h4v4"/>
+                                </svg>
+                            </div>
+
+                            <div class="stat-card-body">
+                                <span>Total Invested</span>
+                                <strong id="totalInvested">—</strong>
+                                <small>Capital placed into investments</small>
+                            </div>
+
+                            <span class="stat-card-arrow">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M5 12h14"/>
+                                    <path d="m13 6 6 6-6 6"/>
+                                </svg>
+                            </span>
+
+                        </a>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ============================================
+                     EARNINGS
+                ============================================= -->
+                <section class="dashboard-section earnings-section">
+
+                    <div class="earnings-card">
+
+                        <div class="earnings-card-main">
+
+                            <div class="earnings-icon">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M12 3v18"/>
+                                    <path d="M17 7.5c0-2-2.2-3.5-5-3.5S7 5.5 7 7.5 9.2 11 12 11s5 1.5 5 3.5-2.2 3.5-5 3.5-5-1.5-5-3.5"/>
+                                </svg>
+                            </div>
+
+                            <div>
+                                <span>Total Earnings Credited</span>
+
+                                <strong id="totalEarningsCredited">—</strong>
+
+                                <p>
+                                    Earnings credited to user wallets by the platform.
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <a
+                            href="admin-records.html?tab=transactions"
+                            class="earnings-action">
+
+                            View transactions
+
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M5 12h14"/>
+                                <path d="m13 6 6 6-6 6"/>
+                            </svg>
+
+                        </a>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ============================================
+                     LOWER DASHBOARD
+                ============================================= -->
+                <div class="dashboard-two-column">
+
+                    <!-- RECENT ACTIVITY -->
+                    <section class="dashboard-panel activity-panel">
+
+                        <div class="panel-heading">
+
+                            <div>
+                                <span class="section-kicker">LATEST</span>
+                                <h2>Recent Activity</h2>
+                            </div>
+
+                            <a href="admin-records.html" class="panel-link">
+                                View all
+                            </a>
+
+                        </div>
+
+
+                        <div class="activity-list" id="recentActivityList">
+
+                            <div class="activity-loading">
+                                <span class="loading-spinner"></span>
+                                <span>Loading recent activity...</span>
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- SYSTEM STATUS -->
+                    <section class="dashboard-panel system-panel">
+
+                        <div class="panel-heading">
+
+                            <div>
+                                <span class="section-kicker">PLATFORM HEALTH</span>
+                                <h2>System Status</h2>
+                            </div>
+
+                            <a href="admin-system.html" class="panel-link">
+                                Open system
+                            </a>
+
+                        </div>
+
+
+                        <div class="system-status-list">
+
+                            <div class="system-status-item">
+
+                                <div class="system-status-icon">
+                                    <svg viewBox="0 0 24 24" fill="none">
+                                        <rect x="3" y="4" width="18" height="16" rx="2"/>
+                                        <path d="M7 8h10"/>
+                                        <path d="M7 12h6"/>
+                                        <path d="M7 16h3"/>
+                                    </svg>
+                                </div>
+
+                                <div class="system-status-info">
+                                    <strong>Server</strong>
+                                    <span id="serverStatusText">Checking...</span>
+                                </div>
+
+                                <span class="status-pill checking" id="serverStatusPill">
+                                    Checking
+                                </span>
+
+                            </div>
+
+
+                            <div class="system-status-item">
+
+                                <div class="system-status-icon">
+                                    <svg viewBox="0 0 24 24" fill="none">
+                                        <ellipse cx="12" cy="6" rx="8" ry="3"/>
+                                        <path d="M4 6v6c0 1.66 3.58 3 8 3s8-1.34 8-3V6"/>
+                                        <path d="M4 12v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/>
+                                    </svg>
+                                </div>
+
+                                <div class="system-status-info">
+                                    <strong>Database</strong>
+                                    <span id="databaseStatusText">Checking...</span>
+                                </div>
+
+                                <span class="status-pill checking" id="databaseStatusPill">
+                                    Checking
+                                </span>
+
+                            </div>
+
+
+                            <div class="system-status-item">
+
+                                <div class="system-status-icon">
+                                    <svg viewBox="0 0 24 24" fill="none">
+                                        <path d="M12 3 5 6v5c0 4.5 2.9 8.6 7 10 4.1-1.4 7-5.5 7-10V6l-7-3Z"/>
+                                        <path d="m9 12 2 2 4-4"/>
+                                    </svg>
+                                </div>
+
+                                <div class="system-status-info">
+                                    <strong>Authentication</strong>
+                                    <span id="authStatusText">Checking...</span>
+                                </div>
+
+                                <span class="status-pill checking" id="authStatusPill">
+                                    Checking
+                                </span>
+
+                            </div>
+
+
+                            <div class="system-status-item">
+
+                                <div class="system-status-icon">
+                                    <svg viewBox="0 0 24 24" fill="none">
+                                        <circle cx="12" cy="12" r="8"/>
+                                        <path d="M12 8v4l3 2"/>
+                                    </svg>
+                                </div>
+
+                                <div class="system-status-info">
+                                    <strong>Maintenance</strong>
+                                    <span id="maintenanceStatusText">Checking...</span>
+                                </div>
+
+                                <span class="status-pill checking" id="maintenanceStatusPill">
+                                    Checking
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <a href="admin-system.html" class="system-panel-footer">
+                            <span>View complete system status</span>
+
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M5 12h14"/>
+                                <path d="m13 6 6 6-6 6"/>
+                            </svg>
+                        </a>
+
+                    </section>
+
+                </div>
+
+
+                <!-- ============================================
+                     MANAGEMENT SHORTCUTS
+                ============================================= -->
+                <section class="dashboard-section shortcuts-section">
+
+                    <div class="section-heading">
+                        <div>
+                            <span class="section-kicker">QUICK ACCESS</span>
+                            <h2>Management</h2>
+                            <p>Open any major administration area directly.</p>
+                        </div>
+                    </div>
+
+
+                    <div class="shortcut-grid">
+
+                        <a href="admin-users.html" class="shortcut-card">
+                            <span class="shortcut-icon">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <circle cx="9" cy="8" r="3"/>
+                                    <circle cx="17" cy="9" r="2.5"/>
+                                    <path d="M3 20a6 6 0 0 1 12 0"/>
+                                    <path d="M14 17a5 5 0 0 1 7 3"/>
+                                </svg>
+                            </span>
+                            <span>
+                                <strong>Users</strong>
+                                <small>Accounts & controls</small>
+                            </span>
+                            <svg class="shortcut-arrow" viewBox="0 0 24 24" fill="none">
+                                <path d="M5 12h14"/>
+                                <path d="m13 6 6 6-6 6"/>
+                            </svg>
+                        </a>
+
+
+                        <a href="admin-finance.html" class="shortcut-card">
+                            <span class="shortcut-icon">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <rect x="3" y="5" width="18" height="15" rx="2"/>
+                                    <path d="M3 9h18"/>
+                                    <path d="M16 14h.01"/>
+                                </svg>
+                            </span>
+                            <span>
+                                <strong>Finance</strong>
+                                <small>Deposits & withdrawals</small>
+                            </span>
+                            <svg class="shortcut-arrow" viewBox="0 0 24 24" fill="none">
+                                <path d="M5 12h14"/>
+                                <path d="m13 6 6 6-6 6"/>
+                            </svg>
+                        </a>
+
+
+                        <a href="admin-records.html" class="shortcut-card">
+                            <span class="shortcut-icon">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M6 3h12a2 2 0 0 1 2 2v16H4V5a2 2 0 0 1 2-2Z"/>
+                                    <path d="M8 8h8"/>
+                                    <path d="M8 12h8"/>
+                                    <path d="M8 16h5"/>
+                                </svg>
+                            </span>
+                            <span>
+                                <strong>Records</strong>
+                                <small>Platform history</small>
+                            </span>
+                            <svg class="shortcut-arrow" viewBox="0 0 24 24" fill="none">
+                                <path d="M5 12h14"/>
+                                <path d="m13 6 6 6-6 6"/>
+                            </svg>
+                        </a>
+
+
+                        <a href="admin-referrals.html" class="shortcut-card">
+                            <span class="shortcut-icon">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <circle cx="9" cy="8" r="3"/>
+                                    <path d="M3 20a6 6 0 0 1 12 0"/>
+                                    <path d="M17 5v6"/>
+                                    <path d="M14 8h6"/>
+                                </svg>
+                            </span>
+                            <span>
+                                <strong>Referrals</strong>
+                                <small>Referral activity</small>
+                            </span>
+                            <svg class="shortcut-arrow" viewBox="0 0 24 24" fill="none">
+                                <path d="M5 12h14"/>
+                                <path d="m13 6 6 6-6 6"/>
+                            </svg>
+                        </a>
+
+
+                        <a href="admin-communications.html?tab=notifications" class="shortcut-card">
+                            <span class="shortcut-icon">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+                                    <path d="M10 21h4"/>
+                                </svg>
+                            </span>
+                            <span>
+                                <strong>Communications</strong>
+                                <small>Notifications & announcements</small>
+                            </span>
+                            <svg class="shortcut-arrow" viewBox="0 0 24 24" fill="none">
+                                <path d="M5 12h14"/>
+                                <path d="m13 6 6 6-6 6"/>
+                            </svg>
+                        </a>
+
+
+                        <a href="admin-system.html" class="shortcut-card">
+                            <span class="shortcut-icon">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M12 3v3"/>
+                                    <path d="M12 18v3"/>
+                                    <path d="m4.22 4.22 2.12 2.12"/>
+                                    <path d="m17.66 17.66 2.12 2.12"/>
+                                    <path d="M3 12h3"/>
+                                    <path d="M18 12h3"/>
+                                    <circle cx="12" cy="12" r="4"/>
+                                </svg>
+                            </span>
+                            <span>
+                                <strong>System</strong>
+                                <small>Status & audit logs</small>
+                            </span>
+                            <svg class="shortcut-arrow" viewBox="0 0 24 24" fill="none">
+                                <path d="M5 12h14"/>
+                                <path d="m13 6 6 6-6 6"/>
+                            </svg>
+                        </a>
+
+
+                        <a href="admin-account.html" class="shortcut-card">
+                            <span class="shortcut-icon">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <circle cx="12" cy="8" r="4"/>
+                                    <path d="M4 21a8 8 0 0 1 16 0"/>
+                                </svg>
+                            </span>
+                            <span>
+                                <strong>Admin Account</strong>
+                                <small>Account & security</small>
+                            </span>
+                            <svg class="shortcut-arrow" viewBox="0 0 24 24" fill="none">
+                                <path d="M5 12h14"/>
+                                <path d="m13 6 6 6-6 6"/>
+                            </svg>
+                        </a>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ============================================
+                     ADMIN INFORMATION BANNER
+                ============================================= -->
+                <section class="admin-information-banner">
+
+                    <div class="information-icon">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="9"/>
+                            <path d="M12 10v6"/>
+                            <path d="M12 7h.01"/>
+                        </svg>
+                    </div>
+
+                    <div class="information-content">
+                        <strong>FINORA Administration</strong>
+                        <p>
+                            Financial actions require proper review and
+                            authorization. All important administrative
+                            activity is recorded for platform accountability.
+                        </p>
+                    </div>
+
+                    <a href="admin-system.html?tab=audit" class="information-link">
+                        View audit logs
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M5 12h14"/>
+                            <path d="m13 6 6 6-6 6"/>
+                        </svg>
+                    </a>
+
+                </section>
+
+            </main>
+
+
+            <!-- =================================================
+                 FOOTER
+            ================================================== -->
+            <footer class="admin-footer">
+
+                <div class="footer-brand">
+
+                    <a href="admin.html" class="footer-logo">
+                        <span class="brand-fin">FIN</span><span class="brand-ora">ORA</span>
+                    </a>
+
+                    <p>
+                        INVEST • GROW • EARN
+                    </p>
+
+                </div>
+
+
+                <div class="footer-navigation">
+
+                    <a href="admin.html">Overview</a>
+                    <a href="admin-users.html">Users</a>
+                    <a href="admin-finance.html">Finance</a>
+                    <a href="admin-records.html">Records</a>
+                    <a href="admin-system.html">System</a>
+                    <a href="admin-account.html">Security</a>
+
+                </div>
+
+
+                <div class="footer-meta">
+
+                    <span>
+                        FINORA Administration
+                    </span>
+
+                    <span class="footer-divider"></span>
+
+                    <span>
+                        <span id="footerYear"></span> FINORA
+                    </span>
+
+                </div>
+
+            </footer>
+
+        </div>
+
+
+        <!-- =====================================================
+             MOBILE OVERLAY
+        ====================================================== -->
+        <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay"></div>
+
+
+        <!-- =====================================================
+             MOBILE BOTTOM NAVIGATION
+        ====================================================== -->
+        <nav class="mobile-bottom-navigation" aria-label="Mobile administration navigation">
+
+            <a href="admin.html" class="mobile-nav-link active" data-page="overview">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+                    <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                    <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+                    <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+                </svg>
+                <span>Overview</span>
+            </a>
+
+
+            <a href="admin-users.html" class="mobile-nav-link" data-page="users">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <circle cx="9" cy="8" r="3"/>
+                    <path d="M3 20a6 6 0 0 1 12 0"/>
+                    <circle cx="17" cy="9" r="2.5"/>
+                </svg>
+                <span>Users</span>
+            </a>
+
+
+            <a href="admin-finance.html" class="mobile-nav-link" data-page="finance">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="5" width="18" height="15" rx="2"/>
+                    <path d="M3 9h18"/>
+                    <path d="M16 14h.01"/>
+                </svg>
+                <span>Finance</span>
+            </a>
+
+
+            <a href="admin-records.html" class="mobile-nav-link" data-page="records">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M6 3h12a2 2 0 0 1 2 2v16H4V5a2 2 0 0 1 2-2Z"/>
+                    <path d="M8 8h8"/>
+                    <path d="M8 12h8"/>
+                    <path d="M8 16h5"/>
+                </svg>
+                <span>Records</span>
+            </a>
+
+
+            <a href="admin-account.html" class="mobile-nav-link" data-page="account">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M4 21a8 8 0 0 1 16 0"/>
+                </svg>
+                <span>Account</span>
+            </a>
+
+        </nav>
+
+    </div>
+
+
+    <!-- =========================================================
+         GLOBAL NOTIFICATION / MESSAGE AREA
+    ========================================================== -->
+    <div
+        class="admin-toast-container"
+        id="adminToastContainer"
+        aria-live="polite"
+        aria-atomic="true">
+    </div>
+
+
+    <!-- =========================================================
+         DASHBOARD SCRIPT
+    ========================================================== -->
+    <script src="admin.js" defer></script>
+
+</body>
+</html>
