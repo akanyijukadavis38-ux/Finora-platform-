@@ -229,7 +229,722 @@
     </div>
 
 
-    <script src="notifications.js"></script>
+    <!-- =====================================================
+         FINORA NOTIFICATIONS JAVASCRIPT
+    ====================================================== -->
+
+    <script>
+
+        /* =================================================
+           FINORA API
+        ================================================= */
+
+        const FINORA_API =
+            "https://finora-platform.onrender.com";
+
+
+        const notificationList =
+            document.getElementById(
+                "notificationList"
+            );
+
+        const notificationLoading =
+            document.getElementById(
+                "notificationLoading"
+            );
+
+        const notificationEmpty =
+            document.getElementById(
+                "notificationEmpty"
+            );
+
+        const unreadBadge =
+            document.getElementById(
+                "unreadBadge"
+            );
+
+        const markAllButton =
+            document.getElementById(
+                "markAllButton"
+            );
+
+        const backButton =
+            document.getElementById(
+                "backButton"
+            );
+
+
+        /* =================================================
+           DATE FORMAT
+        ================================================= */
+
+        function formatNotificationTime(
+            dateValue
+        ) {
+
+            if (!dateValue) {
+                return "";
+            }
+
+
+            const date =
+                new Date(dateValue);
+
+
+            if (
+                Number.isNaN(
+                    date.getTime()
+                )
+            ) {
+
+                return "";
+            }
+
+
+            return date.toLocaleString(
+                "en-UG",
+                {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                    hour: "numeric",
+                    minute: "2-digit"
+                }
+            );
+        }
+
+
+        /* =================================================
+           NOTIFICATION ICON
+        ================================================= */
+
+        function getNotificationIcon(
+            type
+        ) {
+
+            const normalizedType =
+                String(
+                    type || ""
+                ).toLowerCase();
+
+
+            if (
+                normalizedType.includes(
+                    "deposit"
+                )
+            ) {
+
+                return `
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+
+                        <path
+                            d="M12 3V21"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
+
+                        <path
+                            d="M17 7.5C17 5.84 14.76 4.5 12 4.5C9.24 4.5 7 5.84 7 7.5C7 9.16 9.24 10.5 12 10.5C14.76 10.5 17 11.84 17 13.5C17 15.16 14.76 16.5 12 16.5C9.24 16.5 7 15.16 7 13.5"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
+
+                    </svg>
+                `;
+            }
+
+
+            if (
+                normalizedType.includes(
+                    "withdraw"
+                )
+            ) {
+
+                return `
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+
+                        <path
+                            d="M12 3V21"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
+
+                        <path
+                            d="M17 7.5C17 5.84 14.76 4.5 12 4.5C9.24 4.5 7 5.84 7 7.5C7 9.16 9.24 10.5 12 10.5C14.76 10.5 17 11.84 17 13.5C17 15.16 14.76 16.5 14.76 16.5C14.76 16.5 9.24 16.5 9.24 16.5C7 16.5 7 15.16 7 13.5"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
+
+                    </svg>
+                `;
+            }
+
+
+            if (
+                normalizedType.includes(
+                    "earning"
+                ) ||
+                normalizedType.includes(
+                    "daily"
+                )
+            ) {
+
+                return `
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+
+                        <path
+                            d="M4 19V5"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
+
+                        <path
+                            d="M4 19H20"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
+
+                        <path
+                            d="M7 15L10 11L13 13L18 7"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"/>
+
+                    </svg>
+                `;
+            }
+
+
+            if (
+                normalizedType.includes(
+                    "referral"
+                ) ||
+                normalizedType.includes(
+                    "team"
+                ) ||
+                normalizedType.includes(
+                    "commission"
+                )
+            ) {
+
+                return `
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+
+                        <circle
+                            cx="9"
+                            cy="8"
+                            r="3"
+                            stroke="currentColor"
+                            stroke-width="1.8"/>
+
+                        <path
+                            d="M3.5 20C3.5 16.96 5.96 14.5 9 14.5C12.04 14.5 14.5 16.96 14.5 20"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
+
+                        <path
+                            d="M16 5.5C17.93 5.98 19.5 7.74 19.5 9.8C19.5 11.86 17.93 13.62 16 14.1"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
+
+                        <path
+                            d="M17 17C19.32 17.66 21 18.77 21 20"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
+
+                    </svg>
+                `;
+            }
+
+
+            if (
+                normalizedType.includes(
+                    "investment"
+                )
+            ) {
+
+                return `
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+
+                        <path
+                            d="M4 19V5"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
+
+                        <path
+                            d="M4 19H20"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
+
+                        <path
+                            d="M7 15L10 11L13 13L18 7"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"/>
+
+                    </svg>
+                `;
+            }
+
+
+            return `
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+
+                    <path
+                        d="M18 8C18 4.686 15.314 2 12 2C8.686 2 6 4.686 6 8C6 15 3 15 3 17H21C21 15 18 15 18 8Z"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"/>
+
+                    <path
+                        d="M9.5 21C10.1 21.7 11 22 12 22C13 22 13.9 21.7 14.5 21"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"/>
+
+                </svg>
+            `;
+        }
+
+
+        /* =================================================
+           UPDATE UNREAD COUNT
+        ================================================= */
+
+        function updateUnreadDisplay(
+            count
+        ) {
+
+            const unreadCount =
+                Number(count) || 0;
+
+
+            unreadBadge.textContent =
+                `${unreadCount} unread`;
+        }
+
+
+        /* =================================================
+           CREATE NOTIFICATION CARD
+        ================================================= */
+
+        function createNotificationCard(
+            notification
+        ) {
+
+            const card =
+                document.createElement(
+                    "article"
+                );
+
+
+            card.className =
+                `notification-card ${
+                    notification.isRead
+                        ? "read"
+                        : "unread"
+                }`;
+
+
+            const icon =
+                document.createElement(
+                    "div"
+                );
+
+            icon.className =
+                "notification-icon";
+
+            icon.innerHTML =
+                getNotificationIcon(
+                    notification.type
+                );
+
+
+            const content =
+                document.createElement(
+                    "div"
+                );
+
+            content.className =
+                "notification-content";
+
+
+            const title =
+                document.createElement(
+                    "div"
+                );
+
+            title.className =
+                "notification-title";
+
+            title.textContent =
+                notification.title ||
+                "FINORA Notification";
+
+
+            const message =
+                document.createElement(
+                    "p"
+                );
+
+            message.className =
+                "notification-message";
+
+            message.textContent =
+                notification.message || "";
+
+
+            const time =
+                document.createElement(
+                    "div"
+                );
+
+            time.className =
+                "notification-time";
+
+            time.textContent =
+                formatNotificationTime(
+                    notification.createdAt
+                );
+
+
+            content.appendChild(title);
+            content.appendChild(message);
+            content.appendChild(time);
+
+
+            const actions =
+                document.createElement(
+                    "div"
+                );
+
+
+            actions.style.textAlign =
+                "right";
+
+
+            const status =
+                document.createElement(
+                    "div"
+                );
+
+            status.className =
+                "notification-status";
+
+
+            actions.appendChild(status);
+
+
+            if (
+                !notification.isRead
+            ) {
+
+                const readButton =
+                    document.createElement(
+                        "button"
+                    );
+
+                readButton.type =
+                    "button";
+
+                readButton.className =
+                    "notification-read-button";
+
+                readButton.textContent =
+                    "Mark read";
+
+
+                readButton.addEventListener(
+                    "click",
+                    () => {
+
+                        markNotificationAsRead(
+                            notification._id,
+                            card
+                        );
+
+                    }
+                );
+
+
+                actions.appendChild(
+                    readButton
+                );
+            }
+
+
+            card.appendChild(icon);
+            card.appendChild(content);
+            card.appendChild(actions);
+
+
+            return card;
+        }
+
+
+        /* =================================================
+           LOAD NOTIFICATIONS
+        ================================================= */
+
+        async function loadNotifications() {
+
+            try {
+
+                notificationLoading.style.display =
+                    "block";
+
+                notificationEmpty.style.display =
+                    "none";
+
+
+                const response =
+                    await fetch(
+                        `${FINORA_API}/api/notifications`,
+                        {
+                            method: "GET",
+                            credentials: "include"
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+                        data.message ||
+                        "Could not load notifications."
+                    );
+                }
+
+
+                notificationList.innerHTML =
+                    "";
+
+
+                updateUnreadDisplay(
+                    data.unreadCount
+                );
+
+
+                if (
+                    !data.notifications ||
+                    data.notifications.length === 0
+                ) {
+
+                    notificationEmpty.style.display =
+                        "block";
+
+                    return;
+                }
+
+
+                data.notifications.forEach(
+                    (notification) => {
+
+                        notificationList.appendChild(
+                            createNotificationCard(
+                                notification
+                            )
+                        );
+
+                    }
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "❌ FINORA NOTIFICATIONS ERROR:",
+                    error
+                );
+
+
+                notificationList.innerHTML = `
+                    <div class="notification-loading">
+                        Unable to load notifications right now.
+                        Please try again.
+                    </div>
+                `;
+
+            } finally {
+
+                notificationLoading.style.display =
+                    "none";
+            }
+        }
+
+
+        /* =================================================
+           MARK ONE NOTIFICATION AS READ
+        ================================================= */
+
+        async function markNotificationAsRead(
+            notificationId,
+            card
+        ) {
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${FINORA_API}/api/notifications/${notificationId}/read`,
+                        {
+                            method: "PATCH",
+                            credentials: "include"
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+                        data.message ||
+                        "Could not mark notification as read."
+                    );
+                }
+
+
+                card.classList.remove(
+                    "unread"
+                );
+
+                card.classList.add(
+                    "read"
+                );
+
+
+                const button =
+                    card.querySelector(
+                        ".notification-read-button"
+                    );
+
+
+                if (button) {
+                    button.remove();
+                }
+
+
+                await loadNotifications();
+
+            } catch (error) {
+
+                console.error(
+                    "❌ FINORA MARK READ ERROR:",
+                    error
+                );
+            }
+        }
+
+
+        /* =================================================
+           MARK ALL AS READ
+        ================================================= */
+
+        markAllButton.addEventListener(
+            "click",
+            async () => {
+
+                try {
+
+                    const response =
+                        await fetch(
+                            `${FINORA_API}/api/notifications/read-all`,
+                            {
+                                method: "PATCH",
+                                credentials: "include"
+                            }
+                        );
+
+
+                    const data =
+                        await response.json();
+
+
+                    if (
+                        !response.ok ||
+                        !data.success
+                    ) {
+
+                        throw new Error(
+                            data.message ||
+                            "Could not mark notifications as read."
+                        );
+                    }
+
+
+                    await loadNotifications();
+
+                } catch (error) {
+
+                    console.error(
+                        "❌ FINORA MARK ALL ERROR:",
+                        error
+                    );
+                }
+            }
+        );
+
+
+        /* =================================================
+           BACK TO DASHBOARD
+        ================================================= */
+
+        backButton.addEventListener(
+            "click",
+            () => {
+
+                window.location.href =
+                    "dashboard.html";
+
+            }
+        );
+
+
+        /* =================================================
+           START NOTIFICATIONS
+        ================================================= */
+
+        loadNotifications();
+
+    </script>
 
 </body>
 
