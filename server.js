@@ -245,6 +245,24 @@ app.use(
     adminRoutes
 );
 app.get(
+    "/admin-login.html",
+    (req, res) => {
+        res.sendFile(
+            path.join(__dirname, "admin-login.html")
+        );
+    }
+);
+
+app.get(
+    "/admin-login.css",
+    (req, res) => {
+        res.sendFile(
+            path.join(__dirname, "admin-login.css")
+        );
+    }
+);
+
+app.get(
     "/admin.html",
     requireAdmin,
     (req, res) => {
@@ -253,6 +271,8 @@ app.get(
         );
     }
 );
+
+
 /* =========================================================
    CURRENT USER
 
