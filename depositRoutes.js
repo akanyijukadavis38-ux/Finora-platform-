@@ -1,8 +1,9 @@
 const express = require("express");
-
 const Deposit = require("./Deposit");
 const Transaction = require("./Transaction");
 const User = require("./user");
+const Notification = require("./Notification");
+
 
 const router = express.Router();
 
@@ -315,7 +316,27 @@ router.post(
                     relatedId:
                         deposit._id
                 });
+/* -----------------------------------------
+   CREATE DEPOSIT SUBMISSION NOTIFICATION
+----------------------------------------- */
 
+await Notification.create({
+
+    userId:
+        user._id,
+
+    type:
+        "deposit_submitted",
+
+    title:
+        "Deposit Submitted",
+
+    message:
+        `Your UGX ${amount.toLocaleString()} deposit has been submitted and is pending verification.`,
+
+    isRead:
+        false
+});
 
             /* -----------------------------------------
                SUCCESS
