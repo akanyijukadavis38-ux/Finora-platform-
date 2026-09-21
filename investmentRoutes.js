@@ -4,6 +4,7 @@ const router = express.Router();
 const User = require("./user");
 const Investment = require("./investment");
 const Transaction = require("./Transaction");
+const Notification = require("./Notification");
 
 
 /* =========================================================
@@ -355,7 +356,33 @@ router.post(
                     await transaction.save({
                         session
                     });
+/* =========================================
+   CREATE INVESTMENT NOTIFICATION
+========================================= */
 
+const notification =
+    new Notification({
+
+        userId:
+            user._id,
+
+        type:
+            "investment_created",
+
+        title:
+            "Investment Created",
+
+        message:
+            `Your UGX ${amount.toLocaleString()} investment has been created successfully and is now active.`,
+
+        isRead:
+            false
+    });
+
+
+await notification.save({
+    session
+});
 
                     createdInvestment =
                         investment;
