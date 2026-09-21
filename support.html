@@ -1287,29 +1287,155 @@
             }
 
 
-            /*
-             * SUPPORT FORM
-             *
-             * This is intentionally not pretending
-             * to submit to the backend yet.
-             */
+/*
+ * SUPPORT FORM
+ *
+ * Sends the authenticated user's support request
+ * to the FINORA backend.
+ */
 
-            if (supportRequestForm) {
+if (supportRequestForm) {
 
-                supportRequestForm.addEventListener(
-                    "submit",
-                    (event) => {
+    supportRequestForm.addEventListener(
+        "submit",
+        async (event) => {
 
-                        event.preventDefault();
+            event.preventDefault();
 
-                        showNotice(
-                            "The support form is designed. Backend ticket submission will be connected next."
-                        );
 
-                    }
+            const submitButton =
+                supportRequestForm.querySelector(
+                    ".submit-request-button"
                 );
 
+
+            const category =
+                document.getElementById(
+                    "supportCategory"
+                ).value.trim();
+
+
+            const subject =
+                document.getElementById(
+                    "supportSubject"
+                ).value.trim();
+
+
+            const message =
+                document.getElementById(
+                    "supportMessage"
+                ).value.trim();
+
+
+            if (!category || !subject || !message) {
+
+                showNotice(
+                    "Please complete all support request fields."
+                );
+
+                return;
             }
+
+
+            if (submitButton) {
+
+                submitButton.disabled = true;
+
+                submitButton.textContent =
+                    "Submitting...";
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "https://finora-platform.onrender.com/api/support",
+                        {
+                            method: "POST",
+
+                            credentials: "include",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json",
+
+                                "Accept":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    category:
+                                        category,
+
+                                    subject:
+                                        subject,
+
+                                    message:
+                                        message
+                                })
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.message ||
+                        "FINORA could not submit your support request."
+                    );
+                }
+
+
+                supportRequestForm.reset();
+
+
+                closeModal(
+                    requestModal
+                );
+
+
+                showNotice(
+                    data.message ||
+                    "Your FINORA support request has been submitted successfully."
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "❌ FINORA SUPPORT REQUEST ERROR:",
+                    error
+                );
+
+
+                showNotice(
+                    error.message ||
+                    "FINORA could not submit your support request."
+                );
+
+
+            } finally {
+
+                if (submitButton) {
+
+                    submitButton.disabled = false;
+
+                    submitButton.textContent =
+                        "Submit Request";
+                }
+
+            }
+
+        }
+    );
+
+}
 
 
             /*
