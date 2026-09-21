@@ -72,12 +72,19 @@ body {
     overflow-x: hidden;
 }
 
+body.modal-open {
+    overflow: hidden;
+}
+
 a {
     color: inherit;
     text-decoration: none;
 }
 
-button {
+button,
+input,
+select,
+textarea {
     font: inherit;
 }
 
@@ -390,6 +397,7 @@ button {
 ========================================================= */
 
 .support-card {
+    width: 100%;
     min-height: 94px;
 
     margin-bottom: 12px;
@@ -418,10 +426,17 @@ button {
     box-shadow:
         0 10px 35px rgba(0, 0, 0, 0.22);
 
+    color: var(--white);
+
     transition:
         transform 0.2s ease,
         border-color 0.2s ease,
         background 0.2s ease;
+}
+
+button.support-card {
+    text-align: left;
+    cursor: pointer;
 }
 
 .support-card:hover {
@@ -565,7 +580,8 @@ button {
 }
 
 .help-item {
-    min-height: 70px;
+    width: 100%;
+    min-height: 76px;
 
     padding: 12px 13px;
 
@@ -582,9 +598,16 @@ button {
     background:
         rgba(255, 255, 255, 0.025);
 
+    color: var(--white);
+
+    text-align: left;
+
+    cursor: pointer;
+
     transition:
         transform 0.2s ease,
-        border-color 0.2s ease;
+        border-color 0.2s ease,
+        background 0.2s ease;
 }
 
 .help-item:hover {
@@ -592,11 +615,14 @@ button {
 
     border-color:
         rgba(245, 166, 35, 0.28);
+
+    background:
+        rgba(245, 166, 35, 0.035);
 }
 
 .help-icon {
-    width: 38px;
-    height: 38px;
+    width: 46px;
+    height: 46px;
 
     flex: 0 0 auto;
 
@@ -604,19 +630,48 @@ button {
     align-items: center;
     justify-content: center;
 
-    border-radius: 12px;
+    border-radius: 14px;
 
     background:
-        rgba(245, 166, 35, 0.09);
+        rgba(245, 166, 35, 0.08);
 
     border:
         1px solid rgba(245, 166, 35, 0.17);
 
     color: var(--gold-light);
+}
 
-    font-size: 16px;
+.help-icon svg {
+    width: 25px;
+    height: 25px;
+}
 
-    font-weight: 700;
+.deposit-icon {
+    color: var(--gold-light);
+}
+
+.investment-icon {
+    color: var(--pink-light);
+
+    background:
+        rgba(234, 60, 255, 0.08);
+
+    border-color:
+        rgba(234, 60, 255, 0.18);
+}
+
+.withdrawal-icon {
+    color: var(--gold-light);
+}
+
+.referral-icon {
+    color: var(--pink-light);
+
+    background:
+        rgba(234, 60, 255, 0.08);
+
+    border-color:
+        rgba(234, 60, 255, 0.18);
 }
 
 .help-item > div:nth-child(2) {
@@ -630,7 +685,7 @@ button {
 
     color: var(--white);
 
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .help-item small {
@@ -851,6 +906,43 @@ button {
 
 
 /* =========================================================
+   FOOTER
+========================================================= */
+
+.support-footer {
+    padding-top: 42px;
+
+    text-align: center;
+}
+
+.footer-brand {
+    font-size: 24px;
+}
+
+.support-footer p {
+    margin-top: 5px;
+
+    color: var(--pink-light);
+
+    font-size: 7px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+.support-footer small {
+    display: block;
+
+    margin-top: 12px;
+
+    color: #706A76;
+
+    font-size: 8px;
+}
+
+
+/* =========================================================
    FLOATING WHATSAPP
 ========================================================= */
 
@@ -905,39 +997,435 @@ button {
 
 
 /* =========================================================
-   FOOTER
+   MODALS
 ========================================================= */
 
-.support-footer {
-    padding-top: 42px;
+.support-modal {
+    position: fixed;
 
-    text-align: center;
+    inset: 0;
+
+    z-index: 2000;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+
+    padding: 16px;
+
+    visibility: hidden;
+
+    opacity: 0;
+
+    transition:
+        opacity 0.22s ease,
+        visibility 0.22s ease;
 }
 
-.footer-brand {
-    font-size: 24px;
+.support-modal.open {
+    visibility: visible;
+
+    opacity: 1;
 }
 
-.support-footer p {
-    margin-top: 5px;
+.modal-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        rgba(0, 0, 0, 0.72);
+
+    backdrop-filter:
+        blur(5px);
+}
+
+.modal-panel {
+    width: 100%;
+    max-width: 570px;
+
+    max-height: 88vh;
+
+    overflow-y: auto;
+
+    position: relative;
+
+    padding: 24px 20px 20px;
+
+    border:
+        1px solid rgba(234, 60, 255, 0.22);
+
+    border-radius:
+        24px 24px 18px 18px;
+
+    background:
+        linear-gradient(
+            155deg,
+            #100914,
+            #08050b
+        );
+
+    box-shadow:
+        0 -10px 60px rgba(0, 0, 0, 0.6);
+
+    transform:
+        translateY(25px);
+
+    transition:
+        transform 0.25s ease;
+}
+
+.support-modal.open .modal-panel {
+    transform:
+        translateY(0);
+}
+
+.modal-close {
+    position: absolute;
+
+    top: 14px;
+    right: 14px;
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 11px;
+
+    background:
+        rgba(255, 255, 255, 0.04);
+
+    color: var(--muted);
+
+    font-size: 22px;
+
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    color: var(--white);
+
+    border-color:
+        rgba(234, 60, 255, 0.3);
+}
+
+.modal-icon {
+    width: 50px;
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 14px;
+
+    border-radius: 15px;
 
     color: var(--pink-light);
 
-    font-size: 7px;
+    background:
+        rgba(234, 60, 255, 0.09);
+
+    border:
+        1px solid rgba(234, 60, 255, 0.18);
+}
+
+.modal-icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+.modal-label {
+    color: var(--gold);
+
+    font-size: 8px;
 
     font-weight: 800;
 
-    letter-spacing: 2px;
+    letter-spacing: 1.8px;
 }
 
-.support-footer small {
-    display: block;
+.modal-panel h2 {
+    margin-top: 6px;
 
+    padding-right: 35px;
+
+    font-family:
+        "Times New Roman",
+        Times,
+        serif;
+
+    color: var(--white);
+
+    font-size: 23px;
+
+    line-height: 1.2;
+}
+
+.modal-content {
+    margin-top: 15px;
+}
+
+.modal-content p {
+    margin-bottom: 12px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+    line-height: 1.7;
+}
+
+.modal-content strong {
+    color: var(--white);
+}
+
+.modal-action {
+    width: 100%;
+
+    min-height: 46px;
+
+    margin-top: 8px;
+
+    border: 0;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--pink),
+            var(--pink-dark)
+        );
+
+    color: var(--white);
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 10px 25px rgba(234, 60, 255, 0.18);
+}
+
+
+/* =========================================================
+   SUPPORT REQUEST FORM
+========================================================= */
+
+.request-intro {
     margin-top: 12px;
 
-    color: #706A76;
+    color: var(--muted);
+
+    font-size: 10px;
+
+    line-height: 1.6;
+}
+
+.support-form {
+    margin-top: 18px;
+}
+
+.support-form label {
+    display: block;
+
+    margin:
+        13px 0 6px;
+
+    color: var(--gold-light);
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+}
+
+.support-form input,
+.support-form select,
+.support-form textarea {
+    width: 100%;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 13px;
+
+    background:
+        rgba(255, 255, 255, 0.035);
+
+    color: var(--white);
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.support-form input,
+.support-form select {
+    min-height: 45px;
+
+    padding:
+        0 13px;
+
+    font-size: 11px;
+}
+
+.support-form textarea {
+    min-height: 115px;
+
+    padding: 12px 13px;
+
+    resize: vertical;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+.support-form input::placeholder,
+.support-form textarea::placeholder {
+    color:
+        #706A76;
+}
+
+.support-form select {
+    appearance: none;
+
+    background-image:
+        linear-gradient(45deg, transparent 50%, #A7A0AE 50%),
+        linear-gradient(135deg, #A7A0AE 50%, transparent 50%);
+
+    background-position:
+        calc(100% - 17px) 19px,
+        calc(100% - 12px) 19px;
+
+    background-size:
+        5px 5px,
+        5px 5px;
+
+    background-repeat: no-repeat;
+}
+
+.support-form input:focus,
+.support-form select:focus,
+.support-form textarea:focus {
+    border-color:
+        rgba(234, 60, 255, 0.45);
+
+    background:
+        rgba(234, 60, 255, 0.035);
+}
+
+.form-note {
+    margin-top: 14px;
+
+    padding: 11px;
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 8px;
+
+    border:
+        1px solid rgba(245, 166, 35, 0.12);
+
+    border-radius: 12px;
+
+    background:
+        rgba(245, 166, 35, 0.035);
+}
+
+.form-note svg {
+    width: 17px;
+    height: 17px;
+
+    flex: 0 0 auto;
+
+    color: var(--gold-light);
+}
+
+.form-note span {
+    color: var(--muted);
 
     font-size: 8px;
+
+    line-height: 1.5;
+}
+
+.submit-request-button {
+    margin-top: 16px;
+}
+
+
+/* =========================================================
+   NOTICE
+========================================================= */
+
+.support-notice {
+    position: fixed;
+
+    left: 50%;
+
+    bottom: 94px;
+
+    z-index: 3000;
+
+    width:
+        calc(100% - 32px);
+
+    max-width: 470px;
+
+    padding:
+        13px 16px;
+
+    transform:
+        translate(-50%, 18px);
+
+    opacity: 0;
+
+    border:
+        1px solid rgba(234, 60, 255, 0.25);
+
+    border-radius: 14px;
+
+    background:
+        rgba(13, 9, 18, 0.97);
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.5);
+
+    color: var(--white);
+
+    text-align: center;
+
+    font-size: 10px;
+
+    line-height: 1.5;
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
+
+.support-notice.show {
+    opacity: 1;
+
+    transform:
+        translate(-50%, 0);
 }
 
 
@@ -1004,6 +1492,20 @@ button {
         font-size: 20px;
     }
 
+    .help-item {
+        min-height: 72px;
+    }
+
+    .help-icon {
+        width: 43px;
+        height: 43px;
+    }
+
+    .help-icon svg {
+        width: 23px;
+        height: 23px;
+    }
+
     .support-request {
         padding: 19px;
     }
@@ -1020,6 +1522,12 @@ button {
         width: 29px;
         height: 29px;
     }
+
+    .modal-panel {
+        padding:
+            22px 17px 18px;
+    }
+
 }
 
 
@@ -1049,4 +1557,14 @@ button {
     .support-hero h1 {
         font-size: 24px;
     }
+
+    .help-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .help-item {
+        gap: 9px;
+    }
+
 }
