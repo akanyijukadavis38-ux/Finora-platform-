@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 
 /* =========================================================
-   GENERATE UNIQUE-LOOKING FINORA REFERRAL CODE
+   FINORA REFERRAL CODE GENERATOR
 ========================================================= */
 
 function generateReferralCode() {
@@ -23,9 +23,10 @@ function generateReferralCode() {
 
 const userSchema = new mongoose.Schema(
     {
-        /* =================================================
-           FULL NAME
-        ================================================= */
+
+        /* -----------------------------------------
+           BASIC ACCOUNT INFORMATION
+        ----------------------------------------- */
 
         fullName: {
             type: String,
@@ -34,22 +35,12 @@ const userSchema = new mongoose.Schema(
             minlength: 2
         },
 
-
-        /* =================================================
-           PHONE
-        ================================================= */
-
         phone: {
             type: String,
             required: true,
             unique: true,
             trim: true
         },
-
-
-        /* =================================================
-           EMAIL
-        ================================================= */
 
         email: {
             type: String,
@@ -59,31 +50,31 @@ const userSchema = new mongoose.Schema(
             trim: true
         },
 
-
-        /* =================================================
-           PASSWORD
-        ================================================= */
-
         password: {
             type: String,
             required: true,
             minlength: 6
         },
-resetPasswordToken: {
-    type: String,
-    default: null
-},
 
-resetPasswordExpires: {
-    type: Date,
-    default: null
-},
 
-        /* =================================================
-           USER'S OWN REFERRAL CODE
+        /* -----------------------------------------
+           PASSWORD RESET
+        ----------------------------------------- */
 
-           EVERY USER GETS ONE AUTOMATICALLY.
-        ================================================= */
+        resetPasswordToken: {
+            type: String,
+            default: null
+        },
+
+        resetPasswordExpires: {
+            type: Date,
+            default: null
+        },
+
+
+        /* -----------------------------------------
+           REFERRAL SYSTEM
+        ----------------------------------------- */
 
         referralCode: {
             type: String,
@@ -91,13 +82,6 @@ resetPasswordExpires: {
             trim: true,
             index: true
         },
-
-
-        /* =================================================
-           CODE OF THE PERSON WHO REFERRED THIS USER
-
-           This is DIFFERENT from the user's own code.
-        ================================================= */
 
         referredByCode: {
             type: String,
@@ -107,9 +91,9 @@ resetPasswordExpires: {
         },
 
 
-        /* =================================================
-           WALLET BALANCE
-        ================================================= */
+        /* -----------------------------------------
+           WALLET
+        ----------------------------------------- */
 
         balance: {
             type: Number,
@@ -117,29 +101,19 @@ resetPasswordExpires: {
         },
 
 
-        /* =================================================
-           TOTAL INCOME
-        ================================================= */
+        /* -----------------------------------------
+           FINANCIAL TOTALS
+        ----------------------------------------- */
 
         totalIncome: {
             type: Number,
             default: 0
         },
 
-
-        /* =================================================
-           TOTAL DEPOSIT
-        ================================================= */
-
         totalDeposit: {
             type: Number,
             default: 0
         },
-
-
-        /* =================================================
-           TOTAL WITHDRAWAL
-        ================================================= */
 
         totalWithdrawal: {
             type: Number,
@@ -147,20 +121,38 @@ resetPasswordExpires: {
         },
 
 
-        /* =================================================
+        /* -----------------------------------------
            ACCOUNT STATUS
-        ================================================= */
+
+           LIFECYCLE:
+
+           REGISTERED
+                ↓
+           INACTIVE
+                ↓
+           SUCCESSFUL DEPOSIT
+                ↓
+           FIRST INVESTMENT
+                ↓
+           ACTIVE
+
+           FROZEN is an administrative state and
+           overrides normal account activity.
+        ----------------------------------------- */
 
         status: {
             type: String,
+
             enum: [
+                "inactive",
                 "active",
                 "frozen"
             ],
-            default: "active"
-        }
-    },
 
+            default: "inactive"
+        }
+
+    },
 
     {
         timestamps: true
@@ -169,50 +161,82 @@ resetPasswordExpires: {
 
 
 /* =========================================================
-   AUTOMATIC REFERRAL CODE
+   AUTOMATIC FINORA REFERRAL CODE
 ========================================================= */
-userSchema.pre("validate", async function(next) {
 
-    try {
+userSchema.pre(
+    "validate",
+    async function(next) {
 
-        if (this.referralCode) {
-            return next();
-        }
+        try {
 
-        let code;
+            /* -----------------------------------------
+               KEEP EXISTING REFERRAL CODE
+            ----------------------------------------- */
 
-        for (let attempt = 0; attempt < 10; attempt++) {
-
-            code = generateReferralCode();
-
-            const exists =
-                await mongoose.models.User.exists({
-                    referralCode: code
-                });
-
-            if (!exists) {
-
-                this.referralCode = code;
+            if (this.referralCode) {
 
                 return next();
 
             }
+
+
+            /* -----------------------------------------
+               GENERATE UNIQUE CODE
+            ----------------------------------------- */
+
+            let code;
+
+            for (
+                let attempt = 0;
+                attempt < 10;
+                attempt++
+            ) {
+
+                code =
+                    generateReferralCode();
+
+
+                const exists =
+                    await mongoose.models.User.exists(
+                        {
+                            referralCode:
+                                code
+                        }
+                    );
+
+
+                if (!exists) {
+
+                    this.referralCode =
+                        code;
+
+                    return next();
+
+                }
+
+            }
+
+
+            return next(
+                new Error(
+                    "Unable to generate a unique FINORA referral code."
+                )
+            );
+
+        } catch (error) {
+
+            return next(error);
+
         }
 
-        return next(
-            new Error(
-                "Unable to generate a unique FINORA referral code."
-            )
-        );
-
-    } catch (error) {
-
-        return next(error);
-
     }
+);
 
-});
 
+/* =========================================================
+   EXPORT USER MODEL
+========================================================= */
 
 module.exports =
     mongoose.model(
