@@ -244,6 +244,15 @@ app.use(
     "/api/admin",
     adminRoutes
 );
+app.get(
+    "/admin.html",
+    requireAdmin,
+    (req, res) => {
+        res.sendFile(
+            path.join(__dirname, "admin.html")
+        );
+    }
+);
 /* =========================================================
    CURRENT USER
 
