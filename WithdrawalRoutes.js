@@ -3,6 +3,7 @@ const express = require("express");
 const Withdrawal = require("./Withdrawal");
 const Transaction = require("./Transaction");
 const User = require("./user");
+const Notification = require("./Notification");
 
 const router = express.Router();
 
@@ -494,7 +495,27 @@ router.post(
             ----------------------------------------- */
 
             await user.save();
+/* -----------------------------------------
+   CREATE WITHDRAWAL SUBMISSION NOTIFICATION
+----------------------------------------- */
 
+await Notification.create({
+
+    userId:
+        user._id,
+
+    type:
+        "withdrawal_submitted",
+
+    title:
+        "Withdrawal Submitted",
+
+    message:
+        `Your UGX ${amount.toLocaleString()} withdrawal request has been submitted and is pending processing.`,
+
+    isRead:
+        false
+});
 
             /* -----------------------------------------
                SUCCESS
