@@ -1984,8 +1984,6 @@ document.addEventListener(
             );
 
 
-            initializeNavigation();
-
             initializeBackButton();
 
             initializeNotifications();
