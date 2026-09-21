@@ -13,6 +13,7 @@ const depositRoutes = require("./depositRoutes");
 const transactionRoutes = require("./TransactionRoutes");
 const withdrawalRoutes = require("./WithdrawalRoutes");
 const supportRoutes = require("./supportRoutes");
+const notificationRoutes = require("./notificationRoutes");
 const {
     processDueInvestmentEarnings
 } = require("./investmentEarningProcessor");
@@ -228,7 +229,14 @@ app.use(
     "/api/support",
     supportRoutes
 );
+/* =========================================================
+   NOTIFICATION ROUTES
+========================================================= */
 
+app.use(
+    "/api/notifications",
+    notificationRoutes
+);
 /* =========================================================
    CURRENT USER
 
