@@ -294,7 +294,17 @@ app.get(
         );
     }
 );
-
+app.get(
+    "/admin-setup.html",
+    (req, res) => {
+        res.sendFile(
+            path.join(
+                __dirname,
+                "admin-setup.html"
+            )
+        );
+    }
+);
 
 /* =========================================================
    CURRENT USER
