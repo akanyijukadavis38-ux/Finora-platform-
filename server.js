@@ -36,7 +36,8 @@ const FRONTEND_URL =
     "https://finora-platform.pages.dev";
 
 const allowedOrigins = [
-    "https://finora-platform.pages.dev"
+    "https://finora-platform.pages.dev",
+    "https://finora-platform.onrender.com"
 ];
 
 
