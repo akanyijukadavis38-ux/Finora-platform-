@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 
 const Admin = require("./Admin");
 const User = require("./user");
-const Investment = require("./Investment");
+const Investment = require("./investment");
 const requireAdmin = require("./adminAuth");
 
 const router = express.Router();
