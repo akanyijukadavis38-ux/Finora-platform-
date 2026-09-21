@@ -517,7 +517,140 @@
     </a>
 
 
-    <script src="support.js?v=1"></script>
+    <!-- =========================
+         FINORA SUPPORT JAVASCRIPT
+    ========================== -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const supportRequestButton =
+                document.getElementById("openSupportRequest");
+
+            const whatsappSupport =
+                document.getElementById("whatsappSupport");
+
+            /*
+             * WhatsApp Support
+             *
+             * The private support number has not yet
+             * been connected.
+             */
+            if (whatsappSupport) {
+
+                whatsappSupport.addEventListener("click", (event) => {
+
+                    const href =
+                        whatsappSupport.getAttribute("href");
+
+                    if (!href || href === "#") {
+
+                        event.preventDefault();
+
+                        showSupportMessage(
+                            "FINORA WhatsApp Support will be connected soon."
+                        );
+
+                    }
+
+                });
+
+            }
+
+
+            /*
+             * Support Request
+             *
+             * Backend functionality will be connected later.
+             */
+            if (supportRequestButton) {
+
+                supportRequestButton.addEventListener("click", () => {
+
+                    showSupportMessage(
+                        "Support requests will be available soon."
+                    );
+
+                });
+
+            }
+
+
+            /*
+             * Help Center
+             */
+            const helpItems =
+                document.querySelectorAll(".help-item");
+
+            helpItems.forEach((item) => {
+
+                item.addEventListener("click", (event) => {
+
+                    const href =
+                        item.getAttribute("href");
+
+                    if (!href || href === "#") {
+
+                        event.preventDefault();
+
+                        const title =
+                            item.querySelector("strong");
+
+                        const topic =
+                            title
+                                ? title.textContent.trim()
+                                : "This help topic";
+
+                        showSupportMessage(
+                            `${topic} information will be available soon.`
+                        );
+
+                    }
+
+                });
+
+            });
+
+
+            /*
+             * Premium toast message
+             */
+            function showSupportMessage(message) {
+
+                const existing =
+                    document.querySelector(".support-toast");
+
+                if (existing) {
+                    existing.remove();
+                }
+
+                const toast =
+                    document.createElement("div");
+
+                toast.className = "support-toast";
+
+                toast.textContent = message;
+
+                document.body.appendChild(toast);
+
+                requestAnimationFrame(() => {
+                    toast.classList.add("show");
+                });
+
+                setTimeout(() => {
+
+                    toast.classList.remove("show");
+
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 250);
+
+                }, 2800);
+
+            }
+
+        });
+    </script>
 
 </body>
 </html>
