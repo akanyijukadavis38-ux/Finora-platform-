@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <title>FINORA Admin Login</title>
+
+    <link rel="stylesheet" href="admin-login.css">
+</head>
+
+<body>
+
+    <main class="admin-login-page">
+
+        <section class="login-card" aria-label="FINORA Admin Login">
+
+            <!-- FINORA BRAND -->
+            <div class="brand-section">
+
+                <div class="finora-wordmark" aria-label="FINORA">
+                    <span class="finora-fin">FIN</span><span class="finora-ora">ORA</span>
+                </div>
+
+                <div class="brand-line"></div>
+
+                <p class="admin-label">ADMIN CONTROL CENTER</p>
+
+            </div>
+
+
+            <!-- LOGIN INTRO -->
+            <div class="login-heading">
+
+                <h1>Welcome Back</h1>
+
+                <p>
+                    Sign in to securely manage your FINORA platform.
+                </p>
+
+            </div>
+
+
+            <!-- LOGIN FORM -->
+            <form id="adminLoginForm" novalidate>
+
+                <!-- IDENTIFIER -->
+                <div class="form-group">
+
+                    <label for="identifier">
+                        Username or Email
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <svg
+                            class="input-icon"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M20 21a8 8 0 0 0-16 0"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                            />
+                            <circle
+                                cx="12"
+                                cy="7"
+                                r="4"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                            />
+                        </svg>
+
+                        <input
+                            type="text"
+                            id="identifier"
+                            name="identifier"
+                            placeholder="Enter username or email"
+                            autocomplete="username"
+                            autocapitalize="none"
+                            spellcheck="false"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+                <div class="form-group">
+
+                    <div class="password-label-row">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                    </div>
+
+                    <div class="input-wrapper">
+
+                        <svg
+                            class="input-icon"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            aria-hidden="true"
+                        >
+                            <rect
+                                x="4"
+                                y="10"
+                                width="16"
+                                height="11"
+                                rx="2"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                            />
+
+                            <path
+                                d="M8 10V7a4 4 0 0 1 8 0v3"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                            />
+
+                            <circle
+                                cx="12"
+                                cy="15.5"
+                                r="1"
+                                fill="currentColor"
+                            />
+                        </svg>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            id="passwordToggle"
+                            aria-label="Show password"
+                            aria-pressed="false"
+                        >
+
+                            <svg
+                                id="eyeIcon"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linejoin="round"
+                                />
+
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="2.7"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                />
+                            </svg>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FORGOT PASSWORD -->
+                <button
+                    type="button"
+                    class="forgot-password"
+                    id="forgotPasswordButton"
+                >
+                    Forgot Password?
+                </button>
+
+
+                <!-- ERROR MESSAGE -->
+                <div
+                    class="login-message error-message"
+                    id="loginError"
+                    role="alert"
+                    aria-live="polite"
+                    hidden
+                ></div>
+
+
+                <!-- SUCCESS MESSAGE -->
+                <div
+                    class="login-message success-message"
+                    id="loginSuccess"
+                    role="status"
+                    aria-live="polite"
+                    hidden
+                ></div>
+
+
+                <!-- LOGIN BUTTON -->
+                <button
+                    type="submit"
+                    class="login-button"
+                    id="loginButton"
+                >
+
+                    <span id="loginButtonText">
+                        Sign In
+                    </span>
+
+                    <span
+                        class="button-spinner"
+                        id="loginSpinner"
+                        aria-hidden="true"
+                    ></span>
+
+                </button>
+
+            </form>
+
+
+            <!-- SECURITY NOTE -->
+            <div class="security-note">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M12 3 20 6v5.5c0 4.8-3.2 8.1-8 9.5-4.8-1.4-8-4.7-8-9.5V6l8-3Z"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linejoin="round"
+                    />
+
+                    <path
+                        d="m9 12 2 2 4-4"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                </svg>
+
+                <span>
+                    Secure FINORA Admin access
+                </span>
+
+            </div>
+
+
+            <!-- FOOTER -->
+            <footer class="login-footer">
+
+                <span>FINORA</span>
+
+                <span class="footer-dot">•</span>
+
+                <span>INVEST • GROW • EARN</span>
+
+            </footer>
+
+        </section>
+
+    </main>
+
+
+    <script>
+        const API_BASE = "https://finora-platform.onrender.com";
+
+        const loginForm = document.getElementById("adminLoginForm");
+        const identifierInput = document.getElementById("identifier");
+        const passwordInput = document.getElementById("password");
+
+        const passwordToggle =
+            document.getElementById("passwordToggle");
+
+        const eyeIcon =
+            document.getElementById("eyeIcon");
+
+        const forgotPasswordButton =
+            document.getElementById("forgotPasswordButton");
+
+        const loginButton =
+            document.getElementById("loginButton");
+
+        const loginButtonText =
+            document.getElementById("loginButtonText");
+
+        const loginSpinner =
+            document.getElementById("loginSpinner");
+
+        const loginError =
+            document.getElementById("loginError");
+
+        const loginSuccess =
+            document.getElementById("loginSuccess");
+
+
+        function showError(message) {
+
+            loginError.textContent = message;
+            loginError.hidden = false;
+
+            loginSuccess.hidden = true;
+        }
+
+
+        function showSuccess(message) {
+
+            loginSuccess.textContent = message;
+            loginSuccess.hidden = false;
+
+            loginError.hidden = true;
+        }
+
+
+        function clearMessages() {
+
+            loginError.hidden = true;
+            loginSuccess.hidden = true;
+
+            loginError.textContent = "";
+            loginSuccess.textContent = "";
+        }
+
+
+        function setLoading(isLoading) {
+
+            loginButton.disabled = isLoading;
+
+            loginButton.classList.toggle(
+                "loading",
+                isLoading
+            );
+
+            loginButtonText.textContent =
+                isLoading ? "Signing In..." : "Sign In";
+
+            loginSpinner.hidden = !isLoading;
+        }
+
+
+        /* SHOW / HIDE PASSWORD */
+
+        passwordToggle.addEventListener("click", () => {
+
+            const isPassword =
+                passwordInput.type === "password";
+
+            passwordInput.type =
+                isPassword ? "text" : "password";
+
+            passwordToggle.setAttribute(
+                "aria-pressed",
+                String(isPassword)
+            );
+
+            passwordToggle.setAttribute(
+                "aria-label",
+                isPassword
+                    ? "Hide password"
+                    : "Show password"
+            );
+
+            eyeIcon.innerHTML = isPassword
+                ? `
+                    <path
+                        d="M3 3l18 18"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                    />
+
+                    <path
+                        d="M10.6 6.2A10.4 10.4 0 0 1 12 6c6 0 9.5 6 9.5 6a16.7 16.7 0 0 1-3.2 3.7"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                    />
+
+                    <path
+                        d="M6.1 6.7C3.8 8.3 2.5 12 2.5 12s3.5 6 9.5 6c1.4 0 2.6-.3 3.7-.8"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                    />
+                `
+                : `
+                    <path
+                        d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linejoin="round"
+                    />
+
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="2.7"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                    />
+                `;
+        });
+
+
+        /* CLEAR ERROR WHEN USER STARTS TYPING */
+
+        identifierInput.addEventListener(
+            "input",
+            clearMessages
+        );
+
+        passwordInput.addEventListener(
+            "input",
+            clearMessages
+        );
+
+
+        /* FORGOT PASSWORD */
+
+        forgotPasswordButton.addEventListener(
+            "click",
+            () => {
+
+                window.location.href =
+                    "admin-forgot-password.html";
+            }
+        );
+
+
+        /* ADMIN LOGIN */
+
+        loginForm.addEventListener(
+            "submit",
+            async (event) => {
+
+                event.preventDefault();
+
+                clearMessages();
+
+                const identifier =
+                    identifierInput.value.trim();
+
+                const password =
+                    passwordInput.value;
+
+                if (!identifier) {
+
+                    showError(
+                        "Please enter your username or email."
+                    );
+
+                    identifierInput.focus();
+
+                    return;
+                }
+
+                if (!password) {
+
+                    showError(
+                        "Please enter your password."
+                    );
+
+                    passwordInput.focus();
+
+                    return;
+                }
+
+                setLoading(true);
+
+                try {
+
+                    const response =
+                        await fetch(
+                            `${API_BASE}/api/admin/login`,
+                            {
+                                method: "POST",
+
+                                credentials: "include",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body: JSON.stringify({
+                                    identifier,
+                                    password
+                                })
+                            }
+                        );
+
+                    const data =
+                        await response.json()
+                            .catch(() => ({}));
+
+
+                    if (!response.ok || !data.success) {
+
+                        showError(
+                            data.message ||
+                            "Admin login failed. Please check your details."
+                        );
+
+                        setLoading(false);
+
+                        return;
+                    }
+
+
+                    showSuccess(
+                        "Login successful. Opening Admin Center..."
+                    );
+
+
+                    setTimeout(() => {
+
+                        window.location.href =
+                            "admin.html";
+
+                    }, 350);
+
+
+                } catch (error) {
+
+                    console.error(
+                        "FINORA ADMIN LOGIN ERROR:",
+                        error
+                    );
+
+                    showError(
+                        "FINORA could not connect to the Admin server. Please try again."
+                    );
+
+                    setLoading(false);
+                }
+
+            }
+        );
+    </script>
+
+</body>
+</html>
