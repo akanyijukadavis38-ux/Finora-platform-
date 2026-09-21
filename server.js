@@ -325,6 +325,79 @@ app.get(
         );
     }
 );
+/* =========================================================
+   FINORA ADMIN PAGES
+========================================================= */
+
+app.get(
+    "/admin-users.html",
+    requireAdmin,
+    (req, res) => {
+        res.sendFile(
+            path.join(__dirname, "admin-users.html")
+        );
+    }
+);
+
+app.get(
+    "/admin-finance.html",
+    requireAdmin,
+    (req, res) => {
+        res.sendFile(
+            path.join(__dirname, "admin-finance.html")
+        );
+    }
+);
+
+app.get(
+    "/admin-records.html",
+    requireAdmin,
+    (req, res) => {
+        res.sendFile(
+            path.join(__dirname, "admin-records.html")
+        );
+    }
+);
+
+app.get(
+    "/admin-referrals.html",
+    requireAdmin,
+    (req, res) => {
+        res.sendFile(
+            path.join(__dirname, "admin-referrals.html")
+        );
+    }
+);
+
+app.get(
+    "/admin-communications.html",
+    requireAdmin,
+    (req, res) => {
+        res.sendFile(
+            path.join(__dirname, "admin-communications.html")
+        );
+    }
+);
+
+app.get(
+    "/admin-system.html",
+    requireAdmin,
+    (req, res) => {
+        res.sendFile(
+            path.join(__dirname, "admin-system.html")
+        );
+    }
+);
+
+app.get(
+    "/admin-account.html",
+    requireAdmin,
+    (req, res) => {
+        res.sendFile(
+            path.join(__dirname, "admin-account.html")
+        );
+    }
+);
 
 /* =========================================================
    CURRENT USER
