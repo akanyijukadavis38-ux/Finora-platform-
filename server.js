@@ -12,7 +12,7 @@ const investmentRoutes = require("./investmentRoutes");
 const depositRoutes = require("./depositRoutes");
 const transactionRoutes = require("./TransactionRoutes");
 const withdrawalRoutes = require("./WithdrawalRoutes");
-
+const supportRoutes = require("./supportRoutes");
 const {
     processDueInvestmentEarnings
 } = require("./investmentEarningProcessor");
