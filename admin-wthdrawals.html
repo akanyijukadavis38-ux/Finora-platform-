@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FINORA Admin — Withdrawals</title>
+
+    <style>
+        :root {
+            --bg: #07050b;
+            --panel: #0d0912;
+            --panel-2: #120d18;
+            --border: rgba(234, 60, 255, 0.18);
+            --pink: #ea3cff;
+            --pink-light: #ff72ff;
+            --gold: #f5a623;
+            --gold-light: #ffd76a;
+            --green: #36e59a;
+            --red: #ff4f6d;
+            --text: #ffffff;
+            --muted: #a99eaf;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(
+                    circle at top,
+                    rgba(234, 60, 255, 0.10),
+                    transparent 34%
+                ),
+                var(--bg);
+            color: var(--text);
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 620px;
+            margin: 0 auto;
+            padding: 16px 14px 35px;
+        }
+
+        /* HEADER */
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .back-btn {
+            width: 42px;
+            height: 42px;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            background: var(--panel);
+            color: white;
+            font-size: 21px;
+            cursor: pointer;
+        }
+
+        .brand {
+            text-align: center;
+            flex: 1;
+        }
+
+        .brand-name {
+            font-family: "Times New Roman", serif;
+            font-size: 23px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .brand-name .fin {
+            color: white;
+        }
+
+        .brand-name .ora {
+            color: var(--gold);
+        }
+
+        .brand-tagline {
+            margin-top: 2px;
+            color: var(--pink-light);
+            font-size: 7px;
+            letter-spacing: 2px;
+        }
+
+        .admin-badge {
+            min-width: 42px;
+            height: 42px;
+            padding: 0 8px;
+            border-radius: 13px;
+            background: rgba(245, 166, 35, 0.10);
+            border: 1px solid rgba(245, 166, 35, 0.25);
+            color: var(--gold-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* TITLE */
+
+        .heading {
+            margin-bottom: 16px;
+        }
+
+        .heading h1 {
+            margin: 0;
+            font-family: "Times New Roman", serif;
+            font-size: 28px;
+        }
+
+        .heading p {
+            margin: 5px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        /* SUMMARY */
+
+        .summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .summary-card {
+            background: linear-gradient(
+                145deg,
+                rgba(234, 60, 255, 0.11),
+                rgba(18, 13, 24, 0.96)
+            );
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 13px;
+        }
+
+        .summary-label {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .summary-value {
+            margin-top: 5px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .summary-value.pending {
+            color: var(--gold-light);
+        }
+
+        /* MESSAGE */
+
+        .message {
+            display: none;
+            padding: 12px 13px;
+            border-radius: 13px;
+            margin-bottom: 13px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .message.success {
+            display: block;
+            background: rgba(54, 229, 154, 0.10);
+            border: 1px solid rgba(54, 229, 154, 0.25);
+            color: var(--green);
+        }
+
+        .message.error {
+            display: block;
+            background: rgba(255, 79, 109, 0.10);
+            border: 1px solid rgba(255, 79, 109, 0.25);
+            color: #ff8ca0;
+        }
+
+        /* FILTER */
+
+        .filter-box {
+            margin-bottom: 14px;
+        }
+
+        .filter-box input {
+            width: 100%;
+            height: 46px;
+            border-radius: 13px;
+            border: 1px solid var(--border);
+            outline: none;
+            background: var(--panel);
+            color: white;
+            padding: 0 14px;
+            font-size: 14px;
+        }
+
+        .filter-box input::placeholder {
+            color: #746a79;
+        }
+
+        .filter-box input:focus {
+            border-color: rgba(234, 60, 255, 0.55);
+        }
+
+        /* SECTION */
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 8px 2px 10px;
+        }
+
+        .section-title strong {
+            font-family: "Times New Roman", serif;
+            font-size: 19px;
+        }
+
+        .count {
+            color: var(--gold-light);
+            font-size: 12px;
+        }
+
+        /* WITHDRAWAL CARD */
+
+        .withdrawal-list {
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+        }
+
+        .withdrawal-card {
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(234, 60, 255, 0.055),
+                    rgba(13, 9, 18, 0.98)
+                );
+            border: 1px solid var(--border);
+            border-radius: 17px;
+            padding: 14px;
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.20);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            align-items: flex-start;
+            margin-bottom: 13px;
+        }
+
+        .user-name {
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        .user-phone {
+            color: var(--pink-light);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .status {
+            flex-shrink: 0;
+            border-radius: 20px;
+            padding: 5px 9px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .status.pending {
+            background: rgba(245, 166, 35, 0.11);
+            border: 1px solid rgba(245, 166, 35, 0.25);
+            color: var(--gold-light);
+        }
+
+        .status.frozen {
+            background: rgba(255, 79, 109, 0.10);
+            border: 1px solid rgba(255, 79, 109, 0.25);
+            color: #ff8ca0;
+        }
+
+        .status.approved {
+            background: rgba(54, 229, 154, 0.10);
+            border: 1px solid rgba(54, 229, 154, 0.25);
+            color: var(--green);
+        }
+
+        /* INFO */
+
+        .info-section {
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 11px;
+            margin-top: 10px;
+        }
+
+        .info-heading {
+            color: var(--gold-light);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .info-item {
+            min-width: 0;
+        }
+
+        .info-label {
+            color: #807585;
+            font-size: 10px;
+            margin-bottom: 2px;
+        }
+
+        .info-value {
+            color: #f4edf7;
+            font-size: 12px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        .amount-main {
+            color: var(--pink-light);
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .network {
+            color: var(--gold-light);
+        }
+
+        .net-amount {
+            color: var(--green);
+        }
+
+        /* ACTIONS */
+
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+            margin-top: 14px;
+        }
+
+        .action-btn {
+            min-height: 43px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            transition: 0.2s ease;
+        }
+
+        .approve-btn {
+            background: rgba(54, 229, 154, 0.12);
+            border-color: rgba(54, 229, 154, 0.28);
+            color: var(--green);
+        }
+
+        .reject-btn {
+            background: rgba(255, 79, 109, 0.10);
+            border-color: rgba(255, 79, 109, 0.25);
+            color: #ff8298;
+        }
+
+        .action-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .action-btn:not(:disabled):active {
+            transform: scale(0.98);
+        }
+
+        /* EMPTY / LOADING */
+
+        .empty {
+            text-align: center;
+            padding: 35px 18px;
+            border: 1px dashed rgba(234, 60, 255, 0.20);
+            border-radius: 17px;
+            background: rgba(234, 60, 255, 0.035);
+        }
+
+        .empty-icon {
+            font-size: 28px;
+            margin-bottom: 9px;
+        }
+
+        .empty strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .empty span {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* CONFIRM MODAL */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.72);
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-box {
+            width: 100%;
+            max-width: 390px;
+            background: #100b15;
+            border: 1px solid rgba(234, 60, 255, 0.25);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-title {
+            font-family: "Times New Roman", serif;
+            font-size: 21px;
+            margin-bottom: 8px;
+        }
+
+        .modal-text {
+            color: #bdb1c2;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .modal-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+        }
+
+        .modal-btn {
+            min-height: 43px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: #18101d;
+            color: white;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .modal-btn.confirm {
+            background: linear-gradient(
+                135deg,
+                #ea3cff,
+                #9e18bd
+            );
+            border: none;
+        }
+
+        .modal-btn.danger {
+            background: rgba(255, 79, 109, 0.12);
+            border-color: rgba(255, 79, 109, 0.25);
+            color: #ff8298;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 390px) {
+            .page {
+                padding-left: 11px;
+                padding-right: 11px;
+            }
+
+            .info-grid {
+                gap: 7px;
+            }
+
+            .info-value {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <header class="topbar">
+
+        <button
+            class="back-btn"
+            id="backBtn"
+            aria-label="Back"
+        >
+            ‹
+        </button>
+
+        <div class="brand">
+            <div class="brand-name">
+                <span class="fin">FIN</span><span class="ora">ORA</span>
+            </div>
+
+            <div class="brand-tagline">
+                INVEST • GROW • EARN
+            </div>
+        </div>
+
+        <div class="admin-badge">
+            ADMIN
+        </div>
+
+    </header>
+
+    <section class="heading">
+        <h1>Withdrawals</h1>
+        <p>
+            Review and process pending withdrawal requests.
+        </p>
+    </section>
+
+    <div id="message" class="message"></div>
+
+    <section class="summary">
+
+        <div class="summary-card">
+            <div class="summary-label">
+                Pending Requests
+            </div>
+
+            <div
+                class="summary-value pending"
+                id="pendingCount"
+            >
+                0
+            </div>
+        </div>
+
+        <div class="summary-card">
+            <div class="summary-label">
+                Pending Amount
+            </div>
+
+            <div
+                class="summary-value"
+                id="pendingAmount"
+            >
+                UGX 0
+            </div>
+        </div>
+
+    </section>
+
+    <div class="filter-box">
+        <input
+            type="search"
+            id="searchInput"
+            placeholder="Search name, phone or email..."
+            autocomplete="off"
+        >
+    </div>
+
+    <div class="section-title">
+        <strong>Pending Withdrawals</strong>
+
+        <span
+            class="count"
+            id="listCount"
+        >
+            0 requests
+        </span>
+    </div>
+
+    <section
+        class="withdrawal-list"
+        id="withdrawalList"
+    >
+
+        <div class="empty">
+            <div class="empty-icon">⌛</div>
+            <strong>Loading withdrawals...</strong>
+            <span>Please wait.</span>
+        </div>
+
+    </section>
+
+</div>
+
+<!-- CONFIRMATION MODAL -->
+
+<div
+    class="modal"
+    id="confirmModal"
+    aria-hidden="true"
+>
+    <div class="modal-box">
+
+        <div
+            class="modal-title"
+            id="modalTitle"
+        >
+            Confirm Action
+        </div>
+
+        <div
+            class="modal-text"
+            id="modalText"
+        ></div>
+
+        <div class="modal-actions">
+
+            <button
+                class="modal-btn"
+                id="cancelModal"
+            >
+                Cancel
+            </button>
+
+            <button
+                class="modal-btn confirm"
+                id="confirmModalBtn"
+            >
+                Confirm
+            </button>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const API_BASE =
+        "https://finora-platform.onrender.com";
+
+    const withdrawalList =
+        document.getElementById("withdrawalList");
+
+    const pendingCount =
+        document.getElementById("pendingCount");
+
+    const pendingAmount =
+        document.getElementById("pendingAmount");
+
+    const listCount =
+        document.getElementById("listCount");
+
+    const searchInput =
+        document.getElementById("searchInput");
+
+    const message =
+        document.getElementById("message");
+
+    const confirmModal =
+        document.getElementById("confirmModal");
+
+    const modalTitle =
+        document.getElementById("modalTitle");
+
+    const modalText =
+        document.getElementById("modalText");
+
+    const confirmModalBtn =
+        document.getElementById("confirmModalBtn");
+
+    const cancelModal =
+        document.getElementById("cancelModal");
+
+    const backBtn =
+        document.getElementById("backBtn");
+
+    let withdrawals = [];
+    let pendingAction = null;
+
+    function formatUGX(amount) {
+        return `UGX ${Number(amount || 0).toLocaleString("en-US")}`;
+    }
+
+    function escapeHTML(value) {
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function showMessage(text, type = "info") {
+
+        message.textContent = text;
+        message.className = `message ${type}`;
+        message.style.display = "block";
+
+        setTimeout(() => {
+            message.style.display = "none";
+        }, 4500);
+    }
+
+    function formatDate(value) {
+
+        if (!value) {
+            return "—";
+        }
+
+        const date = new Date(value);
+
+        if (Number.isNaN(date.getTime())) {
+            return "—";
+        }
+
+        return date.toLocaleString("en-UG", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+    }
+
+    function getUser(withdrawal) {
+
+        return (
+            withdrawal.user ||
+            withdrawal.account ||
+            {}
+        );
+    }
+
+    function getFullName(withdrawal) {
+
+        const user = getUser(withdrawal);
+
+        return (
+            user.fullName ||
+            user.name ||
+            withdrawal.fullName ||
+            "Unknown User"
+        );
+    }
+
+    function getPhone(withdrawal) {
+
+        const user = getUser(withdrawal);
+
+        return (
+            withdrawal.phoneNumber ||
+            user.phone ||
+            user.phoneNumber ||
+            user.mobile ||
+            "—"
+        );
+    }
+
+    function getEmail(withdrawal) {
+
+        const user = getUser(withdrawal);
+
+        return (
+            user.email ||
+            withdrawal.email ||
+            "—"
+        );
+    }
+
+    function getAccountStatus(withdrawal) {
+
+        const user = getUser(withdrawal);
+
+        return (
+            user.status ||
+            withdrawal.accountStatus ||
+            "inactive"
+        );
+    }
+
+    function getAmount(withdrawal) {
+
+        return Number(
+            withdrawal.amount ||
+            0
+        );
+    }
+
+    function getFee(withdrawal) {
+
+        if (withdrawal.fee !== undefined) {
+            return Number(withdrawal.fee || 0);
+        }
+
+        return getAmount(withdrawal) * 0.15;
+    }
+
+    function getNetAmount(withdrawal) {
+
+        if (withdrawal.netAmount !== undefined) {
+            return Number(
+                withdrawal.netAmount || 0
+            );
+        }
+
+        return getAmount(withdrawal) - getFee(withdrawal);
+    }
+
+    function getNetwork(withdrawal) {
+
+        return (
+            withdrawal.network ||
+            withdrawal.mobileNetwork ||
+            "—"
+        );
+    }
+
+    function getSubmittedDate(withdrawal) {
+
+        return (
+            withdrawal.createdAt ||
+            withdrawal.submittedAt ||
+            withdrawal.date
+        );
+    }
+
+    function getStatusClass(status) {
+
+        const normalized =
+            String(status || "")
+                .toLowerCase();
+
+        if (
+            normalized === "frozen"
+        ) {
+            return "frozen";
+        }
+
+        if (
+            normalized === "approved" ||
+            normalized === "completed"
+        ) {
+            return "approved";
+        }
+
+        return "pending";
+    }
+
+    function renderWithdrawals() {
+
+        const search =
+            searchInput.value
+                .trim()
+                .toLowerCase();
+
+        const filtered =
+            withdrawals.filter(withdrawal => {
+
+                if (!search) {
+                    return true;
+                }
+
+                const user =
+                    getUser(withdrawal);
+
+                const text = [
+                    getFullName(withdrawal),
+                    getPhone(withdrawal),
+                    getEmail(withdrawal),
+                    getNetwork(withdrawal),
+                    withdrawal._id,
+                    withdrawal.id
+                ]
+                .join(" ")
+                .toLowerCase();
+
+                return text.includes(search);
+            });
+
+        listCount.textContent =
+            `${filtered.length} ${
+                filtered.length === 1
+                    ? "request"
+                    : "requests"
+            }`;
+
+        if (!filtered.length) {
+
+            withdrawalList.innerHTML = `
+                <div class="empty">
+                    <div class="empty-icon">✓</div>
+                    <strong>
+                        No pending withdrawals
+                    </strong>
+                    <span>
+                        There are no withdrawal requests
+                        matching your search.
+                    </span>
+                </div>
+            `;
+
+            return;
+        }
+
+        withdrawalList.innerHTML =
+            filtered
+                .map(createWithdrawalCard)
+                .join("");
+
+        attachActionListeners();
+    }
+
+    function createWithdrawalCard(withdrawal) {
+
+        const user =
+            getUser(withdrawal);
+
+        const name =
+            escapeHTML(
+                getFullName(withdrawal)
+            );
+
+        const phone =
+            escapeHTML(
+                getPhone(withdrawal)
+            );
+
+        const email =
+            escapeHTML(
+                getEmail(withdrawal)
+            );
+
+        const status =
+            String(
+                withdrawal.status ||
+                "pending"
+            ).toLowerCase();
+
+        const accountStatus =
+            String(
+                getAccountStatus(withdrawal)
+            ).toLowerCase();
+
+        const amount =
+            getAmount(withdrawal);
+
+        const fee =
+            getFee(withdrawal);
+
+        const netAmount =
+            getNetAmount(withdrawal);
+
+        const network =
+            escapeHTML(
+                getNetwork(withdrawal)
+            );
+
+        const withdrawalId =
+            withdrawal._id ||
+            withdrawal.id ||
+            "";
+
+        const registeredNumber =
+            escapeHTML(
+                withdrawal.phoneNumber ||
+                user.phone ||
+                user.phoneNumber ||
+                "—"
+            );
+
+        return `
+            <article
+                class="withdrawal-card"
+                data-id="${escapeHTML(withdrawalId)}"
+            >
+
+                <div class="card-top">
+
+                    <div>
+                        <div class="user-name">
+                            ${name}
+                        </div>
+
+                        <div class="user-phone">
+                            ${phone}
+                        </div>
+                    </div>
+
+                    <span
+                        class="status ${getStatusClass(
+                            accountStatus
+                        )}"
+                    >
+                        ${escapeHTML(
+                            accountStatus
+                        )}
+                    </span>
+
+                </div>
+
+                <div class="info-section">
+
+                    <div class="info-heading">
+                        User
+                    </div>
+
+                    <div class="info-grid">
+
+                        <div class="info-item">
+                            <div class="info-label">
+                                Full Name
+                            </div>
+
+                            <div class="info-value">
+                                ${name}
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-label">
+                                Phone
+                            </div>
+
+                            <div class="info-value">
+                                ${phone}
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-label">
+                                Email
+                            </div>
+
+                            <div class="info-value">
+                                ${email}
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-label">
+                                Account Status
+                            </div>
+
+                            <div class="info-value">
+                                ${escapeHTML(
+                                    accountStatus
+                                )}
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="info-section">
+
+                    <div class="info-heading">
+                        Withdrawal
+                    </div>
+
+                    <div class="info-grid">
+
+                        <div class="info-item">
+                            <div class="info-label">
+                                Amount Deducted
+                            </div>
+
+                            <div class="info-value amount-main">
+                                ${formatUGX(amount)}
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-label">
+                                Network
+                            </div>
+
+                            <div class="info-value network">
+                                ${network}
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-label">
+                                Mobile Money Number
+                            </div>
+
+                            <div class="info-value">
+                                ${registeredNumber}
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-label">
+                                Fee (15%)
+                            </div>
+
+                            <div class="info-value">
+                                ${formatUGX(fee)}
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-label">
+                                Net Amount
+                            </div>
+
+                            <div class="info-value net-amount">
+                                ${formatUGX(netAmount)}
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-label">
+                                Submitted
+                            </div>
+
+                            <div class="info-value">
+                                ${escapeHTML(
+                                    formatDate(
+                                        getSubmittedDate(
+                                            withdrawal
+                                        )
+                                    )
+                                )}
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-label">
+                                Withdrawal Status
+                            </div>
+
+                            <div class="info-value">
+                                ${escapeHTML(status)}
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                ${
+                    status === "pending"
+                    ? `
+                        <div class="actions">
+
+                            <button
+                                class="action-btn approve-btn"
+                                data-action="approve"
+                                data-id="${escapeHTML(
+                                    withdrawalId
+                                )}"
+                            >
+                                Approve
+                            </button>
+
+                            <button
+                                class="action-btn reject-btn"
+                                data-action="reject"
+                                data-id="${escapeHTML(
+                                    withdrawalId
+                                )}"
+                            >
+                                Reject
+                            </button>
+
+                        </div>
+                    `
+                    : ""
+                }
+
+            </article>
+        `;
+    }
+
+    function updateSummary() {
+
+        const pending =
+            withdrawals.filter(
+                item =>
+                    String(
+                        item.status || "pending"
+                    ).toLowerCase() === "pending"
+            );
+
+        const total =
+            pending.reduce(
+                (sum, item) =>
+                    sum + getAmount(item),
+                0
+            );
+
+        pendingCount.textContent =
+            pending.length;
+
+        pendingAmount.textContent =
+            formatUGX(total);
+    }
+
+    async function loadWithdrawals() {
+
+        withdrawalList.innerHTML = `
+            <div class="empty">
+                <div class="empty-icon">⌛</div>
+                <strong>
+                    Loading withdrawals...
+                </strong>
+                <span>
+                    Please wait.
+                </span>
+            </div>
+        `;
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_BASE}/api/admin/withdrawals`,
+                    {
+                        method: "GET",
+                        credentials: "include",
+                        headers: {
+                            Accept:
+                                "application/json"
+                        }
+                    }
+                );
+
+            if (response.status === 401) {
+
+                window.location.href =
+                    "admin-login.html";
+
+                return;
+            }
+
+            const data =
+                await response
+                    .json()
+                    .catch(() => ({}));
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.message ||
+                    "Unable to load withdrawals."
+                );
+            }
+
+            withdrawals =
+                Array.isArray(data)
+                    ? data
+                    : (
+                        data.withdrawals ||
+                        data.data ||
+                        data.records ||
+                        []
+                    );
+
+            withdrawals =
+                withdrawals.filter(
+                    item =>
+                        String(
+                            item.status ||
+                            "pending"
+                        ).toLowerCase() ===
+                        "pending"
+                );
+
+            updateSummary();
+            renderWithdrawals();
+
+        } catch (error) {
+
+            console.error(
+                "Admin withdrawals error:",
+                error
+            );
+
+            withdrawalList.innerHTML = `
+                <div class="empty">
+                    <div class="empty-icon">!</div>
+                    <strong>
+                        Could not load withdrawals
+                    </strong>
+                    <span>
+                        ${escapeHTML(
+                            error.message ||
+                            "Please try again."
+                        )}
+                    </span>
+                </div>
+            `;
+        }
+    }
+
+    function openConfirm(
+        action,
+        withdrawal
+    ) {
+
+        const amount =
+            getAmount(withdrawal);
+
+        const name =
+            getFullName(withdrawal);
+
+        pendingAction = {
+            action,
+            withdrawal
+        };
+
+        if (action === "approve") {
+
+            modalTitle.textContent =
+                "Approve Withdrawal";
+
+            modalText.textContent =
+                `Approve ${formatUGX(
+                    amount
+                )} withdrawal for ${name}? ` +
+                `The wallet amount was already deducted ` +
+                `when the request was submitted.`;
+
+            confirmModalBtn.textContent =
+                "Approve";
+
+            confirmModalBtn.className =
+                "modal-btn confirm";
+
+        } else {
+
+            modalTitle.textContent =
+                "Reject Withdrawal";
+
+            modalText.textContent =
+                `Reject ${formatUGX(
+                    amount
+                )} withdrawal for ${name}? ` +
+                `The full deducted amount must be ` +
+                `returned to the user's wallet.`;
+
+            confirmModalBtn.textContent =
+                "Reject";
+
+            confirmModalBtn.className =
+                "modal-btn danger";
+        }
+
+        confirmModal.classList.add("show");
+        confirmModal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+    }
+
+    function closeConfirm() {
+
+        confirmModal.classList.remove("show");
+        confirmModal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        pendingAction = null;
+    }
+
+    async function processWithdrawal(
+        action,
+        withdrawal
+    ) {
+
+        const id =
+            withdrawal._id ||
+            withdrawal.id;
+
+        if (!id) {
+
+            showMessage(
+                "Withdrawal ID is missing.",
+                "error"
+            );
+
+            return;
+        }
+
+        try {
+
+            const endpoint =
+                action === "approve"
+                    ? `${API_BASE}/api/admin/withdrawals/${encodeURIComponent(id)}/approve`
+                    : `${API_BASE}/api/admin/withdrawals/${encodeURIComponent(id)}/reject`;
+
+            const response =
+                await fetch(
+                    endpoint,
+                    {
+                        method: "PATCH",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type":
+                                "application/json",
+                            Accept:
+                                "application/json"
+                        }
+                    }
+                );
+
+            const data =
+                await response
+                    .json()
+                    .catch(() => ({}));
+
+            if (response.status === 401) {
+
+                window.location.href =
+                    "admin-login.html";
+
+                return;
+            }
+
+            if (!response.ok || data.success === false) {
+
+                throw new Error(
+                    data.message ||
+                    `Unable to ${
+                        action === "approve"
+                            ? "approve"
+                            : "reject"
+                    } withdrawal.`
+                );
+            }
+
+            withdrawals =
+                withdrawals.filter(
+                    item =>
+                        String(
+                            item._id ||
+                            item.id
+                        ) !== String(id)
+                );
+
+            updateSummary();
+            renderWithdrawals();
+
+            showMessage(
+                action === "approve"
+                    ? "Withdrawal approved successfully."
+                    : "Withdrawal rejected and the full deducted amount was returned to the user's wallet.",
+                "success"
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Withdrawal action error:",
+                error
+            );
+
+            showMessage(
+                error.message ||
+                "The withdrawal action could not be completed.",
+                "error"
+            );
+        }
+    }
+
+    function attachActionListeners() {
+
+        document
+            .querySelectorAll(
+                "[data-action][data-id]"
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        const id =
+                            button.dataset.id;
+
+                        const action =
+                            button.dataset.action;
+
+                        const withdrawal =
+                            withdrawals.find(
+                                item =>
+                                    String(
+                                        item._id ||
+                                        item.id
+                                    ) ===
+                                    String(id)
+                            );
+
+                        if (!withdrawal) {
+
+                            showMessage(
+                                "Withdrawal record could not be found.",
+                                "error"
+                            );
+
+                            return;
+                        }
+
+                        openConfirm(
+                            action,
+                            withdrawal
+                        );
+                    }
+                );
+            });
+    }
+
+    confirmModalBtn.addEventListener(
+        "click",
+        async () => {
+
+            if (!pendingAction) {
+                return;
+            }
+
+            const {
+                action,
+                withdrawal
+            } = pendingAction;
+
+            confirmModalBtn.disabled =
+                true;
+
+            confirmModalBtn.textContent =
+                "Processing...";
+
+            await processWithdrawal(
+                action,
+                withdrawal
+            );
+
+            confirmModalBtn.disabled =
+                false;
+
+            closeConfirm();
+        }
+    );
+
+    cancelModal.addEventListener(
+        "click",
+        closeConfirm
+    );
+
+    confirmModal.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                confirmModal
+            ) {
+                closeConfirm();
+            }
+        }
+    );
+
+    searchInput.addEventListener(
+        "input",
+        renderWithdrawals
+    );
+
+    backBtn.addEventListener(
+        "click",
+        () => {
+
+            if (
+                document.referrer &&
+                document.referrer.includes(
+                    window.location.hostname
+                )
+            ) {
+                history.back();
+            } else {
+                window.location.href =
+                    "admin.html";
+            }
+        }
+    );
+
+    loadWithdrawals();
+
+});
+</script>
+
+</body>
+</html>
