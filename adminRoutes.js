@@ -1678,7 +1678,864 @@ router.patch(
         }
     }
 );
+/* =========================================================
+ADMIN — WITHDRAWALS
 
+Withdrawal accounting:
+
+User requests UGX 4,000
+        ↓
+Wallet immediately deducts UGX 4,000
+        ↓
+15% fee = UGX 600
+        ↓
+Net payout = UGX 3,400
+
+APPROVE:
+    Admin sends UGX 3,400
+    Wallet is NOT deducted again.
+
+REJECT:
+    Full UGX 4,000 is returned to wallet.
+
+Only pending withdrawals may be processed.
+========================================================= */
+
+
+/* =========================================================
+ADMIN — GET PENDING WITHDRAWALS
+========================================================= */
+
+router.get(
+    "/withdrawals",
+    requireAdmin,
+    async (req, res) => {
+
+        try {
+
+            const withdrawals =
+                await Withdrawal.find({
+                    status: "pending"
+                })
+                    .populate(
+                        "user",
+                        "fullName phone email status"
+                    )
+                    .sort({
+                        createdAt: -1
+                    })
+                    .lean();
+
+
+            const formattedWithdrawals =
+                withdrawals.map(
+                    withdrawal => {
+
+                        const amount =
+                            Number(
+                                withdrawal.amount
+                            ) || 0;
+
+
+                        const fee =
+                            Number(
+                                withdrawal.fee
+                            ) ||
+                            (
+                                amount * 0.15
+                            );
+
+
+                        const netAmount =
+                            Number(
+                                withdrawal.netAmount
+                            ) ||
+                            (
+                                amount - fee
+                            );
+
+
+                        return {
+
+                            _id:
+                                withdrawal._id,
+
+                            user:
+                                withdrawal.user
+                                    ? {
+                                        _id:
+                                            withdrawal.user._id,
+
+                                        fullName:
+                                            withdrawal.user.fullName,
+
+                                        phone:
+                                            withdrawal.user.phone,
+
+                                        email:
+                                            withdrawal.user.email,
+
+                                        status:
+                                            withdrawal.user.status
+                                    }
+                                    : null,
+
+                            amount:
+                                amount,
+
+                            fee:
+                                fee,
+
+                            netAmount:
+                                netAmount,
+
+                            phoneNumber:
+                                withdrawal.phoneNumber,
+
+                            network:
+                                withdrawal.network,
+
+                            status:
+                                withdrawal.status,
+
+                            walletDeducted:
+                                Boolean(
+                                    withdrawal.walletDeducted
+                                ),
+
+                            walletDeductedAt:
+                                withdrawal.walletDeductedAt,
+
+                            transactionId:
+                                withdrawal.transactionId,
+
+                            createdAt:
+                                withdrawal.createdAt,
+
+                            processedAt:
+                                withdrawal.processedAt,
+
+                            processedBy:
+                                withdrawal.processedBy,
+
+                            rejectionReason:
+                                withdrawal.rejectionReason,
+
+                            payoutReference:
+                                withdrawal.payoutReference
+
+                        };
+
+                    }
+                );
+
+
+            return res.status(200).json({
+
+                success: true,
+
+                withdrawals:
+                    formattedWithdrawals
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "❌ FINORA ADMIN WITHDRAWALS FETCH ERROR:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success: false,
+
+                message:
+                    "FINORA could not load withdrawal requests."
+            });
+        }
+    }
+);
+
+
+/* =========================================================
+ADMIN — APPROVE WITHDRAWAL
+========================================================= */
+
+router.patch(
+    "/withdrawals/:id/approve",
+    requireAdmin,
+    async (req, res) => {
+
+        const session =
+            await mongoose.startSession();
+
+
+        try {
+
+            const withdrawalId =
+                String(
+                    req.params.id || ""
+                ).trim();
+
+
+            if (
+                !mongoose.Types.ObjectId.isValid(
+                    withdrawalId
+                )
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Invalid withdrawal ID."
+                });
+            }
+
+
+            let approvedWithdrawal = null;
+
+
+            await session.withTransaction(
+                async () => {
+
+                    const withdrawal =
+                        await Withdrawal.findById(
+                            withdrawalId
+                        )
+                            .populate(
+                                "user",
+                                "fullName phone email status balance"
+                            )
+                            .session(
+                                session
+                            );
+
+
+                    if (!withdrawal) {
+
+                        const error =
+                            new Error(
+                                "Withdrawal request not found."
+                            );
+
+                        error.statusCode = 404;
+
+                        throw error;
+                    }
+
+
+                    /* =====================================
+                       ONLY PENDING CAN BE APPROVED
+                    ===================================== */
+
+                    if (
+                        withdrawal.status !==
+                        "pending"
+                    ) {
+
+                        const error =
+                            new Error(
+                                "This withdrawal has already been processed."
+                            );
+
+                        error.statusCode = 409;
+
+                        throw error;
+                    }
+
+
+                    const user =
+                        withdrawal.user;
+
+
+                    if (!user) {
+
+                        const error =
+                            new Error(
+                                "The user linked to this withdrawal could not be found."
+                            );
+
+                        error.statusCode = 404;
+
+                        throw error;
+                    }
+
+
+                    /* =====================================
+                       FROZEN USERS CANNOT BE PAID
+                    ===================================== */
+
+                    if (
+                        user.status ===
+                        "frozen"
+                    ) {
+
+                        const error =
+                            new Error(
+                                "This user's account is frozen. The withdrawal cannot be approved."
+                            );
+
+                        error.statusCode = 403;
+
+                        throw error;
+                    }
+
+
+                    /* =====================================
+                       WALLET MUST ALREADY HAVE BEEN DEDUCTED
+                    ===================================== */
+
+                    if (
+                        withdrawal.walletDeducted !==
+                        true
+                    ) {
+
+                        const error =
+                            new Error(
+                                "This withdrawal cannot be approved because its wallet deduction was not recorded."
+                            );
+
+                        error.statusCode = 409;
+
+                        throw error;
+                    }
+
+
+                    const amount =
+                        Number(
+                            withdrawal.amount
+                        ) || 0;
+
+
+                    const fee =
+                        Number(
+                            withdrawal.fee
+                        ) ||
+                        (
+                            amount * 0.15
+                        );
+
+
+                    const netAmount =
+                        Number(
+                            withdrawal.netAmount
+                        ) ||
+                        (
+                            amount - fee
+                        );
+
+
+                    /* =====================================
+                       FIND ORIGINAL WITHDRAWAL TRANSACTION
+                    ===================================== */
+
+                    let withdrawalTransaction =
+                        null;
+
+
+                    if (
+                        withdrawal.transactionId
+                    ) {
+
+                        withdrawalTransaction =
+                            await Transaction.findById(
+                                withdrawal.transactionId
+                            )
+                                .session(
+                                    session
+                                );
+
+                    }
+
+
+                    if (
+                        !withdrawalTransaction
+                    ) {
+
+                        withdrawalTransaction =
+                            await Transaction.findOne({
+
+                                user:
+                                    user._id,
+
+                                type:
+                                    "withdrawal",
+
+                                direction:
+                                    "debit",
+
+                                status:
+                                    "pending",
+
+                                relatedId:
+                                    withdrawal._id
+
+                            })
+                                .sort({
+                                    createdAt: -1
+                                })
+                                .session(
+                                    session
+                                );
+
+                    }
+
+
+                    if (
+                        withdrawalTransaction
+                    ) {
+
+                        withdrawalTransaction.status =
+                            "completed";
+
+                        withdrawalTransaction.description =
+                            `Withdrawal payout approved. UGX ${netAmount.toLocaleString("en-US")} sent after 15% withdrawal fee.`;
+
+                        await withdrawalTransaction.save({
+                            session
+                        });
+
+                    }
+
+
+                    /* =====================================
+                       APPROVAL DOES NOT TOUCH WALLET
+
+                       The full requested amount was already
+                       deducted when the user submitted the
+                       withdrawal.
+                    ===================================== */
+
+                    withdrawal.status =
+                        "completed";
+
+                    withdrawal.processedAt =
+                        new Date();
+
+                    withdrawal.processedBy =
+                        req.admin.username;
+
+                    withdrawal.payoutReference =
+                        String(
+                            req.body.payoutReference ||
+                            ""
+                        ).trim() ||
+                        null;
+
+
+                    await withdrawal.save({
+                        session
+                    });
+
+
+                    approvedWithdrawal =
+                        withdrawal.toObject();
+
+                }
+            );
+
+
+            return res.status(200).json({
+
+                success: true,
+
+                message:
+                    "Withdrawal approved successfully. Send the net payout amount to the user's mobile money number.",
+
+                withdrawal:
+                    approvedWithdrawal
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "❌ FINORA ADMIN WITHDRAWAL APPROVAL ERROR:",
+                error
+            );
+
+
+            return res.status(
+                error.statusCode || 500
+            ).json({
+
+                success: false,
+
+                message:
+                    error.message ||
+                    "FINORA could not approve the withdrawal."
+            });
+
+        } finally {
+
+            await session.endSession();
+
+        }
+    }
+);
+
+
+/* =========================================================
+ADMIN — REJECT WITHDRAWAL
+========================================================= */
+
+router.patch(
+    "/withdrawals/:id/reject",
+    requireAdmin,
+    async (req, res) => {
+
+        const session =
+            await mongoose.startSession();
+
+
+        try {
+
+            const withdrawalId =
+                String(
+                    req.params.id || ""
+                ).trim();
+
+
+            if (
+                !mongoose.Types.ObjectId.isValid(
+                    withdrawalId
+                )
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Invalid withdrawal ID."
+                });
+            }
+
+
+            let rejectedWithdrawal = null;
+            let refundedAmount = 0;
+
+
+            await session.withTransaction(
+                async () => {
+
+                    const withdrawal =
+                        await Withdrawal.findById(
+                            withdrawalId
+                        )
+                            .populate(
+                                "user",
+                                "fullName phone email status balance totalWithdrawal"
+                            )
+                            .session(
+                                session
+                            );
+
+
+                    if (!withdrawal) {
+
+                        const error =
+                            new Error(
+                                "Withdrawal request not found."
+                            );
+
+                        error.statusCode = 404;
+
+                        throw error;
+                    }
+
+
+                    /* =====================================
+                       ONLY PENDING CAN BE REJECTED
+                    ===================================== */
+
+                    if (
+                        withdrawal.status !==
+                        "pending"
+                    ) {
+
+                        const error =
+                            new Error(
+                                "This withdrawal has already been processed."
+                            );
+
+                        error.statusCode = 409;
+
+                        throw error;
+                    }
+
+
+                    const user =
+                        withdrawal.user;
+
+
+                    if (!user) {
+
+                        const error =
+                            new Error(
+                                "The user linked to this withdrawal could not be found."
+                            );
+
+                        error.statusCode = 404;
+
+                        throw error;
+                    }
+
+
+                    const amount =
+                        Number(
+                            withdrawal.amount
+                        ) || 0;
+
+
+                    /* =====================================
+                       REFUND FULL REQUESTED AMOUNT
+
+                       Example:
+                       Requested = 4,000
+                       Refund = 4,000
+
+                       NOT 3,400.
+                    ===================================== */
+
+                    if (
+                        withdrawal.walletDeducted !==
+                        true
+                    ) {
+
+                        const error =
+                            new Error(
+                                "This withdrawal cannot be rejected because its wallet deduction was not recorded."
+                            );
+
+                        error.statusCode = 409;
+
+                        throw error;
+                    }
+
+
+                    user.balance =
+                        (
+                            Number(
+                                user.balance
+                            ) || 0
+                        ) + amount;
+
+
+                    /* =====================================
+                       KEEP CACHED WITHDRAWAL TOTAL
+                       CONSISTENT WITH THE REJECTED REQUEST
+                    ===================================== */
+
+                    user.totalWithdrawal =
+                        Math.max(
+                            0,
+                            (
+                                Number(
+                                    user.totalWithdrawal
+                                ) || 0
+                            ) - amount
+                        );
+
+
+                    await user.save({
+                        session
+                    });
+
+
+                    /* =====================================
+                       FIND ORIGINAL WITHDRAWAL TRANSACTION
+                    ===================================== */
+
+                    let withdrawalTransaction =
+                        null;
+
+
+                    if (
+                        withdrawal.transactionId
+                    ) {
+
+                        withdrawalTransaction =
+                            await Transaction.findById(
+                                withdrawal.transactionId
+                            )
+                                .session(
+                                    session
+                                );
+
+                    }
+
+
+                    if (
+                        !withdrawalTransaction
+                    ) {
+
+                        withdrawalTransaction =
+                            await Transaction.findOne({
+
+                                user:
+                                    user._id,
+
+                                type:
+                                    "withdrawal",
+
+                                direction:
+                                    "debit",
+
+                                status:
+                                    "pending",
+
+                                relatedId:
+                                    withdrawal._id
+
+                            })
+                                .sort({
+                                    createdAt: -1
+                                })
+                                .session(
+                                    session
+                                );
+
+                    }
+
+
+                    if (
+                        withdrawalTransaction
+                    ) {
+
+                        withdrawalTransaction.status =
+                            "rejected";
+
+                        withdrawalTransaction.description =
+                            "Withdrawal rejected. Full deducted amount refunded to wallet.";
+
+                        await withdrawalTransaction.save({
+                            session
+                        });
+
+                    }
+
+
+                    /* =====================================
+                       CREATE REFUND TRANSACTION
+
+                       This gives the wallet refund its own
+                       clear financial record.
+                    ===================================== */
+
+                    await Transaction.create(
+                        [
+                            {
+
+                                user:
+                                    user._id,
+
+                                type:
+                                    "withdrawal",
+
+                                amount:
+                                    amount,
+
+                                direction:
+                                    "credit",
+
+                                status:
+                                    "completed",
+
+                                description:
+                                    "Withdrawal refund after admin rejection.",
+
+                                reference:
+                                    `WITHDRAWAL-REFUND-${withdrawal._id}`,
+
+                                relatedId:
+                                    withdrawal._id
+
+                            }
+                        ],
+                        {
+                            session
+                        }
+                    );
+
+
+                    withdrawal.status =
+                        "rejected";
+
+                    withdrawal.processedAt =
+                        new Date();
+
+                    withdrawal.processedBy =
+                        req.admin.username;
+
+                    withdrawal.rejectionReason =
+                        String(
+                            req.body.rejectionReason ||
+                            "Withdrawal rejected by Admin."
+                        ).trim();
+
+
+                    await withdrawal.save({
+                        session
+                    });
+
+
+                    refundedAmount =
+                        amount;
+
+
+                    rejectedWithdrawal =
+                        withdrawal.toObject();
+
+                }
+            );
+
+
+            return res.status(200).json({
+
+                success: true,
+
+                message:
+                    `Withdrawal rejected. ${refundedAmount.toLocaleString("en-US")} UGX has been returned to the user's wallet.`,
+
+                withdrawal:
+                    rejectedWithdrawal,
+
+                refundedAmount:
+                    refundedAmount
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "❌ FINORA ADMIN WITHDRAWAL REJECTION ERROR:",
+                error
+            );
+
+
+            return res.status(
+                error.statusCode || 500
+            ).json({
+
+                success: false,
+
+                message:
+                    error.message ||
+                    "FINORA could not reject the withdrawal."
+            });
+
+        } finally {
+
+            await session.endSession();
+
+        }
+    }
+);
 
 /* =========================================================
 FORGOT PASSWORD — VERIFY RECOVERY KEY
