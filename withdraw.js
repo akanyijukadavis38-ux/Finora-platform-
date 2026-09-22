@@ -34,7 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
     message.style.display = "block";
     message.hidden = false;
 
-    // Make sure the message is actually visible on screen.
     message.scrollIntoView({
       behavior: "smooth",
       block: "center"
@@ -63,7 +62,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function normalizePhone(phone) {
     if (!phone) return "";
 
-    let value = String(phone).trim().replace(/\s+/g, "");
+    let value = String(phone)
+      .trim()
+      .replace(/\s+/g, "");
 
     if (value.startsWith("+256")) {
       value = "0" + value.substring(4);
@@ -74,18 +75,51 @@ document.addEventListener("DOMContentLoaded", () => {
     return value;
   }
 
+  /*
+   * Uganda mobile ranges used by FINORA.
+   *
+   * MTN:
+   * 031, 039, 076, 077, 078, 079
+   *
+   * Airtel:
+   * 070, 074, 075
+   *
+   * The number must still be a valid 10-digit
+   * Uganda domestic mobile number.
+   */
   function detectNetwork(phone) {
     const normalized = normalizePhone(phone);
 
-    if (/^07(7\d|8\d)\d{7}$/.test(normalized)) {
+    if (!/^0\d{9}$/.test(normalized)) {
+      return null;
+    }
+
+    const prefix = normalized.substring(0, 3);
+
+    const mtnPrefixes = [
+      "031",
+      "039",
+      "076",
+      "077",
+      "078",
+      "079"
+    ];
+
+    const airtelPrefixes = [
+      "070",
+      "074",
+      "075"
+    ];
+
+    if (mtnPrefixes.includes(prefix)) {
       return "MTN";
     }
 
-    if (/^07(0\d|5\d)\d{7}$/.test(normalized)) {
+    if (airtelPrefixes.includes(prefix)) {
       return "Airtel";
     }
 
-    return "Mobile Money";
+    return null;
   }
 
   function getUserPhone(user) {
@@ -118,15 +152,125 @@ document.addEventListener("DOMContentLoaded", () => {
     summaryReceive.textContent = formatUGX(receive);
   }
 
+  /*
+   * Small FINORA explanatory popup.
+   * It is created only when needed, so no HTML
+   * change is required in withdraw.html.
+   */
+  function showWithdrawalPopup(text) {
+    const existing =
+      document.getElementById("finoraWithdrawalPopup");
+
+    if (existing) {
+      existing.remove();
+    }
+
+    const overlay = document.createElement("div");
+
+    overlay.id = "finoraWithdrawalPopup";
+
+    overlay.style.position = "fixed";
+    overlay.style.inset = "0";
+    overlay.style.zIndex = "99999";
+    overlay.style.display = "flex";
+    overlay.style.alignItems = "center";
+    overlay.style.justifyContent = "center";
+    overlay.style.padding = "20px";
+    overlay.style.background = "rgba(0, 0, 0, 0.68)";
+    overlay.style.boxSizing = "border-box";
+
+    const box = document.createElement("div");
+
+    box.style.width = "100%";
+    box.style.maxWidth = "360px";
+    box.style.background =
+      "linear-gradient(145deg, #120918, #08050b)";
+    box.style.border =
+      "1px solid rgba(234,60,255,0.45)";
+    box.style.borderRadius = "18px";
+    box.style.padding = "22px";
+    box.style.boxSizing = "border-box";
+    box.style.boxShadow =
+      "0 20px 60px rgba(0,0,0,0.55)";
+    box.style.textAlign = "center";
+
+    const title = document.createElement("div");
+
+    title.textContent = "Withdrawal Notice";
+
+    title.style.fontFamily =
+      "Times New Roman, serif";
+    title.style.fontSize = "21px";
+    title.style.fontWeight = "700";
+    title.style.color = "#ffffff";
+    title.style.marginBottom = "12px";
+
+    const textElement = document.createElement("div");
+
+    textElement.textContent = text;
+
+    textElement.style.fontFamily =
+      "Arial, sans-serif";
+    textElement.style.fontSize = "14px";
+    textElement.style.lineHeight = "1.55";
+    textElement.style.color = "#ddd5e2";
+    textElement.style.marginBottom = "20px";
+
+    const okButton = document.createElement("button");
+
+    okButton.type = "button";
+    okButton.textContent = "OK";
+
+    okButton.style.width = "100%";
+    okButton.style.border = "0";
+    okButton.style.borderRadius = "12px";
+    okButton.style.padding = "12px 18px";
+    okButton.style.background =
+      "linear-gradient(135deg, #EA3CFF, #9E18BD)";
+    okButton.style.color = "#ffffff";
+    okButton.style.fontSize = "15px";
+    okButton.style.fontWeight = "700";
+    okButton.style.cursor = "pointer";
+
+    function closePopup() {
+      overlay.remove();
+    }
+
+    okButton.addEventListener(
+      "click",
+      closePopup
+    );
+
+    overlay.addEventListener(
+      "click",
+      (event) => {
+        if (event.target === overlay) {
+          closePopup();
+        }
+      }
+    );
+
+    box.appendChild(title);
+    box.appendChild(textElement);
+    box.appendChild(okButton);
+
+    overlay.appendChild(box);
+
+    document.body.appendChild(overlay);
+  }
+
   async function loadUser() {
     try {
-      const response = await fetch(`${API_BASE}/api/users/me`, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Accept: "application/json"
+      const response = await fetch(
+        `${API_BASE}/api/users/me`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            Accept: "application/json"
+          }
         }
-      });
+      );
 
       if (response.status === 401) {
         window.location.href = "login.html";
@@ -134,11 +278,16 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       if (!response.ok) {
-        throw new Error("Unable to load your account details.");
+        throw new Error(
+          "Unable to load your account details."
+        );
       }
 
       const data = await response.json();
-      const user = data?.user || data?.data || data;
+      const user =
+        data?.user ||
+        data?.data ||
+        data;
 
       currentBalance = Number(
         user?.balance ??
@@ -149,22 +298,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
       userPhone = getUserPhone(user);
 
-      walletBalance.textContent = formatUGX(currentBalance);
+      walletBalance.textContent =
+        formatUGX(currentBalance);
 
       if (userPhone) {
-        registeredNumber.textContent = userPhone;
-        mobileNetwork.textContent = detectNetwork(userPhone);
+        registeredNumber.textContent =
+          userPhone;
+
+        const network =
+          detectNetwork(userPhone);
+
+        mobileNetwork.textContent =
+          network || "Mobile Money";
       } else {
-        registeredNumber.textContent = "Number unavailable";
-        mobileNetwork.textContent = "Not detected";
+        registeredNumber.textContent =
+          "Number unavailable";
+
+        mobileNetwork.textContent =
+          "Not detected";
       }
 
       return true;
+
     } catch (error) {
-      console.error("FINORA account error:", error);
+      console.error(
+        "FINORA account error:",
+        error
+      );
 
       showMessage(
-        error.message || "We could not load your wallet details.",
+        error.message ||
+        "We could not load your wallet details.",
         "error"
       );
 
@@ -173,7 +337,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function validateAmount() {
-    const rawValue = amountInput?.value?.trim() || "";
+    const rawValue =
+      amountInput?.value?.trim() || "";
 
     if (!rawValue) {
       showMessage(
@@ -185,7 +350,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const amount = Number(rawValue);
 
-    if (!Number.isFinite(amount) || amount <= 0) {
+    if (
+      !Number.isFinite(amount) ||
+      amount <= 0
+    ) {
       showMessage(
         "Please enter a valid withdrawal amount.",
         "error"
@@ -195,13 +363,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (amount < MIN_WITHDRAWAL) {
       showMessage(
-        `Minimum withdrawal is ${formatUGX(MIN_WITHDRAWAL)}.`,
+        `Minimum withdrawal is ${formatUGX(
+          MIN_WITHDRAWAL
+        )}.`,
         "error"
       );
       return null;
     }
 
-    if (Math.round(amount * 100) !== amount * 100) {
+    if (
+      Math.round(amount * 100) !==
+      amount * 100
+    ) {
       showMessage(
         "Please enter an amount with no more than 2 decimal places.",
         "error"
@@ -211,7 +384,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (amount > currentBalance) {
       showMessage(
-        `Insufficient funds. Your available balance is ${formatUGX(currentBalance)}.`,
+        `Insufficient funds. Your available balance is ${formatUGX(
+          currentBalance
+        )}.`,
         "error"
       );
       return null;
@@ -225,13 +400,25 @@ document.addEventListener("DOMContentLoaded", () => {
       return null;
     }
 
+    const network =
+      detectNetwork(userPhone);
+
+    if (!network) {
+      showMessage(
+        "Your registered Mobile Money number could not be identified as MTN or Airtel.",
+        "error"
+      );
+      return null;
+    }
+
     return amount;
   }
 
   async function submitWithdrawal() {
     clearMessage();
 
-    const amount = validateAmount();
+    const amount =
+      validateAmount();
 
     if (amount === null) {
       return;
@@ -241,40 +428,77 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const originalText = submitWithdraw.textContent;
+    const originalText =
+      submitWithdraw.textContent;
 
     submitWithdraw.disabled = true;
-    submitWithdraw.textContent = "Processing...";
+    submitWithdraw.textContent =
+      "Processing...";
 
-    // Always give the user immediate feedback.
     showMessage(
       "Submitting your withdrawal request...",
       "info"
     );
 
     try {
-      const response = await fetch(`${API_BASE}/api/withdrawals`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json"
-        },
-        body: JSON.stringify({
-          amount: amount
-        })
-      });
+      const response =
+        await fetch(
+          `${API_BASE}/api/withdrawals`,
+          {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type":
+                "application/json",
+              Accept:
+                "application/json"
+            },
+            body: JSON.stringify({
+              amount: amount
+            })
+          }
+        );
 
-      const data = await response.json().catch(() => ({}));
+      const data =
+        await response
+          .json()
+          .catch(() => ({}));
 
-      console.log("Withdrawal response:", response.status, data);
+      console.log(
+        "Withdrawal response:",
+        response.status,
+        data
+      );
 
       if (response.status === 401) {
-        window.location.href = "login.html";
+        window.location.href =
+          "login.html";
         return;
       }
 
-      if (!response.ok || data.success !== true) {
+      /*
+       * Deposited capital is not withdrawable.
+       * Show the backend explanation in a
+       * simple FINORA popup with an OK button.
+       */
+      if (
+        data.code ===
+        "CAPITAL_NOT_WITHDRAWABLE"
+      ) {
+        clearMessage();
+
+        showWithdrawalPopup(
+          data.message ||
+          "This amount is currently part of your deposited investment capital. Withdrawals are available from eligible earnings and referral income."
+        );
+
+        return;
+      }
+
+      if (
+        !response.ok ||
+        data.success !== true
+      ) {
         showMessage(
           data.message ||
           "Your withdrawal request could not be submitted.",
@@ -283,15 +507,32 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      if (data.walletBalance !== undefined) {
-        currentBalance = Number(data.walletBalance);
-        walletBalance.textContent = formatUGX(currentBalance);
+      if (
+        data.walletBalance !==
+        undefined
+      ) {
+        currentBalance =
+          Number(
+            data.walletBalance
+          );
+
+        walletBalance.textContent =
+          formatUGX(
+            currentBalance
+          );
+
       } else {
-        currentBalance -= amount;
-        walletBalance.textContent = formatUGX(currentBalance);
+        currentBalance -=
+          amount;
+
+        walletBalance.textContent =
+          formatUGX(
+            currentBalance
+          );
       }
 
       amountInput.value = "";
+
       updateSummary();
 
       showMessage(
@@ -300,7 +541,10 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
     } catch (error) {
-      console.error("FINORA withdrawal error:", error);
+      console.error(
+        "FINORA withdrawal error:",
+        error
+      );
 
       showMessage(
         "Unable to connect to the withdrawal service. Please try again.",
@@ -308,22 +552,32 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
     } finally {
-      submitWithdraw.disabled = false;
-      submitWithdraw.textContent = originalText;
+      submitWithdraw.disabled =
+        false;
+
+      submitWithdraw.textContent =
+        originalText;
     }
   }
 
-  amountInput?.addEventListener("input", () => {
-    clearMessage();
-    updateSummary();
-  });
+  amountInput?.addEventListener(
+    "input",
+    () => {
+      clearMessage();
+      updateSummary();
+    }
+  );
 
-  submitWithdraw?.addEventListener("click", submitWithdrawal);
+  submitWithdraw?.addEventListener(
+    "click",
+    submitWithdrawal
+  );
 
   async function initialize() {
     updateSummary();
 
-    const loaded = await loadUser();
+    const loaded =
+      await loadUser();
 
     hideLoader();
 
