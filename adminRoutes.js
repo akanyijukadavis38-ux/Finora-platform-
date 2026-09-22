@@ -2546,7 +2546,122 @@ router.patch(
         }
     }
 );
+/* =========================================================
+ADMIN — GET TRANSACTIONS
+========================================================= */
 
+router.get(
+    "/transactions",
+    requireAdmin,
+    async (req, res) => {
+
+        try {
+
+            const transactions =
+                await Transaction.find({})
+                    .select(
+                        "user type amount direction status description reference relatedId createdAt"
+                    )
+                    .populate(
+                        "user",
+                        "fullName phone email status"
+                    )
+                    .sort({
+                        createdAt: -1
+                    })
+                    .lean();
+
+
+            const formattedTransactions =
+                transactions.map(
+                    transaction => {
+
+                        return {
+
+                            _id:
+                                transaction._id,
+
+                            user:
+                                transaction.user
+                                    ? {
+                                        _id:
+                                            transaction.user._id,
+
+                                        fullName:
+                                            transaction.user.fullName,
+
+                                        phone:
+                                            transaction.user.phone,
+
+                                        email:
+                                            transaction.user.email,
+
+                                        status:
+                                            transaction.user.status
+                                    }
+                                    : null,
+
+                            type:
+                                transaction.type,
+
+                            amount:
+                                Number(
+                                    transaction.amount
+                                ) || 0,
+
+                            direction:
+                                transaction.direction,
+
+                            status:
+                                transaction.status,
+
+                            description:
+                                transaction.description,
+
+                            reference:
+                                transaction.reference,
+
+                            relatedId:
+                                transaction.relatedId,
+
+                            createdAt:
+                                transaction.createdAt
+
+                        };
+
+                    }
+                );
+
+
+            return res.status(200).json({
+
+                success: true,
+
+                transactions:
+                    formattedTransactions
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "❌ FINORA ADMIN TRANSACTIONS FETCH ERROR:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success: false,
+
+                message:
+                    "FINORA could not load transactions."
+            });
+
+        }
+
+    }
+);
 /* =========================================================
 FORGOT PASSWORD — VERIFY RECOVERY KEY
 ========================================================= */
