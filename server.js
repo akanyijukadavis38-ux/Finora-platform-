@@ -244,11 +244,12 @@ app.use(
 /* =========================================================
    NOTIFICATION ROUTES
 ========================================================= */
-
 app.use(
     "/api/notifications",
+    maintenanceMiddleware,
     notificationRoutes
 );
+
 app.use(
     "/api/admin",
     adminRoutes
@@ -463,9 +464,9 @@ app.get(
    The dashboard currently uses:
    GET /api/users/me
 ========================================================= */
-
 app.get(
     "/api/me",
+    maintenanceMiddleware,
     async (req, res) => {
 
         try {
