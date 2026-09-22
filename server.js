@@ -27,6 +27,9 @@ const adminReferralRoutes =
 const systemRoutes = require("./systemRoutes");
 const maintenanceMiddleware =
     require("./maintenanceMiddleware");
+const maintenanceStatusRoutes =
+    require("./maintenanceStatusRoutes");
+
 const app = express();
 
 const PORT =
@@ -347,6 +350,10 @@ app.use(
 app.use(
     "/api/admin/system",
     systemRoutes
+);
+app.use(
+    "/api/maintenance",
+    maintenanceStatusRoutes
 );
 /* =========================================================
    FINORA ADMIN PAGES
