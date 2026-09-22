@@ -430,6 +430,18 @@ async function processFirstDepositReferralCommission(
 
 
             /* ---------------------------------------------
+               FROZEN ACCOUNT PROTECTION
+            --------------------------------------------- */
+
+            if (
+                recipient.status === "frozen"
+            ) {
+
+                continue;
+            }
+
+
+            /* ---------------------------------------------
                CALCULATE COMMISSION
             --------------------------------------------- */
 
@@ -727,3 +739,5 @@ module.exports = {
     processFirstDepositReferralCommission
 
 };
+
+Only added: the frozen-recipient check inside the referral-level processing loop. Everything else from your original file is retained.
