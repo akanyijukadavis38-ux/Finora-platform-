@@ -1,8 +1,9 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-
 const User = require("./user");
 const Investment = require("./investment");
+const Admin = require("./Admin");
+const Notification = require("./Notification");
 const Transaction = require("./Transaction");
 const ReferralCommission = require("./ReferralCommission");
 const {
@@ -544,14 +545,47 @@ router.post("/register", async (req, res) => {
                     "inactive"
 
             });
+await user.save();
 
 
-        await user.save();
+/* =================================================
+   ADMIN NOTIFICATION — NEW USER REGISTERED
+========================================================= */
+
+const admin =
+    await Admin.findOne({
+        status: "active"
+    }).select("_id");
 
 
-        /* =================================================
-           SESSION
-        ================================================= */
+if (admin) {
+
+    await Notification.create({
+
+        adminId:
+            admin._id,
+
+        type:
+            "new_user_registered",
+
+        title:
+            "New User Registered",
+
+        message:
+            `A new user, ${user.fullName}, has registered on FINORA.`,
+
+        isRead:
+            false
+
+    });
+
+}
+
+
+/* =================================================
+   SESSION
+========================================================= */
+
 
         req.session.userId =
             user._id.toString();
