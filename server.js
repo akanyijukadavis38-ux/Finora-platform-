@@ -24,7 +24,7 @@ const requireAdmin = require("./adminAuth");
 const path = require("path");
 const adminReferralRoutes =
     require("./adminReferralRoutes");
-
+const systemRoutes = require("./systemRoutes");
 const app = express();
 
 const PORT =
@@ -342,6 +342,10 @@ app.get(
 app.use(
     "/api/admin/referrals",
     adminReferralRoutes
+);
+app.use(
+    "/api/admin/system",
+    systemRoutes
 );
 /* =========================================================
    FINORA ADMIN PAGES
