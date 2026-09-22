@@ -430,13 +430,13 @@
                 </section>
 
 
-                <!-- INVESTMENT -->
+                <!-- INVESTMENTS -->
 
                 <section class="detail-section">
 
                     <div class="detail-section-title">
                         <span class="section-dot green-dot"></span>
-                        Investment
+                        Investments
                     </div>
 
                     <div
@@ -466,47 +466,7 @@
                         id="investmentDetails"
                     >
 
-                        <div class="detail-item">
-                            <span>Investment Amount</span>
-                            <strong id="investmentAmount">
-                                —
-                            </strong>
-                        </div>
-
-                        <div class="detail-item">
-                            <span>Investment Status</span>
-                            <strong id="investmentState">
-                                —
-                            </strong>
-                        </div>
-
-                        <div class="detail-item">
-                            <span>Start Date</span>
-                            <strong id="investmentStart">
-                                —
-                            </strong>
-                        </div>
-
-                        <div class="detail-item">
-                            <span>End Date</span>
-                            <strong id="investmentEnd">
-                                —
-                            </strong>
-                        </div>
-
-                        <div class="detail-item">
-                            <span>Daily Rate</span>
-                            <strong id="investmentRate">
-                                —
-                            </strong>
-                        </div>
-
-                        <div class="detail-item">
-                            <span>Daily Earning</span>
-                            <strong id="investmentDaily">
-                                —
-                            </strong>
-                        </div>
+                        <!-- Investment records are inserted here -->
 
                     </div>
 
@@ -1211,7 +1171,14 @@
 
             const investment =
                 user.investment ||
-                null;
+                (
+                    Array.isArray(
+                        user.investments
+                    ) &&
+                    user.investments.length > 0
+                        ? user.investments[0]
+                        : null
+                );
 
 
             const name =
@@ -1514,13 +1481,7 @@
                 "detailDeposit",
                 "detailInvested",
                 "detailWithdrawal",
-                "detailIncome",
-                "investmentAmount",
-                "investmentState",
-                "investmentStart",
-                "investmentEnd",
-                "investmentRate",
-                "investmentDaily"
+                "detailIncome"
             ];
 
 
@@ -1552,6 +1513,18 @@
                 "Loading investment information...";
 
 
+            document.getElementById(
+                "investmentDetails"
+            ).innerHTML = `
+
+                <div class="detail-item">
+                    <span>Investment Information</span>
+                    <strong>Loading...</strong>
+                </div>
+
+            `;
+
+
             statusActionButton.textContent =
                 "Loading...";
 
@@ -1573,14 +1546,14 @@
                 "inactive";
 
 
-            const investment =
-                user.latestInvestment ||
-                (
-                    Array.isArray(user.investments) &&
-                    user.investments.length > 0
-                        ? user.investments[0]
-                        : null
-                );
+            const investments =
+                Array.isArray(
+                    user.investments
+                )
+                    ? user.investments
+                    : user.latestInvestment
+                        ? [user.latestInvestment]
+                        : [];
 
 
             document.getElementById(
@@ -1701,8 +1674,8 @@
                 );
 
 
-            populateInvestment(
-                investment
+            populateInvestments(
+                investments
             );
 
 
@@ -1712,8 +1685,12 @@
         }
 
 
-        function populateInvestment(
-            investment
+        /* =====================================================
+           DISPLAY ALL INVESTMENTS
+        ====================================================== */
+
+        function populateInvestments(
+            investments
         ) {
 
             const statusBox =
@@ -1722,7 +1699,18 @@
                 );
 
 
-            if (!investment) {
+            const details =
+                document.getElementById(
+                    "investmentDetails"
+                );
+
+
+            if (
+                !Array.isArray(
+                    investments
+                ) ||
+                investments.length === 0
+            ) {
 
                 statusBox.className =
                     "investment-status-box no-investment";
@@ -1740,41 +1728,19 @@
                     "This account has not made an investment.";
 
 
-                document.getElementById(
-                    "investmentAmount"
-                ).textContent =
-                    "—";
+                details.innerHTML = `
 
+                    <div class="detail-item">
+                        <span>Investment Status</span>
+                        <strong>Not Invested</strong>
+                    </div>
 
-                document.getElementById(
-                    "investmentState"
-                ).textContent =
-                    "Not Invested";
+                    <div class="detail-item">
+                        <span>Investment Amount</span>
+                        <strong>—</strong>
+                    </div>
 
-
-                document.getElementById(
-                    "investmentStart"
-                ).textContent =
-                    "—";
-
-
-                document.getElementById(
-                    "investmentEnd"
-                ).textContent =
-                    "—";
-
-
-                document.getElementById(
-                    "investmentRate"
-                ).textContent =
-                    "—";
-
-
-                document.getElementById(
-                    "investmentDaily"
-                ).textContent =
-                    "—";
-
+                `;
 
                 return;
             }
@@ -1784,78 +1750,248 @@
                 "investment-status-box has-investment";
 
 
+            const investmentCount =
+                investments.length;
+
+
             document.getElementById(
                 "investmentStatus"
             ).textContent =
-                "Investment Found";
+                investmentCount === 1
+                    ? "1 Investment"
+                    : `${investmentCount} Investments`;
 
 
             document.getElementById(
                 "investmentStatusText"
             ).textContent =
-                "This account has an investment recorded in FINORA.";
+                investmentCount === 1
+                    ? "This account has 1 investment recorded in FINORA."
+                    : `This account has ${investmentCount} investments recorded in FINORA.`;
 
 
-            document.getElementById(
-                "investmentAmount"
-            ).textContent =
-                formatMoney(
-                    investment.amount
-                );
+            details.innerHTML =
+                investments
+                    .map(
+                        (
+                            investment,
+                            index
+                        ) => {
+
+                            const dailyRate =
+                                investment.dailyRate ??
+                                investment.rate ??
+                                null;
 
 
-            document.getElementById(
-                "investmentState"
-            ).textContent =
-                investment.status ||
-                "—";
+                            const dailyEarning =
+                                investment.dailyEarnings ??
+                                investment.dailyEarning ??
+                                investment.dailyProfit ??
+                                null;
 
 
-            document.getElementById(
-                "investmentStart"
-            ).textContent =
-                formatDateOnly(
-                    investment.startDate
-                );
+                            const amount =
+                                investment.amount;
 
 
-            document.getElementById(
-                "investmentEnd"
-            ).textContent =
-                formatDateOnly(
-                    investment.endDate
-                );
+                            const status =
+                                investment.status ||
+                                "—";
 
 
-            const dailyRate =
-                investment.dailyRate ??
-                investment.rate ??
-                null;
+                            const duration =
+                                investment.duration ??
+                                null;
 
 
-            document.getElementById(
-                "investmentRate"
-            ).textContent =
-                dailyRate !== null
-                    ? `${dailyRate}%`
-                    : "—";
+                            const earned =
+                                investment.earned ??
+                                null;
 
 
-            const dailyEarning =
-                investment.dailyEarnings ??
-                investment.dailyEarning ??
-                investment.dailyProfit ??
-                null;
+                            const daysCompleted =
+                                investment.daysCompleted ??
+                                null;
 
 
-            document.getElementById(
-                "investmentDaily"
-            ).textContent =
-                dailyEarning !== null
-                    ? formatMoney(
-                        dailyEarning
+                            const daysRemaining =
+                                investment.daysRemaining ??
+                                null;
+
+
+                            const nextEarning =
+                                investment.nextEarningAt;
+
+
+                            return `
+
+                                <div
+                                    class="detail-item"
+                                    style="
+                                        grid-column: 1 / -1;
+                                        padding: 12px;
+                                        margin-top: ${
+                                            index === 0
+                                                ? "0"
+                                                : "8px"
+                                        };
+                                        border-radius: 12px;
+                                        border: 1px solid rgba(234,60,255,0.18);
+                                    "
+                                >
+
+                                    <span
+                                        style="
+                                            font-size: 13px;
+                                            font-weight: 700;
+                                            color: #EA3CFF;
+                                            margin-bottom: 8px;
+                                        "
+                                    >
+                                        Investment ${index + 1}
+                                    </span>
+
+                                </div>
+
+
+                                <div class="detail-item">
+                                    <span>Investment Amount</span>
+                                    <strong>
+                                        ${formatMoney(
+                                            amount
+                                        )}
+                                    </strong>
+                                </div>
+
+
+                                <div class="detail-item">
+                                    <span>Investment Status</span>
+                                    <strong>
+                                        ${escapeHTML(
+                                            status
+                                        )}
+                                    </strong>
+                                </div>
+
+
+                                <div class="detail-item">
+                                    <span>Daily Rate</span>
+                                    <strong>
+                                        ${
+                                            dailyRate !== null
+                                                ? `${escapeHTML(
+                                                    dailyRate
+                                                )}%`
+                                                : "—"
+                                        }
+                                    </strong>
+                                </div>
+
+
+                                <div class="detail-item">
+                                    <span>Daily Earning</span>
+                                    <strong>
+                                        ${
+                                            dailyEarning !== null
+                                                ? formatMoney(
+                                                    dailyEarning
+                                                )
+                                                : "—"
+                                        }
+                                    </strong>
+                                </div>
+
+
+                                <div class="detail-item">
+                                    <span>Duration</span>
+                                    <strong>
+                                        ${
+                                            duration !== null
+                                                ? `${escapeHTML(
+                                                    duration
+                                                )} days`
+                                                : "—"
+                                        }
+                                    </strong>
+                                </div>
+
+
+                                <div class="detail-item">
+                                    <span>Total Earned</span>
+                                    <strong>
+                                        ${
+                                            earned !== null
+                                                ? formatMoney(
+                                                    earned
+                                                )
+                                                : "—"
+                                        }
+                                    </strong>
+                                </div>
+
+
+                                <div class="detail-item">
+                                    <span>Days Completed</span>
+                                    <strong>
+                                        ${
+                                            daysCompleted !== null
+                                                ? escapeHTML(
+                                                    daysCompleted
+                                                )
+                                                : "—"
+                                        }
+                                    </strong>
+                                </div>
+
+
+                                <div class="detail-item">
+                                    <span>Days Remaining</span>
+                                    <strong>
+                                        ${
+                                            daysRemaining !== null
+                                                ? escapeHTML(
+                                                    daysRemaining
+                                                )
+                                                : "—"
+                                        }
+                                    </strong>
+                                </div>
+
+
+                                <div class="detail-item">
+                                    <span>Start Date</span>
+                                    <strong>
+                                        ${formatDateOnly(
+                                            investment.startDate
+                                        )}
+                                    </strong>
+                                </div>
+
+
+                                <div class="detail-item">
+                                    <span>End Date</span>
+                                    <strong>
+                                        ${formatDateOnly(
+                                            investment.endDate
+                                        )}
+                                    </strong>
+                                </div>
+
+
+                                <div class="detail-item">
+                                    <span>Next Earning</span>
+                                    <strong>
+                                        ${formatDate(
+                                            nextEarning
+                                        )}
+                                    </strong>
+                                </div>
+
+                            `;
+                        }
                     )
-                    : "—";
+                    .join("");
         }
 
 
@@ -1930,13 +2066,6 @@
                     "frozen"
                     ? "active"
                     : "frozen";
-
-
-            const action =
-                newStatus ===
-                    "frozen"
-                    ? "freeze"
-                    : "unfreeze";
 
 
             const confirmed =
