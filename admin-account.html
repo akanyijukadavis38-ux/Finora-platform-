@@ -1,0 +1,2508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FINORA — Admin Account</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --pink: #EA3CFF;
+            --pink-light: #FF72FF;
+            --pink-dark: #9E18BD;
+
+            --gold: #F5A623;
+            --gold-light: #FFD76A;
+            --gold-dark: #C97908;
+
+            --bg: #050409;
+            --panel: #0A0710;
+            --panel-2: #100A17;
+
+            --text: #F8F5FA;
+            --muted: #AAA2B1;
+
+            --green: #42E695;
+            --red: #FF4D6D;
+
+            --border: rgba(255,255,255,0.08);
+        }
+
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(234,60,255,0.12),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(245,166,35,0.07),
+                    transparent 35%
+                ),
+                var(--bg);
+
+            color: var(--text);
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            padding-bottom: 35px;
+        }
+
+
+        button,
+        input {
+            font: inherit;
+        }
+
+
+        button {
+            cursor: pointer;
+        }
+
+
+        .page {
+            width: 100%;
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+
+        /* =================================================
+           HEADER
+        ================================================= */
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 8px 0 20px;
+        }
+
+
+        .back-button {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 13px;
+
+            border: 1px solid var(--border);
+
+            background:
+                rgba(255,255,255,0.04);
+
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+        }
+
+
+        .back-button svg {
+            width: 20px;
+            height: 20px;
+        }
+
+
+        .brand-area {
+            flex: 1;
+        }
+
+
+        .brand {
+            font-family:
+                "Times New Roman",
+                Times,
+                serif;
+
+            font-size: 23px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+
+        .brand .fin {
+            color: white;
+        }
+
+
+        .brand .ora {
+            color: var(--gold);
+        }
+
+
+        .page-title {
+            margin-top: 2px;
+
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+
+        /* =================================================
+           PROFILE HERO
+        ================================================= */
+
+        .profile-card {
+            position: relative;
+
+            overflow: hidden;
+
+            padding: 22px;
+
+            border-radius: 24px;
+
+            border: 1px solid
+                rgba(234,60,255,0.22);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(234,60,255,0.14),
+                    rgba(255,255,255,0.025) 55%,
+                    rgba(245,166,35,0.06)
+                );
+
+            box-shadow:
+                0 18px 50px
+                rgba(0,0,0,0.35);
+        }
+
+
+        .profile-card::before {
+            content: "";
+
+            position: absolute;
+
+            width: 170px;
+            height: 170px;
+
+            right: -70px;
+            top: -70px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(234,60,255,0.13);
+
+            filter: blur(3px);
+        }
+
+
+        .profile-main {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+
+            gap: 15px;
+        }
+
+
+        .admin-avatar-large {
+            width: 70px;
+            height: 70px;
+
+            border-radius: 22px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    var(--pink),
+                    var(--pink-dark)
+                );
+
+            border: 1px solid
+                rgba(255,255,255,0.18);
+
+            box-shadow:
+                0 12px 30px
+                rgba(234,60,255,0.25);
+
+            font-family:
+                "Times New Roman",
+                Times,
+                serif;
+
+            font-size: 25px;
+            font-weight: 700;
+        }
+
+
+        .profile-details {
+            min-width: 0;
+        }
+
+
+        .profile-details h1 {
+            font-family:
+                "Times New Roman",
+                Times,
+                serif;
+
+            font-size: 24px;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+
+        .profile-details p {
+            margin-top: 4px;
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+            word-break: break-word;
+        }
+
+
+        .active-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            margin-top: 10px;
+
+            padding: 6px 10px;
+
+            border-radius: 999px;
+
+            background:
+                rgba(66,230,149,0.10);
+
+            border: 1px solid
+                rgba(66,230,149,0.22);
+
+            color: var(--green);
+
+            font-size: 11px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+
+        .active-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--green);
+
+            box-shadow:
+                0 0 9px
+                rgba(66,230,149,0.7);
+        }
+
+
+        /* =================================================
+           SECTIONS
+        ================================================= */
+
+        .section {
+            margin-top: 18px;
+
+            padding: 18px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,0.025);
+
+            border: 1px solid var(--border);
+        }
+
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .section-icon {
+            width: 36px;
+            height: 36px;
+
+            border-radius: 11px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                rgba(234,60,255,0.10);
+
+            color: var(--pink-light);
+
+            border: 1px solid
+                rgba(234,60,255,0.15);
+        }
+
+
+        .section-icon.gold {
+            background:
+                rgba(245,166,35,0.09);
+
+            color: var(--gold-light);
+
+            border-color:
+                rgba(245,166,35,0.16);
+        }
+
+
+        .section-icon svg {
+            width: 19px;
+            height: 19px;
+        }
+
+
+        .section-header h2 {
+            font-size: 15px;
+        }
+
+
+        .section-header p {
+            margin-top: 2px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+
+        /* =================================================
+           INFORMATION ROWS
+        ================================================= */
+
+        .info-list {
+            display: flex;
+            flex-direction: column;
+
+            gap: 1px;
+
+            overflow: hidden;
+
+            border-radius: 15px;
+
+            border: 1px solid
+                rgba(255,255,255,0.06);
+        }
+
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 14px;
+
+            background:
+                rgba(255,255,255,0.025);
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.05);
+        }
+
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+
+        .info-label {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+
+        .info-value {
+            text-align: right;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            word-break: break-word;
+        }
+
+
+        .info-value.gold {
+            color: var(--gold-light);
+        }
+
+
+        .info-value.green {
+            color: var(--green);
+        }
+
+
+        /* =================================================
+           SECURITY
+        ================================================= */
+
+        .security-card {
+            padding: 15px;
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(234,60,255,0.07),
+                    rgba(255,255,255,0.02)
+                );
+
+            border:
+                1px solid
+                rgba(234,60,255,0.12);
+        }
+
+
+        .security-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+
+        .security-lock {
+            width: 43px;
+            height: 43px;
+
+            border-radius: 13px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                rgba(234,60,255,0.10);
+
+            color: var(--pink-light);
+        }
+
+
+        .security-lock svg {
+            width: 21px;
+            height: 21px;
+        }
+
+
+        .security-text {
+            flex: 1;
+        }
+
+
+        .security-text strong {
+            display: block;
+
+            font-size: 14px;
+        }
+
+
+        .security-text span {
+            display: block;
+
+            margin-top: 3px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+            line-height: 1.45;
+        }
+
+
+        .change-password-button {
+            width: 100%;
+
+            margin-top: 14px;
+
+            min-height: 46px;
+
+            border: none;
+
+            border-radius: 13px;
+
+            color: white;
+
+            font-weight: 700;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--pink),
+                    var(--pink-dark)
+                );
+
+            box-shadow:
+                0 9px 24px
+                rgba(234,60,255,0.18);
+        }
+
+
+        /* =================================================
+           PASSWORD FORM
+        ================================================= */
+
+        .password-form {
+            display: none;
+
+            margin-top: 14px;
+
+            padding-top: 14px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.07);
+        }
+
+
+        .password-form.show {
+            display: block;
+        }
+
+
+        .field {
+            margin-bottom: 13px;
+        }
+
+
+        .field label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #D8D1DB;
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+
+        .password-input-wrap {
+            position: relative;
+        }
+
+
+        .field input {
+            width: 100%;
+
+            height: 46px;
+
+            padding:
+                0 46px 0 13px;
+
+            border-radius: 12px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.09);
+
+            outline: none;
+
+            background:
+                rgba(0,0,0,0.22);
+
+            color: white;
+
+            font-size: 13px;
+        }
+
+
+        .field input:focus {
+            border-color:
+                rgba(234,60,255,0.55);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(234,60,255,0.08);
+        }
+
+
+        .toggle-password {
+            position: absolute;
+
+            right: 10px;
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            width: 30px;
+            height: 30px;
+
+            border: none;
+
+            background: transparent;
+
+            color: #AFA7B5;
+        }
+
+
+        .toggle-password svg {
+            width: 18px;
+            height: 18px;
+        }
+
+
+        .password-actions {
+            display: flex;
+
+            gap: 9px;
+
+            margin-top: 5px;
+        }
+
+
+        .password-actions button {
+            min-height: 44px;
+
+            border-radius: 12px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        .submit-password {
+            flex: 1;
+
+            border: none;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--pink),
+                    var(--pink-dark)
+                );
+        }
+
+
+        .cancel-password {
+            width: 95px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.10);
+
+            color: #DDD7E0;
+
+            background:
+                rgba(255,255,255,0.04);
+        }
+
+
+        .password-message {
+            display: none;
+
+            margin-top: 12px;
+
+            padding: 11px 12px;
+
+            border-radius: 11px;
+
+            font-size: 12px;
+
+            line-height: 1.45;
+        }
+
+
+        .password-message.show {
+            display: block;
+        }
+
+
+        .password-message.error {
+            color: #FFB4C1;
+
+            background:
+                rgba(255,77,109,0.08);
+
+            border:
+                1px solid
+                rgba(255,77,109,0.17);
+        }
+
+
+        .password-message.success {
+            color: #A8F5CC;
+
+            background:
+                rgba(66,230,149,0.08);
+
+            border:
+                1px solid
+                rgba(66,230,149,0.17);
+        }
+
+
+        /* =================================================
+           RECOVERY KEY
+        ================================================= */
+
+        .recovery-result {
+            display: none;
+
+            margin-top: 15px;
+
+            padding: 15px;
+
+            border-radius: 15px;
+
+            background:
+                rgba(245,166,35,0.07);
+
+            border:
+                1px solid
+                rgba(245,166,35,0.20);
+        }
+
+
+        .recovery-result.show {
+            display: block;
+        }
+
+
+        .recovery-warning {
+            color: var(--gold-light);
+
+            font-size: 12px;
+
+            line-height: 1.5;
+
+            font-weight: 600;
+        }
+
+
+        .recovery-key-box {
+            margin-top: 11px;
+
+            padding: 12px;
+
+            border-radius: 11px;
+
+            background:
+                rgba(0,0,0,0.35);
+
+            border:
+                1px dashed
+                rgba(245,166,35,0.35);
+
+            color: white;
+
+            font-family:
+                monospace;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+
+            word-break: break-all;
+        }
+
+
+        .copy-key-button {
+            width: 100%;
+
+            margin-top: 10px;
+
+            min-height: 42px;
+
+            border-radius: 11px;
+
+            border:
+                1px solid
+                rgba(245,166,35,0.22);
+
+            background:
+                rgba(245,166,35,0.08);
+
+            color: var(--gold-light);
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        /* =================================================
+           LOGOUT
+        ================================================= */
+
+        .logout-section {
+            margin-top: 18px;
+        }
+
+
+        .logout-button {
+            width: 100%;
+
+            min-height: 48px;
+
+            border-radius: 14px;
+
+            border:
+                1px solid
+                rgba(255,77,109,0.22);
+
+            background:
+                rgba(255,77,109,0.07);
+
+            color: #FF9DAE;
+
+            font-weight: 700;
+
+            font-size: 13px;
+        }
+
+
+        .logout-button:active,
+        .change-password-button:active,
+        .submit-password:active,
+        .copy-key-button:active {
+            transform: scale(0.985);
+        }
+
+
+        /* =================================================
+           LOADING
+        ================================================= */
+
+        .loading {
+            padding: 60px 20px;
+
+            text-align: center;
+
+            color: var(--muted);
+
+            font-size: 13px;
+        }
+
+
+        .spinner {
+            width: 30px;
+            height: 30px;
+
+            margin: 0 auto 12px;
+
+            border-radius: 50%;
+
+            border:
+                3px solid
+                rgba(255,255,255,0.08);
+
+            border-top-color:
+                var(--pink);
+
+            animation:
+                spin 0.8s linear infinite;
+        }
+
+
+        @keyframes spin {
+
+            to {
+                transform:
+                    rotate(360deg);
+            }
+
+        }
+
+
+        .error-state {
+            display: none;
+
+            padding: 50px 20px;
+
+            text-align: center;
+        }
+
+
+        .error-state.show {
+            display: block;
+        }
+
+
+        .error-state strong {
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-size: 15px;
+        }
+
+
+        .error-state p {
+            color: var(--muted);
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        .retry-button {
+            margin-top: 15px;
+
+            min-height: 42px;
+
+            padding: 0 18px;
+
+            border-radius: 11px;
+
+            border:
+                1px solid
+                rgba(234,60,255,0.25);
+
+            background:
+                rgba(234,60,255,0.08);
+
+            color: var(--pink-light);
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        /* =================================================
+           TOAST
+        ================================================= */
+
+        .toast {
+            position: fixed;
+
+            left: 50%;
+
+            bottom: 20px;
+
+            transform:
+                translate(-50%, 120px);
+
+            width:
+                calc(100% - 32px);
+
+            max-width: 600px;
+
+            padding: 13px 15px;
+
+            border-radius: 13px;
+
+            background:
+                #17111B;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.10);
+
+            box-shadow:
+                0 18px 40px
+                rgba(0,0,0,0.45);
+
+            color: white;
+
+            font-size: 12px;
+
+            text-align: center;
+
+            z-index: 100;
+
+            transition:
+                transform 0.25s ease;
+        }
+
+
+        .toast.show {
+            transform:
+                translate(-50%, 0);
+        }
+
+
+        @media (min-width: 600px) {
+
+            .page {
+                padding:
+                    22px 20px;
+            }
+
+            .profile-card {
+                padding: 25px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- =================================================
+         HEADER
+    ================================================= -->
+
+    <header class="topbar">
+
+        <button
+            class="back-button"
+            id="backButton"
+            aria-label="Back to dashboard">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+
+                <path
+                    d="M15 18l-6-6 6-6"/>
+
+            </svg>
+
+        </button>
+
+
+        <div class="brand-area">
+
+            <div class="brand">
+                <span class="fin">FIN</span><span class="ora">ORA</span>
+            </div>
+
+            <div class="page-title">
+                Admin Account
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =================================================
+         LOADING
+    ================================================= -->
+
+    <div
+        id="loadingState"
+        class="loading">
+
+        <div class="spinner"></div>
+
+        Loading Admin Account...
+
+    </div>
+
+
+    <!-- =================================================
+         ERROR
+    ================================================= -->
+
+    <div
+        id="errorState"
+        class="error-state">
+
+        <strong>
+            Unable to load Admin Account
+        </strong>
+
+        <p id="errorMessage">
+            Please try again.
+        </p>
+
+        <button
+            class="retry-button"
+            id="retryButton">
+
+            Try Again
+
+        </button>
+
+    </div>
+
+
+    <!-- =================================================
+         MAIN ACCOUNT CONTENT
+    ================================================= -->
+
+    <main id="accountContent" hidden>
+
+
+        <!-- =================================================
+             PROFILE
+        ================================================= -->
+
+        <section class="profile-card">
+
+            <div class="profile-main">
+
+                <div class="admin-avatar-large">
+                    DT
+                </div>
+
+
+                <div class="profile-details">
+
+                    <h1 id="profileUsername">
+                        Admin
+                    </h1>
+
+                    <p id="profileEmail">
+                        —
+                    </p>
+
+
+                    <span class="active-pill">
+
+                        <span class="active-dot"></span>
+
+                        <span id="profileStatus">
+                            Active
+                        </span>
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ACCOUNT INFORMATION
+        ================================================= -->
+
+        <section class="section">
+
+            <div class="section-header">
+
+                <div class="section-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8">
+
+                        <circle
+                            cx="12"
+                            cy="8"
+                            r="4"/>
+
+                        <path
+                            d="M4 21c.8-4.1 3.5-6 8-6s7.2 1.9 8 6"/>
+
+                    </svg>
+
+                </div>
+
+                <div>
+
+                    <h2>
+                        Account Information
+                    </h2>
+
+                    <p>
+                        Your FINORA administrator details
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="info-list">
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Username
+                    </span>
+
+                    <span
+                        class="info-value gold"
+                        id="accountUsername">
+
+                        —
+
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Email
+                    </span>
+
+                    <span
+                        class="info-value"
+                        id="accountEmail">
+
+                        —
+
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Account Status
+                    </span>
+
+                    <span
+                        class="info-value green"
+                        id="accountStatus">
+
+                        —
+
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Last Login
+                    </span>
+
+                    <span
+                        class="info-value"
+                        id="lastLogin">
+
+                        —
+
+                    </span>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Admin ID
+                    </span>
+
+                    <span
+                        class="info-value"
+                        id="adminId">
+
+                        —
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SECURITY
+        ================================================= -->
+
+        <section class="section">
+
+            <div class="section-header">
+
+                <div class="section-icon gold">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8">
+
+                        <rect
+                            x="5"
+                            y="10"
+                            width="14"
+                            height="10"
+                            rx="2"/>
+
+                        <path
+                            d="M8 10V7a4 4 0 0 1 8 0v3"/>
+
+                        <circle
+                            cx="12"
+                            cy="15"
+                            r="1"/>
+
+                    </svg>
+
+                </div>
+
+                <div>
+
+                    <h2>
+                        Account Security
+                    </h2>
+
+                    <p>
+                        Protect your administrator access
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="security-card">
+
+                <div class="security-top">
+
+                    <div class="security-lock">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8">
+
+                            <rect
+                                x="5"
+                                y="10"
+                                width="14"
+                                height="10"
+                                rx="2"/>
+
+                            <path
+                                d="M8 10V7a4 4 0 0 1 8 0v3"/>
+
+                        </svg>
+
+                    </div>
+
+
+                    <div class="security-text">
+
+                        <strong>
+                            Admin Password
+                        </strong>
+
+                        <span>
+                            Change your administrator password securely.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="change-password-button"
+                    id="openPasswordButton">
+
+                    Change Password
+
+                </button>
+
+
+                <!-- PASSWORD FORM -->
+
+                <div
+                    class="password-form"
+                    id="passwordForm">
+
+
+                    <div class="field">
+
+                        <label for="currentPassword">
+                            Current Password
+                        </label>
+
+                        <div class="password-input-wrap">
+
+                            <input
+                                type="password"
+                                id="currentPassword"
+                                autocomplete="current-password"
+                                placeholder="Enter current password">
+
+                            <button
+                                type="button"
+                                class="toggle-password"
+                                data-target="currentPassword"
+                                aria-label="Show password">
+
+                                👁
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="newPassword">
+                            New Password
+                        </label>
+
+                        <div class="password-input-wrap">
+
+                            <input
+                                type="password"
+                                id="newPassword"
+                                autocomplete="new-password"
+                                placeholder="At least 6 characters">
+
+                            <button
+                                type="button"
+                                class="toggle-password"
+                                data-target="newPassword"
+                                aria-label="Show password">
+
+                                👁
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="confirmPassword">
+                            Confirm New Password
+                        </label>
+
+                        <div class="password-input-wrap">
+
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                autocomplete="new-password"
+                                placeholder="Enter new password again">
+
+                            <button
+                                type="button"
+                                class="toggle-password"
+                                data-target="confirmPassword"
+                                aria-label="Show password">
+
+                                👁
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="password-actions">
+
+                        <button
+                            type="button"
+                            class="cancel-password"
+                            id="cancelPasswordButton">
+
+                            Cancel
+
+                        </button>
+
+                        <button
+                            type="button"
+                            class="submit-password"
+                            id="submitPasswordButton">
+
+                            Change Password
+
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        class="password-message"
+                        id="passwordMessage">
+                    </div>
+
+
+                    <!-- NEW RECOVERY KEY -->
+
+                    <div
+                        class="recovery-result"
+                        id="recoveryResult">
+
+                        <div class="recovery-warning">
+
+                            🔐 Your new recovery key has been generated.
+
+                            Save it somewhere secure. It will not be shown
+                            again after leaving this page.
+
+                        </div>
+
+
+                        <div
+                            class="recovery-key-box"
+                            id="recoveryKey">
+
+                            —
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="copy-key-button"
+                            id="copyKeyButton">
+
+                            Copy Recovery Key
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             LOGOUT
+        ================================================= -->
+
+        <section class="logout-section">
+
+            <button
+                type="button"
+                class="logout-button"
+                id="logoutButton">
+
+                Log Out of Admin Account
+
+            </button>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<!-- =================================================
+     TOAST
+================================================= -->
+
+<div
+    class="toast"
+    id="toast">
+
+    —
+
+</div>
+
+
+<script>
+
+"use strict";
+
+
+const API_BASE =
+    "https://finora-platform.onrender.com";
+
+
+const ADMIN_ME_ENDPOINT =
+    `${API_BASE}/api/admin/me`;
+
+
+const CHANGE_PASSWORD_ENDPOINT =
+    `${API_BASE}/api/admin/change-password`;
+
+
+const LOGOUT_ENDPOINT =
+    `${API_BASE}/api/admin/logout`;
+
+
+
+/* =====================================================
+   DOM HELPER
+===================================================== */
+
+function $(selector) {
+
+    return document.querySelector(
+        selector
+    );
+
+}
+
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const loadingState =
+    $("#loadingState");
+
+const errorState =
+    $("#errorState");
+
+const errorMessage =
+    $("#errorMessage");
+
+const accountContent =
+    $("#accountContent");
+
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+let toastTimer = null;
+
+
+function showToast(message) {
+
+    const toast =
+        $("#toast");
+
+    if (!toast) {
+        return;
+    }
+
+    toast.textContent =
+        message;
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2600
+        );
+
+}
+
+
+
+/* =====================================================
+   FORMAT DATE
+===================================================== */
+
+function formatDate(
+    value
+) {
+
+    if (!value) {
+        return "Never";
+    }
+
+
+    const date =
+        new Date(value);
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return "—";
+
+    }
+
+
+    return date.toLocaleString(
+        "en-UG",
+        {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
+
+}
+
+
+
+/* =====================================================
+   LOAD ADMIN ACCOUNT
+===================================================== */
+
+async function loadAdminAccount() {
+
+    loadingState.style.display =
+        "block";
+
+    errorState.classList.remove(
+        "show"
+    );
+
+    accountContent.hidden =
+        true;
+
+
+    try {
+
+        const response =
+            await fetch(
+                ADMIN_ME_ENDPOINT,
+                {
+                    method: "GET",
+
+                    credentials:
+                        "include",
+
+                    headers: {
+                        "Accept":
+                            "application/json"
+                    }
+                }
+            );
+
+
+        if (
+            response.status === 401 ||
+            response.status === 403
+        ) {
+
+            window.location.href =
+                "/admin-login.html";
+
+            return;
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success ||
+            !data.admin
+        ) {
+
+            throw new Error(
+                data.message ||
+                "Admin account could not be loaded."
+            );
+
+        }
+
+
+        const admin =
+            data.admin;
+
+
+        $("#profileUsername").textContent =
+            admin.username ||
+            "Admin";
+
+
+        $("#profileEmail").textContent =
+            admin.email ||
+            "—";
+
+
+        $("#profileStatus").textContent =
+            admin.status ||
+            "Active";
+
+
+        $("#accountUsername").textContent =
+            admin.username ||
+            "—";
+
+
+        $("#accountEmail").textContent =
+            admin.email ||
+            "—";
+
+
+        $("#accountStatus").textContent =
+            admin.status ||
+            "—";
+
+
+        $("#lastLogin").textContent =
+            formatDate(
+                admin.lastLogin
+            );
+
+
+        $("#adminId").textContent =
+            admin.id ||
+            "—";
+
+
+        loadingState.style.display =
+            "none";
+
+        accountContent.hidden =
+            false;
+
+    } catch (error) {
+
+        console.error(
+            "❌ FINORA ADMIN ACCOUNT LOAD ERROR:",
+            error
+        );
+
+
+        loadingState.style.display =
+            "none";
+
+
+        errorMessage.textContent =
+            error.message ||
+            "Unable to load Admin Account.";
+
+
+        errorState.classList.add(
+            "show"
+        );
+
+    }
+
+}
+
+
+
+/* =====================================================
+   OPEN CHANGE PASSWORD
+===================================================== */
+
+$("#openPasswordButton")
+    .addEventListener(
+        "click",
+        () => {
+
+            $("#passwordForm")
+                .classList.add(
+                    "show"
+                );
+
+            $("#currentPassword")
+                .focus();
+
+            $("#openPasswordButton")
+                .style.display =
+                "none";
+
+        }
+    );
+
+
+
+/* =====================================================
+   CANCEL CHANGE PASSWORD
+===================================================== */
+
+$("#cancelPasswordButton")
+    .addEventListener(
+        "click",
+        () => {
+
+            $("#passwordForm")
+                .classList.remove(
+                    "show"
+                );
+
+            $("#openPasswordButton")
+                .style.display =
+                "block";
+
+
+            $("#currentPassword")
+                .value = "";
+
+            $("#newPassword")
+                .value = "";
+
+            $("#confirmPassword")
+                .value = "";
+
+
+            $("#passwordMessage")
+                .className =
+                "password-message";
+
+
+            $("#passwordMessage")
+                .textContent = "";
+
+
+            $("#recoveryResult")
+                .classList.remove(
+                    "show"
+                );
+
+        }
+    );
+
+
+
+/* =====================================================
+   TOGGLE PASSWORD VISIBILITY
+===================================================== */
+
+document
+    .querySelectorAll(
+        ".toggle-password"
+    )
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const targetId =
+                        button.dataset.target;
+
+                    const input =
+                        document.getElementById(
+                            targetId
+                        );
+
+
+                    if (!input) {
+                        return;
+                    }
+
+
+                    if (
+                        input.type ===
+                        "password"
+                    ) {
+
+                        input.type =
+                            "text";
+
+                        button.textContent =
+                            "🙈";
+
+                    } else {
+
+                        input.type =
+                            "password";
+
+                        button.textContent =
+                            "👁";
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+
+/* =====================================================
+   CHANGE PASSWORD
+===================================================== */
+
+$("#submitPasswordButton")
+    .addEventListener(
+        "click",
+        async () => {
+
+            const currentPassword =
+                $("#currentPassword")
+                    .value;
+
+            const newPassword =
+                $("#newPassword")
+                    .value;
+
+            const confirmPassword =
+                $("#confirmPassword")
+                    .value;
+
+
+            const message =
+                $("#passwordMessage");
+
+
+            message.className =
+                "password-message";
+
+
+            message.textContent =
+                "";
+
+
+            if (
+                !currentPassword ||
+                !newPassword ||
+                !confirmPassword
+            ) {
+
+                message.textContent =
+                    "Please fill in all password fields.";
+
+                message.classList.add(
+                    "show",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (
+                newPassword.length < 6
+            ) {
+
+                message.textContent =
+                    "The new password must be at least 6 characters.";
+
+                message.classList.add(
+                    "show",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (
+                newPassword !==
+                confirmPassword
+            ) {
+
+                message.textContent =
+                    "The new passwords do not match.";
+
+                message.classList.add(
+                    "show",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            const button =
+                $("#submitPasswordButton");
+
+
+            button.disabled =
+                true;
+
+            button.textContent =
+                "Changing...";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        CHANGE_PASSWORD_ENDPOINT,
+                        {
+                            method: "PATCH",
+
+                            credentials:
+                                "include",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json",
+
+                                "Accept":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    currentPassword,
+
+                                    newPassword,
+
+                                    confirmPassword
+
+                                })
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    response.status ===
+                        401 ||
+                    response.status ===
+                        403
+                ) {
+
+                    if (
+                        response.status ===
+                        401 &&
+                        data.message ===
+                        "Current Admin password is incorrect."
+                    ) {
+
+                        throw new Error(
+                            data.message
+                        );
+
+                    }
+
+
+                    window.location.href =
+                        "/admin-login.html";
+
+                    return;
+
+                }
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+                        data.message ||
+                        "Password change failed."
+                    );
+
+                }
+
+
+                message.textContent =
+                    data.message ||
+                    "Admin password changed successfully.";
+
+                message.classList.add(
+                    "show",
+                    "success"
+                );
+
+
+                if (
+                    data.recoveryKey
+                ) {
+
+                    $("#recoveryKey")
+                        .textContent =
+                        data.recoveryKey;
+
+                    $("#recoveryResult")
+                        .classList.add(
+                            "show"
+                        );
+
+                }
+
+
+                $("#currentPassword")
+                    .value = "";
+
+                $("#newPassword")
+                    .value = "";
+
+                $("#confirmPassword")
+                    .value = "";
+
+
+                showToast(
+                    "Admin password changed successfully."
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "❌ FINORA ADMIN PASSWORD CHANGE ERROR:",
+                    error
+                );
+
+
+                message.textContent =
+                    error.message ||
+                    "Password change failed.";
+
+                message.classList.add(
+                    "show",
+                    "error"
+                );
+
+            } finally {
+
+                button.disabled =
+                    false;
+
+                button.textContent =
+                    "Change Password";
+
+            }
+
+        }
+    );
+
+
+
+/* =====================================================
+   COPY RECOVERY KEY
+===================================================== */
+
+$("#copyKeyButton")
+    .addEventListener(
+        "click",
+        async () => {
+
+            const recoveryKey =
+                $("#recoveryKey")
+                    .textContent
+                    .trim();
+
+
+            if (!recoveryKey) {
+                return;
+            }
+
+
+            try {
+
+                await navigator.clipboard.writeText(
+                    recoveryKey
+                );
+
+
+                showToast(
+                    "Recovery key copied."
+                );
+
+
+                $("#copyKeyButton")
+                    .textContent =
+                    "Copied ✓";
+
+
+                setTimeout(
+                    () => {
+
+                        $("#copyKeyButton")
+                            .textContent =
+                            "Copy Recovery Key";
+
+                    },
+                    1800
+                );
+
+
+            } catch (error) {
+
+                showToast(
+                    "Copy failed. Please copy the key manually."
+                );
+
+            }
+
+        }
+    );
+
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+$("#logoutButton")
+    .addEventListener(
+        "click",
+        async () => {
+
+            const confirmed =
+                window.confirm(
+                    "Are you sure you want to log out of the Admin Account?"
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        LOGOUT_ENDPOINT,
+                        {
+                            method: "POST",
+
+                            credentials:
+                                "include",
+
+                            headers: {
+                                "Accept":
+                                    "application/json"
+                            }
+                        }
+                    );
+
+
+                if (
+                    !response.ok
+                ) {
+
+                    throw new Error(
+                        "Admin logout failed."
+                    );
+
+                }
+
+
+                window.location.href =
+                    "/admin-login.html";
+
+
+            } catch (error) {
+
+                console.error(
+                    "❌ FINORA ADMIN LOGOUT ERROR:",
+                    error
+                );
+
+
+                showToast(
+                    error.message ||
+                    "Admin logout failed."
+                );
+
+            }
+
+        }
+    );
+
+
+
+/* =====================================================
+   BACK TO DASHBOARD
+===================================================== */
+
+$("#backButton")
+    .addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                "/admin.html";
+
+        }
+    );
+
+
+
+/* =====================================================
+   RETRY
+===================================================== */
+
+$("#retryButton")
+    .addEventListener(
+        "click",
+        loadAdminAccount
+    );
+
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        loadAdminAccount();
+
+    }
+);
+
+</script>
+
+</body>
+</html>
