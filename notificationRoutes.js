@@ -2,7 +2,8 @@ const express = require("express");
 
 const Notification =
     require("./Notification");
-
+const requireAdmin =
+    require("./adminAuth");
 const router =
     express.Router();
 
@@ -99,7 +100,72 @@ router.get(
         }
     }
 );
+/* =========================================================
+   GET ADMIN NOTIFICATIONS
+========================================================= */
 
+router.get(
+    "/admin",
+    requireAdmin,
+    async (req, res) => {
+
+        try {
+
+            const notifications =
+                await Notification.find({
+
+                    adminId:
+                        req.admin._id
+
+                })
+                .sort({
+                    createdAt:
+                        -1
+                })
+                .limit(100)
+                .lean();
+
+
+            const unreadCount =
+                await Notification.countDocuments({
+
+                    adminId:
+                        req.admin._id,
+
+                    isRead:
+                        false
+                });
+
+
+            return res.status(200).json({
+
+                success:
+                    true,
+
+                notifications,
+
+                unreadCount
+            });
+
+        } catch (error) {
+
+            console.error(
+                "❌ FINORA GET ADMIN NOTIFICATIONS ERROR:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success:
+                    false,
+
+                message:
+                    "FINORA could not load admin notifications."
+            });
+        }
+    }
+);
 
 /* =========================================================
    MARK ONE NOTIFICATION AS READ
