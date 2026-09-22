@@ -961,6 +961,11 @@ router.post(
             req.session.adminId =
                 admin._id.toString();
 
+            req.session.adminSessionVersion =
+                Number(
+                    admin.sessionVersion || 1
+                );
+
 
             delete req.session.adminRecoveryId;
             delete req.session.adminRecoveryExpires;
@@ -3304,7 +3309,15 @@ router.patch(
 
 
 /* =========================================================
-LOGOUT
+LOGOUT — GLOBAL ADMIN LOGOUT
+=========================================================
+
+IMPORTANT:
+
+Logging out from one device invalidates ALL existing
+Admin sessions on every device.
+
+Normal FINORA user sessions are not affected.
 ========================================================= */
 
 router.post(
@@ -3313,6 +3326,42 @@ router.post(
     async (req, res) => {
 
         try {
+
+            /* -----------------------------------------
+               INVALIDATE ALL ADMIN SESSIONS
+
+               Increasing sessionVersion makes every
+               previously issued Admin session invalid.
+            ----------------------------------------- */
+
+            const updatedAdmin =
+                await Admin.findByIdAndUpdate(
+                    req.admin._id,
+                    {
+                        $inc: {
+                            sessionVersion: 1
+                        }
+                    },
+                    {
+                        new: true
+                    }
+                );
+
+            if (!updatedAdmin) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    message:
+                        "Admin account could not be found."
+                });
+            }
+
+
+            /* -----------------------------------------
+               DESTROY THE CURRENT DEVICE SESSION
+            ----------------------------------------- */
 
             req.session.destroy(
                 error => {
@@ -3340,15 +3389,16 @@ router.post(
                         success: true,
 
                         message:
-                            "Admin logged out successfully."
+                            "Admin logged out successfully from all devices."
                     });
+
                 }
             );
 
         } catch (error) {
 
             console.error(
-                "❌ FINORA ADMIN LOGOUT ERROR:",
+                "❌ FINORA GLOBAL ADMIN LOGOUT ERROR:",
                 error
             );
 
