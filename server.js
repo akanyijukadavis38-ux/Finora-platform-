@@ -386,16 +386,9 @@ app.get(
         );
     }
 );
-
-app.get(
-    "/admin-records.html",
-    requireAdmin,
-    (req, res) => {
-        res.sendFile(
-            path.join(__dirname, "admin-records.html")
-        );
-    }
-);
+app.get("/admin-records.html", requireAdmin, (req, res) => {
+    res.redirect("/admin-transactions.html");
+});
 
 app.get(
     "/admin-referrals.html",
