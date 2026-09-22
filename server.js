@@ -18,6 +18,8 @@ const {
     processDueInvestmentEarnings
 } = require("./investmentEarningProcessor");
 const adminRoutes = require("./adminRoutes");
+const adminDepositRoutes = require("./adminDepositRoutes");
+const adminWithdrawalRoutes = require("./adminWithdrawalRoutes");
 const requireAdmin = require("./adminAuth");
 const path = require("path");
 
@@ -245,6 +247,11 @@ app.use(
     "/api/admin",
     adminRoutes
 );
+app.use(
+    "/api/admin/withdrawals",
+    adminWithdrawalRoutes
+);
+app.use("/api/admin", adminRoutes);
 app.get(
     "/admin-login.html",
     (req, res) => {
