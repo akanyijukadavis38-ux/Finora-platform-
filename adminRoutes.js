@@ -7,6 +7,8 @@ const Admin = require("./Admin");
 const User = require("./user");
 const Investment = require("./investment");
 const Deposit = require("./Deposit");
+const Withdrawal = require("./Withdrawal");
+const Transaction = require("./Transaction");
 const requireAdmin = require("./adminAuth");
 const {
     getEffectiveUserStatus
@@ -32,6 +34,611 @@ function generateRecoveryKey() {
     );
 
 }
+
+
+/* =========================================================
+ADMIN — OVERVIEW
+========================================================= */
+
+router.get(
+    "/overview",
+    requireAdmin,
+    async (req, res) => {
+
+        try {
+
+            /* =============================================
+               BASIC DATABASE STATUS
+            ============================================= */
+
+            const databaseReady =
+                mongoose.connection.readyState === 1;
+
+
+            /* =============================================
+               LOAD USERS
+            ============================================= */
+
+            const users =
+                await User.find({})
+                    .select(
+                        "_id status"
+                    )
+                    .lean();
+
+
+            const userIds =
+                users.map(
+                    user => user._id
+                );
+
+
+            /* =============================================
+               LOAD QUALIFYING APPROVED DEPOSITS
+            ============================================= */
+
+            const qualifyingDeposits =
+                userIds.length > 0
+                    ? await Deposit.find({
+
+                        user: {
+                            $in: userIds
+                        },
+
+                        status:
+                            "approved",
+
+                        amount: {
+                            $gte:
+                                10000
+                        }
+
+                    })
+                        .select(
+                            "user"
+                        )
+                        .lean()
+                    : [];
+
+
+            /* =============================================
+               LOAD INVESTMENT USERS
+            ============================================= */
+
+            const investmentUsers =
+                userIds.length > 0
+                    ? await Investment.find({
+
+                        user: {
+                            $in: userIds
+                        }
+
+                    })
+                        .select(
+                            "user"
+                        )
+                        .lean()
+                    : [];
+
+
+            /* =============================================
+               BUILD USER STATUS SETS
+            ============================================= */
+
+            const qualifyingDepositUsers =
+                new Set();
+
+
+            for (
+                const deposit
+                of qualifyingDeposits
+            ) {
+
+                qualifyingDepositUsers.add(
+                    deposit.user.toString()
+                );
+
+            }
+
+
+            const investmentUserSet =
+                new Set();
+
+
+            for (
+                const investment
+                of investmentUsers
+            ) {
+
+                investmentUserSet.add(
+                    investment.user.toString()
+                );
+
+            }
+
+
+            /* =============================================
+               CALCULATE EFFECTIVE USER COUNTS
+
+               REGISTERED
+                    ↓
+               INACTIVE
+                    ↓
+               APPROVED DEPOSIT >= 10,000
+                    +
+               INVESTMENT
+                    ↓
+               ACTIVE
+
+               Frozen always remains frozen.
+            ============================================= */
+
+            let activeUsers = 0;
+            let frozenUsers = 0;
+            let inactiveUsers = 0;
+
+
+            for (
+                const user
+                of users
+            ) {
+
+                const userId =
+                    user._id.toString();
+
+
+                if (
+                    user.status ===
+                    "frozen"
+                ) {
+
+                    frozenUsers++;
+
+                    continue;
+                }
+
+
+                const hasQualifyingDeposit =
+                    qualifyingDepositUsers.has(
+                        userId
+                    );
+
+
+                const hasInvestment =
+                    investmentUserSet.has(
+                        userId
+                    );
+
+
+                if (
+                    hasQualifyingDeposit &&
+                    hasInvestment
+                ) {
+
+                    activeUsers++;
+
+                } else {
+
+                    inactiveUsers++;
+
+                }
+
+            }
+
+
+            /* =============================================
+               FINANCIAL TOTALS
+
+               These are calculated from real records,
+               not User.totalDeposit or other cached
+               summary fields.
+            ============================================= */
+
+            const [
+                totalDepositedResult,
+                totalWithdrawnResult,
+                totalInvestedResult,
+                totalEarningsResult,
+                pendingDeposits,
+                pendingWithdrawals,
+                recentTransactions
+            ] = await Promise.all([
+
+                Deposit.aggregate([
+
+                    {
+                        $match: {
+                            status:
+                                "approved"
+                        }
+                    },
+
+                    {
+                        $group: {
+                            _id: null,
+
+                            total: {
+                                $sum:
+                                    "$amount"
+                            }
+                        }
+                    }
+
+                ]),
+
+                Withdrawal.aggregate([
+
+                    {
+                        $match: {
+
+                            status: {
+                                $in: [
+                                    "approved",
+                                    "completed"
+                                ]
+                            }
+
+                        }
+                    },
+
+                    {
+                        $group: {
+
+                            _id: null,
+
+                            total: {
+                                $sum:
+                                    "$amount"
+                            }
+
+                        }
+
+                    }
+
+                ]),
+
+                Investment.aggregate([
+
+                    {
+                        $group: {
+
+                            _id: null,
+
+                            total: {
+                                $sum:
+                                    "$amount"
+                            }
+
+                        }
+
+                    }
+
+                ]),
+
+                Transaction.aggregate([
+
+                    {
+                        $match: {
+
+                            type:
+                                "earning",
+
+                            direction:
+                                "credit",
+
+                            status:
+                                "completed"
+
+                        }
+                    },
+
+                    {
+                        $group: {
+
+                            _id: null,
+
+                            total: {
+                                $sum:
+                                    "$amount"
+                            }
+
+                        }
+
+                    }
+
+                ]),
+
+                Deposit.countDocuments({
+                    status:
+                        "pending"
+                }),
+
+                Withdrawal.countDocuments({
+                    status:
+                        "pending"
+                }),
+
+                Transaction.find({})
+                    .select(
+                        "user type amount direction status description reference createdAt"
+                    )
+                    .populate(
+                        "user",
+                        "fullName phone"
+                    )
+                    .sort({
+                        createdAt: -1
+                    })
+                    .limit(10)
+                    .lean()
+
+            ]);
+
+
+            /* =============================================
+               EXTRACT TOTALS
+            ============================================= */
+
+            const totalDeposited =
+                Number(
+                    totalDepositedResult[0]?.total
+                ) || 0;
+
+
+            const totalWithdrawn =
+                Number(
+                    totalWithdrawnResult[0]?.total
+                ) || 0;
+
+
+            const totalInvested =
+                Number(
+                    totalInvestedResult[0]?.total
+                ) || 0;
+
+
+            const totalEarningsCredited =
+                Number(
+                    totalEarningsResult[0]?.total
+                ) || 0;
+
+
+            /* =============================================
+               FORMAT RECENT ACTIVITY
+
+               Keep the response compact for the
+               Admin Overview frontend.
+            ============================================= */
+
+            const recentActivity =
+                recentTransactions.map(
+                    transaction => {
+
+                        return {
+
+                            id:
+                                transaction._id,
+
+                            user:
+                                transaction.user
+                                    ? {
+                                        id:
+                                            transaction.user._id,
+
+                                        fullName:
+                                            transaction.user.fullName,
+
+                                        phone:
+                                            transaction.user.phone
+                                    }
+                                    : null,
+
+                            type:
+                                transaction.type,
+
+                            amount:
+                                Number(
+                                    transaction.amount
+                                ) || 0,
+
+                            direction:
+                                transaction.direction,
+
+                            status:
+                                transaction.status,
+
+                            description:
+                                transaction.description,
+
+                            reference:
+                                transaction.reference,
+
+                            createdAt:
+                                transaction.createdAt
+
+                        };
+
+                    }
+                );
+
+
+            /* =============================================
+               SYSTEM STATUS
+            ============================================= */
+
+            const system = {
+
+                server: {
+
+                    status:
+                        "online",
+
+                    label:
+                        "Online"
+
+                },
+
+                database: {
+
+                    status:
+                        databaseReady
+                            ? "connected"
+                            : "disconnected",
+
+                    label:
+                        databaseReady
+                            ? "Connected"
+                            : "Disconnected"
+
+                },
+
+                authentication: {
+
+                    status:
+                        "authenticated",
+
+                    label:
+                        "Authenticated"
+
+                },
+
+                maintenance: {
+
+                    status:
+                        "operational",
+
+                    label:
+                        "Operational"
+
+                }
+
+            };
+
+
+            /* =============================================
+               FINAL OVERVIEW RESPONSE
+            ============================================= */
+
+            return res.status(200).json({
+
+                success: true,
+
+                overview: {
+
+                    users: {
+
+                        total:
+                            users.length,
+
+                        active:
+                            activeUsers,
+
+                        inactive:
+                            inactiveUsers,
+
+                        frozen:
+                            frozenUsers
+
+                    },
+
+                    finance: {
+
+                        totalDeposited:
+                            totalDeposited,
+
+                        totalWithdrawn:
+                            totalWithdrawn,
+
+                        totalInvested:
+                            totalInvested,
+
+                        totalEarningsCredited:
+                            totalEarningsCredited
+
+                    },
+
+                    pending: {
+
+                        deposits:
+                            pendingDeposits,
+
+                        withdrawals:
+                            pendingWithdrawals
+
+                    },
+
+                    recentActivity,
+
+                    system
+
+                },
+
+                users: {
+
+                    total:
+                        users.length,
+
+                    active:
+                        activeUsers,
+
+                    inactive:
+                        inactiveUsers,
+
+                    frozen:
+                        frozenUsers
+
+                },
+
+                finance: {
+
+                    totalDeposited:
+                        totalDeposited,
+
+                    totalWithdrawn:
+                        totalWithdrawn,
+
+                    totalInvested:
+                        totalInvested,
+
+                    totalEarningsCredited:
+                        totalEarningsCredited
+
+                },
+
+                pending: {
+
+                    deposits:
+                        pendingDeposits,
+
+                    withdrawals:
+                        pendingWithdrawals
+
+                },
+
+                recentActivity,
+
+                system
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "❌ FINORA ADMIN OVERVIEW ERROR:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success: false,
+
+                message:
+                    "FINORA could not load the Admin Overview."
+            });
+        }
+    }
+);
 
 
 /* =========================================================
@@ -520,10 +1127,6 @@ router.get(
                 );
 
 
-            /* =============================================
-               GET ALL INVESTMENTS ONCE
-            ============================================= */
-
             const investments =
                 userIds.length > 0
                     ? await Investment.find({
@@ -540,10 +1143,6 @@ router.get(
                         .lean()
                     : [];
 
-
-            /* =============================================
-               GET QUALIFYING APPROVED DEPOSITS ONCE
-            ============================================= */
 
             const approvedDeposits =
                 userIds.length > 0
@@ -566,12 +1165,6 @@ router.get(
                         .lean()
                     : [];
 
-
-            /* =============================================
-               BUILD INVESTMENT MAP
-
-               Latest investment for each user.
-            ============================================= */
 
             const investmentMap =
                 new Map();
@@ -600,10 +1193,6 @@ router.get(
             }
 
 
-            /* =============================================
-               BUILD QUALIFYING DEPOSIT SET
-            ============================================= */
-
             const qualifyingDepositUsers =
                 new Set();
 
@@ -619,12 +1208,6 @@ router.get(
 
             }
 
-
-            /* =============================================
-               CALCULATE EFFECTIVE USER STATUS
-
-               This uses the same lifecycle as userRoutes.
-            ============================================= */
 
             const usersWithStatus =
                 users.map(
@@ -708,13 +1291,6 @@ router.get(
                 );
 
 
-            /* =============================================
-               REAL COUNTS
-
-               Counts are based on effective status,
-               not old User.status values.
-            ============================================= */
-
             const totalUsers =
                 usersWithStatus.length;
 
@@ -790,19 +1366,6 @@ router.get(
 
 /* =========================================================
 ADMIN — GET ONE USER
-
-Used for the User Details view.
-
-Returns:
-
-- account information
-- effective account status
-- wallet balance
-- total deposit
-- total invested
-- total withdrawal
-- total income
-- investment details
 ========================================================= */
 
 router.get(
@@ -856,10 +1419,6 @@ router.get(
             }
 
 
-            /* =============================================
-               GET THIS USER'S INVESTMENTS
-            ============================================= */
-
             const investments =
                 await Investment.find({
                     user: userId
@@ -879,21 +1438,11 @@ router.get(
                     : null;
 
 
-            /* =============================================
-               CALCULATE EFFECTIVE STATUS
-            ============================================= */
-
             const effectiveStatus =
                 await getEffectiveUserStatus(
                     user
                 );
 
-
-            /* =============================================
-               TOTAL INVESTED
-
-               Always comes from actual Investment records.
-            ============================================= */
 
             const totalInvested =
                 investments.reduce(
@@ -968,20 +1517,6 @@ router.get(
 
 /* =========================================================
 ADMIN — FREEZE / UNFREEZE USER
-
-Admin can:
-
-active
-frozen
-
-When an account is changed back to active, the effective
-status system still determines whether the account actually
-qualifies as active.
-
-Therefore:
-
-- frozen + no qualification → inactive after unfreeze
-- frozen + qualification → active after unfreeze
 ========================================================= */
 
 router.patch(
