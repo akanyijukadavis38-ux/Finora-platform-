@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <title>FINORA Admin — Transactions</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(234, 60, 255, 0.12),
+                    transparent 35%
+                ),
+                #050409;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            padding-bottom: 30px;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button {
+            border: 0;
+            cursor: pointer;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 14px;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .back-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(234,60,255,0.22);
+            color: #ffffff;
+            font-size: 23px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-btn:active {
+            transform: scale(0.96);
+        }
+
+        .brand-area {
+            flex: 1;
+        }
+
+        .brand {
+            font-family: "Times New Roman", serif;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            line-height: 1;
+        }
+
+        .brand .fin {
+            color: #ffffff;
+        }
+
+        .brand .ora {
+            color: #f5a623;
+        }
+
+        .page-title {
+            margin-top: 5px;
+            color: #bdb6c5;
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           SUMMARY
+        ===================================================== */
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .summary-card {
+            min-width: 0;
+            padding: 13px 10px;
+            border-radius: 15px;
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(234,60,255,0.11),
+                    rgba(255,255,255,0.035)
+                );
+            border: 1px solid rgba(234,60,255,0.16);
+        }
+
+        .summary-label {
+            color: #aaa2b2;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 7px;
+        }
+
+        .summary-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* =====================================================
+           SEARCH
+        ===================================================== */
+
+        .search-box {
+            position: relative;
+            margin-bottom: 11px;
+        }
+
+        .search-box input {
+            width: 100%;
+            height: 46px;
+            padding: 0 15px 0 43px;
+            border-radius: 14px;
+            outline: none;
+            color: #ffffff;
+            background: rgba(255,255,255,0.055);
+            border: 1px solid rgba(255,255,255,0.09);
+        }
+
+        .search-box input::placeholder {
+            color: #817989;
+        }
+
+        .search-box input:focus {
+            border-color: rgba(234,60,255,0.55);
+            box-shadow: 0 0 0 3px rgba(234,60,255,0.08);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b76bc3;
+            font-size: 18px;
+            pointer-events: none;
+        }
+
+        /* =====================================================
+           FILTERS
+        ===================================================== */
+
+        .filters {
+            display: flex;
+            gap: 7px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+            margin-bottom: 14px;
+            scrollbar-width: none;
+        }
+
+        .filters::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-btn {
+            flex: 0 0 auto;
+            padding: 9px 13px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.055);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #aaa2b2;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .filter-btn.active {
+            background: rgba(234,60,255,0.16);
+            border-color: rgba(234,60,255,0.55);
+            color: #ffffff;
+        }
+
+        /* =====================================================
+           LIST HEADER
+        ===================================================== */
+
+        .list-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 5px 2px 9px;
+        }
+
+        .list-heading h2 {
+            font-family: "Times New Roman", serif;
+            font-size: 19px;
+        }
+
+        .list-count {
+            color: #9f96a7;
+            font-size: 11px;
+        }
+
+        /* =====================================================
+           TRANSACTION CARD
+        ===================================================== */
+
+        .transaction-card {
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,0.055),
+                    rgba(255,255,255,0.025)
+                );
+            border: 1px solid rgba(255,255,255,0.075);
+            border-radius: 17px;
+            padding: 14px;
+            margin-bottom: 9px;
+        }
+
+        .transaction-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 11px;
+        }
+
+        .transaction-icon {
+            width: 39px;
+            height: 39px;
+            flex: 0 0 39px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(234,60,255,0.12);
+            color: #ea3cff;
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .transaction-main {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .transaction-user {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .transaction-phone {
+            color: #8f8797;
+            font-size: 11px;
+            margin-top: 3px;
+        }
+
+        .transaction-amount {
+            text-align: right;
+            white-space: nowrap;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .credit {
+            color: #72e6a1;
+        }
+
+        .debit {
+            color: #ff6f8f;
+        }
+
+        .transaction-details {
+            margin-top: 12px;
+            padding-top: 11px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+        }
+
+        .detail {
+            min-width: 0;
+        }
+
+        .detail-label {
+            color: #817989;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 3px;
+        }
+
+        .detail-value {
+            color: #ddd8e1;
+            font-size: 11px;
+            word-break: break-word;
+        }
+
+        .type-badge,
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            width: fit-content;
+            padding: 4px 7px;
+            border-radius: 7px;
+            font-size: 10px;
+            text-transform: capitalize;
+        }
+
+        .type-badge {
+            color: #f0b8f5;
+            background: rgba(234,60,255,0.09);
+        }
+
+        .status-badge {
+            color: #d7d0da;
+            background: rgba(255,255,255,0.07);
+        }
+
+        .status-completed {
+            color: #79e7a6;
+            background: rgba(72,220,135,0.10);
+        }
+
+        .status-approved {
+            color: #79c9ff;
+            background: rgba(65,165,255,0.10);
+        }
+
+        .status-pending {
+            color: #ffd76a;
+            background: rgba(245,166,35,0.10);
+        }
+
+        .status-rejected,
+        .status-failed {
+            color: #ff7895;
+            background: rgba(255,73,113,0.10);
+        }
+
+        .transaction-description {
+            margin-top: 10px;
+            color: #aaa2b2;
+            font-size: 11px;
+            line-height: 1.45;
+        }
+
+        .transaction-reference {
+            margin-top: 7px;
+            color: #77707f;
+            font-size: 9px;
+            word-break: break-all;
+        }
+
+        .transaction-date {
+            margin-top: 9px;
+            color: #716a78;
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           STATES
+        ===================================================== */
+
+        .state {
+            text-align: center;
+            padding: 45px 20px;
+            color: #817989;
+            font-size: 13px;
+        }
+
+        .state-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+            opacity: 0.7;
+        }
+
+        .retry-btn {
+            margin-top: 12px;
+            padding: 9px 15px;
+            border-radius: 10px;
+            background: rgba(234,60,255,0.13);
+            border: 1px solid rgba(234,60,255,0.35);
+            color: #ffffff;
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           LOADING
+        ===================================================== */
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            padding: 35px 0;
+        }
+
+        .spinner {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 3px solid rgba(255,255,255,0.10);
+            border-top-color: #ea3cff;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 390px) {
+
+            .page {
+                padding: 11px;
+            }
+
+            .summary-value {
+                font-size: 16px;
+            }
+
+            .summary-label {
+                font-size: 9px;
+            }
+
+            .transaction-details {
+                grid-template-columns: 1fr;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="header">
+
+        <button
+            class="back-btn"
+            type="button"
+            onclick="goBack()"
+            aria-label="Back"
+        >
+            ‹
+        </button>
+
+        <div class="brand-area">
+
+            <div class="brand">
+                <span class="fin">FIN</span><span class="ora">ORA</span>
+            </div>
+
+            <div class="page-title">
+                Admin Transactions
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         SUMMARY
+    ====================================================== -->
+
+    <section class="summary">
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+                Transactions
+            </div>
+
+            <div
+                class="summary-value"
+                id="totalTransactions"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+                Credits
+            </div>
+
+            <div
+                class="summary-value"
+                id="totalCredits"
+            >
+                UGX 0
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+                Debits
+            </div>
+
+            <div
+                class="summary-value"
+                id="totalDebits"
+            >
+                UGX 0
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SEARCH
+    ====================================================== -->
+
+    <div class="search-box">
+
+        <span class="search-icon">
+            ⌕
+        </span>
+
+        <input
+            type="search"
+            id="searchInput"
+            placeholder="Search name, phone, email or reference..."
+            autocomplete="off"
+        >
+
+    </div>
+
+
+    <!-- =====================================================
+         FILTERS
+    ====================================================== -->
+
+    <div class="filters">
+
+        <button
+            class="filter-btn active"
+            data-filter="all"
+            type="button"
+        >
+            All
+        </button>
+
+        <button
+            class="filter-btn"
+            data-filter="deposit"
+            type="button"
+        >
+            Deposits
+        </button>
+
+        <button
+            class="filter-btn"
+            data-filter="investment"
+            type="button"
+        >
+            Investments
+        </button>
+
+        <button
+            class="filter-btn"
+            data-filter="withdrawal"
+            type="button"
+        >
+            Withdrawals
+        </button>
+
+        <button
+            class="filter-btn"
+            data-filter="earning"
+            type="button"
+        >
+            Earnings
+        </button>
+
+        <button
+            class="filter-btn"
+            data-filter="referral"
+            type="button"
+        >
+            Referrals
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         LIST
+    ====================================================== -->
+
+    <div class="list-heading">
+
+        <h2>
+            Transaction History
+        </h2>
+
+        <span
+            class="list-count"
+            id="listCount"
+        >
+            0 records
+        </span>
+
+    </div>
+
+
+    <main id="transactionList">
+
+        <div class="loading">
+
+            <div class="spinner"></div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    const API_BASE =
+        "https://finora-platform.onrender.com";
+
+
+    let transactions = [];
+
+    let activeFilter = "all";
+
+
+    /* =====================================================
+       FORMAT MONEY
+    ====================================================== */
+
+    function formatMoney(amount) {
+
+        return (
+            "UGX " +
+            Number(amount || 0)
+                .toLocaleString("en-US")
+        );
+
+    }
+
+
+    /* =====================================================
+       ESCAPE HTML
+    ====================================================== */
+
+    function escapeHtml(value) {
+
+        return String(
+            value ?? ""
+        )
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* =====================================================
+       FORMAT TYPE
+    ====================================================== */
+
+    function formatType(type) {
+
+        const names = {
+
+            deposit:
+                "Deposit",
+
+            investment:
+                "Investment",
+
+            withdrawal:
+                "Withdrawal",
+
+            referral:
+                "Referral",
+
+            earning:
+                "Earning"
+
+        };
+
+        return (
+            names[type] ||
+            String(type || "Transaction")
+        );
+
+    }
+
+
+    /* =====================================================
+       TYPE ICON
+    ====================================================== */
+
+    function getTypeIcon(type) {
+
+        const icons = {
+
+            deposit:
+                "↓",
+
+            investment:
+                "◆",
+
+            withdrawal:
+                "↑",
+
+            referral:
+                "↗",
+
+            earning:
+                "✦"
+
+        };
+
+        return (
+            icons[type] ||
+            "•"
+        );
+
+    }
+
+
+    /* =====================================================
+       DATE FORMAT
+    ====================================================== */
+
+    function formatDate(dateValue) {
+
+        if (!dateValue) {
+            return "Date unavailable";
+        }
+
+        const date =
+            new Date(dateValue);
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+            return "Date unavailable";
+        }
+
+        return date.toLocaleString(
+            "en-UG",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       LOAD TRANSACTIONS
+    ====================================================== */
+
+    async function loadTransactions() {
+
+        showLoading();
+
+        try {
+
+            const response =
+                await fetch(
+                    API_BASE +
+                    "/api/admin/transactions",
+                    {
+                        method: "GET",
+                        credentials: "include"
+                    }
+                );
+
+
+            if (
+                response.status === 401 ||
+                response.status === 403
+            ) {
+
+                window.location.href =
+                    "/admin-login.html";
+
+                return;
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                throw new Error(
+                    data.message ||
+                    "Could not load transactions."
+                );
+
+            }
+
+
+            transactions =
+                Array.isArray(
+                    data.transactions
+                )
+                    ? data.transactions
+                    : [];
+
+
+            updateSummary();
+
+            renderTransactions();
+
+        } catch (error) {
+
+            console.error(
+                "FINORA ADMIN TRANSACTIONS ERROR:",
+                error
+            );
+
+            showError(
+                error.message ||
+                "Could not load transactions."
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       SUMMARY
+    ====================================================== */
+
+    function updateSummary() {
+
+        let credits = 0;
+        let debits = 0;
+
+
+        for (
+            const transaction
+            of transactions
+        ) {
+
+            const amount =
+                Number(
+                    transaction.amount
+                ) || 0;
+
+
+            if (
+                transaction.direction ===
+                "credit"
+            ) {
+
+                credits += amount;
+
+            } else if (
+                transaction.direction ===
+                "debit"
+            ) {
+
+                debits += amount;
+
+            }
+
+        }
+
+
+        document.getElementById(
+            "totalTransactions"
+        ).textContent =
+            transactions.length
+                .toLocaleString("en-US");
+
+
+        document.getElementById(
+            "totalCredits"
+        ).textContent =
+            formatMoney(
+                credits
+            );
+
+
+        document.getElementById(
+            "totalDebits"
+        ).textContent =
+            formatMoney(
+                debits
+            );
+
+    }
+
+
+    /* =====================================================
+       FILTER + SEARCH
+    ====================================================== */
+
+    function getFilteredTransactions() {
+
+        const search =
+            document.getElementById(
+                "searchInput"
+            )
+                .value
+                .trim()
+                .toLowerCase();
+
+
+        return transactions.filter(
+            transaction => {
+
+                const matchesType =
+                    activeFilter === "all" ||
+                    transaction.type ===
+                        activeFilter;
+
+
+                if (!matchesType) {
+                    return false;
+                }
+
+
+                if (!search) {
+                    return true;
+                }
+
+
+                const user =
+                    transaction.user ||
+                    {};
+
+
+                const searchableText =
+                    [
+                        user.fullName,
+                        user.phone,
+                        user.email,
+                        transaction.type,
+                        transaction.status,
+                        transaction.description,
+                        transaction.reference,
+                        transaction.direction
+                    ]
+                        .filter(Boolean)
+                        .join(" ")
+                        .toLowerCase();
+
+
+                return searchableText.includes(
+                    search
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       RENDER
+    ====================================================== */
+
+    function renderTransactions() {
+
+        const list =
+            document.getElementById(
+                "transactionList"
+            );
+
+
+        const filtered =
+            getFilteredTransactions();
+
+
+        document.getElementById(
+            "listCount"
+        ).textContent =
+            filtered.length === 1
+                ? "1 record"
+                : `${filtered.length.toLocaleString("en-US")} records`;
+
+
+        if (
+            filtered.length === 0
+        ) {
+
+            list.innerHTML = `
+
+                <div class="state">
+
+                    <div class="state-icon">
+                        ◇
+                    </div>
+
+                    <div>
+                        No transactions found.
+                    </div>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        list.innerHTML =
+            filtered
+                .map(
+                    transaction =>
+                        createTransactionCard(
+                            transaction
+                        )
+                )
+                .join("");
+
+    }
+
+
+    /* =====================================================
+       TRANSACTION CARD
+    ====================================================== */
+
+    function createTransactionCard(
+        transaction
+    ) {
+
+        const user =
+            transaction.user ||
+            {};
+
+
+        const amount =
+            Number(
+                transaction.amount
+            ) || 0;
+
+
+        const direction =
+            transaction.direction ===
+            "credit"
+                ? "credit"
+                : "debit";
+
+
+        const amountPrefix =
+            direction === "credit"
+                ? "+"
+                : "−";
+
+
+        const status =
+            String(
+                transaction.status ||
+                "completed"
+            )
+                .toLowerCase();
+
+
+        const statusClass =
+            [
+                "completed",
+                "approved",
+                "pending",
+                "rejected",
+                "failed"
+            ].includes(status)
+                ? `status-${status}`
+                : "";
+
+
+        const fullName =
+            user.fullName ||
+            "Unknown User";
+
+
+        const phone =
+            user.phone ||
+            "No phone number";
+
+
+        const reference =
+            transaction.reference ||
+            "No reference";
+
+
+        const description =
+            transaction.description ||
+            "No description";
+
+
+        return `
+
+            <article class="transaction-card">
+
+                <div class="transaction-top">
+
+                    <div class="transaction-icon">
+                        ${escapeHtml(
+                            getTypeIcon(
+                                transaction.type
+                            )
+                        )}
+                    </div>
+
+
+                    <div class="transaction-main">
+
+                        <div class="transaction-user">
+                            ${escapeHtml(fullName)}
+                        </div>
+
+                        <div class="transaction-phone">
+                            ${escapeHtml(phone)}
+                        </div>
+
+                    </div>
+
+
+                    <div class="transaction-amount ${direction}">
+                        ${amountPrefix}${escapeHtml(
+                            formatMoney(amount)
+                        )}
+                    </div>
+
+                </div>
+
+
+                <div class="transaction-details">
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            Type
+                        </div>
+
+                        <div class="detail-value">
+
+                            <span class="type-badge">
+                                ${escapeHtml(
+                                    formatType(
+                                        transaction.type
+                                    )
+                                )}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            Status
+                        </div>
+
+                        <div class="detail-value">
+
+                            <span class="status-badge ${statusClass}">
+                                ${escapeHtml(status)}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            Direction
+                        </div>
+
+                        <div class="detail-value">
+                            ${escapeHtml(
+                                direction
+                            )}
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            User Email
+                        </div>
+
+                        <div class="detail-value">
+                            ${escapeHtml(
+                                user.email ||
+                                "No email"
+                            )}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="transaction-description">
+                    ${escapeHtml(description)}
+                </div>
+
+
+                <div class="transaction-reference">
+                    Ref: ${escapeHtml(reference)}
+                </div>
+
+
+                <div class="transaction-date">
+                    ${escapeHtml(
+                        formatDate(
+                            transaction.createdAt
+                        )
+                    )}
+                </div>
+
+            </article>
+
+        `;
+
+    }
+
+
+    /* =====================================================
+       LOADING STATE
+    ====================================================== */
+
+    function showLoading() {
+
+        document.getElementById(
+            "transactionList"
+        ).innerHTML = `
+
+            <div class="loading">
+
+                <div class="spinner"></div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =====================================================
+       ERROR STATE
+    ====================================================== */
+
+    function showError(message) {
+
+        document.getElementById(
+            "transactionList"
+        ).innerHTML = `
+
+            <div class="state">
+
+                <div class="state-icon">
+                    !
+                </div>
+
+                <div>
+                    ${escapeHtml(message)}
+                </div>
+
+                <button
+                    class="retry-btn"
+                    type="button"
+                    onclick="loadTransactions()"
+                >
+                    Try Again
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =====================================================
+       FILTER BUTTONS
+    ====================================================== */
+
+    document
+        .querySelectorAll(
+            ".filter-btn"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        document
+                            .querySelectorAll(
+                                ".filter-btn"
+                            )
+                            .forEach(
+                                item =>
+                                    item.classList.remove(
+                                        "active"
+                                    )
+                            );
+
+
+                        button.classList.add(
+                            "active"
+                        );
+
+
+                        activeFilter =
+                            button.dataset.filter;
+
+
+                        renderTransactions();
+
+                    }
+                );
+
+            }
+        );
+
+
+    /* =====================================================
+       SEARCH
+    ====================================================== */
+
+    document
+        .getElementById(
+            "searchInput"
+        )
+        .addEventListener(
+            "input",
+            renderTransactions
+        );
+
+
+    /* =====================================================
+       BACK
+    ====================================================== */
+
+    function goBack() {
+
+        if (
+            document.referrer &&
+            document.referrer.includes(
+                window.location.host
+            )
+        ) {
+
+            window.history.back();
+
+        } else {
+
+            window.location.href =
+                "/admin.html";
+
+        }
+
+    }
+
+
+    /* =====================================================
+       INITIAL LOAD
+    ====================================================== */
+
+    loadTransactions();
+
+</script>
+
+</body>
+</html>
