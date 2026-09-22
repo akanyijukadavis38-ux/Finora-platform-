@@ -25,6 +25,8 @@ const path = require("path");
 const adminReferralRoutes =
     require("./adminReferralRoutes");
 const systemRoutes = require("./systemRoutes");
+const maintenanceMiddleware =
+    require("./maintenanceMiddleware");
 const app = express();
 
 const PORT =
@@ -178,12 +180,11 @@ app.use(
 /* =========================================================
    USER ROUTES
 ========================================================= */
-
 app.use(
     "/api/users",
+    maintenanceMiddleware,
     userRoutes
 );
-
 
 /* =========================================================
    INVEST ROUTES
