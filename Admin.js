@@ -12,6 +12,8 @@ IMPORTANT:
 - Admin accounts are separate from normal FINORA users.
 - Recovery keys are NEVER stored as plain text.
 - recoveryKeyHash stores only the secure hash.
+- sessionVersion is used to invalidate all Admin sessions
+  when the Admin logs out.
   ========================================================= */
 
 const adminSchema = new mongoose.Schema(
@@ -90,6 +92,24 @@ const adminSchema = new mongoose.Schema(
 
 
     /* =================================================
+       GLOBAL ADMIN SESSION VERSION
+
+       All Admin login sessions are tied to this version.
+
+       When the Admin logs out globally, this number is
+       increased. Existing Admin sessions then become
+       invalid on every device.
+
+       Normal FINORA user sessions are NOT affected.
+    ================================================= */
+
+    sessionVersion: {
+        type: Number,
+        default: 1
+    },
+
+
+    /* =================================================
        ADMIN ACCOUNT STATUS
     ================================================= */
 
@@ -120,6 +140,7 @@ const adminSchema = new mongoose.Schema(
 }
 
 );
+
 
 /* =========================================================
 EXPORT ADMIN MODEL
