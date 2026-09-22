@@ -2785,6 +2785,22 @@ document
 
 })();
 </script>
-
+<script>
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker
+            .register("/service-worker.js")
+            .then(() => {
+                console.log("FINORA service worker registered.");
+            })
+            .catch(error => {
+                console.error(
+                    "FINORA service worker registration failed:",
+                    error
+                );
+            });
+    });
+}
+</script>
 </body>
 </html>
