@@ -32,7 +32,9 @@ const router = express.Router();
       ↓
    FIRST-DEPOSIT REFERRAL PROCESSOR
       ↓
-   NOTIFICATION
+   USER NOTIFICATION
+      ↓
+   ADMIN NOTIFICATION
 
    ADMIN REJECTION
       ↓
@@ -44,7 +46,9 @@ const router = express.Router();
       ↓
    TRANSACTION REJECTED
       ↓
-   NOTIFICATION
+   USER NOTIFICATION
+      ↓
+   ADMIN NOTIFICATION
 
    IMPORTANT:
 
@@ -53,6 +57,7 @@ const router = express.Router();
    - Wallet cannot be credited twice
    - Referral cannot be processed twice
    - Approval does NOT activate the user
+   - User and admin notifications are separated
 ========================================================= */
 
 
@@ -155,8 +160,9 @@ router.get(
    6. Mark walletCredited true
    7. Complete deposit transaction
    8. Process first-deposit referral commission
-   9. Create notification
-   10. Commit everything together
+   9. Create USER notification
+   10. Create ADMIN notification
+   11. Commit everything together
 ========================================================= */
 
 router.post(
@@ -248,7 +254,7 @@ router.post(
 
             /* =================================================
                REJECTED DEPOSITS CANNOT BE APPROVED
-               ================================================= */
+            ================================================= */
 
             if (
                 deposit.status === "rejected"
@@ -311,12 +317,6 @@ router.post(
 
             /* =================================================
                DO NOT CREDIT FROZEN USERS
-
-               This prevents an admin from accidentally
-               approving money into a frozen account.
-
-               The deposit itself remains pending because
-               the transaction is rolled back.
             ================================================= */
 
             if (
@@ -375,9 +375,6 @@ router.post(
 
             /* =================================================
                MARK DEPOSIT APPROVED
-
-               walletCredited=true prevents a second wallet
-               credit if the same deposit is processed again.
             ================================================= */
 
             deposit.status =
@@ -406,11 +403,6 @@ router.post(
 
             /* =================================================
                UPDATE EXISTING DEPOSIT TRANSACTION
-
-               The deposit route already created this as
-               pending.
-
-               Match using relatedId + type + user.
             ================================================= */
 
             const depositTransaction =
@@ -450,11 +442,6 @@ router.post(
 
                 /* ---------------------------------------------
                    SAFETY FALLBACK
-
-                   If the original transaction does not exist,
-                   create the completed transaction so the
-                   approved wallet credit still has a financial
-                   history record.
                 --------------------------------------------- */
 
                 const transaction =
@@ -494,17 +481,6 @@ router.post(
 
             /* =================================================
                FIRST-DEPOSIT REFERRAL COMMISSION
-
-               The existing processor checks:
-
-               - approved deposit
-               - wallet already credited
-               - first approved deposit
-               - referral chain
-               - duplicate protection
-
-               It uses THIS SAME MongoDB SESSION so the entire
-               operation remains atomic.
             ================================================= */
 
             const referralResult =
@@ -518,7 +494,7 @@ router.post(
                USER NOTIFICATION
             ================================================= */
 
-            const notification =
+            const userNotification =
                 new Notification({
 
                     userId:
@@ -538,7 +514,39 @@ router.post(
                 });
 
 
-            await notification.save({
+            await userNotification.save({
+                session
+            });
+
+
+            /* =================================================
+               ADMIN NOTIFICATION
+
+               This notification belongs to the admin,
+               NOT the depositing user.
+            ================================================= */
+
+            const adminNotification =
+                new Notification({
+
+                    adminId:
+                        req.admin._id,
+
+                    type:
+                        "deposit_approved",
+
+                    title:
+                        "Deposit Approved",
+
+                    message:
+                        `UGX ${depositAmount.toLocaleString()} deposit from ${user.fullName} (${user.phone}) was approved and credited.`,
+
+                    isRead:
+                        false
+                });
+
+
+            await adminNotification.save({
                 session
             });
 
@@ -591,12 +599,8 @@ router.post(
             /* =================================================
                ROLLBACK
 
-               This is extremely important.
-
-               If referral processing, notification creation,
-               transaction update, or anything else fails,
-               the wallet credit and deposit approval are also
-               rolled back.
+               If anything fails, including notification
+               creation, the complete operation is rolled back.
             ================================================= */
 
             try {
@@ -658,6 +662,7 @@ router.post(
    6. NO wallet credit
    7. NO referral commission
    8. Notify user
+   9. Notify admin
 ========================================================= */
 
 router.post(
@@ -785,10 +790,6 @@ router.post(
 
             /* =================================================
                APPROVED DEPOSIT CANNOT BE REJECTED
-
-               Once money has been approved and credited,
-               it must not be silently reversed through the
-               deposit rejection route.
             ================================================= */
 
             if (
@@ -965,7 +966,7 @@ router.post(
                USER NOTIFICATION
             ================================================= */
 
-            const notification =
+            const userNotification =
                 new Notification({
 
                     userId:
@@ -985,7 +986,39 @@ router.post(
                 });
 
 
-            await notification.save({
+            await userNotification.save({
+                session
+            });
+
+
+            /* =================================================
+               ADMIN NOTIFICATION
+
+               This notification belongs to the admin,
+               NOT the depositing user.
+            ================================================= */
+
+            const adminNotification =
+                new Notification({
+
+                    adminId:
+                        req.admin._id,
+
+                    type:
+                        "deposit_rejected",
+
+                    title:
+                        "Deposit Rejected",
+
+                    message:
+                        `UGX ${Number(deposit.amount).toLocaleString()} deposit from ${user.fullName} (${user.phone}) was rejected. Reason: ${rejectionReason}`,
+
+                    isRead:
+                        false
+                });
+
+
+            await adminNotification.save({
                 session
             });
 
@@ -1075,4 +1108,3 @@ router.post(
 
 module.exports =
     router;
-
