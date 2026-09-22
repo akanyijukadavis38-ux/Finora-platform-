@@ -1,0 +1,2683 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FINORA Referrals</title>
+
+    <meta
+        name="theme-color"
+        content="#07050b"
+    >
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(234, 60, 255, .13),
+                    transparent 34%
+                ),
+                radial-gradient(
+                    circle at top left,
+                    rgba(245, 166, 35, .07),
+                    transparent 28%
+                ),
+                #07050b;
+
+            color: #f7f2fa;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+        }
+
+
+        button,
+        input,
+        select {
+
+            font: inherit;
+
+        }
+
+
+        button {
+
+            cursor: pointer;
+
+        }
+
+
+        .page {
+
+            width: 100%;
+
+            max-width: 760px;
+
+            min-height: 100vh;
+
+            margin: 0 auto;
+
+            padding-bottom: 40px;
+
+        }
+
+
+        /* =================================================
+           HEADER
+        ================================================= */
+
+        .topbar {
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 50;
+
+            min-height: 72px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 14px 18px;
+
+            background:
+                rgba(7, 5, 11, .94);
+
+            backdrop-filter:
+                blur(18px);
+
+            -webkit-backdrop-filter:
+                blur(18px);
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,.07);
+
+        }
+
+
+        .top-left {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+        }
+
+
+        .back-btn {
+
+            width: 40px;
+
+            height: 40px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(234,60,255,.22);
+
+            border-radius: 13px;
+
+            background:
+                rgba(234,60,255,.08);
+
+            color: #fff;
+
+        }
+
+
+        .back-btn svg {
+
+            width: 20px;
+
+            height: 20px;
+
+        }
+
+
+        .brand {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 2px;
+
+        }
+
+
+        .brand-name {
+
+            font-family:
+                "Times New Roman",
+                Times,
+                serif;
+
+            font-size: 22px;
+
+            font-weight: 700;
+
+        }
+
+
+        .brand-name .fin {
+
+            color: #fff;
+
+        }
+
+
+        .brand-name .ora {
+
+            color: #f5a623;
+
+        }
+
+
+        .brand-subtitle {
+
+            color: #a9a1ad;
+
+            font-size: 10px;
+
+            letter-spacing: .9px;
+
+            text-transform: uppercase;
+
+        }
+
+
+        /* =================================================
+           HERO
+        ================================================= */
+
+        .hero {
+
+            padding:
+                26px 18px 18px;
+
+        }
+
+
+        .eyebrow {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding:
+                7px 11px;
+
+            border:
+                1px solid
+                rgba(234,60,255,.2);
+
+            border-radius: 50px;
+
+            background:
+                rgba(234,60,255,.07);
+
+            color: #ff72ff;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .eyebrow-dot {
+
+            width: 6px;
+
+            height: 6px;
+
+            border-radius: 50%;
+
+            background: #ea3cff;
+
+            box-shadow:
+                0 0 10px
+                rgba(234,60,255,.9);
+
+        }
+
+
+        .hero h1 {
+
+            margin-top: 13px;
+
+            font-family:
+                "Times New Roman",
+                Times,
+                serif;
+
+            font-size: 32px;
+
+            line-height: 1.05;
+
+        }
+
+
+        .hero h1 span {
+
+            color: #f5a623;
+
+        }
+
+
+        .hero p {
+
+            margin-top: 9px;
+
+            color: #a69eaa;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+
+        }
+
+
+        /* =================================================
+           SUMMARY CARDS
+        ================================================= */
+
+        .summary {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 10px;
+
+            padding:
+                0 18px;
+
+        }
+
+
+        .summary-card {
+
+            min-height: 92px;
+
+            padding: 14px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.07);
+
+            border-radius: 17px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.055),
+                    rgba(255,255,255,.018)
+                );
+
+        }
+
+
+        .summary-label {
+
+            color: #8d8592;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            letter-spacing: .7px;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .summary-value {
+
+            margin-top: 7px;
+
+            font-size: 20px;
+
+            font-weight: 800;
+
+        }
+
+
+        .summary-value.gold {
+
+            color: #ffd76a;
+
+        }
+
+
+        .summary-value.pink {
+
+            color: #ff72ff;
+
+        }
+
+
+        .summary-value.green {
+
+            color: #8cf0bd;
+
+        }
+
+
+        /* =================================================
+           LEVEL CARDS
+        ================================================= */
+
+        .section {
+
+            padding:
+                22px 18px 0;
+
+        }
+
+
+        .section-title {
+
+            margin-bottom: 10px;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            color: #ddd5e1;
+
+            text-transform: uppercase;
+
+            letter-spacing: .8px;
+
+        }
+
+
+        .levels {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 8px;
+
+        }
+
+
+        .level-card {
+
+            padding: 13px 10px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.06);
+
+            border-radius: 15px;
+
+            background:
+                rgba(255,255,255,.025);
+
+        }
+
+
+        .level-name {
+
+            color: #ff72ff;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+        }
+
+
+        .level-rate {
+
+            margin-top: 3px;
+
+            color: #ffd76a;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+        }
+
+
+        .level-amount {
+
+            margin-top: 9px;
+
+            font-size: 14px;
+
+            font-weight: 800;
+
+        }
+
+
+        .level-records {
+
+            margin-top: 4px;
+
+            color: #7f7685;
+
+            font-size: 9px;
+
+        }
+
+
+        /* =================================================
+           SEARCH
+        ================================================= */
+
+        .controls {
+
+            margin:
+                20px 18px 0;
+
+        }
+
+
+        .search-wrap {
+
+            position: relative;
+
+        }
+
+
+        .search-wrap svg {
+
+            position: absolute;
+
+            left: 13px;
+
+            top: 50%;
+
+            width: 17px;
+
+            height: 17px;
+
+            transform:
+                translateY(-50%);
+
+            color: #776e7c;
+
+        }
+
+
+        .search-input {
+
+            width: 100%;
+
+            height: 45px;
+
+            padding:
+                0 14px 0 40px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.08);
+
+            outline: none;
+
+            border-radius: 13px;
+
+            background:
+                rgba(255,255,255,.035);
+
+            color: #fff;
+
+            font-size: 12px;
+
+        }
+
+
+        .search-input::placeholder {
+
+            color: #716977;
+
+        }
+
+
+        .search-input:focus {
+
+            border-color:
+                rgba(234,60,255,.35);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(234,60,255,.06);
+
+        }
+
+
+        .filter-row {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 8px;
+
+            margin-top: 8px;
+
+        }
+
+
+        .filter-select {
+
+            width: 100%;
+
+            height: 40px;
+
+            padding:
+                0 10px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.07);
+
+            outline: none;
+
+            border-radius: 11px;
+
+            background:
+                #100b15;
+
+            color: #bdb4c3;
+
+            font-size: 10px;
+
+        }
+
+
+        /* =================================================
+           RECORD HEADER
+        ================================================= */
+
+        .records-head {
+
+            margin:
+                22px 18px 10px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+        }
+
+
+        .records-title {
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+        }
+
+
+        .records-count {
+
+            color: #8b8290;
+
+            font-size: 10px;
+
+        }
+
+
+        /* =================================================
+           REFERRAL CARDS
+        ================================================= */
+
+        .records {
+
+            padding:
+                0 18px;
+
+        }
+
+
+        .referral-card {
+
+            position: relative;
+
+            margin-bottom: 11px;
+
+            padding: 15px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.065);
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.045),
+                    rgba(255,255,255,.018)
+                );
+
+        }
+
+
+        .referral-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+
+            top: 16px;
+
+            bottom: 16px;
+
+            width: 3px;
+
+            border-radius:
+                0 5px 5px 0;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #ea3cff,
+                    #f5a623
+                );
+
+        }
+
+
+        .card-head {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+        }
+
+
+        .recipient {
+
+            min-width: 0;
+
+        }
+
+
+        .recipient-label {
+
+            color: #786f7e;
+
+            font-size: 8px;
+
+            text-transform: uppercase;
+
+            letter-spacing: .7px;
+
+        }
+
+
+        .recipient-name {
+
+            margin-top: 4px;
+
+            color: #fff;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+        }
+
+
+        .recipient-contact {
+
+            margin-top: 3px;
+
+            color: #918895;
+
+            font-size: 10px;
+
+            word-break: break-word;
+
+        }
+
+
+        .level-pill {
+
+            flex-shrink: 0;
+
+            padding:
+                6px 9px;
+
+            border-radius: 9px;
+
+            background:
+                rgba(234,60,255,.09);
+
+            color: #ff72ff;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+        }
+
+
+        .card-divider {
+
+            height: 1px;
+
+            margin:
+                13px 0;
+
+            background:
+                rgba(255,255,255,.055);
+
+        }
+
+
+        .referred {
+
+            padding-bottom: 1px;
+
+        }
+
+
+        .referred-label {
+
+            color: #786f7e;
+
+            font-size: 8px;
+
+            text-transform: uppercase;
+
+            letter-spacing: .7px;
+
+        }
+
+
+        .referred-name {
+
+            margin-top: 4px;
+
+            color: #ddd6e1;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+        }
+
+
+        .referred-contact {
+
+            margin-top: 3px;
+
+            color: #827987;
+
+            font-size: 9px;
+
+        }
+
+
+        .financial-row {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 7px;
+
+            margin-top: 13px;
+
+        }
+
+
+        .financial-box {
+
+            padding: 9px;
+
+            border-radius: 11px;
+
+            background:
+                rgba(255,255,255,.025);
+
+        }
+
+
+        .financial-label {
+
+            color: #756d7b;
+
+            font-size: 8px;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .financial-value {
+
+            margin-top: 5px;
+
+            color: #ddd6e2;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+        }
+
+
+        .financial-value.commission {
+
+            color: #ffd76a;
+
+        }
+
+
+        .card-footer {
+
+            margin-top: 12px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 8px;
+
+        }
+
+
+        .status {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            padding:
+                5px 8px;
+
+            border-radius: 8px;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .status-dot {
+
+            width: 5px;
+
+            height: 5px;
+
+            border-radius: 50%;
+
+        }
+
+
+        .status.credited {
+
+            background:
+                rgba(72,214,139,.08);
+
+            color: #8cf0bd;
+
+        }
+
+
+        .status.credited .status-dot {
+
+            background: #58d998;
+
+        }
+
+
+        .status.reversed {
+
+            background:
+                rgba(255,86,100,.08);
+
+            color: #ff929c;
+
+        }
+
+
+        .status.reversed .status-dot {
+
+            background: #ff6472;
+
+        }
+
+
+        .date {
+
+            color: #6f6775;
+
+            font-size: 9px;
+
+            text-align: right;
+
+        }
+
+
+        /* =================================================
+           LOADING / EMPTY / ERROR
+        ================================================= */
+
+        .state-box {
+
+            padding:
+                50px 20px;
+
+            text-align: center;
+
+            border:
+                1px solid
+                rgba(255,255,255,.06);
+
+            border-radius: 19px;
+
+            background:
+                rgba(255,255,255,.02);
+
+        }
+
+
+        .spinner {
+
+            width: 28px;
+
+            height: 28px;
+
+            margin:
+                0 auto 13px;
+
+            border:
+                2px solid
+                rgba(234,60,255,.15);
+
+            border-top-color:
+                #ea3cff;
+
+            border-radius: 50%;
+
+            animation:
+                spin .8s linear infinite;
+
+        }
+
+
+        @keyframes spin {
+
+            to {
+                transform:
+                    rotate(360deg);
+            }
+
+        }
+
+
+        .state-icon {
+
+            width: 54px;
+
+            height: 54px;
+
+            margin:
+                0 auto 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 17px;
+
+            background:
+                rgba(234,60,255,.07);
+
+            color: #ff72ff;
+
+        }
+
+
+        .state-icon svg {
+
+            width: 25px;
+
+            height: 25px;
+
+        }
+
+
+        .state-box h3 {
+
+            color: #fff;
+
+            font-size: 14px;
+
+        }
+
+
+        .state-box p {
+
+            margin-top: 7px;
+
+            color: #827988;
+
+            font-size: 11px;
+
+            line-height: 1.5;
+
+        }
+
+
+        .retry-btn {
+
+            margin-top: 15px;
+
+            padding:
+                9px 15px;
+
+            border: 0;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ea3cff,
+                    #9e18bd
+                );
+
+            color: #fff;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+        }
+
+
+        /* =================================================
+           TOAST
+        ================================================= */
+
+        .toast {
+
+            position: fixed;
+
+            left: 50%;
+
+            bottom: 22px;
+
+            z-index: 100;
+
+            width:
+                calc(100% - 36px);
+
+            max-width: 420px;
+
+            padding:
+                12px 15px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.08);
+
+            border-radius: 13px;
+
+            background:
+                rgba(20,15,24,.97);
+
+            color: #fff;
+
+            font-size: 11px;
+
+            text-align: center;
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            transform:
+                translate(-50%, 25px);
+
+            transition:
+                opacity .25s ease,
+                transform .25s ease;
+
+        }
+
+
+        .toast.show {
+
+            opacity: 1;
+
+            transform:
+                translate(-50%, 0);
+
+        }
+
+
+        @media (min-width: 700px) {
+
+            .hero {
+
+                padding-top: 35px;
+
+            }
+
+
+            .hero h1 {
+
+                font-size: 38px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page">
+
+
+    <!-- =================================================
+         HEADER
+    ================================================= -->
+
+    <header class="topbar">
+
+        <div class="top-left">
+
+            <button
+                class="back-btn"
+                id="backBtn"
+                aria-label="Back"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <path d="M19 12H5"></path>
+
+                    <path d="M12 19l-7-7 7-7"></path>
+
+                </svg>
+
+            </button>
+
+
+            <div class="brand">
+
+                <div class="brand-name">
+
+                    <span class="fin">FIN</span><span class="ora">ORA</span>
+
+                </div>
+
+
+                <div class="brand-subtitle">
+
+                    Referral Management
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="level-pill"
+            style="border:1px solid rgba(245,166,35,.15);background:rgba(245,166,35,.06);color:#ffd76a;"
+        >
+
+            L1 • L2 • L3
+
+        </div>
+
+    </header>
+
+
+    <!-- =================================================
+         HERO
+    ================================================= -->
+
+    <section class="hero">
+
+        <div class="eyebrow">
+
+            <span class="eyebrow-dot"></span>
+
+            Referral Center
+
+        </div>
+
+
+        <h1>
+
+            Referral <span>Network</span>
+
+        </h1>
+
+
+        <p>
+
+            Monitor referral commissions generated
+            across the FINORA three-level network.
+
+        </p>
+
+    </section>
+
+
+    <!-- =================================================
+         SUMMARY
+    ================================================= -->
+
+    <section class="summary">
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+
+                Total Commission
+
+            </div>
+
+
+            <div
+                class="summary-value gold"
+                id="totalAmount"
+            >
+
+                UGX 0
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+
+                Commission Records
+
+            </div>
+
+
+            <div
+                class="summary-value pink"
+                id="totalRecords"
+            >
+
+                0
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+
+                Credited
+
+            </div>
+
+
+            <div
+                class="summary-value green"
+                id="creditedAmount"
+            >
+
+                UGX 0
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+
+                Reversed
+
+            </div>
+
+
+            <div
+                class="summary-value"
+                id="reversedAmount"
+            >
+
+                UGX 0
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         LEVEL BREAKDOWN
+    ================================================= -->
+
+    <section class="section">
+
+        <div class="section-title">
+
+            Commission Levels
+
+        </div>
+
+
+        <div class="levels">
+
+
+            <div class="level-card">
+
+                <div class="level-name">
+
+                    Level 1
+
+                </div>
+
+                <div class="level-rate">
+
+                    15%
+
+                </div>
+
+                <div
+                    class="level-amount"
+                    id="level1Amount"
+                >
+
+                    UGX 0
+
+                </div>
+
+                <div
+                    class="level-records"
+                    id="level1Records"
+                >
+
+                    0 records
+
+                </div>
+
+            </div>
+
+
+            <div class="level-card">
+
+                <div class="level-name">
+
+                    Level 2
+
+                </div>
+
+                <div class="level-rate">
+
+                    5%
+
+                </div>
+
+                <div
+                    class="level-amount"
+                    id="level2Amount"
+                >
+
+                    UGX 0
+
+                </div>
+
+                <div
+                    class="level-records"
+                    id="level2Records"
+                >
+
+                    0 records
+
+                </div>
+
+            </div>
+
+
+            <div class="level-card">
+
+                <div class="level-name">
+
+                    Level 3
+
+                </div>
+
+                <div class="level-rate">
+
+                    2%
+
+                </div>
+
+                <div
+                    class="level-amount"
+                    id="level3Amount"
+                >
+
+                    UGX 0
+
+                </div>
+
+                <div
+                    class="level-records"
+                    id="level3Records"
+                >
+
+                    0 records
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         SEARCH + FILTERS
+    ================================================= -->
+
+    <section class="controls">
+
+        <div class="search-wrap">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <circle
+                    cx="11"
+                    cy="11"
+                    r="7"
+                ></circle>
+
+                <path
+                    d="m20 20-4-4"
+                ></path>
+
+            </svg>
+
+
+            <input
+                type="search"
+                id="searchInput"
+                class="search-input"
+                placeholder="Search name, phone, email or reference..."
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <div class="filter-row">
+
+            <select
+                id="levelFilter"
+                class="filter-select"
+            >
+
+                <option value="all">
+                    All Levels
+                </option>
+
+                <option value="1">
+                    Level 1 — 15%
+                </option>
+
+                <option value="2">
+                    Level 2 — 5%
+                </option>
+
+                <option value="3">
+                    Level 3 — 2%
+                </option>
+
+            </select>
+
+
+            <select
+                id="statusFilter"
+                class="filter-select"
+            >
+
+                <option value="all">
+                    All Statuses
+                </option>
+
+                <option value="credited">
+                    Credited
+                </option>
+
+                <option value="reversed">
+                    Reversed
+                </option>
+
+            </select>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         RECORDS HEADER
+    ================================================= -->
+
+    <div class="records-head">
+
+        <div class="records-title">
+
+            Referral Activity
+
+        </div>
+
+
+        <div
+            class="records-count"
+            id="recordsCount"
+        >
+
+            0 records
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         RECORDS
+    ================================================= -->
+
+    <main
+        class="records"
+        id="records"
+    >
+
+        <div class="state-box">
+
+            <div class="spinner"></div>
+
+            <p>
+                Loading referral records...
+            </p>
+
+        </div>
+
+    </main>
+
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script>
+
+
+    const API =
+        "https://finora-platform.onrender.com";
+
+
+    let referralRecords = [];
+
+
+    const records =
+        document.getElementById(
+            "records"
+        );
+
+
+    const recordsCount =
+        document.getElementById(
+            "recordsCount"
+        );
+
+
+    const searchInput =
+        document.getElementById(
+            "searchInput"
+        );
+
+
+    const levelFilter =
+        document.getElementById(
+            "levelFilter"
+        );
+
+
+    const statusFilter =
+        document.getElementById(
+            "statusFilter"
+        );
+
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    /* =================================================
+       FORMAT MONEY
+    ================================================= */
+
+    function formatMoney(amount) {
+
+        return (
+            "UGX " +
+            Number(
+                amount || 0
+            ).toLocaleString(
+                "en-UG"
+            )
+        );
+
+    }
+
+
+    /* =================================================
+       ESCAPE HTML
+    ================================================= */
+
+    function escapeHtml(value) {
+
+        return String(
+            value ?? ""
+        )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+    }
+
+
+    /* =================================================
+       FORMAT DATE
+    ================================================= */
+
+    function formatDate(value) {
+
+        const date =
+            new Date(value);
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+
+            return "Unknown date";
+
+        }
+
+
+        return date.toLocaleString(
+            "en-UG",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+
+    }
+
+
+    /* =================================================
+       TOAST
+    ================================================= */
+
+    let toastTimer;
+
+
+    function showToast(message) {
+
+        toast.textContent =
+            message;
+
+        toast.classList.add(
+            "show"
+        );
+
+
+        clearTimeout(
+            toastTimer
+        );
+
+
+        toastTimer =
+            setTimeout(
+                () => {
+
+                    toast.classList.remove(
+                        "show"
+                    );
+
+                },
+                2500
+            );
+
+    }
+
+
+    /* =================================================
+       UPDATE OVERVIEW
+    ================================================= */
+
+    async function loadOverview() {
+
+        const response =
+            await fetch(
+                `${API}/api/admin/referrals/overview`,
+                {
+                    method:
+                        "GET",
+
+                    credentials:
+                        "include",
+
+                    headers: {
+                        Accept:
+                            "application/json"
+                    }
+                }
+            );
+
+
+        if (
+            response.status === 401 ||
+            response.status === 403
+        ) {
+
+            window.location.href =
+                "/admin-login.html";
+
+            return;
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data.message ||
+                "Could not load referral overview."
+            );
+
+        }
+
+
+        const overview =
+            data.overview || {};
+
+
+        document.getElementById(
+            "totalAmount"
+        ).textContent =
+            formatMoney(
+                overview.totalAmount
+            );
+
+
+        document.getElementById(
+            "totalRecords"
+        ).textContent =
+            Number(
+                overview.totalRecords || 0
+            ).toLocaleString();
+
+
+        document.getElementById(
+            "creditedAmount"
+        ).textContent =
+            formatMoney(
+                overview.creditedAmount
+            );
+
+
+        document.getElementById(
+            "reversedAmount"
+        ).textContent =
+            formatMoney(
+                overview.reversedAmount
+            );
+
+
+        const level1 =
+            overview.level1 || {};
+
+
+        const level2 =
+            overview.level2 || {};
+
+
+        const level3 =
+            overview.level3 || {};
+
+
+        document.getElementById(
+            "level1Amount"
+        ).textContent =
+            formatMoney(
+                level1.amount
+            );
+
+
+        document.getElementById(
+            "level1Records"
+        ).textContent =
+            `${Number(level1.records || 0).toLocaleString()} records`;
+
+
+        document.getElementById(
+            "level2Amount"
+        ).textContent =
+            formatMoney(
+                level2.amount
+            );
+
+
+        document.getElementById(
+            "level2Records"
+        ).textContent =
+            `${Number(level2.records || 0).toLocaleString()} records`;
+
+
+        document.getElementById(
+            "level3Amount"
+        ).textContent =
+            formatMoney(
+                level3.amount
+            );
+
+
+        document.getElementById(
+            "level3Records"
+        ).textContent =
+            `${Number(level3.records || 0).toLocaleString()} records`;
+
+    }
+
+
+    /* =================================================
+       LOAD REFERRAL RECORDS
+    ================================================= */
+
+    async function loadRecords(
+        silent = false
+    ) {
+
+        if (!silent) {
+
+            records.innerHTML = `
+
+                <div class="state-box">
+
+                    <div class="spinner"></div>
+
+                    <p>
+                        Loading referral records...
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+
+        try {
+
+            const params =
+                new URLSearchParams();
+
+
+            const level =
+                levelFilter.value;
+
+
+            const status =
+                statusFilter.value;
+
+
+            const search =
+                searchInput.value.trim();
+
+
+            if (
+                level !== "all"
+            ) {
+
+                params.set(
+                    "level",
+                    level
+                );
+
+            }
+
+
+            if (
+                status !== "all"
+            ) {
+
+                params.set(
+                    "status",
+                    status
+                );
+
+            }
+
+
+            if (search) {
+
+                params.set(
+                    "search",
+                    search
+                );
+
+            }
+
+
+            const query =
+                params.toString();
+
+
+            const url =
+                query
+                    ? `${API}/api/admin/referrals?${query}`
+                    : `${API}/api/admin/referrals`;
+
+
+            const response =
+                await fetch(
+                    url,
+                    {
+                        method:
+                            "GET",
+
+                        credentials:
+                            "include",
+
+                        headers: {
+                            Accept:
+                                "application/json"
+                        }
+                    }
+                );
+
+
+            if (
+                response.status === 401 ||
+                response.status === 403
+            ) {
+
+                window.location.href =
+                    "/admin-login.html";
+
+                return;
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                throw new Error(
+                    data.message ||
+                    "Could not load referral records."
+                );
+
+            }
+
+
+            referralRecords =
+                Array.isArray(
+                    data.commissions
+                )
+                    ? data.commissions
+                    : [];
+
+
+            renderRecords();
+
+
+        } catch (error) {
+
+            console.error(
+                "FINORA referral records error:",
+                error
+            );
+
+
+            records.innerHTML = `
+
+                <div class="state-box">
+
+                    <div class="state-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="9"
+                            ></circle>
+
+                            <path
+                                d="M12 8v4"
+                            ></path>
+
+                            <path
+                                d="M12 16h.01"
+                            ></path>
+
+                        </svg>
+
+                    </div>
+
+
+                    <h3>
+                        Could not load referrals
+                    </h3>
+
+
+                    <p>
+                        ${escapeHtml(error.message)}
+                    </p>
+
+
+                    <button
+                        class="retry-btn"
+                        id="retryBtn"
+                    >
+                        Try again
+                    </button>
+
+                </div>
+
+            `;
+
+
+            const retryBtn =
+                document.getElementById(
+                    "retryBtn"
+                );
+
+
+            if (retryBtn) {
+
+                retryBtn.onclick =
+                    () => {
+
+                        loadRecords();
+
+                        loadOverview();
+
+                    };
+
+            }
+
+        }
+
+    }
+
+
+    /* =================================================
+       RENDER RECORDS
+    ================================================= */
+
+    function renderRecords() {
+
+        recordsCount.textContent =
+            `${referralRecords.length.toLocaleString()} ${
+                referralRecords.length === 1
+                    ? "record"
+                    : "records"
+            }`;
+
+
+        if (
+            referralRecords.length === 0
+        ) {
+
+            records.innerHTML = `
+
+                <div class="state-box">
+
+                    <div class="state-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+
+                            <path
+                                d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+                            ></path>
+
+                            <circle
+                                cx="9"
+                                cy="7"
+                                r="4"
+                            ></circle>
+
+                            <path
+                                d="M16 11h6"
+                            ></path>
+
+                        </svg>
+
+                    </div>
+
+
+                    <h3>
+                        No referral records
+                    </h3>
+
+
+                    <p>
+                        Referral commissions matching
+                        your current filters will appear here.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        records.innerHTML =
+            referralRecords.map(
+                item => {
+
+                    const recipient =
+                        item.recipient || {};
+
+
+                    const referredUser =
+                        item.referredUser || {};
+
+
+                    const deposit =
+                        item.deposit || {};
+
+
+                    const level =
+                        Number(
+                            item.level || 0
+                        );
+
+
+                    const status =
+                        item.status ||
+                        "credited";
+
+
+                    return `
+
+                        <article
+                            class="referral-card"
+                        >
+
+
+                            <div class="card-head">
+
+
+                                <div class="recipient">
+
+                                    <div class="recipient-label">
+
+                                        Commission Recipient
+
+                                    </div>
+
+
+                                    <div class="recipient-name">
+
+                                        ${escapeHtml(
+                                            recipient.fullName ||
+                                            "Unknown user"
+                                        )}
+
+                                    </div>
+
+
+                                    <div class="recipient-contact">
+
+                                        ${escapeHtml(
+                                            recipient.phone ||
+                                            recipient.email ||
+                                            "No contact information"
+                                        )}
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="level-pill">
+
+                                    Level ${escapeHtml(level)}
+
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="card-divider"></div>
+
+
+                            <div class="referred">
+
+                                <div class="referred-label">
+
+                                    Deposit From
+
+                                </div>
+
+
+                                <div class="referred-name">
+
+                                    ${escapeHtml(
+                                        referredUser.fullName ||
+                                        "Unknown user"
+                                    )}
+
+                                </div>
+
+
+                                <div class="referred-contact">
+
+                                    ${escapeHtml(
+                                        referredUser.phone ||
+                                        referredUser.email ||
+                                        "No contact information"
+                                    )}
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="financial-row">
+
+
+                                <div class="financial-box">
+
+                                    <div class="financial-label">
+
+                                        Deposit
+
+                                    </div>
+
+
+                                    <div class="financial-value">
+
+                                        ${formatMoney(
+                                            item.depositAmount
+                                        )}
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="financial-box">
+
+                                    <div class="financial-label">
+
+                                        Rate
+
+                                    </div>
+
+
+                                    <div class="financial-value">
+
+                                        ${escapeHtml(
+                                            item.rate
+                                        )}%
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="financial-box">
+
+                                    <div class="financial-label">
+
+                                        Commission
+
+                                    </div>
+
+
+                                    <div
+                                        class="financial-value commission"
+                                    >
+
+                                        ${formatMoney(
+                                            item.amount
+                                        )}
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="card-footer">
+
+
+                                <div
+                                    class="status ${escapeHtml(status)}"
+                                >
+
+                                    <span class="status-dot"></span>
+
+                                    ${escapeHtml(status)}
+
+                                </div>
+
+
+                                <div class="date">
+
+                                    ${formatDate(
+                                        item.creditedAt ||
+                                        item.createdAt
+                                    )}
+
+                                </div>
+
+                            </div>
+
+
+                        </article>
+
+                    `;
+
+                }
+            ).join("");
+
+    }
+
+
+    /* =================================================
+       FILTER EVENTS
+    ================================================= */
+
+    let searchTimer;
+
+
+    searchInput.addEventListener(
+        "input",
+        () => {
+
+            clearTimeout(
+                searchTimer
+            );
+
+
+            searchTimer =
+                setTimeout(
+                    () => {
+
+                        loadRecords();
+
+                    },
+                    350
+                );
+
+        }
+    );
+
+
+    levelFilter.addEventListener(
+        "change",
+        () => {
+
+            loadRecords();
+
+        }
+    );
+
+
+    statusFilter.addEventListener(
+        "change",
+        () => {
+
+            loadRecords();
+
+        }
+    );
+
+
+    /* =================================================
+       BACK BUTTON
+    ================================================= */
+
+    document
+        .getElementById("backBtn")
+        .addEventListener(
+            "click",
+            () => {
+
+                if (
+                    document.referrer &&
+                    document.referrer.includes(
+                        window.location.host
+                    )
+                ) {
+
+                    window.history.back();
+
+                } else {
+
+                    window.location.href =
+                        "/admin.html";
+
+                }
+
+            }
+        );
+
+
+    /* =================================================
+       INITIAL LOAD
+    ================================================= */
+
+    async function initializePage() {
+
+        try {
+
+            await Promise.all([
+                loadOverview(),
+                loadRecords()
+            ]);
+
+        } catch (error) {
+
+            console.error(
+                "FINORA referral page initialization error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    initializePage();
+
+
+    /* =================================================
+       AUTO REFRESH
+    ================================================= */
+
+    setInterval(
+        () => {
+
+            loadOverview();
+
+            loadRecords(true);
+
+        },
+        30000
+    );
+
+</script>
+
+
+</body>
+
+</html>
