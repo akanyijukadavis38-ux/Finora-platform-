@@ -3019,7 +3019,7 @@ REDUCE MOTION
 #finoraInstallPopup {
     position: fixed;
     left: 50%;
-    bottom: 90px;
+    top: 12px;
     transform: translate(-50%, 20px);
     width: min(460px, calc(100% - 28px));
     z-index: 9999;
@@ -3157,7 +3157,7 @@ REDUCE MOTION
 @media (max-width: 520px) {
 
     #finoraInstallPopup {
-        bottom: 78px;
+        top: 10px;
         width: calc(100% - 20px);
     }
 
