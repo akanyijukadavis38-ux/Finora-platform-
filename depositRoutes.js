@@ -3,6 +3,7 @@ const Deposit = require("./Deposit");
 const Transaction = require("./Transaction");
 const User = require("./user");
 const Notification = require("./Notification");
+const Admin = require("./Admin");
 
 
 const router = express.Router();
@@ -35,6 +36,10 @@ const MERCHANT_CODES = {
    RESULT:
    Deposit is created as PENDING.
    A matching Transaction record is also created.
+
+   NOTIFICATIONS:
+   - User receives deposit submitted notification.
+   - Active admin receives new deposit notification.
 
    IMPORTANT:
    No wallet money is added here.
@@ -316,27 +321,70 @@ router.post(
                     relatedId:
                         deposit._id
                 });
-/* -----------------------------------------
-   CREATE DEPOSIT SUBMISSION NOTIFICATION
------------------------------------------ */
 
-await Notification.create({
 
-    userId:
-        user._id,
+            /* -----------------------------------------
+               FIND ACTIVE ADMIN
+            ----------------------------------------- */
 
-    type:
-        "deposit_submitted",
+            const admin =
+                await Admin.findOne({
+                    status: "active"
+                })
+                .select("_id")
+                .lean();
 
-    title:
-        "Deposit Submitted",
 
-    message:
-        `Your UGX ${amount.toLocaleString()} deposit has been submitted and is pending verification.`,
+            /* -----------------------------------------
+               CREATE USER DEPOSIT NOTIFICATION
+            ----------------------------------------- */
 
-    isRead:
-        false
-});
+            await Notification.create({
+
+                userId:
+                    user._id,
+
+                type:
+                    "deposit_submitted",
+
+                title:
+                    "Deposit Submitted",
+
+                message:
+                    `Your UGX ${amount.toLocaleString()} deposit has been submitted and is pending verification.`,
+
+                isRead:
+                    false
+            });
+
+
+            /* -----------------------------------------
+               CREATE ADMIN DEPOSIT NOTIFICATION
+            ----------------------------------------- */
+
+            if (
+                admin
+            ) {
+
+                await Notification.create({
+
+                    adminId:
+                        admin._id,
+
+                    type:
+                        "deposit_submitted",
+
+                    title:
+                        "New Deposit Request",
+
+                    message:
+                        `${user.fullName} (${user.phone}) submitted a UGX ${amount.toLocaleString()} deposit via ${paymentMethod}. Payment reference: ${paymentReference}.`,
+
+                    isRead:
+                        false
+                });
+            }
+
 
             /* -----------------------------------------
                SUCCESS
