@@ -638,29 +638,21 @@ app.get(
         }
     }
 );
-
-
 /* =========================================================
-   ROOT
+   ROOT — ADMIN LOGIN ENTRY
 ========================================================= */
 
 app.get(
     "/",
     (req, res) => {
 
-        res.status(200).json({
+        res.redirect(
+            "/admin-login.html"
+        );
 
-            success:
-                true,
-
-            application:
-                "FINORA",
-
-            message:
-                "FINORA Backend Running Successfully"
-        });
     }
 );
+
 
 
 /* =========================================================
