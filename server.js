@@ -22,6 +22,8 @@ const adminDepositRoutes = require("./adminDepositRoutes");
 const adminWithdrawalRoutes = require("./adminWithdrawalRoutes");
 const requireAdmin = require("./adminAuth");
 const path = require("path");
+const adminReferralRoutes =
+    require("./adminReferralRoutes");
 
 const app = express();
 
@@ -336,6 +338,10 @@ app.get(
             )
         );
     }
+);
+app.use(
+    "/api/admin/referrals",
+    adminReferralRoutes
 );
 /* =========================================================
    FINORA ADMIN PAGES
