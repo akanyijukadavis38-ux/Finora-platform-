@@ -6,6 +6,7 @@ const User = require("./user");
 const Notification = require("./Notification");
 const Deposit = require("./Deposit");
 const Investment = require("./investment");
+const Admin = require("./Admin");
 
 const router = express.Router();
 
@@ -47,9 +48,6 @@ const MAX_WITHDRAWALS = 2;
 
    The number must be a valid 10-digit
    Uganda domestic number.
-
-   UCC remains the authority for Uganda's
-   national numbering plan.
 ========================================================= */
 
 function detectNetwork(phone) {
@@ -138,6 +136,8 @@ function normalizePhone(phone) {
       net amount
       status
       transaction record
+      user notification
+      admin notification
 
    IMPORTANT WALLET RULE:
       Deposited capital is NOT withdrawable.
@@ -145,24 +145,6 @@ function normalizePhone(phone) {
       Withdrawals may only use the portion of
       the current wallet balance that is above
       the user's remaining deposited capital.
-
-   Example:
-
-      Approved deposits = UGX 20,000
-      Investments       = UGX 10,000
-      Wallet balance    = UGX 10,000
-
-      Remaining capital = UGX 10,000
-      Withdrawable      = UGX 0
-
-      Therefore a UGX 4,000 withdrawal is rejected.
-
-   If later:
-
-      Wallet balance    = UGX 15,000
-      Remaining capital = UGX 10,000
-
-      Withdrawable      = UGX 5,000
 ========================================================= */
 
 router.post(
@@ -397,24 +379,6 @@ router.post(
 
             /* =================================================
                CHECK WITHDRAWABLE EARNED BALANCE
-            =================================================
-
-               Deposits represent capital.
-
-               Investments consume deposited/invested
-               capital first for FINORA's internal wallet
-               accounting.
-
-               Therefore:
-
-                  Remaining capital =
-                  approved deposits - investments
-
-               Withdrawable balance =
-                  current wallet - remaining capital
-
-               Never allow the withdrawable balance
-               to become negative.
             ================================================= */
 
             const depositResult =
@@ -520,6 +484,7 @@ router.post(
 
                     explanation =
                         "This amount is currently part of your deposited investment capital. Withdrawals are available from eligible earnings and referral income.";
+
                 } else {
 
                     explanation =
@@ -719,9 +684,20 @@ router.post(
             await user.save();
 
 
-            /* -----------------------------------------
-               CREATE WITHDRAWAL SUBMISSION NOTIFICATION
-            ----------------------------------------- */
+            /* =================================================
+               FIND ACTIVE ADMIN
+            ================================================= */
+
+            const admin =
+                await Admin.findOne({
+                    status:
+                        "active"
+                }).select("_id");
+
+
+            /* =================================================
+               CREATE USER NOTIFICATION
+            ================================================= */
 
             await Notification.create({
 
@@ -740,6 +716,41 @@ router.post(
                 isRead:
                     false
             });
+
+
+            /* =================================================
+               CREATE ADMIN NOTIFICATION
+            =================================================
+
+               This notification belongs to the admin,
+               not to the user.
+
+               If there is currently no active admin,
+               the withdrawal itself still succeeds.
+            ================================================= */
+
+            if (
+                admin
+            ) {
+
+                await Notification.create({
+
+                    adminId:
+                        admin._id,
+
+                    type:
+                        "withdrawal_submitted",
+
+                    title:
+                        "New Withdrawal Request",
+
+                    message:
+                        `${user.fullName} (${user.phone}) submitted a UGX ${amount.toLocaleString()} withdrawal request via ${network}. Net payout: UGX ${netAmount.toLocaleString()}.`,
+
+                    isRead:
+                        false
+                });
+            }
 
 
             /* -----------------------------------------
