@@ -6,7 +6,11 @@ const mongoose = require("mongoose");
 const Admin = require("./Admin");
 const User = require("./user");
 const Investment = require("./investment");
+const Deposit = require("./Deposit");
 const requireAdmin = require("./adminAuth");
+const {
+    getEffectiveUserStatus
+} = require("./userStatus");
 
 const router = express.Router();
 
@@ -15,6 +19,7 @@ FINORA ADMIN SECURITY SETTINGS
 ========================================================= */
 
 const RECOVERY_SESSION_MINUTES = 10;
+
 
 /* =========================================================
 GENERATE SECURE RECOVERY KEY
@@ -27,6 +32,7 @@ function generateRecoveryKey() {
     );
 
 }
+
 
 /* =========================================================
 ONE-TIME PERMANENT ADMIN ACCOUNT SETUP
@@ -47,10 +53,6 @@ router.post(
             } = req.body;
 
 
-            /* =============================================
-               VERIFY PRIVATE SETUP KEY
-            ============================================= */
-
             if (
                 !setupKey ||
                 !process.env.ADMIN_SETUP_KEY ||
@@ -68,10 +70,6 @@ router.post(
             }
 
 
-            /* =============================================
-               PREVENT SECOND ADMIN CREATION
-            ============================================= */
-
             const existingAdmin =
                 await Admin.findOne({});
 
@@ -87,10 +85,6 @@ router.post(
                 });
             }
 
-
-            /* =============================================
-               VALIDATE USERNAME
-            ============================================= */
 
             const cleanUsername =
                 String(
@@ -114,10 +108,6 @@ router.post(
             }
 
 
-            /* =============================================
-               VALIDATE EMAIL
-            ============================================= */
-
             const cleanEmail =
                 String(
                     email || ""
@@ -140,10 +130,6 @@ router.post(
                 });
             }
 
-
-            /* =============================================
-               VALIDATE PASSWORD
-            ============================================= */
 
             const cleanPassword =
                 String(
@@ -186,20 +172,12 @@ router.post(
             }
 
 
-            /* =============================================
-               GENERATE PASSWORD HASH
-            ============================================= */
-
             const passwordHash =
                 await bcrypt.hash(
                     cleanPassword,
                     12
                 );
 
-
-            /* =============================================
-               GENERATE RECOVERY KEY
-            ============================================= */
 
             const recoveryKey =
                 generateRecoveryKey();
@@ -211,10 +189,6 @@ router.post(
                     12
                 );
 
-
-            /* =============================================
-               CREATE PERMANENT ADMIN
-            ============================================= */
 
             const admin =
                 new Admin({
@@ -239,10 +213,6 @@ router.post(
 
             await admin.save();
 
-
-            /* =============================================
-               RETURN RECOVERY KEY ONCE
-            ============================================= */
 
             return res.status(201).json({
 
@@ -282,6 +252,7 @@ router.post(
         }
     }
 );
+
 
 /* =========================================================
 LOGIN
@@ -465,6 +436,7 @@ router.post(
     }
 );
 
+
 /* =========================================================
 CURRENT ADMIN
 ========================================================= */
@@ -499,25 +471,29 @@ router.get(
     }
 );
 
+
 /* =========================================================
 ADMIN — GET ALL USERS
 
-Used by:
+Account lifecycle:
 
-admin-users.html
+REGISTERED
+    ↓
+INACTIVE
+    ↓
+APPROVED DEPOSIT >= UGX 10,000
+    +
+INVESTMENT
+    ↓
+ACTIVE
 
-Returns REAL users directly from MongoDB.
+Frozen users remain frozen regardless of investment status.
 
-Investment status is obtained from the REAL Investment
-collection. It is NOT inferred from User.status.
+Investment information comes from the REAL Investment
+collection.
 
-Account status:
-- active
-- frozen
-
-Investment status:
-- invested
-- not-invested
+Deposit qualification comes from the REAL Deposit
+collection.
 ========================================================= */
 
 router.get(
@@ -527,47 +503,26 @@ router.get(
 
         try {
 
-            const [
-                users,
-                totalUsers,
-                activeUsers,
-                frozenUsers
-            ] = await Promise.all([
-
-                User.find({})
+            const users =
+                await User.find({})
                     .select(
                         "_id fullName phone email balance totalIncome totalDeposit totalWithdrawal referralCode referredByCode status createdAt updatedAt"
                     )
                     .sort({
                         createdAt: -1
                     })
-                    .lean(),
+                    .lean();
 
-                User.countDocuments({}),
-
-                User.countDocuments({
-                    status: "active"
-                }),
-
-                User.countDocuments({
-                    status: "frozen"
-                })
-
-            ]);
-
-
-            /* =============================================
-               GET INVESTMENT INFORMATION FOR ALL USERS
-               
-               We query Investment once instead of making
-               one database query for every user.
-            ============================================= */
 
             const userIds =
                 users.map(
                     user => user._id
                 );
 
+
+            /* =============================================
+               GET ALL INVESTMENTS ONCE
+            ============================================= */
 
             const investments =
                 userIds.length > 0
@@ -587,9 +542,35 @@ router.get(
 
 
             /* =============================================
+               GET QUALIFYING APPROVED DEPOSITS ONCE
+            ============================================= */
+
+            const approvedDeposits =
+                userIds.length > 0
+                    ? await Deposit.find({
+                        user: {
+                            $in: userIds
+                        },
+
+                        status:
+                            "approved",
+
+                        amount: {
+                            $gte:
+                                10000
+                        }
+                    })
+                        .select(
+                            "user amount"
+                        )
+                        .lean()
+                    : [];
+
+
+            /* =============================================
                BUILD INVESTMENT MAP
 
-               Each user gets their latest investment.
+               Latest investment for each user.
             ============================================= */
 
             const investmentMap =
@@ -620,22 +601,84 @@ router.get(
 
 
             /* =============================================
-               ATTACH REAL INVESTMENT STATUS
+               BUILD QUALIFYING DEPOSIT SET
             ============================================= */
 
-            const usersWithInvestmentStatus =
+            const qualifyingDepositUsers =
+                new Set();
+
+
+            for (
+                const deposit
+                of approvedDeposits
+            ) {
+
+                qualifyingDepositUsers.add(
+                    deposit.user.toString()
+                );
+
+            }
+
+
+            /* =============================================
+               CALCULATE EFFECTIVE USER STATUS
+
+               This uses the same lifecycle as userRoutes.
+            ============================================= */
+
+            const usersWithStatus =
                 users.map(
                     user => {
 
+                        const userKey =
+                            user._id.toString();
+
+
                         const investment =
                             investmentMap.get(
-                                user._id.toString()
+                                userKey
                             );
+
+
+                        let effectiveStatus;
+
+
+                        if (
+                            user.status ===
+                            "frozen"
+                        ) {
+
+                            effectiveStatus =
+                                "frozen";
+
+                        } else {
+
+                            const hasApprovedDeposit =
+                                qualifyingDepositUsers.has(
+                                    userKey
+                                );
+
+                            const hasInvestment =
+                                Boolean(
+                                    investment
+                                );
+
+
+                            effectiveStatus =
+                                hasApprovedDeposit &&
+                                hasInvestment
+                                    ? "active"
+                                    : "inactive";
+
+                        }
 
 
                         return {
 
                             ...user,
+
+                            status:
+                                effectiveStatus,
 
                             investmentStatus:
                                 investment
@@ -665,12 +708,47 @@ router.get(
                 );
 
 
+            /* =============================================
+               REAL COUNTS
+
+               Counts are based on effective status,
+               not old User.status values.
+            ============================================= */
+
+            const totalUsers =
+                usersWithStatus.length;
+
+
+            const activeUsers =
+                usersWithStatus.filter(
+                    user =>
+                        user.status ===
+                        "active"
+                ).length;
+
+
+            const frozenUsers =
+                usersWithStatus.filter(
+                    user =>
+                        user.status ===
+                        "frozen"
+                ).length;
+
+
+            const inactiveUsers =
+                usersWithStatus.filter(
+                    user =>
+                        user.status ===
+                        "inactive"
+                ).length;
+
+
             return res.status(200).json({
 
                 success: true,
 
                 users:
-                    usersWithInvestmentStatus,
+                    usersWithStatus,
 
                 counts: {
 
@@ -680,9 +758,14 @@ router.get(
                     active:
                         activeUsers,
 
+                    inactive:
+                        inactiveUsers,
+
                     frozen:
                         frozenUsers
+
                 }
+
             });
 
         } catch (error) {
@@ -704,12 +787,22 @@ router.get(
     }
 );
 
+
 /* =========================================================
 ADMIN — GET ONE USER
 
 Used for the User Details view.
 
-Also returns REAL investment information.
+Returns:
+
+- account information
+- effective account status
+- wallet balance
+- total deposit
+- total invested
+- total withdrawal
+- total income
+- investment details
 ========================================================= */
 
 router.get(
@@ -724,10 +817,6 @@ router.get(
                     req.params.id || ""
                 ).trim();
 
-
-            /* =============================================
-               VALIDATE MONGODB USER ID
-            ============================================= */
 
             if (
                 !mongoose.Types.ObjectId.isValid(
@@ -790,6 +879,43 @@ router.get(
                     : null;
 
 
+            /* =============================================
+               CALCULATE EFFECTIVE STATUS
+            ============================================= */
+
+            const effectiveStatus =
+                await getEffectiveUserStatus(
+                    user
+                );
+
+
+            /* =============================================
+               TOTAL INVESTED
+
+               Always comes from actual Investment records.
+            ============================================= */
+
+            const totalInvested =
+                investments.reduce(
+                    (
+                        total,
+                        investment
+                    ) => {
+
+                        return (
+                            total +
+                            (
+                                Number(
+                                    investment.amount
+                                ) || 0
+                            )
+                        );
+
+                    },
+                    0
+                );
+
+
             return res.status(200).json({
 
                 success: true,
@@ -797,6 +923,15 @@ router.get(
                 user: {
 
                     ...user,
+
+                    status:
+                        effectiveStatus,
+
+                    totalInvested:
+                        totalInvested,
+
+                    total_invested:
+                        totalInvested,
 
                     investmentStatus:
                         latestInvestment
@@ -830,13 +965,23 @@ router.get(
     }
 );
 
+
 /* =========================================================
 ADMIN — FREEZE / UNFREEZE USER
 
-Allowed statuses:
+Admin can:
 
 active
 frozen
+
+When an account is changed back to active, the effective
+status system still determines whether the account actually
+qualifies as active.
+
+Therefore:
+
+- frozen + no qualification → inactive after unfreeze
+- frozen + qualification → active after unfreeze
 ========================================================= */
 
 router.patch(
@@ -860,10 +1005,6 @@ router.patch(
                     .toLowerCase();
 
 
-            /* =============================================
-               VALIDATE USER ID
-            ============================================= */
-
             if (
                 !mongoose.Types.ObjectId.isValid(
                     userId
@@ -879,10 +1020,6 @@ router.patch(
                 });
             }
 
-
-            /* =============================================
-               VALIDATE STATUS
-            ============================================= */
 
             if (
                 ![
@@ -903,10 +1040,6 @@ router.patch(
             }
 
 
-            /* =============================================
-               FIND USER
-            ============================================= */
-
             const user =
                 await User.findById(
                     userId
@@ -925,15 +1058,17 @@ router.patch(
             }
 
 
-            /* =============================================
-               UPDATE STATUS
-            ============================================= */
-
             user.status =
                 requestedStatus;
 
 
             await user.save();
+
+
+            const effectiveStatus =
+                await getEffectiveUserStatus(
+                    user
+                );
 
 
             return res.status(200).json({
@@ -943,7 +1078,7 @@ router.patch(
                 message:
                     requestedStatus === "frozen"
                         ? "User account frozen successfully."
-                        : "User account activated successfully.",
+                        : "User account status updated successfully.",
 
                 user: {
 
@@ -978,13 +1113,14 @@ router.patch(
                         user.referredByCode,
 
                     status:
-                        user.status,
+                        effectiveStatus,
 
                     createdAt:
                         user.createdAt,
 
                     updatedAt:
                         user.updatedAt
+
                 }
 
             });
@@ -1007,6 +1143,7 @@ router.patch(
         }
     }
 );
+
 
 /* =========================================================
 FORGOT PASSWORD — VERIFY RECOVERY KEY
@@ -1162,6 +1299,7 @@ router.post(
         }
     }
 );
+
 
 /* =========================================================
 FORGOT PASSWORD — RESET PASSWORD
@@ -1330,6 +1468,7 @@ router.post(
                     admin.recoveryKeyVersion || 1
                 ) + 1;
 
+
             await admin.save();
 
 
@@ -1382,6 +1521,7 @@ router.post(
         }
     }
 );
+
 
 /* =========================================================
 LOGOUT
@@ -1444,12 +1584,14 @@ router.post(
     }
 );
 
+
 /* =========================================================
 EXPORT ADMIN ROUTER
 ========================================================= */
 
 module.exports =
     router;
+
 
 /* =========================================================
 EXPORT RECOVERY-KEY GENERATOR
