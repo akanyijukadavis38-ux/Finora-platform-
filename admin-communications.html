@@ -1,1 +1,2128 @@
-eyrut
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FINORA Communications</title>
+
+    <meta
+        name="theme-color"
+        content="#07050b"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(234, 60, 255, 0.13),
+                    transparent 34%
+                ),
+                radial-gradient(
+                    circle at top left,
+                    rgba(245, 166, 35, 0.07),
+                    transparent 28%
+                ),
+                #07050b;
+            color: #f7f2fa;
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 760px;
+            margin: 0 auto;
+            min-height: 100vh;
+            padding-bottom: 35px;
+        }
+
+
+        /* =================================================
+           HEADER
+        ================================================= */
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            min-height: 72px;
+            padding: 14px 18px;
+
+            background:
+                rgba(7, 5, 11, 0.94);
+
+            backdrop-filter:
+                blur(18px);
+
+            -webkit-backdrop-filter:
+                blur(18px);
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.07);
+        }
+
+        .top-left {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(234,60,255,0.22);
+
+            border-radius: 13px;
+
+            background:
+                rgba(234,60,255,0.08);
+
+            color: #ffffff;
+
+            cursor: pointer;
+
+            transition:
+                transform .2s ease,
+                background .2s ease;
+        }
+
+        .back-btn:active {
+            transform: scale(.94);
+        }
+
+        .brand {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .brand-name {
+            font-family:
+                "Times New Roman",
+                Times,
+                serif;
+
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: .4px;
+        }
+
+        .brand-name .fin {
+            color: #ffffff;
+        }
+
+        .brand-name .ora {
+            color: #f5a623;
+        }
+
+        .brand-subtitle {
+            color: #a9a1ad;
+            font-size: 11px;
+            letter-spacing: .8px;
+            text-transform: uppercase;
+        }
+
+        .bell-btn {
+            position: relative;
+
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(245,166,35,0.22);
+
+            border-radius: 14px;
+
+            background:
+                rgba(245,166,35,0.07);
+
+            color: #ffd76a;
+
+            cursor: pointer;
+        }
+
+        .bell-btn svg {
+            width: 21px;
+            height: 21px;
+        }
+
+        .unread-badge {
+            position: absolute;
+
+            top: -4px;
+            right: -4px;
+
+            min-width: 19px;
+            height: 19px;
+
+            padding: 0 5px;
+
+            display: none;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ea3cff,
+                    #9e18bd
+                );
+
+            color: #ffffff;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            border:
+                2px solid
+                #07050b;
+        }
+
+
+        /* =================================================
+           HERO
+        ================================================= */
+
+        .hero {
+            padding: 25px 18px 15px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            padding: 7px 11px;
+
+            border:
+                1px solid
+                rgba(234,60,255,0.2);
+
+            border-radius: 50px;
+
+            background:
+                rgba(234,60,255,0.07);
+
+            color: #ff72ff;
+
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+        }
+
+        .eyebrow-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #ea3cff;
+            box-shadow:
+                0 0 10px
+                rgba(234,60,255,.9);
+        }
+
+        .hero h1 {
+            margin-top: 13px;
+
+            font-family:
+                "Times New Roman",
+                Times,
+                serif;
+
+            font-size: 31px;
+            line-height: 1.05;
+            letter-spacing: -.3px;
+        }
+
+        .hero h1 span {
+            color: #f5a623;
+        }
+
+        .hero p {
+            margin-top: 9px;
+
+            max-width: 570px;
+
+            color: #aaa1af;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        /* =================================================
+           SUMMARY
+        ================================================= */
+
+        .summary {
+            margin: 0 18px 18px;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .summary-card {
+            padding: 15px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            border-radius: 17px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.055),
+                    rgba(255,255,255,.018)
+                );
+
+            box-shadow:
+                0 10px 30px
+                rgba(0,0,0,.18);
+        }
+
+        .summary-label {
+            color: #8e8594;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+        }
+
+        .summary-value {
+            margin-top: 6px;
+
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        .summary-value.unread {
+            color: #ff72ff;
+        }
+
+        .summary-value.total {
+            color: #ffd76a;
+        }
+
+
+        /* =================================================
+           TOOLBAR
+        ================================================= */
+
+        .toolbar {
+            margin: 0 18px 18px;
+
+            padding: 7px;
+
+            display: flex;
+            gap: 6px;
+
+            overflow-x: auto;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.06);
+
+            border-radius: 16px;
+
+            background:
+                rgba(255,255,255,0.025);
+
+            scrollbar-width: none;
+        }
+
+        .toolbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-btn {
+            flex:
+                0 0 auto;
+
+            border: 0;
+
+            border-radius: 11px;
+
+            padding: 9px 14px;
+
+            background: transparent;
+
+            color: #948a99;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                background .2s ease,
+                color .2s ease;
+        }
+
+        .filter-btn.active {
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(234,60,255,.2),
+                    rgba(158,24,189,.12)
+                );
+
+            color: #ff72ff;
+
+            box-shadow:
+                inset 0 0 0
+                1px rgba(234,60,255,.16);
+        }
+
+        .toolbar-actions {
+            margin: 0 18px 20px;
+
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .mark-all-btn {
+            border:
+                1px solid
+                rgba(245,166,35,.2);
+
+            border-radius: 11px;
+
+            padding: 9px 13px;
+
+            background:
+                rgba(245,166,35,.06);
+
+            color: #ffd76a;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                transform .2s ease,
+                background .2s ease;
+        }
+
+        .mark-all-btn:active {
+            transform: scale(.97);
+        }
+
+        .mark-all-btn:disabled {
+            opacity: .45;
+            cursor: not-allowed;
+        }
+
+
+        /* =================================================
+           NOTIFICATIONS
+        ================================================= */
+
+        .notifications {
+            padding: 0 18px;
+        }
+
+        .notification-card {
+            position: relative;
+
+            margin-bottom: 11px;
+            padding: 15px;
+
+            display: flex;
+            gap: 12px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.065);
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.045),
+                    rgba(255,255,255,.018)
+                );
+
+            box-shadow:
+                0 9px 26px
+                rgba(0,0,0,.16);
+
+            transition:
+                border-color .2s ease,
+                transform .2s ease,
+                background .2s ease;
+        }
+
+        .notification-card.unread {
+            border-color:
+                rgba(234,60,255,.24);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(234,60,255,.085),
+                    rgba(255,255,255,.018)
+                );
+        }
+
+        .notification-card.unread::before {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            top: 15px;
+            bottom: 15px;
+
+            width: 3px;
+
+            border-radius: 0 5px 5px 0;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #ea3cff,
+                    #f5a623
+                );
+        }
+
+        .notification-icon {
+            flex:
+                0 0 43px;
+
+            width: 43px;
+            height: 43px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 14px;
+
+            background:
+                rgba(234,60,255,.09);
+
+            color: #ff72ff;
+        }
+
+        .notification-icon svg {
+            width: 21px;
+            height: 21px;
+        }
+
+        .notification-card[data-type*="deposit"] .notification-icon {
+            background:
+                rgba(245,166,35,.09);
+
+            color: #ffd76a;
+        }
+
+        .notification-card[data-type*="withdrawal"] .notification-icon {
+            background:
+                rgba(255,114,255,.08);
+
+            color: #ff72ff;
+        }
+
+        .notification-content {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .notification-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .notification-title {
+            color: #ffffff;
+
+            font-size: 13px;
+            font-weight: 800;
+            line-height: 1.35;
+        }
+
+        .unread-dot {
+            flex:
+                0 0 auto;
+
+            width: 7px;
+            height: 7px;
+
+            margin-top: 5px;
+
+            border-radius: 50%;
+
+            background: #ea3cff;
+
+            box-shadow:
+                0 0 10px
+                rgba(234,60,255,.8);
+        }
+
+        .notification-message {
+            margin-top: 6px;
+
+            color: #aaa2ae;
+
+            font-size: 12px;
+            line-height: 1.55;
+
+            word-break: break-word;
+        }
+
+        .notification-bottom {
+            margin-top: 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 10px;
+        }
+
+        .notification-time {
+            color: #756c7a;
+            font-size: 10px;
+        }
+
+        .read-btn {
+            border: 0;
+
+            padding: 5px 8px;
+
+            border-radius: 8px;
+
+            background:
+                rgba(255,255,255,.045);
+
+            color: #9e95a2;
+
+            font-size: 9px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .read-btn:hover {
+            color: #ff72ff;
+        }
+
+
+        /* =================================================
+           LOADING
+        ================================================= */
+
+        .loading {
+            padding: 45px 20px;
+
+            text-align: center;
+
+            color: #8d8492;
+
+            font-size: 12px;
+        }
+
+        .spinner {
+            width: 28px;
+            height: 28px;
+
+            margin: 0 auto 13px;
+
+            border:
+                2px solid
+                rgba(234,60,255,.15);
+
+            border-top-color:
+                #ea3cff;
+
+            border-radius: 50%;
+
+            animation:
+                spin .8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+
+        /* =================================================
+           EMPTY / ERROR
+        ================================================= */
+
+        .state-box {
+            margin-top: 8px;
+
+            padding: 50px 20px;
+
+            text-align: center;
+
+            border:
+                1px solid
+                rgba(255,255,255,.06);
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,.02);
+        }
+
+        .state-icon {
+            width: 54px;
+            height: 54px;
+
+            margin: 0 auto 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 17px;
+
+            background:
+                rgba(234,60,255,.07);
+
+            color: #ff72ff;
+        }
+
+        .state-icon svg {
+            width: 25px;
+            height: 25px;
+        }
+
+        .state-box h3 {
+            font-size: 14px;
+            color: #ffffff;
+        }
+
+        .state-box p {
+            margin-top: 7px;
+
+            color: #827988;
+
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .retry-btn {
+            margin-top: 15px;
+
+            border: 0;
+
+            border-radius: 10px;
+
+            padding: 9px 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ea3cff,
+                    #9e18bd
+                );
+
+            color: #ffffff;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        /* =================================================
+           TOAST
+        ================================================= */
+
+        .toast {
+            position: fixed;
+
+            left: 50%;
+            bottom: 22px;
+
+            z-index: 100;
+
+            transform:
+                translate(-50%, 25px);
+
+            width:
+                calc(100% - 36px);
+
+            max-width: 420px;
+
+            padding: 12px 15px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.08);
+
+            border-radius: 13px;
+
+            background:
+                rgba(20,15,24,.96);
+
+            box-shadow:
+                0 15px 40px
+                rgba(0,0,0,.35);
+
+            color: #ffffff;
+
+            font-size: 11px;
+            text-align: center;
+
+            opacity: 0;
+            pointer-events: none;
+
+            transition:
+                opacity .25s ease,
+                transform .25s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+
+            transform:
+                translate(-50%, 0);
+        }
+
+
+        /* =================================================
+           DESKTOP
+        ================================================= */
+
+        @media (min-width: 700px) {
+
+            .page {
+                padding-bottom: 60px;
+            }
+
+            .topbar {
+                border-radius: 0 0 20px 20px;
+            }
+
+            .hero {
+                padding-top: 35px;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .summary {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- =================================================
+         HEADER
+    ================================================= -->
+
+    <header class="topbar">
+
+        <div class="top-left">
+
+            <button
+                class="back-btn"
+                id="backBtn"
+                aria-label="Go back"
+            >
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M19 12H5"></path>
+                    <path d="M12 19l-7-7 7-7"></path>
+                </svg>
+            </button>
+
+            <div class="brand">
+
+                <div class="brand-name">
+                    <span class="fin">FIN</span><span class="ora">ORA</span>
+                </div>
+
+                <div class="brand-subtitle">
+                    Communications
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="bell-btn"
+            aria-label="Notifications"
+        >
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path
+                    d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
+                ></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+
+            <span
+                class="unread-badge"
+                id="unreadBadge"
+            >
+                0
+            </span>
+
+        </button>
+
+    </header>
+
+
+    <!-- =================================================
+         HERO
+    ================================================= -->
+
+    <section class="hero">
+
+        <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            Admin Center
+        </div>
+
+        <h1>
+            Communications <span>&</span><br>
+            Notifications
+        </h1>
+
+        <p>
+            Stay updated with important activity across
+            your FINORA platform.
+        </p>
+
+    </section>
+
+
+    <!-- =================================================
+         SUMMARY
+    ================================================= -->
+
+    <section class="summary">
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+                Total Notifications
+            </div>
+
+            <div
+                class="summary-value total"
+                id="totalCount"
+            >
+                0
+            </div>
+
+        </div>
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+                Unread
+            </div>
+
+            <div
+                class="summary-value unread"
+                id="unreadCount"
+            >
+                0
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         FILTERS
+    ================================================= -->
+
+    <div class="toolbar">
+
+        <button
+            class="filter-btn active"
+            data-filter="all"
+        >
+            All
+        </button>
+
+        <button
+            class="filter-btn"
+            data-filter="unread"
+        >
+            Unread
+        </button>
+
+        <button
+            class="filter-btn"
+            data-filter="read"
+        >
+            Read
+        </button>
+
+    </div>
+
+
+    <div class="toolbar-actions">
+
+        <button
+            class="mark-all-btn"
+            id="markAllBtn"
+        >
+            Mark all as read
+        </button>
+
+    </div>
+
+
+    <!-- =================================================
+         NOTIFICATION LIST
+    ================================================= -->
+
+    <main
+        class="notifications"
+        id="notificationList"
+    >
+
+        <div class="loading">
+
+            <div class="spinner"></div>
+
+            Loading FINORA notifications...
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script>
+
+    const API =
+        "https://finora-platform.onrender.com";
+
+
+    let notifications = [];
+
+    let currentFilter =
+        "all";
+
+
+    const notificationList =
+        document.getElementById(
+            "notificationList"
+        );
+
+    const totalCount =
+        document.getElementById(
+            "totalCount"
+        );
+
+    const unreadCount =
+        document.getElementById(
+            "unreadCount"
+        );
+
+    const unreadBadge =
+        document.getElementById(
+            "unreadBadge"
+        );
+
+    const markAllBtn =
+        document.getElementById(
+            "markAllBtn"
+        );
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    /* =================================================
+       ICONS
+    ================================================= */
+
+    function getIcon(type) {
+
+        if (
+            type ===
+            "new_user_registered"
+        ) {
+
+            return `
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M19 8v6"></path>
+                    <path d="M22 11h-6"></path>
+                </svg>
+            `;
+
+        }
+
+
+        if (
+            type.includes("deposit")
+        ) {
+
+            return `
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <rect
+                        x="3"
+                        y="5"
+                        width="18"
+                        height="14"
+                        rx="2"
+                    ></rect>
+                    <path d="M7 12h10"></path>
+                    <path d="M12 8v8"></path>
+                </svg>
+            `;
+
+        }
+
+
+        if (
+            type.includes("withdrawal")
+        ) {
+
+            return `
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M12 3v18"></path>
+                    <path d="M7 8l5-5 5 5"></path>
+                    <path d="M7 16l5 5 5-5"></path>
+                </svg>
+            `;
+
+        }
+
+
+        return `
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+        `;
+
+    }
+
+
+    /* =================================================
+       ESCAPE HTML
+    ================================================= */
+
+    function escapeHtml(value) {
+
+        return String(
+            value ?? ""
+        )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+    }
+
+
+    /* =================================================
+       TIME FORMAT
+    ================================================= */
+
+    function formatTime(dateValue) {
+
+        const date =
+            new Date(dateValue);
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+
+            return "Unknown time";
+
+        }
+
+
+        const now =
+            new Date();
+
+        const seconds =
+            Math.floor(
+                (
+                    now.getTime() -
+                    date.getTime()
+                ) / 1000
+            );
+
+
+        if (seconds < 10) {
+            return "Just now";
+        }
+
+        if (seconds < 60) {
+            return `${seconds}s ago`;
+        }
+
+
+        const minutes =
+            Math.floor(
+                seconds / 60
+            );
+
+        if (minutes < 60) {
+            return `${minutes} min ago`;
+        }
+
+
+        const hours =
+            Math.floor(
+                minutes / 60
+            );
+
+        if (hours < 24) {
+            return `${hours} hr${hours === 1 ? "" : "s"} ago`;
+        }
+
+
+        const days =
+            Math.floor(
+                hours / 24
+            );
+
+        if (days < 7) {
+            return `${days} day${days === 1 ? "" : "s"} ago`;
+        }
+
+
+        return date.toLocaleString(
+            "en-UG",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+
+    }
+
+
+    /* =================================================
+       TOAST
+    ================================================= */
+
+    let toastTimer;
+
+    function showToast(message) {
+
+        toast.textContent =
+            message;
+
+        toast.classList.add(
+            "show"
+        );
+
+
+        clearTimeout(
+            toastTimer
+        );
+
+
+        toastTimer =
+            setTimeout(
+                () => {
+
+                    toast.classList.remove(
+                        "show"
+                    );
+
+                },
+                2500
+            );
+
+    }
+
+
+    /* =================================================
+       UPDATE COUNTS
+    ================================================= */
+
+    function updateCounts() {
+
+        const total =
+            notifications.length;
+
+        const unread =
+            notifications.filter(
+                item =>
+                    !item.isRead
+            ).length;
+
+
+        totalCount.textContent =
+            total;
+
+        unreadCount.textContent =
+            unread;
+
+
+        if (unread > 0) {
+
+            unreadBadge.style.display =
+                "flex";
+
+            unreadBadge.textContent =
+                unread > 99
+                    ? "99+"
+                    : unread;
+
+        } else {
+
+            unreadBadge.style.display =
+                "none";
+
+        }
+
+
+        markAllBtn.disabled =
+            unread === 0;
+
+    }
+
+
+    /* =================================================
+       FILTER
+    ================================================= */
+
+    function getFilteredNotifications() {
+
+        if (
+            currentFilter ===
+            "unread"
+        ) {
+
+            return notifications.filter(
+                item =>
+                    !item.isRead
+            );
+
+        }
+
+
+        if (
+            currentFilter ===
+            "read"
+        ) {
+
+            return notifications.filter(
+                item =>
+                    item.isRead
+            );
+
+        }
+
+
+        return notifications;
+
+    }
+
+
+    /* =================================================
+       RENDER
+    ================================================= */
+
+    function renderNotifications() {
+
+        updateCounts();
+
+
+        const list =
+            getFilteredNotifications();
+
+
+        if (
+            list.length === 0
+        ) {
+
+            let title =
+                "No notifications";
+
+            let message =
+                "There are no notifications to display.";
+
+            if (
+                currentFilter ===
+                "unread"
+            ) {
+
+                title =
+                    "You're all caught up";
+
+                message =
+                    "There are no unread FINORA notifications.";
+
+            }
+
+            if (
+                currentFilter ===
+                "read"
+            ) {
+
+                title =
+                    "No read notifications";
+
+                message =
+                    "Read notifications will appear here.";
+
+            }
+
+
+            notificationList.innerHTML = `
+
+                <div class="state-box">
+
+                    <div class="state-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+
+                    </div>
+
+                    <h3>
+                        ${escapeHtml(title)}
+                    </h3>
+
+                    <p>
+                        ${escapeHtml(message)}
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        notificationList.innerHTML =
+            list.map(
+                notification => {
+
+                    const unread =
+                        !notification.isRead;
+
+                    return `
+
+                        <article
+                            class="
+                                notification-card
+                                ${unread ? "unread" : ""}
+                            "
+                            data-type="${escapeHtml(notification.type)}"
+                        >
+
+                            <div class="notification-icon">
+                                ${getIcon(notification.type)}
+                            </div>
+
+
+                            <div class="notification-content">
+
+                                <div class="notification-top">
+
+                                    <div class="notification-title">
+                                        ${escapeHtml(notification.title)}
+                                    </div>
+
+                                    ${
+                                        unread
+                                            ? `<span class="unread-dot"></span>`
+                                            : ""
+                                    }
+
+                                </div>
+
+
+                                <div class="notification-message">
+                                    ${escapeHtml(notification.message)}
+                                </div>
+
+
+                                <div class="notification-bottom">
+
+                                    <span class="notification-time">
+                                        ${formatTime(notification.createdAt)}
+                                    </span>
+
+
+                                    ${
+                                        unread
+                                            ? `
+                                                <button
+                                                    class="read-btn"
+                                                    data-read-id="${escapeHtml(notification._id)}"
+                                                >
+                                                    Mark as read
+                                                </button>
+                                            `
+                                            : ""
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+                    `;
+
+                }
+            ).join("");
+
+    }
+
+
+    /* =================================================
+       LOAD NOTIFICATIONS
+    ================================================= */
+
+    async function loadNotifications(
+        silent = false
+    ) {
+
+        if (!silent) {
+
+            notificationList.innerHTML = `
+
+                <div class="loading">
+
+                    <div class="spinner"></div>
+
+                    Loading FINORA notifications...
+
+                </div>
+
+            `;
+
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API}/api/notifications/admin`,
+                    {
+                        method:
+                            "GET",
+
+                        credentials:
+                            "include",
+
+                        headers: {
+                            "Accept":
+                                "application/json"
+                        }
+                    }
+                );
+
+
+            if (
+                response.status ===
+                401 ||
+                response.status ===
+                403
+            ) {
+
+                window.location.href =
+                    "/admin-login.html";
+
+                return;
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                throw new Error(
+                    data.message ||
+                    "Could not load notifications."
+                );
+
+            }
+
+
+            notifications =
+                Array.isArray(
+                    data.notifications
+                )
+                    ? data.notifications
+                    : [];
+
+
+            renderNotifications();
+
+        } catch (error) {
+
+            console.error(
+                "FINORA notification load error:",
+                error
+            );
+
+
+            notificationList.innerHTML = `
+
+                <div class="state-box">
+
+                    <div class="state-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="9"
+                            ></circle>
+
+                            <path
+                                d="M12 8v4"
+                            ></path>
+
+                            <path
+                                d="M12 16h.01"
+                            ></path>
+
+                        </svg>
+
+                    </div>
+
+                    <h3>
+                        Could not load notifications
+                    </h3>
+
+                    <p>
+                        ${escapeHtml(error.message)}
+                    </p>
+
+                    <button
+                        class="retry-btn"
+                        id="retryBtn"
+                    >
+                        Try again
+                    </button>
+
+                </div>
+
+            `;
+
+
+            const retryBtn =
+                document.getElementById(
+                    "retryBtn"
+                );
+
+
+            if (retryBtn) {
+
+                retryBtn.onclick =
+                    () => loadNotifications();
+
+            }
+
+        }
+
+    }
+
+
+    /* =================================================
+       MARK ONE AS READ
+    ================================================= */
+
+    async function markAsRead(
+        notificationId
+    ) {
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API}/api/notifications/admin/${encodeURIComponent(notificationId)}/read`,
+                    {
+                        method:
+                            "PATCH",
+
+                        credentials:
+                            "include",
+
+                        headers: {
+                            "Accept":
+                                "application/json"
+                        }
+                    }
+                );
+
+
+            if (
+                response.status ===
+                401 ||
+                response.status ===
+                403
+            ) {
+
+                window.location.href =
+                    "/admin-login.html";
+
+                return;
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                throw new Error(
+                    data.message ||
+                    "Could not mark notification as read."
+                );
+
+            }
+
+
+            const notification =
+                notifications.find(
+                    item =>
+                        item._id ===
+                        notificationId
+                );
+
+
+            if (notification) {
+
+                notification.isRead =
+                    true;
+
+            }
+
+
+            renderNotifications();
+
+            showToast(
+                "Notification marked as read."
+            );
+
+        } catch (error) {
+
+            console.error(
+                "FINORA mark notification error:",
+                error
+            );
+
+            showToast(
+                error.message ||
+                "Could not update notification."
+            );
+
+        }
+
+    }
+
+
+    /* =================================================
+       MARK ALL AS READ
+    ================================================= */
+
+    async function markAllAsRead() {
+
+        if (
+            markAllBtn.disabled
+        ) {
+
+            return;
+
+        }
+
+
+        markAllBtn.disabled =
+            true;
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API}/api/notifications/admin/read-all`,
+                    {
+                        method:
+                            "PATCH",
+
+                        credentials:
+                            "include",
+
+                        headers: {
+                            "Accept":
+                                "application/json"
+                        }
+                    }
+                );
+
+
+            if (
+                response.status ===
+                401 ||
+                response.status ===
+                403
+            ) {
+
+                window.location.href =
+                    "/admin-login.html";
+
+                return;
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                throw new Error(
+                    data.message ||
+                    "Could not mark notifications as read."
+                );
+
+            }
+
+
+            notifications.forEach(
+                item => {
+
+                    item.isRead =
+                        true;
+
+                }
+            );
+
+
+            renderNotifications();
+
+            showToast(
+                "All notifications marked as read."
+            );
+
+        } catch (error) {
+
+            console.error(
+                "FINORA mark all notifications error:",
+                error
+            );
+
+
+            updateCounts();
+
+
+            showToast(
+                error.message ||
+                "Could not update notifications."
+            );
+
+        }
+
+    }
+
+
+    /* =================================================
+       EVENTS
+    ================================================= */
+
+    document
+        .querySelectorAll(
+            ".filter-btn"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        document
+                            .querySelectorAll(
+                                ".filter-btn"
+                            )
+                            .forEach(
+                                item =>
+                                    item.classList.remove(
+                                        "active"
+                                    )
+                            );
+
+
+                        button.classList.add(
+                            "active"
+                        );
+
+
+                        currentFilter =
+                            button.dataset.filter;
+
+
+                        renderNotifications();
+
+                    }
+                );
+
+            }
+        );
+
+
+    notificationList.addEventListener(
+        "click",
+        event => {
+
+            const button =
+                event.target.closest(
+                    "[data-read-id]"
+                );
+
+
+            if (!button) {
+
+                return;
+
+            }
+
+
+            markAsRead(
+                button.dataset.readId
+            );
+
+        }
+    );
+
+
+    markAllBtn.addEventListener(
+        "click",
+        markAllAsRead
+    );
+
+
+    document
+        .getElementById("backBtn")
+        .addEventListener(
+            "click",
+            () => {
+
+                if (
+                    document.referrer &&
+                    document.referrer.includes(
+                        window.location.host
+                    )
+                ) {
+
+                    window.history.back();
+
+                } else {
+
+                    window.location.href =
+                        "/admin.html";
+
+                }
+
+            }
+        );
+
+
+    /* =================================================
+       INITIAL LOAD
+    ================================================= */
+
+    loadNotifications();
+
+
+    /* =================================================
+       AUTO REFRESH
+       
+       Checks for new notifications every 30 seconds.
+    ================================================= */
+
+    setInterval(
+        () => {
+
+            loadNotifications(
+                true
+            );
+
+        },
+        30000
+    );
+
+</script>
+
+</body>
+</html>
