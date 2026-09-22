@@ -3038,7 +3038,260 @@ router.post(
         }
     }
 );
+/* =========================================================
+ADMIN — CHANGE PASSWORD
+========================================================= */
 
+router.patch(
+    "/change-password",
+    requireAdmin,
+    async (req, res) => {
+
+        try {
+
+            const currentPassword =
+                String(
+                    req.body.currentPassword || ""
+                );
+
+            const newPassword =
+                String(
+                    req.body.newPassword || ""
+                );
+
+            const confirmPassword =
+                String(
+                    req.body.confirmPassword || ""
+                );
+
+
+            /* =============================================
+               REQUIRED FIELDS
+            ============================================= */
+
+            if (
+                !currentPassword ||
+                !newPassword ||
+                !confirmPassword
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Current password, new password and confirmation are required."
+                });
+            }
+
+
+            /* =============================================
+               MINIMUM PASSWORD LENGTH
+            ============================================= */
+
+            if (
+                newPassword.length < 6
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Admin password must be at least 6 characters."
+                });
+            }
+
+
+            /* =============================================
+               CONFIRM NEW PASSWORD
+            ============================================= */
+
+            if (
+                newPassword !==
+                confirmPassword
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "New passwords do not match."
+                });
+            }
+
+
+            /* =============================================
+               LOAD ADMIN WITH PASSWORD HASH
+            ============================================= */
+
+            const admin =
+                await Admin.findById(
+                    req.admin._id
+                ).select(
+                    "+passwordHash"
+                );
+
+
+            if (!admin) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "Admin account could not be found."
+                });
+            }
+
+
+            /* =============================================
+               ACCOUNT MUST BE ACTIVE
+            ============================================= */
+
+            if (
+                admin.status !==
+                "active"
+            ) {
+
+                return res.status(403).json({
+
+                    success: false,
+
+                    message:
+                        "This Admin account is disabled."
+                });
+            }
+
+
+            /* =============================================
+               VERIFY CURRENT PASSWORD
+            ============================================= */
+
+            const currentPasswordMatches =
+                await bcrypt.compare(
+                    currentPassword,
+                    admin.passwordHash
+                );
+
+
+            if (
+                !currentPasswordMatches
+            ) {
+
+                return res.status(401).json({
+
+                    success: false,
+
+                    message:
+                        "Current Admin password is incorrect."
+                });
+            }
+
+
+            /* =============================================
+               PREVENT SAME PASSWORD
+            ============================================= */
+
+            const samePassword =
+                await bcrypt.compare(
+                    newPassword,
+                    admin.passwordHash
+                );
+
+
+            if (
+                samePassword
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "New password must be different from your current password."
+                });
+            }
+
+
+            /* =============================================
+               GENERATE NEW PASSWORD HASH
+            ============================================= */
+
+            const newPasswordHash =
+                await bcrypt.hash(
+                    newPassword,
+                    12
+                );
+
+
+            /* =============================================
+               GENERATE NEW RECOVERY KEY
+            ============================================= */
+
+            const newRecoveryKey =
+                generateRecoveryKey();
+
+
+            const newRecoveryKeyHash =
+                await bcrypt.hash(
+                    newRecoveryKey,
+                    12
+                );
+
+
+            admin.passwordHash =
+                newPasswordHash;
+
+            admin.recoveryKeyHash =
+                newRecoveryKeyHash;
+
+            admin.recoveryKeyVersion =
+                Number(
+                    admin.recoveryKeyVersion || 1
+                ) + 1;
+
+
+            await admin.save();
+
+
+            /* =============================================
+               RETURN NEW RECOVERY KEY ONCE
+            ============================================= */
+
+            return res.status(200).json({
+
+                success: true,
+
+                message:
+                    "Admin password changed successfully. A new recovery key has been generated.",
+
+                recoveryKey:
+                    newRecoveryKey
+
+            });
+
+        } catch (error) {
+
+            console.error(
+                "❌ FINORA ADMIN CHANGE PASSWORD ERROR:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success: false,
+
+                message:
+                    "FINORA could not change the Admin password."
+            });
+
+        }
+
+    }
+);
 
 /* =========================================================
 LOGOUT
