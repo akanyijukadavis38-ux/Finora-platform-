@@ -2,14 +2,16 @@ const express = require("express");
 
 const Notification =
     require("./Notification");
+
 const requireAdmin =
     require("./adminAuth");
+
 const router =
     express.Router();
 
 
 /* =========================================================
-   AUTHENTICATION
+   AUTHENTICATION — USER
 ========================================================= */
 
 function requireAuth(req, res, next) {
@@ -100,6 +102,8 @@ router.get(
         }
     }
 );
+
+
 /* =========================================================
    GET ADMIN NOTIFICATIONS
 ========================================================= */
@@ -167,8 +171,143 @@ router.get(
     }
 );
 
+
 /* =========================================================
-   MARK ONE NOTIFICATION AS READ
+   MARK ONE ADMIN NOTIFICATION AS READ
+========================================================= */
+
+router.patch(
+    "/admin/:notificationId/read",
+    requireAdmin,
+    async (req, res) => {
+
+        try {
+
+            const notification =
+                await Notification.findOneAndUpdate(
+
+                    {
+                        _id:
+                            req.params.notificationId,
+
+                        adminId:
+                            req.admin._id
+                    },
+
+                    {
+                        isRead:
+                            true
+                    },
+
+                    {
+                        new:
+                            true
+                    }
+                );
+
+
+            if (!notification) {
+
+                return res.status(404).json({
+
+                    success:
+                        false,
+
+                    message:
+                        "FINORA admin notification not found."
+                });
+            }
+
+
+            return res.status(200).json({
+
+                success:
+                    true,
+
+                notification
+            });
+
+        } catch (error) {
+
+            console.error(
+                "❌ FINORA MARK ADMIN NOTIFICATION ERROR:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success:
+                    false,
+
+                message:
+                    "FINORA could not update this admin notification."
+            });
+        }
+    }
+);
+
+
+/* =========================================================
+   MARK ALL ADMIN NOTIFICATIONS AS READ
+========================================================= */
+
+router.patch(
+    "/admin/read-all",
+    requireAdmin,
+    async (req, res) => {
+
+        try {
+
+            await Notification.updateMany(
+
+                {
+                    adminId:
+                        req.admin._id,
+
+                    isRead:
+                        false
+                },
+
+                {
+                    isRead:
+                        true
+                }
+            );
+
+
+            return res.status(200).json({
+
+                success:
+                    true,
+
+                message:
+                    "FINORA admin notifications marked as read."
+            });
+
+        } catch (error) {
+
+            console.error(
+                "❌ FINORA MARK ALL ADMIN NOTIFICATIONS ERROR:",
+                error
+            );
+
+
+            return res.status(500).json({
+
+                success:
+                    false,
+
+                message:
+                    "FINORA could not update admin notifications."
+            });
+        }
+    }
+);
+
+
+/* =========================================================
+   MARK ONE USER NOTIFICATION AS READ
 ========================================================= */
 
 router.patch(
@@ -244,7 +383,7 @@ router.patch(
 
 
 /* =========================================================
-   MARK ALL NOTIFICATIONS AS READ
+   MARK ALL USER NOTIFICATIONS AS READ
 ========================================================= */
 
 router.patch(
