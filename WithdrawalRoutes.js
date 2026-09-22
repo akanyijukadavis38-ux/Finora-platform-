@@ -4,6 +4,8 @@ const Withdrawal = require("./Withdrawal");
 const Transaction = require("./Transaction");
 const User = require("./user");
 const Notification = require("./Notification");
+const Deposit = require("./Deposit");
+const Investment = require("./investment");
 
 const router = express.Router();
 
@@ -26,39 +28,78 @@ const MAX_WITHDRAWALS = 2;
 
 /* =========================================================
    NETWORK DETECTION
+=========================================================
+
+   Current FINORA Uganda ranges:
+
+   MTN:
+      031
+      039
+      076
+      077
+      078
+      079
+
+   Airtel:
+      070
+      074
+      075
+
+   The number must be a valid 10-digit
+   Uganda domestic number.
+
+   UCC remains the authority for Uganda's
+   national numbering plan.
 ========================================================= */
 
 function detectNetwork(phone) {
 
-    let normalized =
+    const normalized =
         String(phone || "")
             .replace(/\s+/g, "")
             .replace(/^\+256/, "0")
             .replace(/^256/, "0");
 
 
-    /*
-       MTN Uganda
-       0770 - 0779
-       0780 - 0789
-    */
+    if (
+        !/^0\d{9}$/.test(normalized)
+    ) {
+
+        return null;
+    }
+
+
+    const prefix =
+        normalized.substring(0, 3);
+
+
+    const mtnPrefixes = [
+        "031",
+        "039",
+        "076",
+        "077",
+        "078",
+        "079"
+    ];
+
+
+    const airtelPrefixes = [
+        "070",
+        "074",
+        "075"
+    ];
+
 
     if (
-        /^07(7\d|8\d)\d{7}$/.test(normalized)
+        mtnPrefixes.includes(prefix)
     ) {
 
         return "MTN";
     }
 
 
-    /*
-       Airtel Uganda
-       0700 - 0709
-       0750 - 0759
-    */
-
     if (
-        /^07(0\d|5\d)\d{7}$/.test(normalized)
+        airtelPrefixes.includes(prefix)
     ) {
 
         return "Airtel";
@@ -84,7 +125,6 @@ function normalizePhone(phone) {
 
 /* =========================================================
    CREATE WITHDRAWAL
-=========================================================
 
    POST /api/withdrawals
 
@@ -98,6 +138,31 @@ function normalizePhone(phone) {
       net amount
       status
       transaction record
+
+   IMPORTANT WALLET RULE:
+      Deposited capital is NOT withdrawable.
+
+      Withdrawals may only use the portion of
+      the current wallet balance that is above
+      the user's remaining deposited capital.
+
+   Example:
+
+      Approved deposits = UGX 20,000
+      Investments       = UGX 10,000
+      Wallet balance    = UGX 10,000
+
+      Remaining capital = UGX 10,000
+      Withdrawable      = UGX 0
+
+      Therefore a UGX 4,000 withdrawal is rejected.
+
+   If later:
+
+      Wallet balance    = UGX 15,000
+      Remaining capital = UGX 10,000
+
+      Withdrawable      = UGX 5,000
 ========================================================= */
 
 router.post(
@@ -294,7 +359,8 @@ router.post(
 
 
             if (
-                withdrawalCount >= MAX_WITHDRAWALS
+                withdrawalCount >=
+                MAX_WITHDRAWALS
             ) {
 
                 return res.status(403).json({
@@ -308,7 +374,7 @@ router.post(
 
 
             /* -----------------------------------------
-               CHECK AVAILABLE BALANCE
+               CHECK CURRENT WALLET BALANCE
             ----------------------------------------- */
 
             const currentBalance =
@@ -325,6 +391,162 @@ router.post(
 
                     message:
                         "Insufficient wallet balance."
+                });
+            }
+
+
+            /* =================================================
+               CHECK WITHDRAWABLE EARNED BALANCE
+            =================================================
+
+               Deposits represent capital.
+
+               Investments consume deposited/invested
+               capital first for FINORA's internal wallet
+               accounting.
+
+               Therefore:
+
+                  Remaining capital =
+                  approved deposits - investments
+
+               Withdrawable balance =
+                  current wallet - remaining capital
+
+               Never allow the withdrawable balance
+               to become negative.
+            ================================================= */
+
+            const depositResult =
+                await Deposit.aggregate([
+
+                    {
+                        $match: {
+                            user:
+                                user._id,
+
+                            status:
+                                "approved"
+                        }
+                    },
+
+                    {
+                        $group: {
+                            _id: null,
+
+                            totalDeposited: {
+                                $sum: "$amount"
+                            }
+                        }
+                    }
+
+                ]);
+
+
+            const investmentResult =
+                await Investment.aggregate([
+
+                    {
+                        $match: {
+                            user:
+                                user._id
+                        }
+                    },
+
+                    {
+                        $group: {
+                            _id: null,
+
+                            totalInvested: {
+                                $sum: "$amount"
+                            }
+                        }
+                    }
+
+                ]);
+
+
+            const totalDeposited =
+                Number(
+                    depositResult?.[0]
+                        ?.totalDeposited || 0
+                );
+
+
+            const totalInvested =
+                Number(
+                    investmentResult?.[0]
+                        ?.totalInvested || 0
+                );
+
+
+            const remainingCapital =
+                Math.max(
+                    0,
+                    totalDeposited -
+                    totalInvested
+                );
+
+
+            const withdrawableBalance =
+                Math.max(
+                    0,
+                    currentBalance -
+                    remainingCapital
+                );
+
+
+            /* -----------------------------------------
+               BLOCK DEPOSITED CAPITAL
+            ----------------------------------------- */
+
+            if (
+                amount >
+                withdrawableBalance
+            ) {
+
+                const available =
+                    Number(
+                        withdrawableBalance.toFixed(2)
+                    );
+
+
+                let explanation;
+
+
+                if (
+                    available <= 0
+                ) {
+
+                    explanation =
+                        "This amount is currently part of your deposited investment capital. Withdrawals are available from eligible earnings and referral income.";
+                } else {
+
+                    explanation =
+                        `You requested ${`UGX ${amount.toLocaleString()}`}, but only ${`UGX ${available.toLocaleString()}`} is currently available from eligible earnings and referral income. The remaining wallet balance is deposited investment capital.`;
+                }
+
+
+                return res.status(403).json({
+
+                    success: false,
+
+                    code:
+                        "CAPITAL_NOT_WITHDRAWABLE",
+
+                    message:
+                        explanation,
+
+                    walletBalance:
+                        currentBalance,
+
+                    withdrawableBalance:
+                        available,
+
+                    remainingCapital:
+                        Number(
+                            remainingCapital.toFixed(2)
+                        )
                 });
             }
 
@@ -495,27 +717,30 @@ router.post(
             ----------------------------------------- */
 
             await user.save();
-/* -----------------------------------------
-   CREATE WITHDRAWAL SUBMISSION NOTIFICATION
------------------------------------------ */
 
-await Notification.create({
 
-    userId:
-        user._id,
+            /* -----------------------------------------
+               CREATE WITHDRAWAL SUBMISSION NOTIFICATION
+            ----------------------------------------- */
 
-    type:
-        "withdrawal_submitted",
+            await Notification.create({
 
-    title:
-        "Withdrawal Submitted",
+                userId:
+                    user._id,
 
-    message:
-        `Your UGX ${amount.toLocaleString()} withdrawal request has been submitted and is pending processing.`,
+                type:
+                    "withdrawal_submitted",
 
-    isRead:
-        false
-});
+                title:
+                    "Withdrawal Submitted",
+
+                message:
+                    `Your UGX ${amount.toLocaleString()} withdrawal request has been submitted and is pending processing.`,
+
+                isRead:
+                    false
+            });
+
 
             /* -----------------------------------------
                SUCCESS
