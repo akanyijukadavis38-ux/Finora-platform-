@@ -22,6 +22,7 @@
 
         /* =========================================================
            FINORA ADMIN DEPOSITS
+           COMPLETE SINGLE-FILE PAGE
         ========================================================= */
 
         :root {
@@ -89,6 +90,9 @@
             --blue:
                 #2fa8ff;
 
+            --orange:
+                #ffad42;
+
             --shadow:
                 0 18px 45px rgba(0, 0, 0, 0.35);
 
@@ -102,6 +106,7 @@
 
 
         * {
+
             box-sizing:
                 border-box;
 
@@ -110,15 +115,18 @@
 
             padding:
                 0;
+
         }
 
 
         html {
+
             min-height:
                 100%;
 
             background:
                 var(--bg);
+
         }
 
 
@@ -128,6 +136,7 @@
                 100vh;
 
             background:
+
                 radial-gradient(
                     circle at 15% 0%,
                     rgba(234, 60, 255, 0.10),
@@ -155,29 +164,44 @@
 
             overflow-x:
                 hidden;
+
         }
 
 
         button,
         input,
         textarea {
+
             font:
                 inherit;
+
         }
 
 
         button {
+
             cursor:
                 pointer;
+
+        }
+
+
+        button:disabled {
+
+            cursor:
+                not-allowed;
+
         }
 
 
         a {
+
             color:
                 inherit;
 
             text-decoration:
                 none;
+
         }
 
 
@@ -191,6 +215,7 @@
 
             padding:
                 0 18px 30px;
+
         }
 
 
@@ -204,6 +229,7 @@
 
             margin:
                 0 auto;
+
         }
 
 
@@ -233,6 +259,7 @@
 
             margin-bottom:
                 20px;
+
         }
 
 
@@ -249,6 +276,7 @@
 
             min-width:
                 0;
+
         }
 
 
@@ -284,11 +312,20 @@
             justify-content:
                 center;
 
-            font-size:
-                25px;
-
             transition:
                 0.2s ease;
+
+        }
+
+
+        .back-button svg {
+
+            width:
+                19px;
+
+            height:
+                19px;
+
         }
 
 
@@ -302,6 +339,7 @@
 
             transform:
                 translateX(-2px);
+
         }
 
 
@@ -309,6 +347,7 @@
 
             min-width:
                 0;
+
         }
 
 
@@ -331,6 +370,7 @@
 
             margin-bottom:
                 3px;
+
         }
 
 
@@ -352,6 +392,89 @@
 
             white-space:
                 nowrap;
+
+        }
+
+
+        .header-actions {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                8px;
+
+            flex:
+                0 0 auto;
+
+        }
+
+
+        .refresh-button {
+
+            width:
+                42px;
+
+            height:
+                42px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                13px;
+
+            background:
+                rgba(234, 60, 255, 0.07);
+
+            color:
+                var(--pink-light);
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            transition:
+                0.2s ease;
+
+        }
+
+
+        .refresh-button svg {
+
+            width:
+                17px;
+
+            height:
+                17px;
+
+        }
+
+
+        .refresh-button:hover {
+
+            background:
+                rgba(234, 60, 255, 0.15);
+
+            border-color:
+                var(--border-strong);
+
+        }
+
+
+        .refresh-button.spinning svg {
+
+            animation:
+                spin 0.8s linear infinite;
+
         }
 
 
@@ -389,6 +512,7 @@
 
             white-space:
                 nowrap;
+
         }
 
 
@@ -408,6 +532,7 @@
 
             box-shadow:
                 0 0 10px rgba(66, 230, 149, 0.75);
+
         }
 
 
@@ -421,6 +546,7 @@
 
             background:
                 rgba(255, 77, 109, 0.06);
+
         }
 
 
@@ -431,6 +557,7 @@
 
             box-shadow:
                 0 0 10px rgba(255, 77, 109, 0.55);
+
         }
 
 
@@ -451,6 +578,7 @@
 
             margin-bottom:
                 18px;
+
         }
 
 
@@ -477,6 +605,7 @@
 
             box-shadow:
                 var(--shadow);
+
         }
 
 
@@ -499,6 +628,7 @@
 
             margin-bottom:
                 8px;
+
         }
 
 
@@ -518,6 +648,7 @@
 
             word-break:
                 break-word;
+
         }
 
 
@@ -525,6 +656,7 @@
 
             color:
                 var(--gold-light);
+
         }
 
 
@@ -545,6 +677,7 @@
 
             margin-bottom:
                 18px;
+
         }
 
 
@@ -555,6 +688,7 @@
 
             width:
                 100%;
+
         }
 
 
@@ -575,11 +709,20 @@
             color:
                 var(--muted);
 
-            font-size:
-                18px;
-
             pointer-events:
                 none;
+
+        }
+
+
+        .search-icon svg {
+
+            width:
+                17px;
+
+            height:
+                17px;
+
         }
 
 
@@ -614,12 +757,15 @@
 
             transition:
                 0.2s ease;
+
         }
 
 
         .search-input::placeholder {
+
             color:
                 var(--muted-2);
+
         }
 
 
@@ -630,6 +776,7 @@
 
             box-shadow:
                 0 0 0 3px rgba(234, 60, 255, 0.07);
+
         }
 
 
@@ -649,12 +796,15 @@
 
             scrollbar-width:
                 none;
+
         }
 
 
         .filters::-webkit-scrollbar {
+
             display:
                 none;
+
         }
 
 
@@ -686,6 +836,7 @@
 
             transition:
                 0.2s ease;
+
         }
 
 
@@ -696,6 +847,7 @@
 
             border-color:
                 var(--border-strong);
+
         }
 
 
@@ -716,6 +868,7 @@
 
             box-shadow:
                 0 5px 20px rgba(234, 60, 255, 0.08);
+
         }
 
 
@@ -739,6 +892,7 @@
 
             margin:
                 4px 2px 10px;
+
         }
 
 
@@ -749,6 +903,21 @@
 
             font-weight:
                 800;
+
+        }
+
+
+        .list-heading-right {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                8px;
+
         }
 
 
@@ -758,12 +927,16 @@
                 var(--muted);
 
             font-size:
-                11px;
+                10px;
+
+            white-space:
+                nowrap;
+
         }
 
 
         /* =========================================================
-           DEPOSIT RECORDS
+           DEPOSIT LIST
         ========================================================= */
 
         .deposit-list {
@@ -776,6 +949,7 @@
 
             gap:
                 10px;
+
         }
 
 
@@ -806,6 +980,7 @@
             transition:
                 border-color 0.2s ease,
                 transform 0.2s ease;
+
         }
 
 
@@ -816,8 +991,21 @@
 
             transform:
                 translateY(-1px);
+
         }
 
+
+        .deposit-card.frozen {
+
+            border-color:
+                rgba(255, 77, 109, 0.22);
+
+        }
+
+
+        /* =========================================================
+           USER HEADER
+        ========================================================= */
 
         .record-top {
 
@@ -834,7 +1022,8 @@
                 12px;
 
             margin-bottom:
-                13px;
+                12px;
+
         }
 
 
@@ -842,6 +1031,10 @@
 
             min-width:
                 0;
+
+            flex:
+                1;
+
         }
 
 
@@ -864,6 +1057,7 @@
 
             white-space:
                 nowrap;
+
         }
 
 
@@ -879,16 +1073,17 @@
                 wrap;
 
             gap:
-                5px 8px;
+                4px 7px;
 
             color:
                 var(--muted);
 
             font-size:
-                11px;
+                10px;
 
             line-height:
                 1.4;
+
         }
 
 
@@ -914,6 +1109,7 @@
 
             text-transform:
                 uppercase;
+
         }
 
 
@@ -927,6 +1123,7 @@
 
             border:
                 1px solid rgba(245, 166, 35, 0.18);
+
         }
 
 
@@ -940,6 +1137,7 @@
 
             border:
                 1px solid rgba(66, 230, 149, 0.18);
+
         }
 
 
@@ -953,8 +1151,87 @@
 
             border:
                 1px solid rgba(255, 77, 109, 0.18);
+
         }
 
+
+        /* =========================================================
+           FROZEN WARNING
+        ========================================================= */
+
+        .frozen-warning {
+
+            display:
+                flex;
+
+            align-items:
+                flex-start;
+
+            gap:
+                9px;
+
+            padding:
+                10px 11px;
+
+            margin-bottom:
+                11px;
+
+            border:
+                1px solid rgba(255, 77, 109, 0.20);
+
+            border-radius:
+                11px;
+
+            background:
+                rgba(255, 77, 109, 0.06);
+
+            color:
+                #ffc1ca;
+
+            font-size:
+                10px;
+
+            line-height:
+                1.5;
+
+        }
+
+
+        .frozen-warning-icon {
+
+            width:
+                21px;
+
+            height:
+                21px;
+
+            flex:
+                0 0 21px;
+
+            border-radius:
+                50%;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            background:
+                rgba(255, 77, 109, 0.12);
+
+            font-weight:
+                900;
+
+        }
+
+
+        /* =========================================================
+           AMOUNT
+        ========================================================= */
 
         .amount-line {
 
@@ -974,16 +1251,21 @@
                 12px;
 
             margin-bottom:
-                11px;
+                10px;
 
             border-radius:
                 12px;
 
             background:
-                rgba(234, 60, 255, 0.045);
+                linear-gradient(
+                    135deg,
+                    rgba(245, 166, 35, 0.075),
+                    rgba(234, 60, 255, 0.035)
+                );
 
             border:
-                1px solid rgba(234, 60, 255, 0.08);
+                1px solid rgba(245, 166, 35, 0.10);
+
         }
 
 
@@ -1003,6 +1285,7 @@
 
             letter-spacing:
                 0.6px;
+
         }
 
 
@@ -1019,6 +1302,65 @@
 
             text-align:
                 right;
+
+            white-space:
+                nowrap;
+
+        }
+
+
+        /* =========================================================
+           INFORMATION SECTIONS
+        ========================================================= */
+
+        .info-section {
+
+            margin-bottom:
+                10px;
+
+        }
+
+
+        .section-caption {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                7px;
+
+            color:
+                var(--pink-light);
+
+            font-size:
+                9px;
+
+            font-weight:
+                900;
+
+            letter-spacing:
+                0.8px;
+
+            text-transform:
+                uppercase;
+
+            margin:
+                0 1px 6px;
+
+        }
+
+
+        .section-caption svg {
+
+            width:
+                13px;
+
+            height:
+                13px;
+
         }
 
 
@@ -1031,10 +1373,8 @@
                 repeat(2, minmax(0, 1fr));
 
             gap:
-                7px;
+                6px;
 
-            margin-bottom:
-                12px;
         }
 
 
@@ -1044,7 +1384,7 @@
                 0;
 
             padding:
-                9px 10px;
+                8px 9px;
 
             border-radius:
                 10px;
@@ -1054,6 +1394,7 @@
 
             border:
                 1px solid rgba(255, 255, 255, 0.045);
+
         }
 
 
@@ -1066,7 +1407,7 @@
                 var(--muted-2);
 
             font-size:
-                9px;
+                8px;
 
             font-weight:
                 800;
@@ -1079,6 +1420,7 @@
 
             margin-bottom:
                 4px;
+
         }
 
 
@@ -1091,7 +1433,7 @@
                 #eee8f1;
 
             font-size:
-                11px;
+                10px;
 
             font-weight:
                 700;
@@ -1104,6 +1446,39 @@
 
             white-space:
                 nowrap;
+
+        }
+
+
+        .detail-value.gold {
+
+            color:
+                var(--gold-light);
+
+        }
+
+
+        .detail-value.pink {
+
+            color:
+                var(--pink-light);
+
+        }
+
+
+        .detail-value.green {
+
+            color:
+                #a8f8cd;
+
+        }
+
+
+        .detail-value.red {
+
+            color:
+                #ffabb8;
+
         }
 
 
@@ -1111,6 +1486,7 @@
 
             grid-column:
                 1 / -1;
+
         }
 
 
@@ -1123,9 +1499,271 @@
                 monospace;
 
             font-size:
-                11px;
+                10px;
+
+            letter-spacing:
+                0.2px;
+
         }
 
+
+        /* =========================================================
+           PAYMENT NETWORK BADGES
+        ========================================================= */
+
+        .network-badge {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            gap:
+                5px;
+
+        }
+
+
+        .network-dot {
+
+            width:
+                7px;
+
+            height:
+                7px;
+
+            border-radius:
+                50%;
+
+        }
+
+
+        .network-dot.mtn {
+
+            background:
+                #ffd400;
+
+            box-shadow:
+                0 0 6px rgba(255, 212, 0, 0.35);
+
+        }
+
+
+        .network-dot.airtel {
+
+            background:
+                #ff3b3b;
+
+            box-shadow:
+                0 0 6px rgba(255, 59, 59, 0.35);
+
+        }
+
+
+        /* =========================================================
+           ACCOUNT SUMMARY
+        ========================================================= */
+
+        .account-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap:
+                6px;
+
+        }
+
+
+        .account-stat {
+
+            min-width:
+                0;
+
+            padding:
+                8px;
+
+            border-radius:
+                10px;
+
+            background:
+                rgba(234, 60, 255, 0.035);
+
+            border:
+                1px solid rgba(234, 60, 255, 0.07);
+
+        }
+
+
+        .account-stat-label {
+
+            display:
+                block;
+
+            color:
+                var(--muted-2);
+
+            font-size:
+                7px;
+
+            font-weight:
+                800;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                0.35px;
+
+            margin-bottom:
+                4px;
+
+        }
+
+
+        .account-stat-value {
+
+            display:
+                block;
+
+            color:
+                #eee8f1;
+
+            font-size:
+                9px;
+
+            font-weight:
+                800;
+
+            white-space:
+                nowrap;
+
+            overflow:
+                hidden;
+
+            text-overflow:
+                ellipsis;
+
+        }
+
+
+        /* =========================================================
+           REFERRAL
+        ========================================================= */
+
+        .referral-box {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap:
+                6px;
+
+            padding:
+                9px;
+
+            border:
+                1px solid rgba(245, 166, 35, 0.10);
+
+            border-radius:
+                11px;
+
+            background:
+                rgba(245, 166, 35, 0.035);
+
+        }
+
+
+        .referral-item {
+
+            min-width:
+                0;
+
+        }
+
+
+        .referral-label {
+
+            display:
+                block;
+
+            color:
+                var(--muted-2);
+
+            font-size:
+                8px;
+
+            font-weight:
+                800;
+
+            text-transform:
+                uppercase;
+
+            margin-bottom:
+                3px;
+
+        }
+
+
+        .referral-value {
+
+            color:
+                #eee8f1;
+
+            font-size:
+                10px;
+
+            font-weight:
+                700;
+
+            overflow:
+                hidden;
+
+            text-overflow:
+                ellipsis;
+
+            white-space:
+                nowrap;
+
+        }
+
+
+        .referral-note {
+
+            grid-column:
+                1 / -1;
+
+            padding-top:
+                5px;
+
+            margin-top:
+                2px;
+
+            border-top:
+                1px solid rgba(255, 255, 255, 0.045);
+
+            color:
+                var(--muted);
+
+            font-size:
+                9px;
+
+            line-height:
+                1.45;
+
+        }
+
+
+        /* =========================================================
+           FOOTER / ACTIONS
+        ========================================================= */
 
         .record-footer {
 
@@ -1144,8 +1782,12 @@
             padding-top:
                 11px;
 
+            margin-top:
+                10px;
+
             border-top:
                 1px solid rgba(255, 255, 255, 0.055);
+
         }
 
 
@@ -1155,13 +1797,22 @@
                 var(--muted);
 
             font-size:
-                10px;
+                9px;
 
             line-height:
-                1.4;
+                1.45;
 
             min-width:
                 0;
+
+        }
+
+
+        .submitted-time strong {
+
+            color:
+                #d8d0db;
+
         }
 
 
@@ -1175,6 +1826,7 @@
 
             flex:
                 0 0 auto;
+
         }
 
 
@@ -1198,11 +1850,9 @@
             font-weight:
                 900;
 
-            letter-spacing:
-                0.2px;
-
             transition:
                 0.2s ease;
+
         }
 
 
@@ -1220,6 +1870,7 @@
 
             border-color:
                 rgba(66, 230, 149, 0.26);
+
         }
 
 
@@ -1230,6 +1881,7 @@
 
             border-color:
                 rgba(66, 230, 149, 0.45);
+
         }
 
 
@@ -1247,6 +1899,7 @@
 
             border-color:
                 rgba(255, 77, 109, 0.23);
+
         }
 
 
@@ -1257,6 +1910,7 @@
 
             border-color:
                 rgba(255, 77, 109, 0.42);
+
         }
 
 
@@ -1268,8 +1922,6 @@
             cursor:
                 not-allowed;
 
-            transform:
-                none;
         }
 
 
@@ -1288,13 +1940,17 @@
                 10px;
 
             font-size:
-                10px;
+                9px;
+
+            line-height:
+                1.5;
 
             color:
                 var(--muted);
 
             background:
                 rgba(255, 255, 255, 0.025);
+
         }
 
 
@@ -1302,11 +1958,12 @@
 
             color:
                 var(--text);
+
         }
 
 
         /* =========================================================
-           EMPTY / LOADING / ERROR
+           STATE
         ========================================================= */
 
         .state {
@@ -1325,6 +1982,7 @@
 
             background:
                 rgba(17, 10, 23, 0.85);
+
         }
 
 
@@ -1365,6 +2023,7 @@
 
             border:
                 1px solid rgba(234, 60, 255, 0.20);
+
         }
 
 
@@ -1375,6 +2034,7 @@
 
             margin-bottom:
                 6px;
+
         }
 
 
@@ -1388,6 +2048,7 @@
 
             line-height:
                 1.6;
+
         }
 
 
@@ -1413,15 +2074,26 @@
 
             animation:
                 spin 0.8s linear infinite;
+
         }
 
 
         @keyframes spin {
 
             to {
+
                 transform:
                     rotate(360deg);
+
             }
+
+        }
+
+
+        .hidden {
+
+            display:
+                none !important;
 
         }
 
@@ -1454,12 +2126,7 @@
 
             font-weight:
                 800;
-        }
 
-
-        .hidden {
-            display:
-                none !important;
         }
 
 
@@ -1498,6 +2165,7 @@
 
             -webkit-backdrop-filter:
                 blur(7px);
+
         }
 
 
@@ -1507,7 +2175,13 @@
                 100%;
 
             max-width:
-                430px;
+                450px;
+
+            max-height:
+                calc(100vh - 36px);
+
+            overflow-y:
+                auto;
 
             border:
                 1px solid rgba(234, 60, 255, 0.23);
@@ -1527,6 +2201,7 @@
 
             padding:
                 21px;
+
         }
 
 
@@ -1546,6 +2221,7 @@
 
             margin-bottom:
                 14px;
+
         }
 
 
@@ -1559,6 +2235,7 @@
 
             gap:
                 11px;
+
         }
 
 
@@ -1587,6 +2264,7 @@
 
             font-size:
                 17px;
+
         }
 
 
@@ -1600,6 +2278,7 @@
 
             border:
                 1px solid rgba(66, 230, 149, 0.20);
+
         }
 
 
@@ -1613,6 +2292,7 @@
 
             border:
                 1px solid rgba(255, 77, 109, 0.20);
+
         }
 
 
@@ -1623,6 +2303,7 @@
 
             margin-bottom:
                 3px;
+
         }
 
 
@@ -1633,6 +2314,7 @@
 
             font-size:
                 10px;
+
         }
 
 
@@ -1661,6 +2343,7 @@
 
             line-height:
                 1;
+
         }
 
 
@@ -1677,6 +2360,7 @@
 
             margin-bottom:
                 15px;
+
         }
 
 
@@ -1696,6 +2380,7 @@
 
             margin-bottom:
                 15px;
+
         }
 
 
@@ -1715,6 +2400,7 @@
 
             font-size:
                 11px;
+
         }
 
 
@@ -1722,6 +2408,7 @@
 
             color:
                 var(--muted);
+
         }
 
 
@@ -1735,6 +2422,7 @@
 
             word-break:
                 break-word;
+
         }
 
 
@@ -1745,6 +2433,36 @@
 
             font-size:
                 14px;
+
+        }
+
+
+        .modal-warning {
+
+            padding:
+                10px 11px;
+
+            margin-bottom:
+                14px;
+
+            border:
+                1px solid rgba(245, 166, 35, 0.17);
+
+            border-radius:
+                10px;
+
+            background:
+                rgba(245, 166, 35, 0.055);
+
+            color:
+                #ffe0a2;
+
+            font-size:
+                10px;
+
+            line-height:
+                1.5;
+
         }
 
 
@@ -1764,6 +2482,7 @@
 
             margin-bottom:
                 7px;
+
         }
 
 
@@ -1801,6 +2520,7 @@
 
             line-height:
                 1.5;
+
         }
 
 
@@ -1811,6 +2531,7 @@
 
             box-shadow:
                 0 0 0 3px rgba(234, 60, 255, 0.06);
+
         }
 
 
@@ -1827,6 +2548,7 @@
 
             margin-top:
                 5px;
+
         }
 
 
@@ -1840,6 +2562,7 @@
 
             margin-top:
                 16px;
+
         }
 
 
@@ -1859,6 +2582,7 @@
 
             font-weight:
                 900;
+
         }
 
 
@@ -1872,6 +2596,7 @@
 
             border:
                 1px solid rgba(255, 255, 255, 0.08);
+
         }
 
 
@@ -1889,6 +2614,7 @@
 
             border:
                 1px solid rgba(66, 230, 149, 0.30);
+
         }
 
 
@@ -1906,6 +2632,7 @@
 
             border:
                 1px solid rgba(255, 77, 109, 0.30);
+
         }
 
 
@@ -1916,6 +2643,7 @@
 
             cursor:
                 not-allowed;
+
         }
 
 
@@ -1942,6 +2670,7 @@
 
             pointer-events:
                 none;
+
         }
 
 
@@ -1979,6 +2708,7 @@
 
             transition:
                 0.25s ease;
+
         }
 
 
@@ -1989,6 +2719,7 @@
 
             opacity:
                 1;
+
         }
 
 
@@ -1996,6 +2727,7 @@
 
             border-color:
                 rgba(66, 230, 149, 0.25);
+
         }
 
 
@@ -2003,6 +2735,7 @@
 
             border-color:
                 rgba(255, 77, 109, 0.25);
+
         }
 
 
@@ -2034,6 +2767,7 @@
 
             font-weight:
                 900;
+
         }
 
 
@@ -2044,6 +2778,7 @@
 
             background:
                 rgba(66, 230, 149, 0.12);
+
         }
 
 
@@ -2054,6 +2789,7 @@
 
             background:
                 rgba(255, 77, 109, 0.12);
+
         }
 
 
@@ -2067,6 +2803,7 @@
 
             line-height:
                 1.45;
+
         }
 
 
@@ -2099,6 +2836,7 @@
 
             text-align:
                 center;
+
         }
 
 
@@ -2117,6 +2855,7 @@
 
             letter-spacing:
                 0.8px;
+
         }
 
 
@@ -2127,32 +2866,54 @@
         @media (min-width: 700px) {
 
             .page {
+
                 padding:
                     0 28px 35px;
+
             }
 
 
             .topbar {
+
                 min-height:
                     88px;
+
             }
 
 
             .details-grid {
+
                 grid-template-columns:
                     repeat(3, minmax(0, 1fr));
+
             }
 
 
             .reference-detail {
+
                 grid-column:
                     auto;
+
             }
 
 
             .deposit-card {
+
                 padding:
                     17px;
+
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .account-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+
             }
 
         }
@@ -2161,21 +2922,27 @@
         @media (max-width: 520px) {
 
             .page {
+
                 padding:
                     0 12px 25px;
+
             }
 
 
             .topbar {
+
                 min-height:
                     70px;
 
                 margin-bottom:
                     15px;
+
             }
 
 
-            .back-button {
+            .back-button,
+            .refresh-button {
+
                 width:
                     38px;
 
@@ -2184,60 +2951,109 @@
 
                 flex-basis:
                     38px;
+
             }
 
 
             .page-title {
+
                 font-size:
                     21px;
+
             }
 
 
             .brand-small {
+
                 font-size:
                     8px;
 
                 letter-spacing:
                     1.5px;
+
             }
 
 
             .live-indicator {
+
                 padding:
                     7px 8px;
 
                 font-size:
                     9px;
+
             }
 
 
             .summary-grid {
+
                 gap:
                     8px;
+
             }
 
 
             .summary-card {
+
                 padding:
                     12px 10px;
+
             }
 
 
             .summary-label {
+
                 font-size:
                     8px;
+
             }
 
 
             .summary-value {
+
                 font-size:
                     17px;
+
             }
 
 
             .deposit-card {
+
                 padding:
                     13px;
+
+            }
+
+
+            .record-top {
+
+                gap:
+                    8px;
+
+            }
+
+
+            .user-name {
+
+                font-size:
+                    14px;
+
+            }
+
+
+            .amount-value {
+
+                font-size:
+                    16px;
+
+            }
+
+
+            .account-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+
             }
 
 
@@ -2253,20 +3069,34 @@
 
 
             .submitted-time {
+
                 width:
                     100%;
+
             }
 
 
             .action-buttons {
+
                 width:
                     100%;
+
             }
 
 
             .action-button {
+
                 flex:
                     1;
+
+            }
+
+
+            .list-heading-right span {
+
+                display:
+                    none;
+
             }
 
         }
@@ -2298,7 +3128,19 @@
                         class="back-button"
                         aria-label="Back to Admin Overview"
                     >
-                        ‹
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M19 12H5"></path>
+                            <path d="M12 19l-7-7 7-7"></path>
+                        </svg>
+
                     </a>
 
 
@@ -2317,16 +3159,44 @@
                 </div>
 
 
-                <div
-                    class="live-indicator"
-                    id="liveIndicator"
-                >
+                <div class="header-actions">
 
-                    <span class="live-dot"></span>
+                    <button
+                        type="button"
+                        class="refresh-button"
+                        id="refreshButton"
+                        aria-label="Refresh deposits"
+                    >
 
-                    <span id="liveText">
-                        Live
-                    </span>
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M20 11a8.1 8.1 0 0 0-15.5-2"></path>
+                            <path d="M4 4v5h5"></path>
+                            <path d="M4 13a8.1 8.1 0 0 0 15.5 2"></path>
+                            <path d="M20 20v-5h-5"></path>
+                        </svg>
+
+                    </button>
+
+
+                    <div
+                        class="live-indicator"
+                        id="liveIndicator"
+                    >
+
+                        <span class="live-dot"></span>
+
+                        <span id="liveText">
+                            Live
+                        </span>
+
+                    </div>
 
                 </div>
 
@@ -2403,8 +3273,28 @@
                 <div class="search-wrap">
 
                     <span class="search-icon">
-                        ⌕
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <circle
+                                cx="11"
+                                cy="11"
+                                r="7"
+                            ></circle>
+
+                            <path
+                                d="m20 20-4-4"
+                            ></path>
+                        </svg>
+
                     </span>
+
 
                     <input
                         type="search"
@@ -2470,9 +3360,14 @@
                     Deposit Requests
                 </h2>
 
-                <span id="lastUpdated">
-                    Loading...
-                </span>
+
+                <div class="list-heading-right">
+
+                    <span id="lastUpdated">
+                        Loading...
+                    </span>
+
+                </div>
 
             </div>
 
@@ -2648,7 +3543,7 @@
 
             <p class="modal-text">
 
-                Approving this deposit will credit the user's FINORA wallet. If this is the user's first approved deposit, the existing referral commission processor will handle eligible referral commissions.
+                Approving this deposit will credit the user's FINORA wallet. The existing backend approval process will also handle the first-deposit referral commission logic when applicable.
 
             </p>
 
@@ -2671,10 +3566,36 @@
                 <div class="confirm-row">
 
                     <span>
+                        Phone
+                    </span>
+
+                    <strong id="approvePhone">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="confirm-row">
+
+                    <span>
                         Payment
                     </span>
 
                     <strong id="approveNetwork">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="confirm-row">
+
+                    <span>
+                        Merchant
+                    </span>
+
+                    <strong id="approveMerchant">
                         —
                     </strong>
 
@@ -2709,6 +3630,14 @@
 
                 </div>
 
+            </div>
+
+
+            <div
+                class="modal-warning"
+                id="approveReferralNotice"
+            >
+                Referral processing, when applicable, is handled automatically by the backend during approval.
             </div>
 
 
@@ -2811,6 +3740,19 @@
                 <div class="confirm-row">
 
                     <span>
+                        Phone
+                    </span>
+
+                    <strong id="rejectPhone">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="confirm-row">
+
+                    <span>
                         Amount
                     </span>
 
@@ -2819,6 +3761,19 @@
                         id="rejectAmount"
                     >
                         UGX —
+                    </strong>
+
+                </div>
+
+
+                <div class="confirm-row">
+
+                    <span>
+                        Reference
+                    </span>
+
+                    <strong id="rejectReference">
+                        —
                     </strong>
 
                 </div>
@@ -2923,6 +3878,10 @@
             `${API_BASE}/api/admin/deposits`;
 
 
+        const AUTO_REFRESH_MS =
+            60000;
+
+
         let allDeposits =
             [];
 
@@ -2943,7 +3902,15 @@
             false;
 
 
+        let isLoading =
+            false;
+
+
         let toastTimer =
+            null;
+
+
+        let autoRefreshTimer =
             null;
 
 
@@ -2952,7 +3919,9 @@
            DOM HELPERS
         ========================================================= */
 
-        function getElement(selector) {
+        function getElement(
+            selector
+        ) {
 
             return document.querySelector(
                 selector
@@ -3056,6 +4025,7 @@
             if (!value) {
 
                 return "—";
+
             }
 
 
@@ -3070,6 +4040,7 @@
             ) {
 
                 return "—";
+
             }
 
 
@@ -3134,6 +4105,71 @@
 
 
         /* =========================================================
+           NETWORK
+        ========================================================= */
+
+        function getNetworkHtml(
+            paymentMethod
+        ) {
+
+            const method =
+                String(
+                    paymentMethod || "—"
+                );
+
+
+            const normalized =
+                method.toLowerCase();
+
+
+            let dotClass =
+                "";
+
+
+            if (
+                normalized === "mtn"
+            ) {
+
+                dotClass =
+                    "mtn";
+
+            } else if (
+                normalized === "airtel"
+            ) {
+
+                dotClass =
+                    "airtel";
+
+            }
+
+
+            return `
+
+                <span class="network-badge">
+
+                    ${
+                        dotClass
+                            ? `
+                                <span
+                                    class="network-dot ${dotClass}"
+                                ></span>
+                              `
+                            : ""
+                    }
+
+                    <span>
+                        ${escapeHtml(method)}
+                    </span>
+
+                </span>
+
+            `;
+
+        }
+
+
+
+        /* =========================================================
            INITIALIZATION
         ========================================================= */
 
@@ -3160,11 +4196,24 @@
                     "#retryButton"
                 )?.addEventListener(
                     "click",
-                    loadDeposits
+                    () => loadDeposits(true)
                 );
 
 
-                loadDeposits();
+                getElement(
+                    "#refreshButton"
+                )?.addEventListener(
+                    "click",
+                    () => loadDeposits(true)
+                );
+
+
+                loadDeposits(
+                    true
+                );
+
+
+                startAutoRefresh();
 
             }
         );
@@ -3172,31 +4221,91 @@
 
 
         /* =========================================================
+           AUTO REFRESH
+        ========================================================= */
+
+        function startAutoRefresh() {
+
+            clearInterval(
+                autoRefreshTimer
+            );
+
+
+            autoRefreshTimer =
+                setInterval(
+                    () => {
+
+                        if (
+                            document.visibilityState ===
+                            "visible" &&
+                            !isProcessing
+                        ) {
+
+                            loadDeposits(
+                                false
+                            );
+
+                        }
+
+                    },
+                    AUTO_REFRESH_MS
+                );
+
+        }
+
+
+
+        /* =========================================================
            LOAD DEPOSITS
         ========================================================= */
 
-        async function loadDeposits() {
+        async function loadDeposits(
+            showLoading = true
+        ) {
 
-            if (isProcessing) {
+            if (
+                isLoading ||
+                isProcessing
+            ) {
 
                 return;
+
             }
 
 
-            showElement(
-                "#loadingState"
-            );
+            isLoading =
+                true;
 
-            hideElement(
-                "#errorState"
-            );
 
-            hideElement(
-                "#emptyState"
-            );
+            if (showLoading) {
 
-            hideElement(
-                "#depositList"
+                showElement(
+                    "#loadingState"
+                );
+
+                hideElement(
+                    "#errorState"
+                );
+
+                hideElement(
+                    "#emptyState"
+                );
+
+                hideElement(
+                    "#depositList"
+                );
+
+            }
+
+
+            const refreshButton =
+                getElement(
+                    "#refreshButton"
+                );
+
+
+            refreshButton?.classList.add(
+                "spinning"
             );
 
 
@@ -3208,9 +4317,18 @@
 
             try {
 
+                /*
+                 * We intentionally request ALL deposits here.
+                 *
+                 * This allows:
+                 * - Pending summary to remain accurate.
+                 * - Search to work across all loaded records.
+                 * - Status filters to switch instantly.
+                 */
+
                 const response =
                     await fetch(
-                        `${DEPOSITS_ENDPOINT}/`,
+                        `${DEPOSITS_ENDPOINT}/?status=all`,
                         {
                             method:
                                 "GET",
@@ -3221,7 +4339,10 @@
                             headers: {
                                 Accept:
                                     "application/json"
-                            }
+                            },
+
+                            cache:
+                                "no-store"
                         }
                     );
 
@@ -3235,6 +4356,7 @@
                         "admin-login.html";
 
                     return;
+
                 }
 
 
@@ -3246,6 +4368,7 @@
                     throw new Error(
                         "Your Admin session is not authorized to access deposits."
                     );
+
                 }
 
 
@@ -3256,6 +4379,7 @@
                     throw new Error(
                         `Deposit request failed with status ${response.status}.`
                     );
+
                 }
 
 
@@ -3272,6 +4396,7 @@
                         data?.message ||
                         "FINORA could not load deposits."
                     );
+
                 }
 
 
@@ -3301,6 +4426,11 @@
                 );
 
 
+                hideElement(
+                    "#errorState"
+                );
+
+
             } catch (error) {
 
                 console.error(
@@ -3315,33 +4445,59 @@
                 );
 
 
-                hideElement(
-                    "#loadingState"
-                );
+                if (
+                    showLoading ||
+                    allDeposits.length ===
+                    0
+                ) {
 
-                hideElement(
-                    "#depositList"
-                );
+                    hideElement(
+                        "#loadingState"
+                    );
 
-                hideElement(
-                    "#emptyState"
-                );
+                    hideElement(
+                        "#depositList"
+                    );
 
-                showElement(
-                    "#errorState"
-                );
+                    hideElement(
+                        "#emptyState"
+                    );
+
+                    showElement(
+                        "#errorState"
+                    );
 
 
-                setText(
-                    "#errorText",
-                    error.message ||
-                    "The deposit records could not be loaded."
-                );
+                    setText(
+                        "#errorText",
+                        error.message ||
+                        "The deposit records could not be loaded."
+                    );
+
+                } else {
+
+                    showToast(
+                        error.message ||
+                        "Could not refresh deposits.",
+                        "error"
+                    );
+
+                }
+
 
             } finally {
 
+                isLoading =
+                    false;
+
+
                 hideElement(
                     "#loadingState"
+                );
+
+
+                refreshButton?.classList.remove(
+                    "spinning"
                 );
 
             }
@@ -3374,6 +4530,7 @@
             if (!indicator) {
 
                 return;
+
             }
 
 
@@ -3447,6 +4604,16 @@
                 )
             );
 
+
+            const visible =
+                getVisibleDeposits();
+
+
+            setText(
+                "#showingCount",
+                visible.length
+            );
+
         }
 
 
@@ -3516,6 +4683,7 @@
             if (!searchInput) {
 
                 return;
+
             }
 
 
@@ -3561,12 +4729,14 @@
                     if (!matchesStatus) {
 
                         return false;
+
                     }
 
 
                     if (!currentSearch) {
 
                         return true;
+
                     }
 
 
@@ -3581,13 +4751,20 @@
                             user.phone,
                             user.email,
                             user.referralCode,
+                            user.referredByCode,
                             deposit.paymentReference,
                             deposit.paymentMethod,
                             deposit.merchantCode,
                             deposit.amount,
                             deposit.status
                         ]
-                            .filter(Boolean)
+                            .filter(
+                                value =>
+                                    value !==
+                                    null &&
+                                    value !==
+                                    undefined
+                            )
                             .join(" ")
                             .toLowerCase();
 
@@ -3604,7 +4781,7 @@
 
 
         /* =========================================================
-           RENDER DEPOSITS
+           RENDER
         ========================================================= */
 
         function renderDeposits() {
@@ -3622,6 +4799,7 @@
             if (!list) {
 
                 return;
+
             }
 
 
@@ -3653,6 +4831,7 @@
 
 
                 return;
+
             }
 
 
@@ -3708,6 +4887,7 @@
 
 
                 return;
+
             }
 
 
@@ -3770,7 +4950,7 @@
 
             const email =
                 user.email ||
-                "";
+                "Email unavailable";
 
 
             const paymentMethod =
@@ -3817,6 +4997,59 @@
                 "";
 
 
+            const walletBalance =
+                Number(
+                    user.balance
+                ) || 0;
+
+
+            const totalDeposit =
+                Number(
+                    user.totalDeposit
+                ) || 0;
+
+
+            const totalWithdrawal =
+                Number(
+                    user.totalWithdrawal
+                ) || 0;
+
+
+            const totalIncome =
+                Number(
+                    user.totalIncome
+                ) || 0;
+
+
+            const referralCode =
+                user.referralCode ||
+                "—";
+
+
+            const referredByCode =
+                user.referredByCode ||
+                "None";
+
+
+            const storedStatus =
+                user.status ||
+                "inactive";
+
+
+            const isFrozen =
+                storedStatus ===
+                "frozen";
+
+
+            if (isFrozen) {
+
+                card.classList.add(
+                    "frozen"
+                );
+
+            }
+
+
             const statusClass =
                 status === "approved"
                     ? "status-approved"
@@ -3839,6 +5072,8 @@
 
 
             card.innerHTML = `
+
+                <!-- USER -->
 
                 <div class="record-top">
 
@@ -3874,6 +5109,30 @@
                 </div>
 
 
+                ${
+                    isFrozen
+                        ? `
+
+                            <div class="frozen-warning">
+
+                                <span class="frozen-warning-icon">
+                                    !
+                                </span>
+
+                                <span>
+                                    This user's account is currently frozen.
+                                    The backend will not allow this deposit to be approved until the account is unfrozen.
+                                </span>
+
+                            </div>
+
+                        `
+                        : ""
+                }
+
+
+                <!-- AMOUNT -->
+
                 <div class="amount-line">
 
                     <span class="amount-label">
@@ -3889,68 +5148,344 @@
                 </div>
 
 
-                <div class="details-grid">
+                <!-- PAYMENT -->
 
-                    <div class="detail">
+                <div class="info-section">
 
-                        <span class="detail-label">
-                            Payment
-                        </span>
+                    <div class="section-caption">
 
-                        <span class="detail-value">
-                            ${escapeHtml(paymentMethod)}
-                        </span>
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <rect
+                                x="3"
+                                y="5"
+                                width="18"
+                                height="14"
+                                rx="2"
+                            ></rect>
+
+                            <path
+                                d="M3 10h18"
+                            ></path>
+                        </svg>
+
+                        Payment Details
 
                     </div>
 
 
-                    <div class="detail">
+                    <div class="details-grid">
 
-                        <span class="detail-label">
-                            Merchant
-                        </span>
+                        <div class="detail">
 
-                        <span class="detail-value">
-                            ${escapeHtml(merchantCode)}
-                        </span>
+                            <span class="detail-label">
+                                Network
+                            </span>
 
-                    </div>
+                            <span class="detail-value">
+                                ${getNetworkHtml(
+                                    paymentMethod
+                                )}
+                            </span>
+
+                        </div>
 
 
-                    <div class="detail reference-detail">
+                        <div class="detail">
 
-                        <span class="detail-label">
-                            Transaction Reference
-                        </span>
+                            <span class="detail-label">
+                                Merchant Code
+                            </span>
 
-                        <span class="detail-value reference-value">
-                            ${escapeHtml(reference)}
-                        </span>
+                            <span class="detail-value">
+                                ${escapeHtml(
+                                    merchantCode
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail">
+
+                            <span class="detail-label">
+                                Submitted
+                            </span>
+
+                            <span class="detail-value">
+                                ${escapeHtml(
+                                    formatDate(
+                                        deposit.createdAt
+                                    )
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail">
+
+                            <span class="detail-label">
+                                Deposit Status
+                            </span>
+
+                            <span class="detail-value ${
+                                status === "approved"
+                                    ? "green"
+                                    : status === "rejected"
+                                        ? "red"
+                                        : "gold"
+                            }">
+                                ${escapeHtml(
+                                    statusLabel
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail reference-detail">
+
+                            <span class="detail-label">
+                                Transaction Reference
+                            </span>
+
+                            <span class="detail-value reference-value">
+                                ${escapeHtml(reference)}
+                            </span>
+
+                        </div>
 
                     </div>
 
                 </div>
 
 
-                <div class="record-footer">
+                <!-- ACCOUNT -->
 
-                    <div class="submitted-time">
+                <div class="info-section">
 
-                        Submitted:
-                        <strong>
-                            ${escapeHtml(
-                                formatDate(
-                                    deposit.createdAt
-                                )
-                            )}
-                        </strong>
+                    <div class="section-caption">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path
+                                d="M20 21a8 8 0 0 0-16 0"
+                            ></path>
+
+                            <circle
+                                cx="12"
+                                cy="7"
+                                r="4"
+                            ></circle>
+                        </svg>
+
+                        User Account
 
                     </div>
 
 
-                    ${
-                        status === "pending"
-                            ? `
+                    <div class="account-grid">
+
+                        <div class="account-stat">
+
+                            <span class="account-stat-label">
+                                Wallet
+                            </span>
+
+                            <span class="account-stat-value">
+                                ${escapeHtml(
+                                    formatAmount(
+                                        walletBalance
+                                    )
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="account-stat">
+
+                            <span class="account-stat-label">
+                                Total Deposited
+                            </span>
+
+                            <span class="account-stat-value">
+                                ${escapeHtml(
+                                    formatAmount(
+                                        totalDeposit
+                                    )
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="account-stat">
+
+                            <span class="account-stat-label">
+                                Total Withdrawn
+                            </span>
+
+                            <span class="account-stat-value">
+                                ${escapeHtml(
+                                    formatAmount(
+                                        totalWithdrawal
+                                    )
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="account-stat">
+
+                            <span class="account-stat-label">
+                                Total Income
+                            </span>
+
+                            <span class="account-stat-value">
+                                ${escapeHtml(
+                                    formatAmount(
+                                        totalIncome
+                                    )
+                                )}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- REFERRAL -->
+
+                <div class="info-section">
+
+                    <div class="section-caption">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path
+                                d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+                            ></path>
+
+                            <circle
+                                cx="9"
+                                cy="7"
+                                r="4"
+                            ></circle>
+
+                            <path
+                                d="M22 21v-2a4 4 0 0 0-3-3.87"
+                            ></path>
+
+                            <path
+                                d="M16 3.13a4 4 0 0 1 0 7.75"
+                            ></path>
+                        </svg>
+
+                        Referral Information
+
+                    </div>
+
+
+                    <div class="referral-box">
+
+                        <div class="referral-item">
+
+                            <span class="referral-label">
+                                User Referral Code
+                            </span>
+
+                            <span class="referral-value">
+                                ${escapeHtml(
+                                    referralCode
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="referral-item">
+
+                            <span class="referral-label">
+                                Referred By
+                            </span>
+
+                            <span class="referral-value">
+                                ${escapeHtml(
+                                    referredByCode
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        ${
+                            referredByCode !==
+                            "None"
+                                ? `
+
+                                    <div class="referral-note">
+                                        This deposit's first-deposit referral check is handled automatically by the backend when the deposit is approved.
+                                    </div>
+
+                                  `
+                                : `
+
+                                    <div class="referral-note">
+                                        No referring code is recorded for this account.
+                                    </div>
+
+                                  `
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                ${
+                    status === "pending"
+                        ? `
+
+                            <div class="record-footer">
+
+                                <div class="submitted-time">
+
+                                    Submitted
+                                    <strong>
+                                        ${escapeHtml(
+                                            formatDate(
+                                                deposit.createdAt
+                                            )
+                                        )}
+                                    </strong>
+
+                                </div>
+
 
                                 <div class="action-buttons">
 
@@ -3961,6 +5496,11 @@
                                         data-id="${escapeHtml(
                                             deposit._id
                                         )}"
+                                        ${
+                                            isFrozen
+                                                ? "disabled"
+                                                : ""
+                                        }
                                     >
                                         Approve
                                     </button>
@@ -3979,11 +5519,11 @@
 
                                 </div>
 
-                            `
-                            : ""
-                    }
+                            </div>
 
-                </div>
+                        `
+                        : ""
+                }
 
 
                 ${
@@ -3994,19 +5534,25 @@
 
                                 Processed by:
                                 <strong>
-                                    ${escapeHtml(processedBy)}
+                                    ${escapeHtml(
+                                        processedBy
+                                    )}
                                 </strong>
 
                                 ${
                                     processedAt !== "—"
-                                        ? ` · ${escapeHtml(processedAt)}`
+                                        ? ` · ${escapeHtml(
+                                            processedAt
+                                        )}`
                                         : ""
                                 }
 
                                 ${
                                     status === "rejected" &&
                                     rejectionReason
-                                        ? `<br>Reason: ${escapeHtml(rejectionReason)}`
+                                        ? `<br>Reason: ${escapeHtml(
+                                            rejectionReason
+                                        )}`
                                         : ""
                                 }
 
@@ -4058,6 +5604,7 @@
                                     );
 
                                     return;
+
                                 }
 
 
@@ -4179,12 +5726,17 @@
 
                                 if (
                                     event.target ===
-                                    backdrop
+                                    backdrop &&
+                                    !isProcessing
                                 ) {
 
                                     backdrop.classList.add(
                                         "hidden"
                                     );
+
+
+                                    selectedDeposit =
+                                        null;
 
                                 }
 
@@ -4225,13 +5777,51 @@
             deposit
         ) {
 
-            selectedDeposit =
-                deposit;
+            if (
+                !deposit ||
+                deposit.status !==
+                "pending"
+            ) {
+
+                showToast(
+                    "This deposit is no longer pending.",
+                    "error"
+                );
+
+
+                loadDeposits(
+                    false
+                );
+
+
+                return;
+
+            }
 
 
             const user =
                 deposit.user ||
                 {};
+
+
+            if (
+                user.status ===
+                "frozen"
+            ) {
+
+                showToast(
+                    "This user's account is frozen. The deposit cannot be approved.",
+                    "error"
+                );
+
+
+                return;
+
+            }
+
+
+            selectedDeposit =
+                deposit;
 
 
             setText(
@@ -4242,8 +5832,22 @@
 
 
             setText(
+                "#approvePhone",
+                user.phone ||
+                "—"
+            );
+
+
+            setText(
                 "#approveNetwork",
                 deposit.paymentMethod ||
+                "—"
+            );
+
+
+            setText(
+                "#approveMerchant",
+                deposit.merchantCode ||
                 "—"
             );
 
@@ -4263,6 +5867,22 @@
             );
 
 
+            const referralNotice =
+                getElement(
+                    "#approveReferralNotice"
+                );
+
+
+            if (referralNotice) {
+
+                referralNotice.textContent =
+                    user.referredByCode
+                        ? "This account has a referring code. The existing backend will automatically perform the first-approved-deposit referral check during approval."
+                        : "No referring code is recorded. The deposit will still be processed normally.";
+
+            }
+
+
             getElement(
                 "#approveModal"
             )?.classList.remove(
@@ -4280,6 +5900,7 @@
             ) {
 
                 return;
+
             }
 
 
@@ -4309,6 +5930,7 @@
             ) {
 
                 return;
+
             }
 
 
@@ -4330,9 +5952,32 @@
                 );
 
 
-                await loadDeposits();
+                await loadDeposits(
+                    false
+                );
+
 
                 return;
+
+            }
+
+
+            if (
+                deposit.user?.status ===
+                "frozen"
+            ) {
+
+                closeApproveModal();
+
+
+                showToast(
+                    "This user's account is frozen. The deposit cannot be approved.",
+                    "error"
+                );
+
+
+                return;
+
             }
 
 
@@ -4388,6 +6033,7 @@
                         "admin-login.html";
 
                     return;
+
                 }
 
 
@@ -4407,6 +6053,7 @@
                         data.message ||
                         "Failed to approve deposit."
                     );
+
                 }
 
 
@@ -4416,12 +6063,14 @@
                 showToast(
                     data.alreadyProcessed
                         ? "This deposit was already approved and credited."
-                        : "Deposit approved and wallet credited successfully.",
+                        : "Deposit approved, wallet credited and referral processing completed where applicable.",
                     "success"
                 );
 
 
-                await loadDeposits();
+                await loadDeposits(
+                    false
+                );
 
 
             } catch (error) {
@@ -4468,6 +6117,28 @@
             deposit
         ) {
 
+            if (
+                !deposit ||
+                deposit.status !==
+                "pending"
+            ) {
+
+                showToast(
+                    "This deposit is no longer pending.",
+                    "error"
+                );
+
+
+                loadDeposits(
+                    false
+                );
+
+
+                return;
+
+            }
+
+
             selectedDeposit =
                 deposit;
 
@@ -4485,10 +6156,24 @@
 
 
             setText(
+                "#rejectPhone",
+                user.phone ||
+                "—"
+            );
+
+
+            setText(
                 "#rejectAmount",
                 formatAmount(
                     deposit.amount
                 )
+            );
+
+
+            setText(
+                "#rejectReference",
+                deposit.paymentReference ||
+                "—"
             );
 
 
@@ -4539,6 +6224,7 @@
             ) {
 
                 return;
+
             }
 
 
@@ -4568,6 +6254,7 @@
             ) {
 
                 return;
+
             }
 
 
@@ -4594,7 +6281,9 @@
 
                 reasonInput?.focus();
 
+
                 return;
+
             }
 
 
@@ -4610,6 +6299,7 @@
 
 
                 return;
+
             }
 
 
@@ -4631,9 +6321,13 @@
                 );
 
 
-                await loadDeposits();
+                await loadDeposits(
+                    false
+                );
+
 
                 return;
+
             }
 
 
@@ -4699,6 +6393,7 @@
                         "admin-login.html";
 
                     return;
+
                 }
 
 
@@ -4718,6 +6413,7 @@
                         data.message ||
                         "Failed to reject deposit."
                     );
+
                 }
 
 
@@ -4732,7 +6428,9 @@
                 );
 
 
-                await loadDeposits();
+                await loadDeposits(
+                    false
+                );
 
 
             } catch (error) {
@@ -4804,6 +6502,7 @@
             ) {
 
                 return;
+
             }
 
 
