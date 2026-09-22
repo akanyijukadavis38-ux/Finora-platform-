@@ -2084,7 +2084,17 @@ router.patch(
 
                     }
 
+if (!withdrawalTransaction) {
 
+    const error =
+        new Error(
+            "This withdrawal cannot be approved because its original withdrawal transaction could not be found."
+        );
+
+    error.statusCode = 409;
+
+    throw error;
+}
                     if (
                         withdrawalTransaction
                     ) {
