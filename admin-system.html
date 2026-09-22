@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FINORA — System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background:
+                radial-gradient(
+                    circle at top,
+                    rgba(234, 60, 255, 0.14),
+                    transparent 38%
+                ),
+                #07040b;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 22px 16px 40px;
+        }
+
+        .top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .back {
+            width: 42px;
+            height: 42px;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 13px;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .brand {
+            font-family: "Times New Roman", serif;
+            font-size: 27px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .fin {
+            color: #ffffff;
+        }
+
+        .ora {
+            color: #f5a623;
+        }
+
+        .heading {
+            margin-bottom: 20px;
+        }
+
+        .heading h1 {
+            margin: 0 0 7px;
+            font-family: "Times New Roman", serif;
+            font-size: 29px;
+        }
+
+        .heading p {
+            margin: 0;
+            color: #a9a1af;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .card {
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(234,60,255,0.10),
+                    rgba(255,255,255,0.035)
+                );
+            border: 1px solid rgba(234,60,255,0.20);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow:
+                0 15px 45px rgba(0,0,0,0.30);
+        }
+
+        .card-title {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .card-description {
+            color: #a9a1af;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .status-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 15px;
+            background: rgba(0,0,0,0.24);
+            margin-bottom: 18px;
+        }
+
+        .status-label {
+            color: #aaa2b0;
+            font-size: 13px;
+        }
+
+        .status {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .status.off {
+            color: #65e6a1;
+        }
+
+        .status.on {
+            color: #ff72ff;
+        }
+
+        .switch {
+            position: relative;
+            width: 58px;
+            height: 32px;
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            inset: 0;
+            cursor: pointer;
+            background: #2a2630;
+            border-radius: 50px;
+            transition: 0.25s;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .slider::before {
+            content: "";
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            left: 3px;
+            top: 3px;
+            background: #ffffff;
+            border-radius: 50%;
+            transition: 0.25s;
+        }
+
+        input:checked + .slider {
+            background: #9e18bd;
+        }
+
+        input:checked + .slider::before {
+            transform: translateX(26px);
+        }
+
+        label.field-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #d9d1df;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 110px;
+            resize: vertical;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 14px;
+            outline: none;
+            padding: 13px;
+            background: rgba(0,0,0,0.25);
+            color: #ffffff;
+            font-size: 14px;
+            line-height: 1.5;
+            font-family: Arial, sans-serif;
+        }
+
+        textarea:focus {
+            border-color: #ea3cff;
+            box-shadow:
+                0 0 0 3px rgba(234,60,255,0.10);
+        }
+
+        .save {
+            width: 100%;
+            border: 0;
+            border-radius: 14px;
+            padding: 14px;
+            margin-top: 16px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #ea3cff,
+                    #9e18bd
+                );
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .save:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        .message {
+            display: none;
+            margin-top: 14px;
+            padding: 12px 13px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .message.success {
+            display: block;
+            background: rgba(49, 190, 117, 0.12);
+            border: 1px solid rgba(49, 190, 117, 0.25);
+            color: #8cf0ba;
+        }
+
+        .message.error {
+            display: block;
+            background: rgba(255, 70, 100, 0.12);
+            border: 1px solid rgba(255, 70, 100, 0.25);
+            color: #ff9cad;
+        }
+
+        .warning {
+            padding: 14px;
+            border-radius: 14px;
+            background: rgba(245,166,35,0.08);
+            border: 1px solid rgba(245,166,35,0.20);
+            color: #e9c77e;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .loading {
+            color: #aaa2b0;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="top">
+
+        <button
+            class="back"
+            onclick="window.location.href='/admin.html'"
+        >
+            ←
+        </button>
+
+        <div class="brand">
+            <span class="fin">FIN</span><span class="ora">ORA</span>
+        </div>
+
+    </div>
+
+
+    <div class="heading">
+
+        <h1>System</h1>
+
+        <p>
+            Manage essential FINORA platform controls.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
+            Maintenance Mode
+        </div>
+
+        <div class="card-description">
+            When enabled, normal FINORA users will be
+            blocked from using the platform while the
+            administrator remains able to access the
+            administration system.
+        </div>
+
+
+        <div class="status-row">
+
+            <div>
+
+                <div class="status-label">
+                    Current status
+                </div>
+
+                <div
+                    id="statusText"
+                    class="status off"
+                >
+                    Loading...
+                </div>
+
+            </div>
+
+
+            <label class="switch">
+
+                <input
+                    type="checkbox"
+                    id="maintenanceToggle"
+                >
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+
+        <label
+            class="field-label"
+            for="maintenanceMessage"
+        >
+            Maintenance message
+        </label>
+
+        <textarea
+            id="maintenanceMessage"
+            maxlength="500"
+            placeholder="Enter the message users should see during maintenance..."
+        ></textarea>
+
+
+        <button
+            class="save"
+            id="saveButton"
+            type="button"
+        >
+            Save Maintenance Settings
+        </button>
+
+
+        <div
+            id="messageBox"
+            class="message"
+        ></div>
+
+    </div>
+
+
+    <div class="warning">
+
+        <strong>Important:</strong>
+        Enabling maintenance mode will eventually
+        block normal user access. The administrator
+        will remain accessible so maintenance can be
+        disabled again.
+
+    </div>
+
+</div>
+
+
+<script>
+
+const API =
+    "https://finora-platform.onrender.com";
+
+
+const toggle =
+    document.getElementById(
+        "maintenanceToggle"
+    );
+
+const messageInput =
+    document.getElementById(
+        "maintenanceMessage"
+    );
+
+const statusText =
+    document.getElementById(
+        "statusText"
+    );
+
+const saveButton =
+    document.getElementById(
+        "saveButton"
+    );
+
+const messageBox =
+    document.getElementById(
+        "messageBox"
+    );
+
+
+function showMessage(
+    text,
+    type
+) {
+
+    messageBox.textContent =
+        text;
+
+    messageBox.className =
+        "message " + type;
+}
+
+
+function updateStatusText() {
+
+    if (toggle.checked) {
+
+        statusText.textContent =
+            "ENABLED";
+
+        statusText.className =
+            "status on";
+
+    } else {
+
+        statusText.textContent =
+            "DISABLED";
+
+        statusText.className =
+            "status off";
+    }
+}
+
+
+async function loadSettings() {
+
+    try {
+
+        const response =
+            await fetch(
+                API +
+                "/api/admin/system",
+                {
+                    method: "GET",
+                    credentials: "include"
+                }
+            );
+
+
+        if (
+            response.status === 401 ||
+            response.status === 403
+        ) {
+
+            window.location.href =
+                "/admin-login.html";
+
+            return;
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data.message ||
+                "Could not load system settings."
+            );
+        }
+
+
+        toggle.checked =
+            Boolean(
+                data.settings
+                    .maintenanceEnabled
+            );
+
+
+        messageInput.value =
+            data.settings
+                .maintenanceMessage || "";
+
+
+        updateStatusText();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            error.message ||
+            "Could not load system settings.",
+            "error"
+        );
+
+        statusText.textContent =
+            "Unavailable";
+
+        statusText.className =
+            "status on";
+    }
+}
+
+
+toggle.addEventListener(
+    "change",
+    updateStatusText
+);
+
+
+saveButton.addEventListener(
+    "click",
+    async () => {
+
+        saveButton.disabled =
+            true;
+
+        saveButton.textContent =
+            "Saving...";
+
+        messageBox.className =
+            "message";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    API +
+                    "/api/admin/system/maintenance",
+                    {
+                        method: "PATCH",
+
+                        credentials:
+                            "include",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify({
+                                enabled:
+                                    toggle.checked,
+
+                                message:
+                                    messageInput
+                                        .value
+                                        .trim()
+                            })
+                    }
+                );
+
+
+            if (
+                response.status === 401 ||
+                response.status === 403
+            ) {
+
+                window.location.href =
+                    "/admin-login.html";
+
+                return;
+            }
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                throw new Error(
+                    data.message ||
+                    "Could not save maintenance settings."
+                );
+            }
+
+
+            toggle.checked =
+                Boolean(
+                    data.settings
+                        .maintenanceEnabled
+                );
+
+
+            messageInput.value =
+                data.settings
+                    .maintenanceMessage || "";
+
+
+            updateStatusText();
+
+
+            showMessage(
+                data.message ||
+                "Maintenance settings saved successfully.",
+                "success"
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            showMessage(
+                error.message ||
+                "Could not save maintenance settings.",
+                "error"
+            );
+
+        } finally {
+
+            saveButton.disabled =
+                false;
+
+            saveButton.textContent =
+                "Save Maintenance Settings";
+        }
+    }
+);
+
+
+loadSettings();
+
+</script>
+
+</body>
+</html>
