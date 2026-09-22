@@ -1,0 +1,25 @@
+{
+  "name": "FINORA",
+  "short_name": "FINORA",
+  "description": "FINORA — Invest • Grow • Earn",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#050409",
+  "theme_color": "#050409",
+  "icons": [
+    {
+      "src": "/assets/finora-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/finora-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
