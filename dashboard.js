@@ -1881,3 +1881,34 @@ notificationButton.addEventListener(
     initializeDashboard();
 
 });
+/* =====================================================
+   FINORA SERVICE WORKER
+   ===================================================== */
+
+if ("serviceWorker" in navigator) {
+
+    window.addEventListener("load", function () {
+
+        navigator.serviceWorker.register(
+            "/service-worker.js"
+        )
+        .then(function (registration) {
+
+            console.log(
+                "FINORA service worker registered:",
+                registration.scope
+            );
+
+        })
+        .catch(function (error) {
+
+            console.error(
+                "FINORA service worker registration failed:",
+                error
+            );
+
+        });
+
+    });
+
+}
