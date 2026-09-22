@@ -1,5265 +1,2050 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
 
-    <meta
-        name="theme-color"
-        content="#08050b"
-    >
-
-    <title>FINORA Admin — Deposits</title>
-
+    <title>FINORA — Admin Deposits</title>
 
     <style>
-
-        /* =========================================================
-           FINORA ADMIN DEPOSITS
-           COMPLETE SINGLE-FILE PAGE
-        ========================================================= */
-
-        :root {
-
-            --bg:
-                #08050b;
-
-            --bg-soft:
-                #0d0812;
-
-            --card:
-                #110a17;
-
-            --card-2:
-                #150d1c;
-
-            --border:
-                rgba(234, 60, 255, 0.18);
-
-            --border-strong:
-                rgba(234, 60, 255, 0.32);
-
-            --pink:
-                #ea3cff;
-
-            --pink-light:
-                #ff72ff;
-
-            --pink-dark:
-                #9e18bd;
-
-            --gold:
-                #f5a623;
-
-            --gold-light:
-                #ffd76a;
-
-            --gold-dark:
-                #c97908;
-
-            --white:
-                #ffffff;
-
-            --text:
-                #f7f3fa;
-
-            --muted:
-                #a99eae;
-
-            --muted-2:
-                #766b7c;
-
-            --green:
-                #42e695;
-
-            --green-dark:
-                #179b61;
-
-            --red:
-                #ff4d6d;
-
-            --red-dark:
-                #c52c49;
-
-            --blue:
-                #2fa8ff;
-
-            --orange:
-                #ffad42;
-
-            --shadow:
-                0 18px 45px rgba(0, 0, 0, 0.35);
-
-            --radius:
-                18px;
-
-            --radius-small:
-                12px;
-
-        }
-
-
         * {
-
-            box-sizing:
-                border-box;
-
-            margin:
-                0;
-
-            padding:
-                0;
-
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-
-        html {
-
-            min-height:
-                100%;
-
-            background:
-                var(--bg);
-
+        html,
+        body {
+            min-height: 100%;
         }
-
 
         body {
-
-            min-height:
-                100vh;
-
-            background:
-
-                radial-gradient(
-                    circle at 15% 0%,
-                    rgba(234, 60, 255, 0.10),
-                    transparent 30%
-                ),
-
-                radial-gradient(
-                    circle at 90% 15%,
-                    rgba(245, 166, 35, 0.07),
-                    transparent 26%
-                ),
-
-                var(--bg);
-
-            color:
-                var(--text);
-
             font-family:
-                Arial,
-                Helvetica,
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
                 sans-serif;
 
-            -webkit-font-smoothing:
-                antialiased;
+            background:
+                radial-gradient(
+                    circle at 20% 0%,
+                    rgba(234, 60, 255, 0.12),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at 100% 20%,
+                    rgba(245, 166, 35, 0.07),
+                    transparent 30%
+                ),
+                #07050b;
 
-            overflow-x:
-                hidden;
-
+            color: #ffffff;
+            padding-bottom: 40px;
         }
-
 
         button,
         input,
         textarea {
-
-            font:
-                inherit;
-
+            font: inherit;
         }
-
 
         button {
-
-            cursor:
-                pointer;
-
+            cursor: pointer;
         }
-
-
-        button:disabled {
-
-            cursor:
-                not-allowed;
-
-        }
-
-
-        a {
-
-            color:
-                inherit;
-
-            text-decoration:
-                none;
-
-        }
-
 
         .page {
-
-            width:
-                100%;
-
-            min-height:
-                100vh;
-
-            padding:
-                0 18px 30px;
-
+            width: 100%;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 16px;
         }
 
-
-        .page-inner {
-
-            width:
-                100%;
-
-            max-width:
-                980px;
-
-            margin:
-                0 auto;
-
-        }
-
-
-        /* =========================================================
+        /* =========================
            HEADER
-        ========================================================= */
+        ========================= */
 
         .topbar {
-
-            min-height:
-                78px;
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                space-between;
-
-            gap:
-                14px;
-
-            border-bottom:
-                1px solid rgba(255, 255, 255, 0.06);
-
-            margin-bottom:
-                20px;
-
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 18px;
         }
-
 
         .topbar-left {
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            gap:
-                12px;
-
-            min-width:
-                0;
-
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
         }
 
+        .back-btn {
+            width: 42px;
+            height: 42px;
+            flex: 0 0 42px;
 
-        .back-button {
-
-            width:
-                42px;
-
-            height:
-                42px;
-
-            flex:
-                0 0 42px;
-
-            border:
-                1px solid var(--border);
-
-            border-radius:
-                13px;
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 13px;
 
             background:
-                rgba(234, 60, 255, 0.07);
+                linear-gradient(
+                    145deg,
+                    rgba(255, 255, 255, 0.07),
+                    rgba(255, 255, 255, 0.025)
+                );
 
-            color:
-                var(--white);
+            color: #ffffff;
+            display: grid;
+            place-items: center;
 
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            transition:
-                0.2s ease;
-
+            transition: 0.2s ease;
         }
 
-
-        .back-button svg {
-
-            width:
-                19px;
-
-            height:
-                19px;
-
+        .back-btn:hover {
+            border-color: rgba(234, 60, 255, 0.5);
+            transform: translateY(-1px);
         }
 
-
-        .back-button:hover {
-
-            background:
-                rgba(234, 60, 255, 0.15);
-
-            border-color:
-                var(--border-strong);
-
-            transform:
-                translateX(-2px);
-
+        .back-btn svg {
+            width: 20px;
+            height: 20px;
         }
-
-
-        .brand-title {
-
-            min-width:
-                0;
-
-        }
-
-
-        .brand-small {
-
-            display:
-                block;
-
-            color:
-                var(--pink-light);
-
-            font-size:
-                10px;
-
-            font-weight:
-                800;
-
-            letter-spacing:
-                2px;
-
-            margin-bottom:
-                3px;
-
-        }
-
 
         .page-title {
-
-            font-family:
-                "Times New Roman",
-                Times,
-                serif;
-
-            font-size:
-                25px;
-
-            line-height:
-                1.05;
-
-            font-weight:
-                700;
-
-            white-space:
-                nowrap;
-
+            min-width: 0;
         }
 
-
-        .header-actions {
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            gap:
-                8px;
-
-            flex:
-                0 0 auto;
-
+        .page-title h1 {
+            font-family: "Times New Roman", serif;
+            font-size: 23px;
+            line-height: 1.1;
+            letter-spacing: 0.4px;
+            white-space: nowrap;
         }
 
-
-        .refresh-button {
-
-            width:
-                42px;
-
-            height:
-                42px;
-
-            border:
-                1px solid var(--border);
-
-            border-radius:
-                13px;
-
-            background:
-                rgba(234, 60, 255, 0.07);
-
-            color:
-                var(--pink-light);
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            transition:
-                0.2s ease;
-
+        .page-title h1 .fin {
+            color: #ffffff;
         }
 
-
-        .refresh-button svg {
-
-            width:
-                17px;
-
-            height:
-                17px;
-
+        .page-title h1 .ora {
+            color: #ffd76a;
         }
 
-
-        .refresh-button:hover {
-
-            background:
-                rgba(234, 60, 255, 0.15);
-
-            border-color:
-                var(--border-strong);
-
+        .page-title p {
+            margin-top: 4px;
+            color: #9f96aa;
+            font-size: 12px;
         }
 
+        .live-pill {
+            display: flex;
+            align-items: center;
+            gap: 7px;
 
-        .refresh-button.spinning svg {
+            padding: 8px 10px;
+            border-radius: 999px;
 
-            animation:
-                spin 0.8s linear infinite;
+            background: rgba(35, 255, 145, 0.06);
+            border: 1px solid rgba(35, 255, 145, 0.16);
 
+            color: #8dffbd;
+            font-size: 11px;
+            font-weight: 700;
+
+            white-space: nowrap;
         }
-
-
-        .live-indicator {
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            gap:
-                7px;
-
-            padding:
-                8px 11px;
-
-            border:
-                1px solid rgba(66, 230, 149, 0.16);
-
-            border-radius:
-                999px;
-
-            background:
-                rgba(66, 230, 149, 0.06);
-
-            color:
-                #b8f8d8;
-
-            font-size:
-                11px;
-
-            font-weight:
-                700;
-
-            white-space:
-                nowrap;
-
-        }
-
 
         .live-dot {
-
-            width:
-                7px;
-
-            height:
-                7px;
-
-            border-radius:
-                50%;
-
-            background:
-                var(--green);
-
-            box-shadow:
-                0 0 10px rgba(66, 230, 149, 0.75);
-
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #39ff8d;
+            box-shadow: 0 0 10px rgba(57, 255, 141, 0.8);
         }
 
-
-        .live-indicator.offline {
-
-            color:
-                #ffb3c0;
-
-            border-color:
-                rgba(255, 77, 109, 0.18);
-
-            background:
-                rgba(255, 77, 109, 0.06);
-
-        }
-
-
-        .live-indicator.offline .live-dot {
-
-            background:
-                var(--red);
-
-            box-shadow:
-                0 0 10px rgba(255, 77, 109, 0.55);
-
-        }
-
-
-        /* =========================================================
+        /* =========================
            SUMMARY
-        ========================================================= */
+        ========================= */
 
         .summary-grid {
-
-            display:
-                grid;
-
-            grid-template-columns:
-                repeat(3, minmax(0, 1fr));
-
-            gap:
-                12px;
-
-            margin-bottom:
-                18px;
-
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 14px;
         }
-
 
         .summary-card {
+            min-width: 0;
+            padding: 14px;
 
-            min-width:
-                0;
-
-            padding:
-                16px;
-
-            border:
-                1px solid var(--border);
-
-            border-radius:
-                var(--radius-small);
+            border-radius: 17px;
 
             background:
                 linear-gradient(
                     145deg,
-                    rgba(234, 60, 255, 0.08),
-                    rgba(17, 10, 23, 0.96)
+                    rgba(255, 255, 255, 0.065),
+                    rgba(255, 255, 255, 0.025)
                 );
 
+            border: 1px solid rgba(255, 255, 255, 0.075);
             box-shadow:
-                var(--shadow);
-
+                0 10px 30px rgba(0, 0, 0, 0.22);
         }
-
 
         .summary-label {
-
-            color:
-                var(--muted);
-
-            font-size:
-                10px;
-
-            font-weight:
-                800;
-
-            letter-spacing:
-                0.8px;
-
-            text-transform:
-                uppercase;
-
-            margin-bottom:
-                8px;
-
+            color: #9e95a8;
+            font-size: 11px;
+            margin-bottom: 7px;
         }
-
 
         .summary-value {
-
-            font-size:
-                22px;
-
-            font-weight:
-                800;
-
-            color:
-                var(--white);
-
-            line-height:
-                1.1;
-
-            word-break:
-                break-word;
-
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
         }
 
+        .summary-value.pink {
+            color: #ff72ff;
+        }
 
         .summary-value.gold {
-
-            color:
-                var(--gold-light);
-
+            color: #ffd76a;
         }
 
-
-        /* =========================================================
+        /* =========================
            CONTROLS
-        ========================================================= */
+        ========================= */
 
         .controls {
-
-            display:
-                flex;
-
-            flex-direction:
-                column;
-
-            gap:
-                12px;
-
-            margin-bottom:
-                18px;
-
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 14px;
         }
 
-
-        .search-wrap {
-
-            position:
-                relative;
-
-            width:
-                100%;
-
+        .search-box {
+            position: relative;
         }
 
+        .search-box svg {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
 
-        .search-icon {
+            width: 18px;
+            height: 18px;
 
-            position:
-                absolute;
-
-            left:
-                14px;
-
-            top:
-                50%;
-
-            transform:
-                translateY(-50%);
-
-            color:
-                var(--muted);
-
-            pointer-events:
-                none;
-
+            color: #8d8498;
+            pointer-events: none;
         }
-
-
-        .search-icon svg {
-
-            width:
-                17px;
-
-            height:
-                17px;
-
-        }
-
 
         .search-input {
+            width: 100%;
+            height: 46px;
 
-            width:
-                100%;
+            padding: 0 14px 0 42px;
 
-            height:
-                48px;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.045);
 
-            padding:
-                0 15px 0 43px;
+            border: 1px solid rgba(255, 255, 255, 0.085);
+            border-radius: 14px;
 
-            border:
-                1px solid var(--border);
-
-            border-radius:
-                14px;
-
-            outline:
-                none;
-
-            background:
-                rgba(17, 10, 23, 0.92);
-
-            color:
-                var(--white);
-
-            font-size:
-                14px;
-
-            transition:
-                0.2s ease;
-
+            outline: none;
         }
-
 
         .search-input::placeholder {
-
-            color:
-                var(--muted-2);
-
+            color: #77707e;
         }
-
 
         .search-input:focus {
-
-            border-color:
-                rgba(234, 60, 255, 0.55);
-
+            border-color: rgba(234, 60, 255, 0.5);
             box-shadow:
-                0 0 0 3px rgba(234, 60, 255, 0.07);
-
+                0 0 0 3px rgba(234, 60, 255, 0.08);
         }
 
-
-        .filters {
-
-            display:
-                flex;
-
-            gap:
-                8px;
-
-            overflow-x:
-                auto;
-
-            padding-bottom:
-                2px;
-
-            scrollbar-width:
-                none;
-
+        .filter-row {
+            display: flex;
+            gap: 7px;
+            overflow-x: auto;
+            padding-bottom: 2px;
+            scrollbar-width: none;
         }
 
-
-        .filters::-webkit-scrollbar {
-
-            display:
-                none;
-
+        .filter-row::-webkit-scrollbar {
+            display: none;
         }
 
+        .filter-btn {
+            flex: 0 0 auto;
 
-        .filter-button {
+            min-height: 36px;
+            padding: 0 13px;
 
-            border:
-                1px solid var(--border);
+            border-radius: 11px;
 
-            background:
-                rgba(17, 10, 23, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.075);
+            background: rgba(255, 255, 255, 0.035);
 
-            color:
-                var(--muted);
+            color: #a8a0ae;
+            font-size: 12px;
+            font-weight: 700;
 
-            border-radius:
-                999px;
-
-            padding:
-                9px 15px;
-
-            font-size:
-                11px;
-
-            font-weight:
-                800;
-
-            white-space:
-                nowrap;
-
-            transition:
-                0.2s ease;
-
+            transition: 0.2s ease;
         }
 
-
-        .filter-button:hover {
-
-            color:
-                var(--white);
-
-            border-color:
-                var(--border-strong);
-
+        .filter-btn:hover {
+            border-color: rgba(234, 60, 255, 0.35);
         }
 
-
-        .filter-button.active {
-
-            color:
-                var(--white);
-
-            border-color:
-                rgba(234, 60, 255, 0.5);
-
+        .filter-btn.active {
+            color: #ffffff;
             background:
                 linear-gradient(
                     135deg,
-                    rgba(234, 60, 255, 0.24),
-                    rgba(158, 24, 189, 0.13)
+                    rgba(234, 60, 255, 0.25),
+                    rgba(158, 24, 189, 0.16)
                 );
 
-            box-shadow:
-                0 5px 20px rgba(234, 60, 255, 0.08);
-
-        }
-
-
-        /* =========================================================
-           LIST HEADER
-        ========================================================= */
-
-        .list-heading {
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                space-between;
-
-            gap:
-                10px;
-
-            margin:
-                4px 2px 10px;
-
-        }
-
-
-        .list-heading h2 {
-
-            font-size:
-                15px;
-
-            font-weight:
-                800;
-
-        }
-
-
-        .list-heading-right {
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            gap:
-                8px;
-
-        }
-
-
-        .list-heading span {
-
-            color:
-                var(--muted);
-
-            font-size:
-                10px;
-
-            white-space:
-                nowrap;
-
-        }
-
-
-        /* =========================================================
-           DEPOSIT LIST
-        ========================================================= */
-
-        .deposit-list {
-
-            display:
-                flex;
-
-            flex-direction:
-                column;
-
-            gap:
-                10px;
-
-        }
-
-
-        .deposit-card {
-
-            width:
-                100%;
-
-            padding:
-                15px;
-
-            border:
-                1px solid rgba(234, 60, 255, 0.15);
-
-            border-radius:
-                16px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(21, 13, 28, 0.98),
-                    rgba(12, 8, 16, 0.98)
-                );
-
-            box-shadow:
-                0 10px 30px rgba(0, 0, 0, 0.20);
-
-            transition:
-                border-color 0.2s ease,
-                transform 0.2s ease;
-
-        }
-
-
-        .deposit-card:hover {
-
-            border-color:
-                rgba(234, 60, 255, 0.28);
-
-            transform:
-                translateY(-1px);
-
-        }
-
-
-        .deposit-card.frozen {
-
-            border-color:
-                rgba(255, 77, 109, 0.22);
-
-        }
-
-
-        /* =========================================================
-           USER HEADER
-        ========================================================= */
-
-        .record-top {
-
-            display:
-                flex;
-
-            align-items:
-                flex-start;
-
-            justify-content:
-                space-between;
-
-            gap:
-                12px;
-
-            margin-bottom:
-                12px;
-
-        }
-
-
-        .user-block {
-
-            min-width:
-                0;
-
-            flex:
-                1;
-
-        }
-
-
-        .user-name {
-
-            font-size:
-                15px;
-
-            font-weight:
-                800;
-
-            color:
-                var(--white);
-
-            overflow:
-                hidden;
-
-            text-overflow:
-                ellipsis;
-
-            white-space:
-                nowrap;
-
-        }
-
-
-        .user-contact {
-
-            margin-top:
-                4px;
-
-            display:
-                flex;
-
-            flex-wrap:
-                wrap;
-
-            gap:
-                4px 7px;
-
-            color:
-                var(--muted);
-
-            font-size:
-                10px;
-
-            line-height:
-                1.4;
-
-        }
-
-
-        .status-badge {
-
-            flex:
-                0 0 auto;
-
-            padding:
-                6px 9px;
-
-            border-radius:
-                999px;
-
-            font-size:
-                9px;
-
-            font-weight:
-                900;
-
-            letter-spacing:
-                0.6px;
-
-            text-transform:
-                uppercase;
-
-        }
-
-
-        .status-pending {
-
-            color:
-                var(--gold-light);
-
-            background:
-                rgba(245, 166, 35, 0.10);
-
-            border:
-                1px solid rgba(245, 166, 35, 0.18);
-
-        }
-
-
-        .status-approved {
-
-            color:
-                #a8f8cd;
-
-            background:
-                rgba(66, 230, 149, 0.09);
-
-            border:
-                1px solid rgba(66, 230, 149, 0.18);
-
-        }
-
-
-        .status-rejected {
-
-            color:
-                #ffabb8;
-
-            background:
-                rgba(255, 77, 109, 0.09);
-
-            border:
-                1px solid rgba(255, 77, 109, 0.18);
-
-        }
-
-
-        /* =========================================================
-           FROZEN WARNING
-        ========================================================= */
-
-        .frozen-warning {
-
-            display:
-                flex;
-
-            align-items:
-                flex-start;
-
-            gap:
-                9px;
-
-            padding:
-                10px 11px;
-
-            margin-bottom:
-                11px;
-
-            border:
-                1px solid rgba(255, 77, 109, 0.20);
-
-            border-radius:
-                11px;
-
-            background:
-                rgba(255, 77, 109, 0.06);
-
-            color:
-                #ffc1ca;
-
-            font-size:
-                10px;
-
-            line-height:
-                1.5;
-
-        }
-
-
-        .frozen-warning-icon {
-
-            width:
-                21px;
-
-            height:
-                21px;
-
-            flex:
-                0 0 21px;
-
-            border-radius:
-                50%;
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            background:
-                rgba(255, 77, 109, 0.12);
-
-            font-weight:
-                900;
-
-        }
-
-
-        /* =========================================================
-           AMOUNT
-        ========================================================= */
-
-        .amount-line {
-
-            display:
-                flex;
-
-            align-items:
-                baseline;
-
-            justify-content:
-                space-between;
-
-            gap:
-                12px;
-
-            padding:
-                12px;
-
-            margin-bottom:
-                10px;
-
-            border-radius:
-                12px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(245, 166, 35, 0.075),
-                    rgba(234, 60, 255, 0.035)
-                );
-
-            border:
-                1px solid rgba(245, 166, 35, 0.10);
-
-        }
-
-
-        .amount-label {
-
-            color:
-                var(--muted);
-
-            font-size:
-                10px;
-
-            font-weight:
-                700;
-
-            text-transform:
-                uppercase;
-
-            letter-spacing:
-                0.6px;
-
-        }
-
-
-        .amount-value {
-
-            color:
-                var(--gold-light);
-
-            font-size:
-                18px;
-
-            font-weight:
-                900;
-
-            text-align:
-                right;
-
-            white-space:
-                nowrap;
-
-        }
-
-
-        /* =========================================================
-           INFORMATION SECTIONS
-        ========================================================= */
-
-        .info-section {
-
-            margin-bottom:
-                10px;
-
-        }
-
-
-        .section-caption {
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            gap:
-                7px;
-
-            color:
-                var(--pink-light);
-
-            font-size:
-                9px;
-
-            font-weight:
-                900;
-
-            letter-spacing:
-                0.8px;
-
-            text-transform:
-                uppercase;
-
-            margin:
-                0 1px 6px;
-
-        }
-
-
-        .section-caption svg {
-
-            width:
-                13px;
-
-            height:
-                13px;
-
-        }
-
-
-        .details-grid {
-
-            display:
-                grid;
-
-            grid-template-columns:
-                repeat(2, minmax(0, 1fr));
-
-            gap:
-                6px;
-
-        }
-
-
-        .detail {
-
-            min-width:
-                0;
-
-            padding:
-                8px 9px;
-
-            border-radius:
-                10px;
-
-            background:
-                rgba(255, 255, 255, 0.025);
-
-            border:
-                1px solid rgba(255, 255, 255, 0.045);
-
-        }
-
-
-        .detail-label {
-
-            display:
-                block;
-
-            color:
-                var(--muted-2);
-
-            font-size:
-                8px;
-
-            font-weight:
-                800;
-
-            text-transform:
-                uppercase;
-
-            letter-spacing:
-                0.5px;
-
-            margin-bottom:
-                4px;
-
-        }
-
-
-        .detail-value {
-
-            display:
-                block;
-
-            color:
-                #eee8f1;
-
-            font-size:
-                10px;
-
-            font-weight:
-                700;
-
-            overflow:
-                hidden;
-
-            text-overflow:
-                ellipsis;
-
-            white-space:
-                nowrap;
-
-        }
-
-
-        .detail-value.gold {
-
-            color:
-                var(--gold-light);
-
-        }
-
-
-        .detail-value.pink {
-
-            color:
-                var(--pink-light);
-
-        }
-
-
-        .detail-value.green {
-
-            color:
-                #a8f8cd;
-
-        }
-
-
-        .detail-value.red {
-
-            color:
-                #ffabb8;
-
-        }
-
-
-        .reference-detail {
-
-            grid-column:
-                1 / -1;
-
-        }
-
-
-        .reference-value {
-
-            color:
-                var(--pink-light);
-
-            font-family:
-                monospace;
-
-            font-size:
-                10px;
-
-            letter-spacing:
-                0.2px;
-
-        }
-
-
-        /* =========================================================
-           PAYMENT NETWORK BADGES
-        ========================================================= */
-
-        .network-badge {
-
-            display:
-                inline-flex;
-
-            align-items:
-                center;
-
-            gap:
-                5px;
-
-        }
-
-
-        .network-dot {
-
-            width:
-                7px;
-
-            height:
-                7px;
-
-            border-radius:
-                50%;
-
-        }
-
-
-        .network-dot.mtn {
-
-            background:
-                #ffd400;
-
-            box-shadow:
-                0 0 6px rgba(255, 212, 0, 0.35);
-
-        }
-
-
-        .network-dot.airtel {
-
-            background:
-                #ff3b3b;
-
-            box-shadow:
-                0 0 6px rgba(255, 59, 59, 0.35);
-
-        }
-
-
-        /* =========================================================
-           ACCOUNT SUMMARY
-        ========================================================= */
-
-        .account-grid {
-
-            display:
-                grid;
-
-            grid-template-columns:
-                repeat(4, minmax(0, 1fr));
-
-            gap:
-                6px;
-
-        }
-
-
-        .account-stat {
-
-            min-width:
-                0;
-
-            padding:
-                8px;
-
-            border-radius:
-                10px;
-
-            background:
-                rgba(234, 60, 255, 0.035);
-
-            border:
-                1px solid rgba(234, 60, 255, 0.07);
-
-        }
-
-
-        .account-stat-label {
-
-            display:
-                block;
-
-            color:
-                var(--muted-2);
-
-            font-size:
-                7px;
-
-            font-weight:
-                800;
-
-            text-transform:
-                uppercase;
-
-            letter-spacing:
-                0.35px;
-
-            margin-bottom:
-                4px;
-
-        }
-
-
-        .account-stat-value {
-
-            display:
-                block;
-
-            color:
-                #eee8f1;
-
-            font-size:
-                9px;
-
-            font-weight:
-                800;
-
-            white-space:
-                nowrap;
-
-            overflow:
-                hidden;
-
-            text-overflow:
-                ellipsis;
-
-        }
-
-
-        /* =========================================================
-           REFERRAL
-        ========================================================= */
-
-        .referral-box {
-
-            display:
-                grid;
-
-            grid-template-columns:
-                repeat(2, minmax(0, 1fr));
-
-            gap:
-                6px;
-
-            padding:
-                9px;
-
-            border:
-                1px solid rgba(245, 166, 35, 0.10);
-
-            border-radius:
-                11px;
-
-            background:
-                rgba(245, 166, 35, 0.035);
-
-        }
-
-
-        .referral-item {
-
-            min-width:
-                0;
-
-        }
-
-
-        .referral-label {
-
-            display:
-                block;
-
-            color:
-                var(--muted-2);
-
-            font-size:
-                8px;
-
-            font-weight:
-                800;
-
-            text-transform:
-                uppercase;
-
-            margin-bottom:
-                3px;
-
-        }
-
-
-        .referral-value {
-
-            color:
-                #eee8f1;
-
-            font-size:
-                10px;
-
-            font-weight:
-                700;
-
-            overflow:
-                hidden;
-
-            text-overflow:
-                ellipsis;
-
-            white-space:
-                nowrap;
-
-        }
-
-
-        .referral-note {
-
-            grid-column:
-                1 / -1;
-
-            padding-top:
-                5px;
-
-            margin-top:
-                2px;
-
-            border-top:
-                1px solid rgba(255, 255, 255, 0.045);
-
-            color:
-                var(--muted);
-
-            font-size:
-                9px;
-
-            line-height:
-                1.45;
-
+            border-color: rgba(234, 60, 255, 0.4);
         }
 
-
-        /* =========================================================
-           FOOTER / ACTIONS
-        ========================================================= */
-
-        .record-footer {
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                space-between;
-
-            gap:
-                10px;
-
-            padding-top:
-                11px;
-
-            margin-top:
-                10px;
-
-            border-top:
-                1px solid rgba(255, 255, 255, 0.055);
-
-        }
-
-
-        .submitted-time {
-
-            color:
-                var(--muted);
-
-            font-size:
-                9px;
-
-            line-height:
-                1.45;
-
-            min-width:
-                0;
-
-        }
-
-
-        .submitted-time strong {
-
-            color:
-                #d8d0db;
-
-        }
-
-
-        .action-buttons {
-
-            display:
-                flex;
-
-            gap:
-                7px;
-
-            flex:
-                0 0 auto;
-
-        }
-
-
-        .action-button {
-
-            min-height:
-                36px;
-
-            border-radius:
-                10px;
-
-            padding:
-                0 13px;
-
-            border:
-                1px solid transparent;
-
-            font-size:
-                10px;
-
-            font-weight:
-                900;
-
-            transition:
-                0.2s ease;
-
-        }
-
-
-        .approve-button {
-
-            color:
-                #d7ffe9;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(66, 230, 149, 0.20),
-                    rgba(23, 155, 97, 0.13)
-                );
-
-            border-color:
-                rgba(66, 230, 149, 0.26);
-
-        }
-
-
-        .approve-button:hover {
-
-            background:
-                rgba(66, 230, 149, 0.27);
-
-            border-color:
-                rgba(66, 230, 149, 0.45);
-
-        }
-
-
-        .reject-button {
-
-            color:
-                #ffd5dc;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(255, 77, 109, 0.17),
-                    rgba(197, 44, 73, 0.10)
-                );
-
-            border-color:
-                rgba(255, 77, 109, 0.23);
-
-        }
-
-
-        .reject-button:hover {
-
-            background:
-                rgba(255, 77, 109, 0.25);
-
-            border-color:
-                rgba(255, 77, 109, 0.42);
-
-        }
-
-
-        .action-button:disabled {
-
-            opacity:
-                0.45;
-
-            cursor:
-                not-allowed;
-
-        }
-
-
-        .processed-note {
-
-            width:
-                100%;
-
-            padding:
-                9px 10px;
-
-            margin-top:
-                10px;
-
-            border-radius:
-                10px;
-
-            font-size:
-                9px;
-
-            line-height:
-                1.5;
-
-            color:
-                var(--muted);
-
-            background:
-                rgba(255, 255, 255, 0.025);
-
-        }
-
-
-        .processed-note strong {
-
-            color:
-                var(--text);
-
-        }
-
-
-        /* =========================================================
-           STATE
-        ========================================================= */
-
-        .state {
-
-            padding:
-                34px 18px;
-
-            text-align:
-                center;
-
-            border:
-                1px solid var(--border);
-
-            border-radius:
-                16px;
-
-            background:
-                rgba(17, 10, 23, 0.85);
-
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
         }
-
-
-        .state-icon {
-
-            width:
-                46px;
-
-            height:
-                46px;
-
-            margin:
-                0 auto 12px;
-
-            border-radius:
-                50%;
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            font-size:
-                19px;
-
-            font-weight:
-                900;
-
-            color:
-                var(--pink-light);
 
-            background:
-                rgba(234, 60, 255, 0.09);
-
-            border:
-                1px solid rgba(234, 60, 255, 0.20);
-
+        .showing-text {
+            color: #8e8795;
+            font-size: 12px;
         }
 
+        .refresh-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
 
-        .state h3 {
+            min-height: 36px;
+            padding: 0 12px;
 
-            font-size:
-                15px;
+            border-radius: 11px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
 
-            margin-bottom:
-                6px;
+            background: rgba(255, 255, 255, 0.04);
+            color: #d9d3df;
 
+            font-size: 12px;
+            font-weight: 700;
         }
-
-
-        .state p {
 
-            color:
-                var(--muted);
-
-            font-size:
-                11px;
-
-            line-height:
-                1.6;
-
+        .refresh-btn:hover {
+            border-color: rgba(234, 60, 255, 0.35);
         }
-
 
-        .spinner {
-
-            width:
-                30px;
-
-            height:
-                30px;
-
-            margin:
-                0 auto 12px;
-
-            border:
-                3px solid rgba(234, 60, 255, 0.14);
-
-            border-top-color:
-                var(--pink);
-
-            border-radius:
-                50%;
-
-            animation:
-                spin 0.8s linear infinite;
-
+        .refresh-btn.loading svg {
+            animation: spin 0.8s linear infinite;
         }
-
 
         @keyframes spin {
-
             to {
-
-                transform:
-                    rotate(360deg);
-
+                transform: rotate(360deg);
             }
-
         }
 
+        /* =========================
+           DEPOSIT CARD
+        ========================= */
 
-        .hidden {
-
-            display:
-                none !important;
-
+        .deposit-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
+        .deposit-card {
+            position: relative;
 
-        .retry-button {
+            padding: 15px;
 
-            margin-top:
-                15px;
-
-            min-height:
-                38px;
-
-            padding:
-                0 16px;
-
-            border:
-                1px solid var(--border);
-
-            border-radius:
-                10px;
-
-            background:
-                rgba(234, 60, 255, 0.09);
-
-            color:
-                var(--white);
-
-            font-size:
-                11px;
-
-            font-weight:
-                800;
-
-        }
-
-
-        /* =========================================================
-           MODALS
-        ========================================================= */
-
-        .modal-backdrop {
-
-            position:
-                fixed;
-
-            inset:
-                0;
-
-            z-index:
-                1000;
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            padding:
-                18px;
-
-            background:
-                rgba(0, 0, 0, 0.76);
-
-            backdrop-filter:
-                blur(7px);
-
-            -webkit-backdrop-filter:
-                blur(7px);
-
-        }
-
-
-        .modal {
-
-            width:
-                100%;
-
-            max-width:
-                450px;
-
-            max-height:
-                calc(100vh - 36px);
-
-            overflow-y:
-                auto;
-
-            border:
-                1px solid rgba(234, 60, 255, 0.23);
-
-            border-radius:
-                20px;
+            border-radius: 18px;
 
             background:
                 linear-gradient(
                     145deg,
-                    #170d1d,
-                    #0c0710
+                    rgba(255, 255, 255, 0.065),
+                    rgba(255, 255, 255, 0.022)
                 );
 
+            border: 1px solid rgba(255, 255, 255, 0.075);
+
             box-shadow:
-                0 30px 80px rgba(0, 0, 0, 0.55);
-
-            padding:
-                21px;
-
+                0 12px 32px rgba(0, 0, 0, 0.24);
         }
 
-
-        .modal-top {
-
-            display:
-                flex;
-
-            align-items:
-                flex-start;
-
-            justify-content:
-                space-between;
-
-            gap:
-                12px;
-
-            margin-bottom:
-                14px;
-
+        .deposit-card.pending {
+            border-color: rgba(234, 60, 255, 0.18);
         }
 
-
-        .modal-heading {
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            gap:
-                11px;
-
+        .deposit-card.frozen {
+            border-color: rgba(255, 83, 83, 0.25);
         }
 
+        .card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+
+            padding-bottom: 13px;
+            margin-bottom: 13px;
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+        }
+
+        .user-block {
+            min-width: 0;
+        }
+
+        .user-name {
+            font-size: 15px;
+            font-weight: 800;
+            color: #ffffff;
+
+            overflow-wrap: anywhere;
+        }
+
+        .user-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+
+            margin-top: 5px;
+
+            color: #9d96a5;
+            font-size: 11px;
+
+            overflow-wrap: anywhere;
+        }
+
+        .status-badge {
+            flex: 0 0 auto;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 6px 9px;
+            border-radius: 999px;
+
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.35px;
+        }
+
+        .status-pending {
+            color: #ffd76a;
+            background: rgba(245, 166, 35, 0.1);
+            border: 1px solid rgba(245, 166, 35, 0.2);
+        }
+
+        .status-approved {
+            color: #8dffbd;
+            background: rgba(57, 255, 141, 0.07);
+            border: 1px solid rgba(57, 255, 141, 0.16);
+        }
+
+        .status-rejected {
+            color: #ff9999;
+            background: rgba(255, 80, 80, 0.08);
+            border: 1px solid rgba(255, 80, 80, 0.17);
+        }
+
+        .account-warning {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            margin-top: 10px;
+            padding: 8px 9px;
+
+            border-radius: 10px;
+
+            color: #ff9d9d;
+            background: rgba(255, 65, 65, 0.065);
+            border: 1px solid rgba(255, 65, 65, 0.13);
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .account-warning svg {
+            width: 15px;
+            height: 15px;
+            flex: 0 0 15px;
+        }
+
+        /* =========================
+           PAYMENT SECTION
+        ========================= */
+
+        .section-label {
+            color: #8f8797;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+
+            margin-bottom: 9px;
+        }
+
+        .payment-main {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+
+            margin-bottom: 12px;
+        }
+
+        .amount-label {
+            color: #96909d;
+            font-size: 10px;
+            margin-bottom: 3px;
+        }
+
+        .amount {
+            color: #ffd76a;
+            font-size: 21px;
+            font-weight: 900;
+            letter-spacing: -0.4px;
+        }
+
+        .network-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-width: 68px;
+            padding: 8px 10px;
+
+            border-radius: 10px;
+
+            background: rgba(255, 255, 255, 0.045);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .payment-item {
+            min-width: 0;
+            padding: 10px;
+
+            border-radius: 11px;
+
+            background: rgba(0, 0, 0, 0.13);
+            border: 1px solid rgba(255, 255, 255, 0.045);
+        }
+
+        .payment-item.full {
+            grid-column: 1 / -1;
+        }
+
+        .payment-item-label {
+            color: #77707e;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.45px;
+
+            margin-bottom: 4px;
+        }
+
+        .payment-item-value {
+            color: #ddd8e1;
+            font-size: 11px;
+            font-weight: 700;
+
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        /* =========================
+           ACTIONS
+        ========================= */
+
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+
+            margin-top: 13px;
+        }
+
+        .action-btn {
+            min-height: 42px;
+
+            border-radius: 12px;
+
+            font-size: 12px;
+            font-weight: 800;
+
+            transition: 0.2s ease;
+        }
+
+        .approve-btn {
+            color: #07130c;
+
+            border: 1px solid rgba(83, 255, 155, 0.3);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #72ffae,
+                    #39e987
+                );
+        }
+
+        .approve-btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow:
+                0 7px 20px rgba(57, 233, 135, 0.16);
+        }
+
+        .reject-btn {
+            color: #ffb1b1;
+
+            border: 1px solid rgba(255, 91, 91, 0.24);
+
+            background:
+                rgba(255, 65, 65, 0.065);
+        }
+
+        .reject-btn:hover:not(:disabled) {
+            background: rgba(255, 65, 65, 0.11);
+        }
+
+        .action-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.38;
+            transform: none;
+        }
+
+        /* =========================
+           EMPTY / LOADING / ERROR
+        ========================= */
+
+        .state-box {
+            padding: 35px 18px;
+            text-align: center;
+
+            border-radius: 17px;
+
+            background:
+                rgba(255, 255, 255, 0.025);
+
+            border: 1px solid rgba(255, 255, 255, 0.055);
+        }
+
+        .state-icon {
+            width: 42px;
+            height: 42px;
+
+            margin: 0 auto 12px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 13px;
+
+            background: rgba(234, 60, 255, 0.08);
+            color: #ff72ff;
+        }
+
+        .state-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .state-title {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .state-text {
+            margin-top: 5px;
+            color: #898290;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .retry-btn {
+            margin-top: 13px;
+
+            min-height: 38px;
+            padding: 0 15px;
+
+            border-radius: 11px;
+
+            color: #ffffff;
+            background: rgba(234, 60, 255, 0.11);
+
+            border: 1px solid rgba(234, 60, 255, 0.25);
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+
+            z-index: 1000;
+
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+
+            padding: 15px;
+
+            background:
+                rgba(0, 0, 0, 0.72);
+
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-backdrop.show {
+            display: flex;
+        }
+
+        .modal {
+            width: 100%;
+            max-width: 470px;
+
+            padding: 18px;
+
+            border-radius: 20px 20px 15px 15px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #17101c,
+                    #0c0810
+                );
+
+            border: 1px solid rgba(255, 255, 255, 0.1);
+
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.65);
+        }
 
         .modal-icon {
+            width: 43px;
+            height: 43px;
 
-            width:
-                40px;
+            display: grid;
+            place-items: center;
 
-            height:
-                40px;
+            margin-bottom: 12px;
 
-            border-radius:
-                12px;
+            border-radius: 13px;
 
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            font-weight:
-                900;
-
-            font-size:
-                17px;
-
+            background: rgba(234, 60, 255, 0.1);
+            color: #ff72ff;
         }
 
-
-        .modal-icon.approve {
-
-            color:
-                #b9f9d6;
-
-            background:
-                rgba(66, 230, 149, 0.10);
-
-            border:
-                1px solid rgba(66, 230, 149, 0.20);
-
+        .modal-icon svg {
+            width: 22px;
+            height: 22px;
         }
-
-
-        .modal-icon.reject {
-
-            color:
-                #ffb1be;
-
-            background:
-                rgba(255, 77, 109, 0.10);
-
-            border:
-                1px solid rgba(255, 77, 109, 0.20);
-
-        }
-
 
         .modal h2 {
-
-            font-size:
-                17px;
-
-            margin-bottom:
-                3px;
-
+            font-size: 17px;
+            margin-bottom: 6px;
         }
 
-
-        .modal-subtitle {
-
-            color:
-                var(--muted);
-
-            font-size:
-                10px;
-
+        .modal p {
+            color: #9d95a4;
+            font-size: 12px;
+            line-height: 1.55;
         }
 
+        .modal-details {
+            margin-top: 13px;
+            padding: 11px;
 
-        .close-button {
+            border-radius: 12px;
 
-            width:
-                32px;
-
-            height:
-                32px;
-
-            border:
-                1px solid rgba(255, 255, 255, 0.08);
-
-            border-radius:
-                9px;
-
-            background:
-                rgba(255, 255, 255, 0.03);
-
-            color:
-                var(--muted);
-
-            font-size:
-                19px;
-
-            line-height:
-                1;
-
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid rgba(255, 255, 255, 0.055);
         }
 
+        .modal-details-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
 
-        .modal-text {
+            padding: 6px 0;
 
-            color:
-                #c9bfcd;
-
-            font-size:
-                12px;
-
-            line-height:
-                1.65;
-
-            margin-bottom:
-                15px;
-
+            font-size: 11px;
         }
 
-
-        .confirm-box {
-
-            padding:
-                12px;
-
-            border-radius:
-                12px;
-
-            background:
-                rgba(234, 60, 255, 0.045);
-
-            border:
-                1px solid rgba(234, 60, 255, 0.10);
-
-            margin-bottom:
-                15px;
-
+        .modal-details-row + .modal-details-row {
+            border-top: 1px solid rgba(255, 255, 255, 0.045);
         }
 
-
-        .confirm-row {
-
-            display:
-                flex;
-
-            justify-content:
-                space-between;
-
-            gap:
-                15px;
-
-            padding:
-                5px 0;
-
-            font-size:
-                11px;
-
+        .modal-details-row span:first-child {
+            color: #77707e;
         }
 
-
-        .confirm-row span {
-
-            color:
-                var(--muted);
-
+        .modal-details-row span:last-child {
+            color: #ffffff;
+            font-weight: 700;
+            text-align: right;
+            overflow-wrap: anywhere;
         }
 
+        .reject-reason {
+            width: 100%;
+            min-height: 100px;
 
-        .confirm-row strong {
+            margin-top: 13px;
+            padding: 12px;
 
-            color:
-                var(--white);
+            resize: vertical;
 
-            text-align:
-                right;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.035);
 
-            word-break:
-                break-word;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
 
+            outline: none;
         }
 
-
-        .confirm-row strong.amount {
-
-            color:
-                var(--gold-light);
-
-            font-size:
-                14px;
-
+        .reject-reason:focus {
+            border-color: rgba(255, 80, 80, 0.38);
         }
 
-
-        .modal-warning {
-
-            padding:
-                10px 11px;
-
-            margin-bottom:
-                14px;
-
-            border:
-                1px solid rgba(245, 166, 35, 0.17);
-
-            border-radius:
-                10px;
-
-            background:
-                rgba(245, 166, 35, 0.055);
-
-            color:
-                #ffe0a2;
-
-            font-size:
-                10px;
-
-            line-height:
-                1.5;
-
+        .reject-reason::placeholder {
+            color: #6f6876;
         }
 
+        .char-count {
+            margin-top: 5px;
+            text-align: right;
 
-        .input-label {
-
-            display:
-                block;
-
-            color:
-                #d9cedc;
-
-            font-size:
-                11px;
-
-            font-weight:
-                800;
-
-            margin-bottom:
-                7px;
-
+            color: #77707e;
+            font-size: 10px;
         }
-
-
-        .reason-input {
-
-            width:
-                100%;
-
-            min-height:
-                100px;
-
-            resize:
-                vertical;
-
-            border:
-                1px solid var(--border);
-
-            border-radius:
-                12px;
-
-            outline:
-                none;
-
-            padding:
-                12px;
-
-            background:
-                rgba(5, 4, 9, 0.70);
-
-            color:
-                var(--white);
-
-            font-size:
-                12px;
-
-            line-height:
-                1.5;
-
-        }
-
-
-        .reason-input:focus {
-
-            border-color:
-                rgba(234, 60, 255, 0.50);
-
-            box-shadow:
-                0 0 0 3px rgba(234, 60, 255, 0.06);
-
-        }
-
-
-        .reason-count {
-
-            color:
-                var(--muted-2);
-
-            text-align:
-                right;
-
-            font-size:
-                9px;
-
-            margin-top:
-                5px;
-
-        }
-
 
         .modal-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
 
-            display:
-                flex;
-
-            gap:
-                9px;
-
-            margin-top:
-                16px;
-
+            margin-top: 14px;
         }
 
+        .modal-btn {
+            min-height: 42px;
 
-        .modal-action {
+            border-radius: 12px;
 
-            flex:
-                1;
-
-            min-height:
-                42px;
-
-            border-radius:
-                11px;
-
-            font-size:
-                11px;
-
-            font-weight:
-                900;
-
+            font-size: 12px;
+            font-weight: 800;
         }
 
+        .cancel-btn {
+            color: #bbb4c1;
 
-        .cancel-action {
-
-            color:
-                #c8bdcc;
-
-            background:
-                rgba(255, 255, 255, 0.035);
-
-            border:
-                1px solid rgba(255, 255, 255, 0.08);
-
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.07);
         }
-
 
         .confirm-approve {
-
-            color:
-                #d9ffe9;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(66, 230, 149, 0.24),
-                    rgba(23, 155, 97, 0.17)
-                );
-
-            border:
-                1px solid rgba(66, 230, 149, 0.30);
-
+            color: #07130c;
+            background: #72ffae;
+            border: 1px solid rgba(114, 255, 174, 0.4);
         }
-
 
         .confirm-reject {
-
-            color:
-                #ffe0e5;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(255, 77, 109, 0.22),
-                    rgba(197, 44, 73, 0.15)
-                );
-
-            border:
-                1px solid rgba(255, 77, 109, 0.30);
-
+            color: #ffffff;
+            background: rgba(255, 65, 65, 0.16);
+            border: 1px solid rgba(255, 65, 65, 0.28);
         }
 
-
-        .modal-action:disabled {
-
-            opacity:
-                0.5;
-
-            cursor:
-                not-allowed;
-
-        }
-
-
-        /* =========================================================
+        /* =========================
            TOAST
-        ========================================================= */
+        ========================= */
 
         .toast-container {
+            position: fixed;
+            z-index: 2000;
 
-            position:
-                fixed;
+            left: 15px;
+            right: 15px;
+            bottom: 18px;
 
-            right:
-                18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
 
-            bottom:
-                18px;
-
-            z-index:
-                2000;
-
-            width:
-                min(360px, calc(100vw - 36px));
-
-            pointer-events:
-                none;
-
+            pointer-events: none;
         }
-
 
         .toast {
+            width: 100%;
+            max-width: 420px;
 
-            display:
-                flex;
+            padding: 12px 14px;
 
-            align-items:
-                center;
-
-            gap:
-                10px;
-
-            padding:
-                13px 14px;
-
-            border:
-                1px solid rgba(234, 60, 255, 0.20);
-
-            border-radius:
-                13px;
+            border-radius: 13px;
 
             background:
-                rgba(17, 10, 23, 0.97);
+                rgba(22, 17, 26, 0.96);
+
+            border: 1px solid rgba(255, 255, 255, 0.09);
 
             box-shadow:
-                0 20px 45px rgba(0, 0, 0, 0.45);
+                0 15px 40px rgba(0, 0, 0, 0.45);
 
-            transform:
-                translateY(20px);
+            color: #ffffff;
 
-            opacity:
-                0;
+            font-size: 12px;
+            font-weight: 700;
 
-            transition:
-                0.25s ease;
+            opacity: 0;
+            transform: translateY(10px);
 
+            transition: 0.22s ease;
         }
-
 
         .toast.show {
-
-            transform:
-                translateY(0);
-
-            opacity:
-                1;
-
+            opacity: 1;
+            transform: translateY(0);
         }
-
 
         .toast.success {
-
-            border-color:
-                rgba(66, 230, 149, 0.25);
-
+            border-color: rgba(57, 255, 141, 0.24);
         }
-
 
         .toast.error {
-
-            border-color:
-                rgba(255, 77, 109, 0.25);
-
+            border-color: rgba(255, 80, 80, 0.25);
         }
 
-
-        .toast-icon {
-
-            width:
-                27px;
-
-            height:
-                27px;
-
-            flex:
-                0 0 27px;
-
-            border-radius:
-                50%;
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            font-size:
-                12px;
-
-            font-weight:
-                900;
-
-        }
-
-
-        .toast.success .toast-icon {
-
-            color:
-                #c9ffdf;
-
-            background:
-                rgba(66, 230, 149, 0.12);
-
-        }
-
-
-        .toast.error .toast-icon {
-
-            color:
-                #ffd0d8;
-
-            background:
-                rgba(255, 77, 109, 0.12);
-
-        }
-
-
-        .toast-message {
-
-            color:
-                #eee8f0;
-
-            font-size:
-                11px;
-
-            line-height:
-                1.45;
-
-        }
-
-
-        /* =========================================================
-           FOOTER
-        ========================================================= */
-
-        .footer {
-
-            display:
-                flex;
-
-            justify-content:
-                center;
-
-            align-items:
-                center;
-
-            gap:
-                7px;
-
-            padding:
-                28px 0 0;
-
-            color:
-                var(--muted-2);
-
-            font-size:
-                9px;
-
-            text-align:
-                center;
-
-        }
-
-
-        .footer-brand {
-
-            font-family:
-                "Times New Roman",
-                Times,
-                serif;
-
-            color:
-                var(--pink-light);
-
-            font-weight:
-                700;
-
-            letter-spacing:
-                0.8px;
-
-        }
-
-
-        /* =========================================================
-           RESPONSIVE
-        ========================================================= */
+        /* =========================
+           DESKTOP
+        ========================= */
 
         @media (min-width: 700px) {
-
             .page {
-
-                padding:
-                    0 28px 35px;
-
+                padding: 24px;
             }
 
-
-            .topbar {
-
-                min-height:
-                    88px;
-
+            .controls {
+                flex-direction: row;
+                align-items: center;
             }
 
-
-            .details-grid {
-
-                grid-template-columns:
-                    repeat(3, minmax(0, 1fr));
-
+            .search-box {
+                flex: 1;
             }
 
-
-            .reference-detail {
-
-                grid-column:
-                    auto;
-
+            .filter-row {
+                flex: 0 0 auto;
             }
 
-
-            .deposit-card {
-
-                padding:
-                    17px;
-
+            .modal-backdrop {
+                align-items: center;
             }
 
+            .modal {
+                border-radius: 20px;
+            }
         }
-
-
-        @media (max-width: 700px) {
-
-            .account-grid {
-
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-
-            }
-
-        }
-
 
         @media (max-width: 520px) {
-
-            .page {
-
-                padding:
-                    0 12px 25px;
-
-            }
-
-
-            .topbar {
-
-                min-height:
-                    70px;
-
-                margin-bottom:
-                    15px;
-
-            }
-
-
-            .back-button,
-            .refresh-button {
-
-                width:
-                    38px;
-
-                height:
-                    38px;
-
-                flex-basis:
-                    38px;
-
-            }
-
-
-            .page-title {
-
-                font-size:
-                    21px;
-
-            }
-
-
-            .brand-small {
-
-                font-size:
-                    8px;
-
-                letter-spacing:
-                    1.5px;
-
-            }
-
-
-            .live-indicator {
-
-                padding:
-                    7px 8px;
-
-                font-size:
-                    9px;
-
-            }
-
-
             .summary-grid {
-
-                gap:
-                    8px;
-
+                grid-template-columns: repeat(3, minmax(0, 1fr));
             }
-
 
             .summary-card {
-
-                padding:
-                    12px 10px;
-
+                padding: 11px;
             }
-
-
-            .summary-label {
-
-                font-size:
-                    8px;
-
-            }
-
 
             .summary-value {
-
-                font-size:
-                    17px;
-
+                font-size: 16px;
             }
 
-
-            .deposit-card {
-
-                padding:
-                    13px;
-
+            .summary-label {
+                font-size: 9px;
             }
 
-
-            .record-top {
-
-                gap:
-                    8px;
-
+            .payment-grid {
+                grid-template-columns: 1fr;
             }
 
-
-            .user-name {
-
-                font-size:
-                    14px;
-
+            .payment-item.full {
+                grid-column: auto;
             }
-
-
-            .amount-value {
-
-                font-size:
-                    16px;
-
-            }
-
-
-            .account-grid {
-
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-
-            }
-
-
-            .record-footer {
-
-                align-items:
-                    flex-end;
-
-                flex-direction:
-                    column;
-
-            }
-
-
-            .submitted-time {
-
-                width:
-                    100%;
-
-            }
-
-
-            .action-buttons {
-
-                width:
-                    100%;
-
-            }
-
-
-            .action-button {
-
-                flex:
-                    1;
-
-            }
-
-
-            .list-heading-right span {
-
-                display:
-                    none;
-
-            }
-
         }
 
+        @media (max-width: 390px) {
+            .page {
+                padding: 12px;
+            }
 
+            .page-title h1 {
+                font-size: 20px;
+            }
+
+            .live-pill {
+                padding: 7px;
+            }
+
+            .live-pill span:last-child {
+                display: none;
+            }
+
+            .card-top {
+                gap: 7px;
+            }
+
+            .actions {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
-
 </head>
-
 
 <body>
 
+<div class="page">
 
-    <div class="page">
+    <!-- HEADER -->
+    <header class="topbar">
 
-        <div class="page-inner">
+        <div class="topbar-left">
 
-
-            <!-- =====================================================
-                 HEADER
-            ====================================================== -->
-
-            <header class="topbar">
-
-                <div class="topbar-left">
-
-                    <a
-                        href="admin.html"
-                        class="back-button"
-                        aria-label="Back to Admin Overview"
-                    >
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path d="M19 12H5"></path>
-                            <path d="M12 19l-7-7 7-7"></path>
-                        </svg>
-
-                    </a>
-
-
-                    <div class="brand-title">
-
-                        <span class="brand-small">
-                            FINORA ADMIN
-                        </span>
-
-                        <h1 class="page-title">
-                            Deposits
-                        </h1>
-
-                    </div>
-
-                </div>
-
-
-                <div class="header-actions">
-
-                    <button
-                        type="button"
-                        class="refresh-button"
-                        id="refreshButton"
-                        aria-label="Refresh deposits"
-                    >
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path d="M20 11a8.1 8.1 0 0 0-15.5-2"></path>
-                            <path d="M4 4v5h5"></path>
-                            <path d="M4 13a8.1 8.1 0 0 0 15.5 2"></path>
-                            <path d="M20 20v-5h-5"></path>
-                        </svg>
-
-                    </button>
-
-
-                    <div
-                        class="live-indicator"
-                        id="liveIndicator"
-                    >
-
-                        <span class="live-dot"></span>
-
-                        <span id="liveText">
-                            Live
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </header>
-
-
-
-            <!-- =====================================================
-                 SUMMARY
-            ====================================================== -->
-
-            <section class="summary-grid">
-
-
-                <div class="summary-card">
-
-                    <div class="summary-label">
-                        Pending Deposits
-                    </div>
-
-                    <div
-                        class="summary-value"
-                        id="pendingCount"
-                    >
-                        —
-                    </div>
-
-                </div>
-
-
-                <div class="summary-card">
-
-                    <div class="summary-label">
-                        Pending Amount
-                    </div>
-
-                    <div
-                        class="summary-value gold"
-                        id="pendingAmount"
-                    >
-                        UGX —
-                    </div>
-
-                </div>
-
-
-                <div class="summary-card">
-
-                    <div class="summary-label">
-                        Showing
-                    </div>
-
-                    <div
-                        class="summary-value"
-                        id="showingCount"
-                    >
-                        —
-                    </div>
-
-                </div>
-
-
-            </section>
-
-
-
-            <!-- =====================================================
-                 SEARCH + FILTERS
-            ====================================================== -->
-
-            <section class="controls">
-
-
-                <div class="search-wrap">
-
-                    <span class="search-icon">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <circle
-                                cx="11"
-                                cy="11"
-                                r="7"
-                            ></circle>
-
-                            <path
-                                d="m20 20-4-4"
-                            ></path>
-                        </svg>
-
-                    </span>
-
-
-                    <input
-                        type="search"
-                        id="searchInput"
-                        class="search-input"
-                        placeholder="Search name, phone, email or reference..."
-                        autocomplete="off"
-                    >
-
-                </div>
-
-
-                <div class="filters">
-
-                    <button
-                        type="button"
-                        class="filter-button active"
-                        data-filter="pending"
-                    >
-                        Pending
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="filter-button"
-                        data-filter="approved"
-                    >
-                        Approved
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="filter-button"
-                        data-filter="rejected"
-                    >
-                        Rejected
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="filter-button"
-                        data-filter="all"
-                    >
-                        All
-                    </button>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =====================================================
-                 LIST HEADING
-            ====================================================== -->
-
-            <div class="list-heading">
-
-                <h2>
-                    Deposit Requests
-                </h2>
-
-
-                <div class="list-heading-right">
-
-                    <span id="lastUpdated">
-                        Loading...
-                    </span>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- =====================================================
-                 LOADING
-            ====================================================== -->
-
-            <div
-                class="state"
-                id="loadingState"
+            <button
+                class="back-btn"
+                id="backButton"
+                aria-label="Back to Admin"
             >
-
-                <div class="spinner"></div>
-
-                <h3>
-                    Loading deposits
-                </h3>
-
-                <p>
-                    Connecting to the FINORA deposit records.
-                </p>
-
-            </div>
-
-
-
-            <!-- =====================================================
-                 ERROR
-            ====================================================== -->
-
-            <div
-                class="state hidden"
-                id="errorState"
-            >
-
-                <div class="state-icon">
-                    !
-                </div>
-
-                <h3>
-                    Deposits unavailable
-                </h3>
-
-                <p id="errorText">
-                    The deposit records could not be loaded.
-                </p>
-
-                <button
-                    type="button"
-                    class="retry-button"
-                    id="retryButton"
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
                 >
-                    Try Again
-                </button>
-
-            </div>
-
-
-
-            <!-- =====================================================
-                 EMPTY
-            ====================================================== -->
-
-            <div
-                class="state hidden"
-                id="emptyState"
-            >
-
-                <div class="state-icon">
-                    ✓
-                </div>
-
-                <h3 id="emptyTitle">
-                    No pending deposits
-                </h3>
-
-                <p id="emptyText">
-                    There are currently no deposit requests waiting for review.
-                </p>
-
-            </div>
-
-
-
-            <!-- =====================================================
-                 DEPOSIT LIST
-            ====================================================== -->
-
-            <section
-                class="deposit-list hidden"
-                id="depositList"
-            ></section>
-
-
-
-            <!-- =====================================================
-                 FOOTER
-            ====================================================== -->
-
-            <footer class="footer">
-
-                <span class="footer-brand">
-                    FINORA
-                </span>
-
-                <span>
-                    Admin Control Center
-                </span>
-
-                <span>
-                    •
-                </span>
-
-                <span id="footerYear"></span>
-
-            </footer>
-
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =========================================================
-         APPROVE MODAL
-    ========================================================== -->
-
-    <div
-        class="modal-backdrop hidden"
-        id="approveModal"
-    >
-
-        <div class="modal">
-
-
-            <div class="modal-top">
-
-                <div class="modal-heading">
-
-                    <div class="modal-icon approve">
-                        ✓
-                    </div>
-
-                    <div>
-
-                        <h2>
-                            Approve Deposit
-                        </h2>
-
-                        <div class="modal-subtitle">
-                            Confirm this financial action
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <button
-                    type="button"
-                    class="close-button"
-                    id="closeApproveModal"
-                    aria-label="Close"
-                >
-                    ×
-                </button>
-
-            </div>
-
-
-            <p class="modal-text">
-
-                Approving this deposit will credit the user's FINORA wallet. The existing backend approval process will also handle the first-deposit referral commission logic when applicable.
-
-            </p>
-
-
-            <div class="confirm-box">
-
-                <div class="confirm-row">
-
-                    <span>
-                        User
-                    </span>
-
-                    <strong id="approveUser">
-                        —
-                    </strong>
-
-                </div>
-
-
-                <div class="confirm-row">
-
-                    <span>
-                        Phone
-                    </span>
-
-                    <strong id="approvePhone">
-                        —
-                    </strong>
-
-                </div>
-
-
-                <div class="confirm-row">
-
-                    <span>
-                        Payment
-                    </span>
-
-                    <strong id="approveNetwork">
-                        —
-                    </strong>
-
-                </div>
-
-
-                <div class="confirm-row">
-
-                    <span>
-                        Merchant
-                    </span>
-
-                    <strong id="approveMerchant">
-                        —
-                    </strong>
-
-                </div>
-
-
-                <div class="confirm-row">
-
-                    <span>
-                        Amount
-                    </span>
-
-                    <strong
-                        class="amount"
-                        id="approveAmount"
-                    >
-                        UGX —
-                    </strong>
-
-                </div>
-
-
-                <div class="confirm-row">
-
-                    <span>
-                        Reference
-                    </span>
-
-                    <strong id="approveReference">
-                        —
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div
-                class="modal-warning"
-                id="approveReferralNotice"
-            >
-                Referral processing, when applicable, is handled automatically by the backend during approval.
-            </div>
-
-
-            <div class="modal-actions">
-
-                <button
-                    type="button"
-                    class="modal-action cancel-action"
-                    id="cancelApprove"
-                >
-                    Cancel
-                </button>
-
-
-                <button
-                    type="button"
-                    class="modal-action confirm-approve"
-                    id="confirmApprove"
-                >
-                    Approve Deposit
-                </button>
-
+                    <path d="M19 12H5"></path>
+                    <path d="M12 19l-7-7 7-7"></path>
+                </svg>
+            </button>
+
+            <div class="page-title">
+                <h1>
+                    <span class="fin">FIN</span><span class="ora">ORA</span>
+                    Deposits
+                </h1>
+                <p>Review and process deposit requests</p>
             </div>
 
         </div>
 
-    </div>
+        <div class="live-pill">
+            <span class="live-dot"></span>
+            <span>Live</span>
+        </div>
+
+    </header>
 
 
+    <!-- SUMMARY -->
+    <section class="summary-grid">
 
-    <!-- =========================================================
-         REJECT MODAL
-    ========================================================== -->
-
-    <div
-        class="modal-backdrop hidden"
-        id="rejectModal"
-    >
-
-        <div class="modal">
-
-
-            <div class="modal-top">
-
-                <div class="modal-heading">
-
-                    <div class="modal-icon reject">
-                        !
-                    </div>
-
-                    <div>
-
-                        <h2>
-                            Reject Deposit
-                        </h2>
-
-                        <div class="modal-subtitle">
-                            A reason is required
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <button
-                    type="button"
-                    class="close-button"
-                    id="closeRejectModal"
-                    aria-label="Close"
-                >
-                    ×
-                </button>
-
+        <div class="summary-card">
+            <div class="summary-label">
+                Pending Deposits
             </div>
-
-
-            <p class="modal-text">
-
-                Enter the reason why this deposit is being rejected. The reason will be saved with the deposit and sent to the user.
-
-            </p>
-
-
-            <div class="confirm-box">
-
-                <div class="confirm-row">
-
-                    <span>
-                        User
-                    </span>
-
-                    <strong id="rejectUser">
-                        —
-                    </strong>
-
-                </div>
-
-
-                <div class="confirm-row">
-
-                    <span>
-                        Phone
-                    </span>
-
-                    <strong id="rejectPhone">
-                        —
-                    </strong>
-
-                </div>
-
-
-                <div class="confirm-row">
-
-                    <span>
-                        Amount
-                    </span>
-
-                    <strong
-                        class="amount"
-                        id="rejectAmount"
-                    >
-                        UGX —
-                    </strong>
-
-                </div>
-
-
-                <div class="confirm-row">
-
-                    <span>
-                        Reference
-                    </span>
-
-                    <strong id="rejectReference">
-                        —
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <label
-                for="rejectionReason"
-                class="input-label"
-            >
-                Rejection reason
-            </label>
-
-
-            <textarea
-                id="rejectionReason"
-                class="reason-input"
-                maxlength="500"
-                placeholder="Example: Payment reference could not be verified."
-            ></textarea>
-
 
             <div
-                class="reason-count"
-                id="reasonCount"
+                class="summary-value pink"
+                id="pendingCount"
             >
-                0 / 500
+                —
+            </div>
+        </div>
+
+        <div class="summary-card">
+            <div class="summary-label">
+                Pending Amount
             </div>
 
-
-            <div class="modal-actions">
-
-                <button
-                    type="button"
-                    class="modal-action cancel-action"
-                    id="cancelReject"
-                >
-                    Cancel
-                </button>
-
-
-                <button
-                    type="button"
-                    class="modal-action confirm-reject"
-                    id="confirmReject"
-                >
-                    Reject Deposit
-                </button>
-
+            <div
+                class="summary-value gold"
+                id="pendingAmount"
+            >
+                —
             </div>
+        </div>
+
+        <div class="summary-card">
+            <div class="summary-label">
+                Showing
+            </div>
+
+            <div
+                class="summary-value"
+                id="showingCount"
+            >
+                —
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- CONTROLS -->
+    <section class="controls">
+
+        <div class="search-box">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <circle
+                    cx="11"
+                    cy="11"
+                    r="7"
+                ></circle>
+
+                <path
+                    d="M20 20l-4-4"
+                ></path>
+            </svg>
+
+            <input
+                id="searchInput"
+                class="search-input"
+                type="search"
+                autocomplete="off"
+                placeholder="Search name, phone, email or reference..."
+            >
 
         </div>
 
-    </div>
+        <div class="filter-row">
+
+            <button
+                class="filter-btn active"
+                data-filter="pending"
+            >
+                Pending
+            </button>
+
+            <button
+                class="filter-btn"
+                data-filter="approved"
+            >
+                Approved
+            </button>
+
+            <button
+                class="filter-btn"
+                data-filter="rejected"
+            >
+                Rejected
+            </button>
+
+            <button
+                class="filter-btn"
+                data-filter="all"
+            >
+                All
+            </button>
+
+        </div>
+
+    </section>
 
 
-
-    <!-- =========================================================
-         TOAST
-    ========================================================== -->
-
-    <div class="toast-container">
+    <!-- TOOLBAR -->
+    <div class="toolbar">
 
         <div
-            class="toast"
-            id="toast"
+            class="showing-text"
+            id="resultText"
         >
+            Loading deposits...
+        </div>
 
-            <span
-                class="toast-icon"
-                id="toastIcon"
+        <button
+            class="refresh-btn"
+            id="refreshButton"
+        >
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="15"
+                height="15"
             >
-                ✓
-            </span>
+                <path
+                    d="M20 11a8.1 8.1 0 0 0-15.5-2M4 13a8.1 8.1 0 0 0 15.5 2"
+                ></path>
 
-            <span
-                class="toast-message"
-                id="toastMessage"
+                <path d="M4 4v5h5"></path>
+                <path d="M20 20v-5h-5"></path>
+            </svg>
+
+            Refresh
+        </button>
+
+    </div>
+
+
+    <!-- DEPOSIT LIST -->
+    <main
+        class="deposit-list"
+        id="depositList"
+    ></main>
+
+</div>
+
+
+<!-- APPROVE MODAL -->
+<div
+    class="modal-backdrop"
+    id="approveModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
             >
-                Done
-            </span>
+                <path
+                    d="M20 6L9 17l-5-5"
+                ></path>
+            </svg>
+
+        </div>
+
+        <h2>Approve Deposit?</h2>
+
+        <p>
+            Approving this deposit will credit the user's wallet
+            and allow the first-deposit referral commission process
+            to run where applicable.
+        </p>
+
+        <div
+            class="modal-details"
+            id="approveDetails"
+        ></div>
+
+        <div class="modal-actions">
+
+            <button
+                class="modal-btn cancel-btn"
+                id="cancelApprove"
+            >
+                Cancel
+            </button>
+
+            <button
+                class="modal-btn confirm-approve"
+                id="confirmApprove"
+            >
+                Approve Deposit
+            </button>
 
         </div>
 
     </div>
 
+</div>
 
 
-    <script>
+<!-- REJECT MODAL -->
+<div
+    class="modal-backdrop"
+    id="rejectModal"
+>
 
-        /* =========================================================
-           FINORA ADMIN DEPOSITS JAVASCRIPT
-        ========================================================= */
+    <div class="modal">
+
+        <div class="modal-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path
+                    d="M18 6L6 18"
+                ></path>
+
+                <path
+                    d="M6 6l12 12"
+                ></path>
+            </svg>
+
+        </div>
+
+        <h2>Reject Deposit?</h2>
+
+        <p>
+            Enter a reason for rejecting this deposit.
+            The reason will be stored with the deposit record.
+        </p>
+
+        <div
+            class="modal-details"
+            id="rejectDetails"
+        ></div>
+
+        <textarea
+            id="rejectReason"
+            class="reject-reason"
+            maxlength="500"
+            placeholder="Enter rejection reason..."
+        ></textarea>
+
+        <div
+            class="char-count"
+            id="charCount"
+        >
+            0 / 500
+        </div>
+
+        <div class="modal-actions">
+
+            <button
+                class="modal-btn cancel-btn"
+                id="cancelReject"
+            >
+                Cancel
+            </button>
+
+            <button
+                class="modal-btn confirm-reject"
+                id="confirmReject"
+            >
+                Reject Deposit
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
 
-        const API_BASE =
-            "https://finora-platform.onrender.com";
+<!-- TOAST -->
+<div
+    class="toast-container"
+    id="toastContainer"
+></div>
 
 
-        const DEPOSITS_ENDPOINT =
-            `${API_BASE}/api/admin/deposits`;
+<script>
+    "use strict";
 
 
-        const AUTO_REFRESH_MS =
-            60000;
+    /* =========================================
+       CONFIGURATION
+    ========================================= */
+
+    const API_BASE =
+        "https://finora-platform.onrender.com";
+
+    const DEPOSITS_ENDPOINT =
+        `${API_BASE}/api/admin/deposits`;
 
 
-        let allDeposits =
-            [];
+    /* =========================================
+       STATE
+    ========================================= */
+
+    let allDeposits = [];
+
+    let activeFilter = "pending";
+
+    let selectedDeposit = null;
+
+    let loading = false;
 
 
-        let currentFilter =
-            "pending";
+    /* =========================================
+       ELEMENTS
+    ========================================= */
+
+    const depositList =
+        document.getElementById("depositList");
+
+    const pendingCount =
+        document.getElementById("pendingCount");
+
+    const pendingAmount =
+        document.getElementById("pendingAmount");
+
+    const showingCount =
+        document.getElementById("showingCount");
+
+    const resultText =
+        document.getElementById("resultText");
+
+    const searchInput =
+        document.getElementById("searchInput");
+
+    const refreshButton =
+        document.getElementById("refreshButton");
+
+    const approveModal =
+        document.getElementById("approveModal");
+
+    const rejectModal =
+        document.getElementById("rejectModal");
+
+    const approveDetails =
+        document.getElementById("approveDetails");
+
+    const rejectDetails =
+        document.getElementById("rejectDetails");
+
+    const rejectReason =
+        document.getElementById("rejectReason");
+
+    const charCount =
+        document.getElementById("charCount");
+
+    const confirmApprove =
+        document.getElementById("confirmApprove");
+
+    const confirmReject =
+        document.getElementById("confirmReject");
 
 
-        let currentSearch =
-            "";
+    /* =========================================
+       HELPERS
+    ========================================= */
+
+    function escapeHtml(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
 
 
-        let selectedDeposit =
-            null;
+    function formatUGX(amount) {
+
+        const number =
+            Number(amount) || 0;
+
+        return `UGX ${number.toLocaleString("en-UG")}`;
+    }
 
 
-        let isProcessing =
-            false;
+    function formatDate(dateValue) {
 
-
-        let isLoading =
-            false;
-
-
-        let toastTimer =
-            null;
-
-
-        let autoRefreshTimer =
-            null;
-
-
-
-        /* =========================================================
-           DOM HELPERS
-        ========================================================= */
-
-        function getElement(
-            selector
-        ) {
-
-            return document.querySelector(
-                selector
-            );
-
+        if (!dateValue) {
+            return "—";
         }
 
+        const date =
+            new Date(dateValue);
 
-        function setText(
-            selector,
-            value
-        ) {
-
-            const element =
-                getElement(selector);
-
-
-            if (element) {
-
-                element.textContent =
-                    value;
-
-            }
-
+        if (Number.isNaN(date.getTime())) {
+            return "—";
         }
 
-
-        function showElement(
-            selector
-        ) {
-
-            const element =
-                getElement(selector);
-
-
-            if (element) {
-
-                element.classList.remove(
-                    "hidden"
-                );
-
-            }
-
-        }
-
-
-        function hideElement(
-            selector
-        ) {
-
-            const element =
-                getElement(selector);
-
-
-            if (element) {
-
-                element.classList.add(
-                    "hidden"
-                );
-
-            }
-
-        }
-
-
-
-        /* =========================================================
-           NUMBER FORMATTING
-        ========================================================= */
-
-        function formatAmount(
-            amount
-        ) {
-
-            const number =
-                Number(amount) || 0;
-
-
-            return (
-                "UGX " +
-                number.toLocaleString(
-                    "en-UG",
-                    {
-                        maximumFractionDigits: 0
-                    }
-                )
-            );
-
-        }
-
-
-
-        /* =========================================================
-           DATE FORMATTING
-        ========================================================= */
-
-        function formatDate(
-            value
-        ) {
-
-            if (!value) {
-
-                return "—";
-
-            }
-
-
-            const date =
-                new Date(value);
-
-
-            if (
-                Number.isNaN(
-                    date.getTime()
-                )
-            ) {
-
-                return "—";
-
-            }
-
-
-            return date.toLocaleString(
-                "en-UG",
-                {
-                    day:
-                        "2-digit",
-
-                    month:
-                        "short",
-
-                    year:
-                        "numeric",
-
-                    hour:
-                        "2-digit",
-
-                    minute:
-                        "2-digit"
-                }
-            );
-
-        }
-
-
-
-        /* =========================================================
-           SAFE HTML
-        ========================================================= */
-
-        function escapeHtml(
-            value
-        ) {
-
-            return String(
-                value ?? ""
-            )
-                .replace(
-                    /&/g,
-                    "&amp;"
-                )
-                .replace(
-                    /</g,
-                    "&lt;"
-                )
-                .replace(
-                    />/g,
-                    "&gt;"
-                )
-                .replace(
-                    /"/g,
-                    "&quot;"
-                )
-                .replace(
-                    /'/g,
-                    "&#039;"
-                );
-
-        }
-
-
-
-        /* =========================================================
-           NETWORK
-        ========================================================= */
-
-        function getNetworkHtml(
-            paymentMethod
-        ) {
-
-            const method =
-                String(
-                    paymentMethod || "—"
-                );
-
-
-            const normalized =
-                method.toLowerCase();
-
-
-            let dotClass =
-                "";
-
-
-            if (
-                normalized === "mtn"
-            ) {
-
-                dotClass =
-                    "mtn";
-
-            } else if (
-                normalized === "airtel"
-            ) {
-
-                dotClass =
-                    "airtel";
-
-            }
-
-
-            return `
-
-                <span class="network-badge">
-
-                    ${
-                        dotClass
-                            ? `
-                                <span
-                                    class="network-dot ${dotClass}"
-                                ></span>
-                              `
-                            : ""
-                    }
-
-                    <span>
-                        ${escapeHtml(method)}
-                    </span>
-
-                </span>
-
-            `;
-
-        }
-
-
-
-        /* =========================================================
-           INITIALIZATION
-        ========================================================= */
-
-        document.addEventListener(
-            "DOMContentLoaded",
-            () => {
-
-                setText(
-                    "#footerYear",
-                    new Date().getFullYear()
-                );
-
-
-                initializeFilters();
-
-
-                initializeSearch();
-
-
-                initializeModals();
-
-
-                getElement(
-                    "#retryButton"
-                )?.addEventListener(
-                    "click",
-                    () => loadDeposits(true)
-                );
-
-
-                getElement(
-                    "#refreshButton"
-                )?.addEventListener(
-                    "click",
-                    () => loadDeposits(true)
-                );
-
-
-                loadDeposits(
-                    true
-                );
-
-
-                startAutoRefresh();
-
+        return date.toLocaleString(
+            "en-UG",
+            {
+                dateStyle: "medium",
+                timeStyle: "short"
             }
         );
+    }
 
 
+    function normalizeStatus(status) {
 
-        /* =========================================================
-           AUTO REFRESH
-        ========================================================= */
+        return String(status || "")
+            .trim()
+            .toLowerCase();
+    }
 
-        function startAutoRefresh() {
 
-            clearInterval(
-                autoRefreshTimer
+    function getUser(deposit) {
+
+        return deposit?.user || {};
+    }
+
+
+    function getUserName(deposit) {
+
+        const user =
+            getUser(deposit);
+
+        return (
+            user.fullName ||
+            "Unknown User"
+        );
+    }
+
+
+    function getUserPhone(deposit) {
+
+        const user =
+            getUser(deposit);
+
+        return (
+            user.phone ||
+            user.phoneNumber ||
+            "No phone"
+        );
+    }
+
+
+    function getUserEmail(deposit) {
+
+        const user =
+            getUser(deposit);
+
+        return (
+            user.email ||
+            "No email"
+        );
+    }
+
+
+    function getAccountStatus(deposit) {
+
+        const user =
+            getUser(deposit);
+
+        return normalizeStatus(
+            user.status
+        ) || "inactive";
+    }
+
+
+    function getPaymentMethod(deposit) {
+
+        return (
+            deposit.paymentMethod ||
+            deposit.network ||
+            "—"
+        );
+    }
+
+
+    function getMerchantCode(deposit) {
+
+        return (
+            deposit.merchantCode ||
+            "—"
+        );
+    }
+
+
+    function getReference(deposit) {
+
+        return (
+            deposit.paymentReference ||
+            deposit.reference ||
+            "—"
+        );
+    }
+
+
+    /* =========================================
+       SUMMARY
+    ========================================= */
+
+    function updateSummary() {
+
+        const pendingDeposits =
+            allDeposits.filter(
+                deposit =>
+                    normalizeStatus(
+                        deposit.status
+                    ) === "pending"
             );
 
-
-            autoRefreshTimer =
-                setInterval(
-                    () => {
-
-                        if (
-                            document.visibilityState ===
-                            "visible" &&
-                            !isProcessing
-                        ) {
-
-                            loadDeposits(
-                                false
-                            );
-
-                        }
-
-                    },
-                    AUTO_REFRESH_MS
-                );
-
-        }
-
-
-
-        /* =========================================================
-           LOAD DEPOSITS
-        ========================================================= */
-
-        async function loadDeposits(
-            showLoading = true
-        ) {
-
-            if (
-                isLoading ||
-                isProcessing
-            ) {
-
-                return;
-
-            }
-
-
-            isLoading =
-                true;
-
-
-            if (showLoading) {
-
-                showElement(
-                    "#loadingState"
-                );
-
-                hideElement(
-                    "#errorState"
-                );
-
-                hideElement(
-                    "#emptyState"
-                );
-
-                hideElement(
-                    "#depositList"
-                );
-
-            }
-
-
-            const refreshButton =
-                getElement(
-                    "#refreshButton"
-                );
-
-
-            refreshButton?.classList.add(
-                "spinning"
-            );
-
-
-            setLiveStatus(
-                true,
-                "Loading..."
-            );
-
-
-            try {
-
-                /*
-                 * We intentionally request ALL deposits here.
-                 *
-                 * This allows:
-                 * - Pending summary to remain accurate.
-                 * - Search to work across all loaded records.
-                 * - Status filters to switch instantly.
-                 */
-
-                const response =
-                    await fetch(
-                        `${DEPOSITS_ENDPOINT}/?status=all`,
-                        {
-                            method:
-                                "GET",
-
-                            credentials:
-                                "include",
-
-                            headers: {
-                                Accept:
-                                    "application/json"
-                            },
-
-                            cache:
-                                "no-store"
-                        }
-                    );
-
-
-                if (
-                    response.status ===
-                    401
-                ) {
-
-                    window.location.href =
-                        "admin-login.html";
-
-                    return;
-
-                }
-
-
-                if (
-                    response.status ===
-                    403
-                ) {
-
-                    throw new Error(
-                        "Your Admin session is not authorized to access deposits."
-                    );
-
-                }
-
-
-                if (
-                    !response.ok
-                ) {
-
-                    throw new Error(
-                        `Deposit request failed with status ${response.status}.`
-                    );
-
-                }
-
-
-                const data =
-                    await response.json();
-
-
-                if (
-                    !data ||
-                    data.success !== true
-                ) {
-
-                    throw new Error(
-                        data?.message ||
-                        "FINORA could not load deposits."
-                    );
-
-                }
-
-
-                allDeposits =
-                    Array.isArray(
-                        data.deposits
-                    )
-                        ? data.deposits
-                        : [];
-
-
-                setLiveStatus(
-                    true,
-                    "Live"
-                );
-
-
-                updateSummary();
-
-
-                renderDeposits();
-
-
-                setText(
-                    "#lastUpdated",
-                    `Updated ${formatDate(new Date())}`
-                );
-
-
-                hideElement(
-                    "#errorState"
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "FINORA ADMIN DEPOSITS:",
-                    error
-                );
-
-
-                setLiveStatus(
-                    false,
-                    "Connection issue"
-                );
-
-
-                if (
-                    showLoading ||
-                    allDeposits.length ===
-                    0
-                ) {
-
-                    hideElement(
-                        "#loadingState"
-                    );
-
-                    hideElement(
-                        "#depositList"
-                    );
-
-                    hideElement(
-                        "#emptyState"
-                    );
-
-                    showElement(
-                        "#errorState"
-                    );
-
-
-                    setText(
-                        "#errorText",
-                        error.message ||
-                        "The deposit records could not be loaded."
-                    );
-
-                } else {
-
-                    showToast(
-                        error.message ||
-                        "Could not refresh deposits.",
-                        "error"
-                    );
-
-                }
-
-
-            } finally {
-
-                isLoading =
-                    false;
-
-
-                hideElement(
-                    "#loadingState"
-                );
-
-
-                refreshButton?.classList.remove(
-                    "spinning"
-                );
-
-            }
-
-        }
-
-
-
-        /* =========================================================
-           LIVE STATUS
-        ========================================================= */
-
-        function setLiveStatus(
-            online,
-            label
-        ) {
-
-            const indicator =
-                getElement(
-                    "#liveIndicator"
-                );
-
-
-            const text =
-                getElement(
-                    "#liveText"
-                );
-
-
-            if (!indicator) {
-
-                return;
-
-            }
-
-
-            indicator.classList.toggle(
-                "offline",
-                !online
-            );
-
-
-            if (text) {
-
-                text.textContent =
-                    label ||
-                    (
-                        online
-                            ? "Live"
-                            : "Offline"
-                    );
-
-            }
-
-        }
-
-
-
-        /* =========================================================
-           SUMMARY
-        ========================================================= */
-
-        function updateSummary() {
-
-            const pending =
-                allDeposits.filter(
-                    deposit =>
-                        deposit.status ===
-                        "pending"
-                );
-
-
-            const pendingAmount =
-                pending.reduce(
-                    (
-                        total,
-                        deposit
-                    ) => {
-
-                        return (
-                            total +
-                            (
-                                Number(
-                                    deposit.amount
-                                ) || 0
-                            )
-                        );
-
-                    },
-                    0
-                );
-
-
-            setText(
-                "#pendingCount",
-                pending.length
-            );
-
-
-            setText(
-                "#pendingAmount",
-                formatAmount(
-                    pendingAmount
-                )
-            );
-
-
-            const visible =
-                getVisibleDeposits();
-
-
-            setText(
-                "#showingCount",
-                visible.length
-            );
-
-        }
-
-
-
-        /* =========================================================
-           FILTERS
-        ========================================================= */
-
-        function initializeFilters() {
-
-            document
-                .querySelectorAll(
-                    ".filter-button"
-                )
-                .forEach(
-                    button => {
-
-                        button.addEventListener(
-                            "click",
-                            () => {
-
-                                currentFilter =
-                                    button.dataset.filter ||
-                                    "pending";
-
-
-                                document
-                                    .querySelectorAll(
-                                        ".filter-button"
-                                    )
-                                    .forEach(
-                                        item => {
-
-                                            item.classList.toggle(
-                                                "active",
-                                                item === button
-                                            );
-
-                                        }
-                                    );
-
-
-                                renderDeposits();
-
-                            }
-                        );
-
-                    }
-                );
-
-        }
-
-
-
-        /* =========================================================
-           SEARCH
-        ========================================================= */
-
-        function initializeSearch() {
-
-            const searchInput =
-                getElement(
-                    "#searchInput"
-                );
-
-
-            if (!searchInput) {
-
-                return;
-
-            }
-
-
-            searchInput.addEventListener(
-                "input",
-                event => {
-
-                    currentSearch =
-                        String(
-                            event.target.value ||
-                            ""
-                        )
-                            .trim()
-                            .toLowerCase();
-
-
-                    renderDeposits();
-
-                }
-            );
-
-        }
-
-
-
-        /* =========================================================
-           FILTER + SEARCH DATA
-        ========================================================= */
-
-        function getVisibleDeposits() {
-
-            return allDeposits.filter(
-                deposit => {
-
-                    const matchesStatus =
-                        currentFilter ===
-                        "all"
-                            ? true
-                            : deposit.status ===
-                              currentFilter;
-
-
-                    if (!matchesStatus) {
-
-                        return false;
-
-                    }
-
-
-                    if (!currentSearch) {
-
-                        return true;
-
-                    }
-
-
-                    const user =
-                        deposit.user ||
-                        {};
-
-
-                    const searchableText =
-                        [
-                            user.fullName,
-                            user.phone,
-                            user.email,
-                            user.referralCode,
-                            user.referredByCode,
-                            deposit.paymentReference,
-                            deposit.paymentMethod,
-                            deposit.merchantCode,
-                            deposit.amount,
-                            deposit.status
-                        ]
-                            .filter(
-                                value =>
-                                    value !==
-                                    null &&
-                                    value !==
-                                    undefined
-                            )
-                            .join(" ")
-                            .toLowerCase();
-
-
-                    return searchableText.includes(
-                        currentSearch
-                    );
-
-                }
-            );
-
-        }
-
-
-
-        /* =========================================================
-           RENDER
-        ========================================================= */
-
-        function renderDeposits() {
-
-            const visibleDeposits =
-                getVisibleDeposits();
-
-
-            const list =
-                getElement(
-                    "#depositList"
-                );
-
-
-            if (!list) {
-
-                return;
-
-            }
-
-
-            list.innerHTML =
-                "";
-
-
-            setText(
-                "#showingCount",
-                visibleDeposits.length
-            );
-
-
-            if (
-                visibleDeposits.length ===
+        const amount =
+            pendingDeposits.reduce(
+                (total, deposit) =>
+                    total +
+                    (Number(deposit.amount) || 0),
                 0
-            ) {
-
-                hideElement(
-                    "#depositList"
-                );
-
-                showElement(
-                    "#emptyState"
-                );
-
-
-                updateEmptyState();
-
-
-                return;
-
-            }
-
-
-            hideElement(
-                "#emptyState"
             );
 
+        pendingCount.textContent =
+            pendingDeposits.length
+                .toLocaleString();
 
-            visibleDeposits.forEach(
-                deposit => {
+        pendingAmount.textContent =
+            formatUGX(amount);
+    }
 
-                    list.appendChild(
-                        createDepositCard(
+
+    /* =========================================
+       FILTERING
+    ========================================= */
+
+    function getFilteredDeposits() {
+
+        const search =
+            searchInput.value
+                .trim()
+                .toLowerCase();
+
+        return allDeposits.filter(
+            deposit => {
+
+                const status =
+                    normalizeStatus(
+                        deposit.status
+                    );
+
+                if (
+                    activeFilter !== "all" &&
+                    status !== activeFilter
+                ) {
+                    return false;
+                }
+
+                if (!search) {
+                    return true;
+                }
+
+                const user =
+                    getUser(deposit);
+
+                const searchable = [
+                    user.fullName,
+                    user.phone,
+                    user.phoneNumber,
+                    user.email,
+                    deposit.paymentMethod,
+                    deposit.merchantCode,
+                    deposit.paymentReference,
+                    deposit.reference,
+                    deposit.amount,
+                    deposit.status
+                ]
+                    .filter(Boolean)
+                    .join(" ")
+                    .toLowerCase();
+
+                return searchable.includes(search);
+            }
+        );
+    }
+
+
+    /* =========================================
+       RENDER
+    ========================================= */
+
+    function renderDeposits() {
+
+        const deposits =
+            getFilteredDeposits();
+
+        showingCount.textContent =
+            deposits.length.toLocaleString();
+
+        resultText.textContent =
+            `${deposits.length.toLocaleString()} deposit${
+                deposits.length === 1 ? "" : "s"
+            }`;
+
+        if (!deposits.length) {
+
+            const hasSearch =
+                searchInput.value.trim();
+
+            let title =
+                "No pending deposits";
+
+            let message =
+                "There are currently no deposits waiting for approval.";
+
+            if (activeFilter === "approved") {
+                title = "No approved deposits";
+                message =
+                    "No approved deposits match the current search.";
+            }
+
+            if (activeFilter === "rejected") {
+                title = "No rejected deposits";
+                message =
+                    "No rejected deposits match the current search.";
+            }
+
+            if (activeFilter === "all") {
+                title = "No deposits found";
+                message =
+                    "No deposit records match the current search.";
+            }
+
+            if (hasSearch) {
+                title = "No matching deposits";
+                message =
+                    "Try another name, phone number, email or payment reference.";
+            }
+
+            depositList.innerHTML = `
+                <div class="state-box">
+
+                    <div class="state-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M12 3v18"></path>
+                            <path d="M5 8h14"></path>
+                            <path d="M5 16h14"></path>
+                        </svg>
+
+                    </div>
+
+                    <div class="state-title">
+                        ${escapeHtml(title)}
+                    </div>
+
+                    <div class="state-text">
+                        ${escapeHtml(message)}
+                    </div>
+
+                </div>
+            `;
+
+            return;
+        }
+
+        depositList.innerHTML =
+            deposits
+                .map(
+                    deposit =>
+                        renderDepositCard(
                             deposit
                         )
-                    );
+                )
+                .join("");
+    }
 
-                }
+
+    function renderDepositCard(deposit) {
+
+        const status =
+            normalizeStatus(
+                deposit.status
             );
 
+        const user =
+            getUser(deposit);
 
-            showElement(
-                "#depositList"
+        const accountStatus =
+            getAccountStatus(deposit);
+
+        const isFrozen =
+            accountStatus === "frozen";
+
+        const isPending =
+            status === "pending";
+
+        const statusClass =
+            status === "approved"
+                ? "status-approved"
+                : status === "rejected"
+                    ? "status-rejected"
+                    : "status-pending";
+
+        const statusText =
+            status
+                ? status.charAt(0).toUpperCase() +
+                  status.slice(1)
+                : "Unknown";
+
+        const amount =
+            formatUGX(
+                deposit.amount
             );
 
+        const network =
+            getPaymentMethod(deposit);
+
+        const merchant =
+            getMerchantCode(deposit);
+
+        const reference =
+            getReference(deposit);
+
+        const submitted =
+            formatDate(
+                deposit.createdAt
+            );
+
+        let warning = "";
+
+        if (isFrozen) {
+
+            warning = `
+                <div class="account-warning">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path
+                            d="M12 9v4"
+                        ></path>
+
+                        <path
+                            d="M12 17h.01"
+                        ></path>
+
+                        <path
+                            d="M10.3 3.7L2.6 17a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 3.7a2 2 0 0 0-3.4 0z"
+                        ></path>
+                    </svg>
+
+                    This user's account is frozen.
+                    Approval is disabled.
+                </div>
+            `;
         }
 
+        let actions = "";
 
+        if (isPending) {
 
-        /* =========================================================
-           EMPTY STATE
-        ========================================================= */
+            actions = `
+                <div class="actions">
 
-        function updateEmptyState() {
+                    <button
+                        class="action-btn approve-btn"
+                        data-action="approve"
+                        data-id="${escapeHtml(deposit._id)}"
+                        ${isFrozen ? "disabled" : ""}
+                    >
+                        Approve
+                    </button>
 
-            if (
-                currentFilter ===
-                "pending"
-            ) {
+                    <button
+                        class="action-btn reject-btn"
+                        data-action="reject"
+                        data-id="${escapeHtml(deposit._id)}"
+                    >
+                        Reject
+                    </button>
 
-                setText(
-                    "#emptyTitle",
-                    "No pending deposits"
-                );
-
-
-                setText(
-                    "#emptyText",
-                    currentSearch
-                        ? "No pending deposit matches your search."
-                        : "There are currently no deposit requests waiting for review."
-                );
-
-
-                return;
-
-            }
-
-
-            const label =
-                currentFilter ===
-                "all"
-                    ? "deposits"
-                    : `${currentFilter} deposits`;
-
-
-            setText(
-                "#emptyTitle",
-                `No ${label} found`
-            );
-
-
-            setText(
-                "#emptyText",
-                currentSearch
-                    ? "No deposit matches your search."
-                    : `There are currently no ${label} records.`
-            );
-
+                </div>
+            `;
         }
 
-
-
-        /* =========================================================
-           CREATE DEPOSIT CARD
-        ========================================================= */
-
-        function createDepositCard(
-            deposit
-        ) {
-
-            const card =
-                document.createElement(
-                    "article"
-                );
-
-
-            card.className =
-                "deposit-card";
-
-
-            const user =
-                deposit.user ||
-                {};
-
-
-            const name =
-                user.fullName ||
-                "Unknown User";
-
-
-            const phone =
-                user.phone ||
-                "Phone unavailable";
-
-
-            const email =
-                user.email ||
-                "Email unavailable";
-
-
-            const paymentMethod =
-                deposit.paymentMethod ||
-                "—";
-
-
-            const merchantCode =
-                deposit.merchantCode ||
-                "—";
-
-
-            const reference =
-                deposit.paymentReference ||
-                "—";
-
-
-            const amount =
-                Number(
-                    deposit.amount
-                ) || 0;
-
-
-            const status =
-                deposit.status ||
-                "pending";
-
-
-            const processedBy =
-                deposit.processedBy ||
-                "—";
-
-
-            const processedAt =
-                deposit.processedAt
-                    ? formatDate(
-                        deposit.processedAt
-                    )
-                    : "—";
-
-
-            const rejectionReason =
-                deposit.rejectionReason ||
-                "";
-
-
-            const walletBalance =
-                Number(
-                    user.balance
-                ) || 0;
-
-
-            const totalDeposit =
-                Number(
-                    user.totalDeposit
-                ) || 0;
-
-
-            const totalWithdrawal =
-                Number(
-                    user.totalWithdrawal
-                ) || 0;
-
-
-            const totalIncome =
-                Number(
-                    user.totalIncome
-                ) || 0;
-
-
-            const referralCode =
-                user.referralCode ||
-                "—";
-
-
-            const referredByCode =
-                user.referredByCode ||
-                "None";
-
-
-            const storedStatus =
-                user.status ||
-                "inactive";
-
-
-            const isFrozen =
-                storedStatus ===
-                "frozen";
-
-
-            if (isFrozen) {
-
-                card.classList.add(
-                    "frozen"
-                );
-
-            }
-
-
-            const statusClass =
-                status === "approved"
-                    ? "status-approved"
-                    : status === "rejected"
-                        ? "status-rejected"
-                        : "status-pending";
-
-
-            const statusLabel =
-                status.charAt(0).toUpperCase() +
-                status.slice(1);
-
-
-            const contactParts =
-                [
-                    phone,
-                    email
-                ]
-                    .filter(Boolean);
-
-
-            card.innerHTML = `
+        return `
+            <article
+                class="deposit-card ${
+                    isPending ? "pending" : ""
+                } ${
+                    isFrozen ? "frozen" : ""
+                }"
+            >
 
                 <!-- USER -->
 
-                <div class="record-top">
+                <div class="card-top">
 
                     <div class="user-block">
 
                         <div class="user-name">
-                            ${escapeHtml(name)}
+                            ${escapeHtml(
+                                getUserName(deposit)
+                            )}
                         </div>
 
                         <div class="user-contact">
 
-                            ${contactParts
-                                .map(
-                                    value =>
-                                        `<span>${escapeHtml(value)}</span>`
-                                )
-                                .join(
-                                    "<span>•</span>"
-                                )
-                            }
+                            <span>
+                                ${escapeHtml(
+                                    getUserPhone(deposit)
+                                )}
+                            </span>
+
+                            <span>
+                                ${escapeHtml(
+                                    getUserEmail(deposit)
+                                )}
+                            </span>
 
                         </div>
 
+                        ${warning}
+
                     </div>
 
-
-                    <span
+                    <div
                         class="status-badge ${statusClass}"
                     >
-                        ${escapeHtml(statusLabel)}
-                    </span>
-
-                </div>
-
-
-                ${
-                    isFrozen
-                        ? `
-
-                            <div class="frozen-warning">
-
-                                <span class="frozen-warning-icon">
-                                    !
-                                </span>
-
-                                <span>
-                                    This user's account is currently frozen.
-                                    The backend will not allow this deposit to be approved until the account is unfrozen.
-                                </span>
-
-                            </div>
-
-                        `
-                        : ""
-                }
-
-
-                <!-- AMOUNT -->
-
-                <div class="amount-line">
-
-                    <span class="amount-label">
-                        Deposit Amount
-                    </span>
-
-                    <span class="amount-value">
-                        ${escapeHtml(
-                            formatAmount(amount)
-                        )}
-                    </span>
+                        ${escapeHtml(statusText)}
+                    </div>
 
                 </div>
 
 
                 <!-- PAYMENT -->
 
-                <div class="info-section">
+                <div class="section-label">
+                    Payment
+                </div>
 
-                    <div class="section-caption">
+                <div class="payment-main">
 
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <rect
-                                x="3"
-                                y="5"
-                                width="18"
-                                height="14"
-                                rx="2"
-                            ></rect>
+                    <div>
 
-                            <path
-                                d="M3 10h18"
-                            ></path>
-                        </svg>
+                        <div class="amount-label">
+                            Amount
+                        </div>
 
-                        Payment Details
+                        <div class="amount">
+                            ${escapeHtml(amount)}
+                        </div>
+
+                    </div>
+
+                    <div class="network-badge">
+                        ${escapeHtml(network)}
+                    </div>
+
+                </div>
+
+
+                <div class="payment-grid">
+
+                    <div class="payment-item">
+
+                        <div class="payment-item-label">
+                            Merchant Code
+                        </div>
+
+                        <div class="payment-item-value">
+                            ${escapeHtml(merchant)}
+                        </div>
 
                     </div>
 
 
-                    <div class="details-grid">
+                    <div class="payment-item">
 
-                        <div class="detail">
-
-                            <span class="detail-label">
-                                Network
-                            </span>
-
-                            <span class="detail-value">
-                                ${getNetworkHtml(
-                                    paymentMethod
-                                )}
-                            </span>
-
+                        <div class="payment-item-label">
+                            Submitted
                         </div>
 
-
-                        <div class="detail">
-
-                            <span class="detail-label">
-                                Merchant Code
-                            </span>
-
-                            <span class="detail-value">
-                                ${escapeHtml(
-                                    merchantCode
-                                )}
-                            </span>
-
+                        <div class="payment-item-value">
+                            ${escapeHtml(submitted)}
                         </div>
 
+                    </div>
 
-                        <div class="detail">
 
-                            <span class="detail-label">
-                                Submitted
-                            </span>
+                    <div class="payment-item full">
 
-                            <span class="detail-value">
-                                ${escapeHtml(
-                                    formatDate(
-                                        deposit.createdAt
-                                    )
-                                )}
-                            </span>
-
+                        <div class="payment-item-label">
+                            Payment / Transaction Reference
                         </div>
 
-
-                        <div class="detail">
-
-                            <span class="detail-label">
-                                Deposit Status
-                            </span>
-
-                            <span class="detail-value ${
-                                status === "approved"
-                                    ? "green"
-                                    : status === "rejected"
-                                        ? "red"
-                                        : "gold"
-                            }">
-                                ${escapeHtml(
-                                    statusLabel
-                                )}
-                            </span>
-
+                        <div class="payment-item-value">
+                            ${escapeHtml(reference)}
                         </div>
 
+                    </div>
 
-                        <div class="detail reference-detail">
 
-                            <span class="detail-label">
-                                Transaction Reference
-                            </span>
+                    <div class="payment-item">
 
-                            <span class="detail-value reference-value">
-                                ${escapeHtml(reference)}
-                            </span>
+                        <div class="payment-item-label">
+                            Network
+                        </div>
 
+                        <div class="payment-item-value">
+                            ${escapeHtml(network)}
+                        </div>
+
+                    </div>
+
+
+                    <div class="payment-item">
+
+                        <div class="payment-item-label">
+                            Deposit Status
+                        </div>
+
+                        <div class="payment-item-value">
+                            ${escapeHtml(statusText)}
                         </div>
 
                     </div>
@@ -5267,1306 +2052,934 @@
                 </div>
 
 
-                <!-- ACCOUNT -->
+                ${actions}
 
-                <div class="info-section">
-
-                    <div class="section-caption">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path
-                                d="M20 21a8 8 0 0 0-16 0"
-                            ></path>
-
-                            <circle
-                                cx="12"
-                                cy="7"
-                                r="4"
-                            ></circle>
-                        </svg>
-
-                        User Account
-
-                    </div>
+            </article>
+        `;
+    }
 
 
-                    <div class="account-grid">
+    /* =========================================
+       LOADING STATE
+    ========================================= */
 
-                        <div class="account-stat">
+    function renderLoading() {
 
-                            <span class="account-stat-label">
-                                Wallet
-                            </span>
+        depositList.innerHTML = `
+            <div class="state-box">
 
-                            <span class="account-stat-value">
-                                ${escapeHtml(
-                                    formatAmount(
-                                        walletBalance
-                                    )
-                                )}
-                            </span>
+                <div class="state-icon">
 
-                        </div>
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path
+                            d="M12 2v4"
+                        ></path>
 
+                        <path
+                            d="M12 18v4"
+                        ></path>
 
-                        <div class="account-stat">
+                        <path
+                            d="M4.93 4.93l2.83 2.83"
+                        ></path>
 
-                            <span class="account-stat-label">
-                                Total Deposited
-                            </span>
+                        <path
+                            d="M16.24 16.24l2.83 2.83"
+                        ></path>
 
-                            <span class="account-stat-value">
-                                ${escapeHtml(
-                                    formatAmount(
-                                        totalDeposit
-                                    )
-                                )}
-                            </span>
+                        <path
+                            d="M2 12h4"
+                        ></path>
 
-                        </div>
+                        <path
+                            d="M18 12h4"
+                        ></path>
 
+                        <path
+                            d="M4.93 19.07l2.83-2.83"
+                        ></path>
 
-                        <div class="account-stat">
-
-                            <span class="account-stat-label">
-                                Total Withdrawn
-                            </span>
-
-                            <span class="account-stat-value">
-                                ${escapeHtml(
-                                    formatAmount(
-                                        totalWithdrawal
-                                    )
-                                )}
-                            </span>
-
-                        </div>
-
-
-                        <div class="account-stat">
-
-                            <span class="account-stat-label">
-                                Total Income
-                            </span>
-
-                            <span class="account-stat-value">
-                                ${escapeHtml(
-                                    formatAmount(
-                                        totalIncome
-                                    )
-                                )}
-                            </span>
-
-                        </div>
-
-                    </div>
+                        <path
+                            d="M16.24 7.76l2.83-2.83"
+                        ></path>
+                    </svg>
 
                 </div>
 
+                <div class="state-title">
+                    Loading deposits
+                </div>
 
-                <!-- REFERRAL -->
+                <div class="state-text">
+                    Getting the latest deposit records...
+                </div>
 
-                <div class="info-section">
-
-                    <div class="section-caption">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path
-                                d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
-                            ></path>
-
-                            <circle
-                                cx="9"
-                                cy="7"
-                                r="4"
-                            ></circle>
-
-                            <path
-                                d="M22 21v-2a4 4 0 0 0-3-3.87"
-                            ></path>
-
-                            <path
-                                d="M16 3.13a4 4 0 0 1 0 7.75"
-                            ></path>
-                        </svg>
-
-                        Referral Information
-
-                    </div>
+            </div>
+        `;
+    }
 
 
-                    <div class="referral-box">
+    /* =========================================
+       ERROR STATE
+    ========================================= */
 
-                        <div class="referral-item">
+    function renderError(message) {
 
-                            <span class="referral-label">
-                                User Referral Code
-                            </span>
+        depositList.innerHTML = `
+            <div class="state-box">
 
-                            <span class="referral-value">
-                                ${escapeHtml(
-                                    referralCode
-                                )}
-                            </span>
+                <div class="state-icon">
 
-                        </div>
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="9"
+                        ></circle>
 
-
-                        <div class="referral-item">
-
-                            <span class="referral-label">
-                                Referred By
-                            </span>
-
-                            <span class="referral-value">
-                                ${escapeHtml(
-                                    referredByCode
-                                )}
-                            </span>
-
-                        </div>
-
-
-                        ${
-                            referredByCode !==
-                            "None"
-                                ? `
-
-                                    <div class="referral-note">
-                                        This deposit's first-deposit referral check is handled automatically by the backend when the deposit is approved.
-                                    </div>
-
-                                  `
-                                : `
-
-                                    <div class="referral-note">
-                                        No referring code is recorded for this account.
-                                    </div>
-
-                                  `
-                        }
-
-                    </div>
+                        <path d="M12 8v5"></path>
+                        <path d="M12 16h.01"></path>
+                    </svg>
 
                 </div>
 
+                <div class="state-title">
+                    Deposits could not be loaded
+                </div>
 
-                <!-- ACTIONS -->
+                <div class="state-text">
+                    ${escapeHtml(message)}
+                </div>
 
-                ${
-                    status === "pending"
-                        ? `
+                <button
+                    class="retry-btn"
+                    id="retryButton"
+                >
+                    Try Again
+                </button>
 
-                            <div class="record-footer">
+            </div>
+        `;
 
-                                <div class="submitted-time">
+        const retryButton =
+            document.getElementById(
+                "retryButton"
+            );
 
-                                    Submitted
-                                    <strong>
-                                        ${escapeHtml(
-                                            formatDate(
-                                                deposit.createdAt
-                                            )
-                                        )}
-                                    </strong>
-
-                                </div>
-
-
-                                <div class="action-buttons">
-
-                                    <button
-                                        type="button"
-                                        class="action-button approve-button"
-                                        data-action="approve"
-                                        data-id="${escapeHtml(
-                                            deposit._id
-                                        )}"
-                                        ${
-                                            isFrozen
-                                                ? "disabled"
-                                                : ""
-                                        }
-                                    >
-                                        Approve
-                                    </button>
+        if (retryButton) {
+            retryButton.addEventListener(
+                "click",
+                loadDeposits
+            );
+        }
+    }
 
 
-                                    <button
-                                        type="button"
-                                        class="action-button reject-button"
-                                        data-action="reject"
-                                        data-id="${escapeHtml(
-                                            deposit._id
-                                        )}"
-                                    >
-                                        Reject
-                                    </button>
+    /* =========================================
+       LOAD DEPOSITS
+    ========================================= */
 
-                                </div>
+    async function loadDeposits() {
 
-                            </div>
-
-                        `
-                        : ""
-                }
-
-
-                ${
-                    status !== "pending"
-                        ? `
-
-                            <div class="processed-note">
-
-                                Processed by:
-                                <strong>
-                                    ${escapeHtml(
-                                        processedBy
-                                    )}
-                                </strong>
-
-                                ${
-                                    processedAt !== "—"
-                                        ? ` · ${escapeHtml(
-                                            processedAt
-                                        )}`
-                                        : ""
-                                }
-
-                                ${
-                                    status === "rejected" &&
-                                    rejectionReason
-                                        ? `<br>Reason: ${escapeHtml(
-                                            rejectionReason
-                                        )}`
-                                        : ""
-                                }
-
-                            </div>
-
-                        `
-                        : ""
-                }
-
-            `;
-
-
-            card
-                .querySelectorAll(
-                    "[data-action]"
-                )
-                .forEach(
-                    button => {
-
-                        button.addEventListener(
-                            "click",
-                            () => {
-
-                                const depositId =
-                                    button.dataset.id;
-
-
-                                const action =
-                                    button.dataset.action;
-
-
-                                const found =
-                                    allDeposits.find(
-                                        item =>
-                                            String(
-                                                item._id
-                                            ) ===
-                                            String(
-                                                depositId
-                                            )
-                                    );
-
-
-                                if (!found) {
-
-                                    showToast(
-                                        "Deposit record could not be found.",
-                                        "error"
-                                    );
-
-                                    return;
-
-                                }
-
-
-                                if (
-                                    action ===
-                                    "approve"
-                                ) {
-
-                                    openApproveModal(
-                                        found
-                                    );
-
-                                }
-
-
-                                if (
-                                    action ===
-                                    "reject"
-                                ) {
-
-                                    openRejectModal(
-                                        found
-                                    );
-
-                                }
-
-                            }
-                        );
-
-                    }
-                );
-
-
-            return card;
-
+        if (loading) {
+            return;
         }
 
-
-
-        /* =========================================================
-           MODALS
-        ========================================================= */
-
-        function initializeModals() {
-
-            getElement(
-                "#closeApproveModal"
-            )?.addEventListener(
-                "click",
-                closeApproveModal
-            );
-
-
-            getElement(
-                "#cancelApprove"
-            )?.addEventListener(
-                "click",
-                closeApproveModal
-            );
-
-
-            getElement(
-                "#confirmApprove"
-            )?.addEventListener(
-                "click",
-                approveSelectedDeposit
-            );
-
-
-            getElement(
-                "#closeRejectModal"
-            )?.addEventListener(
-                "click",
-                closeRejectModal
-            );
-
-
-            getElement(
-                "#cancelReject"
-            )?.addEventListener(
-                "click",
-                closeRejectModal
-            );
-
-
-            getElement(
-                "#confirmReject"
-            )?.addEventListener(
-                "click",
-                rejectSelectedDeposit
-            );
-
-
-            getElement(
-                "#rejectionReason"
-            )?.addEventListener(
-                "input",
-                event => {
-
-                    setText(
-                        "#reasonCount",
-                        `${event.target.value.length} / 500`
-                    );
-
-                }
-            );
-
-
-            document
-                .querySelectorAll(
-                    ".modal-backdrop"
-                )
-                .forEach(
-                    backdrop => {
-
-                        backdrop.addEventListener(
-                            "click",
-                            event => {
-
-                                if (
-                                    event.target ===
-                                    backdrop &&
-                                    !isProcessing
-                                ) {
-
-                                    backdrop.classList.add(
-                                        "hidden"
-                                    );
-
-
-                                    selectedDeposit =
-                                        null;
-
-                                }
-
-                            }
-                        );
-
-                    }
-                );
-
-
-            document.addEventListener(
-                "keydown",
-                event => {
-
-                    if (
-                        event.key ===
-                        "Escape"
-                    ) {
-
-                        closeApproveModal();
-
-                        closeRejectModal();
-
-                    }
-
-                }
-            );
-
-        }
-
-
-
-        /* =========================================================
-           APPROVE MODAL
-        ========================================================= */
-
-        function openApproveModal(
-            deposit
-        ) {
-
-            if (
-                !deposit ||
-                deposit.status !==
-                "pending"
-            ) {
-
-                showToast(
-                    "This deposit is no longer pending.",
-                    "error"
-                );
-
-
-                loadDeposits(
-                    false
-                );
-
-
-                return;
-
-            }
-
-
-            const user =
-                deposit.user ||
-                {};
-
-
-            if (
-                user.status ===
-                "frozen"
-            ) {
-
-                showToast(
-                    "This user's account is frozen. The deposit cannot be approved.",
-                    "error"
-                );
-
-
-                return;
-
-            }
-
-
-            selectedDeposit =
-                deposit;
-
-
-            setText(
-                "#approveUser",
-                user.fullName ||
-                "Unknown User"
-            );
-
-
-            setText(
-                "#approvePhone",
-                user.phone ||
-                "—"
-            );
-
-
-            setText(
-                "#approveNetwork",
-                deposit.paymentMethod ||
-                "—"
-            );
-
-
-            setText(
-                "#approveMerchant",
-                deposit.merchantCode ||
-                "—"
-            );
-
-
-            setText(
-                "#approveAmount",
-                formatAmount(
-                    deposit.amount
-                )
-            );
-
-
-            setText(
-                "#approveReference",
-                deposit.paymentReference ||
-                "—"
-            );
-
-
-            const referralNotice =
-                getElement(
-                    "#approveReferralNotice"
-                );
-
-
-            if (referralNotice) {
-
-                referralNotice.textContent =
-                    user.referredByCode
-                        ? "This account has a referring code. The existing backend will automatically perform the first-approved-deposit referral check during approval."
-                        : "No referring code is recorded. The deposit will still be processed normally.";
-
-            }
-
-
-            getElement(
-                "#approveModal"
-            )?.classList.remove(
-                "hidden"
-            );
-
-        }
-
-
-
-        function closeApproveModal() {
-
-            if (
-                isProcessing
-            ) {
-
-                return;
-
-            }
-
-
-            getElement(
-                "#approveModal"
-            )?.classList.add(
-                "hidden"
-            );
-
-
-            selectedDeposit =
-                null;
-
-        }
-
-
-
-        /* =========================================================
-           APPROVE DEPOSIT
-        ========================================================= */
-
-        async function approveSelectedDeposit() {
-
-            if (
-                !selectedDeposit ||
-                isProcessing
-            ) {
-
-                return;
-
-            }
-
-
-            const deposit =
-                selectedDeposit;
-
-
-            if (
-                deposit.status !==
-                "pending"
-            ) {
-
-                closeApproveModal();
-
-
-                showToast(
-                    "This deposit is no longer pending.",
-                    "error"
-                );
-
-
-                await loadDeposits(
-                    false
-                );
-
-
-                return;
-
-            }
-
-
-            if (
-                deposit.user?.status ===
-                "frozen"
-            ) {
-
-                closeApproveModal();
-
-
-                showToast(
-                    "This user's account is frozen. The deposit cannot be approved.",
-                    "error"
-                );
-
-
-                return;
-
-            }
-
-
-            isProcessing =
-                true;
-
-
-            const button =
-                getElement(
-                    "#confirmApprove"
-                );
-
-
-            if (button) {
-
-                button.disabled =
-                    true;
-
-                button.textContent =
-                    "Approving...";
-
-            }
-
-
-            try {
-
-                const response =
-                    await fetch(
-                        `${DEPOSITS_ENDPOINT}/${encodeURIComponent(
-                            deposit._id
-                        )}/approve`,
-                        {
-                            method:
-                                "POST",
-
-                            credentials:
-                                "include",
-
-                            headers: {
-                                Accept:
-                                    "application/json"
-                            }
+        loading = true;
+
+        refreshButton.classList.add(
+            "loading"
+        );
+
+        renderLoading();
+
+        try {
+
+            const response =
+                await fetch(
+                    `${DEPOSITS_ENDPOINT}/?status=all`,
+                    {
+                        method: "GET",
+                        credentials: "include",
+                        headers: {
+                            "Accept":
+                                "application/json"
                         }
-                    );
-
-
-                if (
-                    response.status ===
-                    401
-                ) {
-
-                    window.location.href =
-                        "admin-login.html";
-
-                    return;
-
-                }
-
-
-                const data =
-                    await response.json()
-                        .catch(
-                            () => ({})
-                        );
-
-
-                if (
-                    !response.ok ||
-                    data.success !== true
-                ) {
-
-                    throw new Error(
-                        data.message ||
-                        "Failed to approve deposit."
-                    );
-
-                }
-
-
-                closeApproveModal();
-
-
-                showToast(
-                    data.alreadyProcessed
-                        ? "This deposit was already approved and credited."
-                        : "Deposit approved, wallet credited and referral processing completed where applicable.",
-                    "success"
+                    }
                 );
 
+            if (response.status === 401) {
 
-                await loadDeposits(
-                    false
-                );
+                window.location.href =
+                    "admin-login.html";
 
-
-            } catch (error) {
-
-                console.error(
-                    "FINORA APPROVE DEPOSIT:",
-                    error
-                );
-
-
-                showToast(
-                    error.message ||
-                    "Failed to approve deposit.",
-                    "error"
-                );
-
-            } finally {
-
-                isProcessing =
-                    false;
-
-
-                if (button) {
-
-                    button.disabled =
-                        false;
-
-                    button.textContent =
-                        "Approve Deposit";
-
-                }
-
+                return;
             }
 
+            if (response.status === 403) {
+
+                throw new Error(
+                    "Admin access is required to view deposits."
+                );
+            }
+
+            if (!response.ok) {
+
+                let message =
+                    `Server returned ${response.status}.`;
+
+                try {
+
+                    const errorData =
+                        await response.json();
+
+                    if (errorData?.message) {
+                        message =
+                            errorData.message;
+                    }
+
+                } catch (_) {}
+
+                throw new Error(message);
+            }
+
+            const data =
+                await response.json();
+
+            if (
+                !data ||
+                !Array.isArray(data.deposits)
+            ) {
+                throw new Error(
+                    "Invalid deposit data received from the server."
+                );
+            }
+
+            allDeposits =
+                data.deposits;
+
+            updateSummary();
+            renderDeposits();
+
+            resultText.textContent =
+                `${getFilteredDeposits().length.toLocaleString()} deposit${
+                    getFilteredDeposits().length === 1
+                        ? ""
+                        : "s"
+                }`;
+
+        } catch (error) {
+
+            console.error(
+                "FINORA admin deposits error:",
+                error
+            );
+
+            pendingCount.textContent = "—";
+            pendingAmount.textContent = "—";
+            showingCount.textContent = "—";
+
+            resultText.textContent =
+                "Connection error";
+
+            renderError(
+                error.message ||
+                "Unable to connect to the FINORA server."
+            );
+
+        } finally {
+
+            loading = false;
+
+            refreshButton.classList.remove(
+                "loading"
+            );
+        }
+    }
+
+
+    /* =========================================
+       APPROVE MODAL
+    ========================================= */
+
+    function openApproveModal(deposit) {
+
+        selectedDeposit =
+            deposit;
+
+        approveDetails.innerHTML = `
+            <div class="modal-details-row">
+                <span>User</span>
+                <span>
+                    ${escapeHtml(
+                        getUserName(deposit)
+                    )}
+                </span>
+            </div>
+
+            <div class="modal-details-row">
+                <span>Amount</span>
+                <span>
+                    ${escapeHtml(
+                        formatUGX(
+                            deposit.amount
+                        )
+                    )}
+                </span>
+            </div>
+
+            <div class="modal-details-row">
+                <span>Network</span>
+                <span>
+                    ${escapeHtml(
+                        getPaymentMethod(deposit)
+                    )}
+                </span>
+            </div>
+
+            <div class="modal-details-row">
+                <span>Reference</span>
+                <span>
+                    ${escapeHtml(
+                        getReference(deposit)
+                    )}
+                </span>
+            </div>
+        `;
+
+        approveModal.classList.add(
+            "show"
+        );
+    }
+
+
+    function closeApproveModal() {
+
+        approveModal.classList.remove(
+            "show"
+        );
+
+        selectedDeposit = null;
+    }
+
+
+    /* =========================================
+       REJECT MODAL
+    ========================================= */
+
+    function openRejectModal(deposit) {
+
+        selectedDeposit =
+            deposit;
+
+        rejectDetails.innerHTML = `
+            <div class="modal-details-row">
+                <span>User</span>
+                <span>
+                    ${escapeHtml(
+                        getUserName(deposit)
+                    )}
+                </span>
+            </div>
+
+            <div class="modal-details-row">
+                <span>Amount</span>
+                <span>
+                    ${escapeHtml(
+                        formatUGX(
+                            deposit.amount
+                        )
+                    )}
+                </span>
+            </div>
+
+            <div class="modal-details-row">
+                <span>Reference</span>
+                <span>
+                    ${escapeHtml(
+                        getReference(deposit)
+                    )}
+                </span>
+            </div>
+        `;
+
+        rejectReason.value = "";
+
+        updateCharCount();
+
+        rejectModal.classList.add(
+            "show"
+        );
+
+        setTimeout(
+            () => rejectReason.focus(),
+            100
+        );
+    }
+
+
+    function closeRejectModal() {
+
+        rejectModal.classList.remove(
+            "show"
+        );
+
+        rejectReason.value = "";
+
+        updateCharCount();
+
+        selectedDeposit = null;
+    }
+
+
+    /* =========================================
+       APPROVE ACTION
+    ========================================= */
+
+    async function approveDeposit(
+        deposit
+    ) {
+
+        if (!deposit?._id) {
+            showToast(
+                "Invalid deposit record.",
+                "error"
+            );
+
+            return;
         }
 
+        const accountStatus =
+            getAccountStatus(deposit);
 
+        if (accountStatus === "frozen") {
 
-        /* =========================================================
-           REJECT MODAL
-        ========================================================= */
-
-        function openRejectModal(
-            deposit
-        ) {
-
-            if (
-                !deposit ||
-                deposit.status !==
-                "pending"
-            ) {
-
-                showToast(
-                    "This deposit is no longer pending.",
-                    "error"
-                );
-
-
-                loadDeposits(
-                    false
-                );
-
-
-                return;
-
-            }
-
-
-            selectedDeposit =
-                deposit;
-
-
-            const user =
-                deposit.user ||
-                {};
-
-
-            setText(
-                "#rejectUser",
-                user.fullName ||
-                "Unknown User"
+            showToast(
+                "Frozen users cannot have deposits approved.",
+                "error"
             );
 
-
-            setText(
-                "#rejectPhone",
-                user.phone ||
-                "—"
-            );
-
-
-            setText(
-                "#rejectAmount",
-                formatAmount(
-                    deposit.amount
-                )
-            );
-
-
-            setText(
-                "#rejectReference",
-                deposit.paymentReference ||
-                "—"
-            );
-
-
-            const reason =
-                getElement(
-                    "#rejectionReason"
-                );
-
-
-            if (reason) {
-
-                reason.value =
-                    "";
-
-            }
-
-
-            setText(
-                "#reasonCount",
-                "0 / 500"
-            );
-
-
-            getElement(
-                "#rejectModal"
-            )?.classList.remove(
-                "hidden"
-            );
-
-
-            setTimeout(
-                () => {
-
-                    reason?.focus();
-
-                },
-                100
-            );
-
+            return;
         }
 
+        confirmApprove.disabled =
+            true;
 
+        confirmApprove.textContent =
+            "Approving...";
 
-        function closeRejectModal() {
+        try {
 
-            if (
-                isProcessing
-            ) {
+            const response =
+                await fetch(
+                    `${DEPOSITS_ENDPOINT}/${encodeURIComponent(
+                        deposit._id
+                    )}/approve`,
+                    {
+                        method: "POST",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type":
+                                "application/json",
+                            "Accept":
+                                "application/json"
+                        },
+                        body: JSON.stringify({})
+                    }
+                );
+
+            if (response.status === 401) {
+
+                window.location.href =
+                    "admin-login.html";
 
                 return;
-
             }
 
+            const data =
+                await response.json()
+                    .catch(() => ({}));
 
-            getElement(
-                "#rejectModal"
-            )?.classList.add(
-                "hidden"
+            if (!response.ok) {
+
+                throw new Error(
+                    data.message ||
+                    "Deposit approval failed."
+                );
+            }
+
+            closeApproveModal();
+
+            showToast(
+                data.message ||
+                "Deposit approved successfully.",
+                "success"
             );
 
+            await loadDeposits();
 
-            selectedDeposit =
-                null;
+        } catch (error) {
 
+            console.error(
+                "Approve deposit error:",
+                error
+            );
+
+            showToast(
+                error.message ||
+                "Deposit approval failed.",
+                "error"
+            );
+
+        } finally {
+
+            confirmApprove.disabled =
+                false;
+
+            confirmApprove.textContent =
+                "Approve Deposit";
+        }
+    }
+
+
+    /* =========================================
+       REJECT ACTION
+    ========================================= */
+
+    async function rejectDeposit(
+        deposit
+    ) {
+
+        if (!deposit?._id) {
+            showToast(
+                "Invalid deposit record.",
+                "error"
+            );
+
+            return;
         }
 
+        const reason =
+            rejectReason.value.trim();
 
+        if (!reason) {
 
-        /* =========================================================
-           REJECT DEPOSIT
-        ========================================================= */
+            showToast(
+                "Please enter a rejection reason.",
+                "error"
+            );
 
-        async function rejectSelectedDeposit() {
+            rejectReason.focus();
 
-            if (
-                !selectedDeposit ||
-                isProcessing
-            ) {
-
-                return;
-
-            }
-
-
-            const reasonInput =
-                getElement(
-                    "#rejectionReason"
-                );
-
-
-            const reason =
-                String(
-                    reasonInput?.value ||
-                    ""
-                ).trim();
-
-
-            if (!reason) {
-
-                showToast(
-                    "Please enter a rejection reason.",
-                    "error"
-                );
-
-
-                reasonInput?.focus();
-
-
-                return;
-
-            }
-
-
-            if (
-                reason.length >
-                500
-            ) {
-
-                showToast(
-                    "The rejection reason must not exceed 500 characters.",
-                    "error"
-                );
-
-
-                return;
-
-            }
-
-
-            const deposit =
-                selectedDeposit;
-
-
-            if (
-                deposit.status !==
-                "pending"
-            ) {
-
-                closeRejectModal();
-
-
-                showToast(
-                    "This deposit is no longer pending.",
-                    "error"
-                );
-
-
-                await loadDeposits(
-                    false
-                );
-
-
-                return;
-
-            }
-
-
-            isProcessing =
-                true;
-
-
-            const button =
-                getElement(
-                    "#confirmReject"
-                );
-
-
-            if (button) {
-
-                button.disabled =
-                    true;
-
-                button.textContent =
-                    "Rejecting...";
-
-            }
-
-
-            try {
-
-                const response =
-                    await fetch(
-                        `${DEPOSITS_ENDPOINT}/${encodeURIComponent(
-                            deposit._id
-                        )}/reject`,
-                        {
-                            method:
-                                "POST",
-
-                            credentials:
-                                "include",
-
-                            headers: {
-
-                                "Content-Type":
-                                    "application/json",
-
-                                Accept:
-                                    "application/json"
-
-                            },
-
-                            body:
-                                JSON.stringify({
-                                    reason
-                                })
-                        }
-                    );
-
-
-                if (
-                    response.status ===
-                    401
-                ) {
-
-                    window.location.href =
-                        "admin-login.html";
-
-                    return;
-
-                }
-
-
-                const data =
-                    await response.json()
-                        .catch(
-                            () => ({})
-                        );
-
-
-                if (
-                    !response.ok ||
-                    data.success !== true
-                ) {
-
-                    throw new Error(
-                        data.message ||
-                        "Failed to reject deposit."
-                    );
-
-                }
-
-
-                closeRejectModal();
-
-
-                showToast(
-                    data.alreadyProcessed
-                        ? "This deposit was already rejected."
-                        : "Deposit rejected successfully.",
-                    "success"
-                );
-
-
-                await loadDeposits(
-                    false
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "FINORA REJECT DEPOSIT:",
-                    error
-                );
-
-
-                showToast(
-                    error.message ||
-                    "Failed to reject deposit.",
-                    "error"
-                );
-
-            } finally {
-
-                isProcessing =
-                    false;
-
-
-                if (button) {
-
-                    button.disabled =
-                        false;
-
-                    button.textContent =
-                        "Reject Deposit";
-
-                }
-
-            }
-
+            return;
         }
 
+        if (reason.length > 500) {
 
+            showToast(
+                "Rejection reason cannot exceed 500 characters.",
+                "error"
+            );
 
-        /* =========================================================
-           TOAST
-        ========================================================= */
+            return;
+        }
 
-        function showToast(
-            message,
-            type
-        ) {
+        confirmReject.disabled =
+            true;
 
-            const toast =
-                getElement(
-                    "#toast"
+        confirmReject.textContent =
+            "Rejecting...";
+
+        try {
+
+            const response =
+                await fetch(
+                    `${DEPOSITS_ENDPOINT}/${encodeURIComponent(
+                        deposit._id
+                    )}/reject`,
+                    {
+                        method: "POST",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type":
+                                "application/json",
+                            "Accept":
+                                "application/json"
+                        },
+                        body: JSON.stringify({
+                            reason
+                        })
+                    }
                 );
 
+            if (response.status === 401) {
 
-            const icon =
-                getElement(
-                    "#toastIcon"
-                );
-
-
-            const text =
-                getElement(
-                    "#toastMessage"
-                );
-
-
-            if (
-                !toast ||
-                !text
-            ) {
+                window.location.href =
+                    "admin-login.html";
 
                 return;
-
             }
 
+            const data =
+                await response.json()
+                    .catch(() => ({}));
 
-            clearTimeout(
-                toastTimer
-            );
+            if (!response.ok) {
 
-
-            toast.classList.remove(
-                "success",
-                "error",
-                "show"
-            );
-
-
-            toast.classList.add(
-                type === "error"
-                    ? "error"
-                    : "success"
-            );
-
-
-            if (icon) {
-
-                icon.textContent =
-                    type === "error"
-                        ? "!"
-                        : "✓";
-
+                throw new Error(
+                    data.message ||
+                    "Deposit rejection failed."
+                );
             }
 
+            closeRejectModal();
 
-            text.textContent =
-                message;
-
-
-            requestAnimationFrame(
-                () => {
-
-                    toast.classList.add(
-                        "show"
-                    );
-
-                }
+            showToast(
+                data.message ||
+                "Deposit rejected successfully.",
+                "success"
             );
 
+            await loadDeposits();
 
-            toastTimer =
+        } catch (error) {
+
+            console.error(
+                "Reject deposit error:",
+                error
+            );
+
+            showToast(
+                error.message ||
+                "Deposit rejection failed.",
+                "error"
+            );
+
+        } finally {
+
+            confirmReject.disabled =
+                false;
+
+            confirmReject.textContent =
+                "Reject Deposit";
+        }
+    }
+
+
+    /* =========================================
+       TOAST
+    ========================================= */
+
+    function showToast(
+        message,
+        type = "success"
+    ) {
+
+        const container =
+            document.getElementById(
+                "toastContainer"
+            );
+
+        const toast =
+            document.createElement(
+                "div"
+            );
+
+        toast.className =
+            `toast ${type}`;
+
+        toast.textContent =
+            message;
+
+        container.appendChild(
+            toast
+        );
+
+        requestAnimationFrame(
+            () => {
+                toast.classList.add(
+                    "show"
+                );
+            }
+        );
+
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
                 setTimeout(
+                    () => toast.remove(),
+                    250
+                );
+
+            },
+            3500
+        );
+    }
+
+
+    /* =========================================
+       CHARACTER COUNT
+    ========================================= */
+
+    function updateCharCount() {
+
+        const length =
+            rejectReason.value.length;
+
+        charCount.textContent =
+            `${length} / 500`;
+    }
+
+
+    /* =========================================
+       EVENTS
+    ========================================= */
+
+    document
+        .getElementById("backButton")
+        .addEventListener(
+            "click",
+            () => {
+                window.location.href =
+                    "admin.html";
+            }
+        );
+
+
+    refreshButton.addEventListener(
+        "click",
+        loadDeposits
+    );
+
+
+    searchInput.addEventListener(
+        "input",
+        renderDeposits
+    );
+
+
+    document
+        .querySelectorAll(
+            ".filter-btn"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
                     () => {
 
-                        toast.classList.remove(
-                            "show"
+                        document
+                            .querySelectorAll(
+                                ".filter-btn"
+                            )
+                            .forEach(
+                                item =>
+                                    item.classList.remove(
+                                        "active"
+                                    )
+                            );
+
+                        button.classList.add(
+                            "active"
                         );
 
-                    },
-                    4000
+                        activeFilter =
+                            button.dataset.filter;
+
+                        renderDeposits();
+                    }
+                );
+            }
+        );
+
+
+    depositList.addEventListener(
+        "click",
+        event => {
+
+            const button =
+                event.target.closest(
+                    "button[data-action]"
                 );
 
+            if (!button) {
+                return;
+            }
+
+            const id =
+                button.dataset.id;
+
+            const deposit =
+                allDeposits.find(
+                    item =>
+                        String(item._id) ===
+                        String(id)
+                );
+
+            if (!deposit) {
+
+                showToast(
+                    "Deposit record could not be found.",
+                    "error"
+                );
+
+                return;
+            }
+
+            const action =
+                button.dataset.action;
+
+            if (action === "approve") {
+                openApproveModal(
+                    deposit
+                );
+            }
+
+            if (action === "reject") {
+                openRejectModal(
+                    deposit
+                );
+            }
         }
+    );
 
-    </script>
 
+    document
+        .getElementById("cancelApprove")
+        .addEventListener(
+            "click",
+            closeApproveModal
+        );
+
+
+    document
+        .getElementById("cancelReject")
+        .addEventListener(
+            "click",
+            closeRejectModal
+        );
+
+
+    confirmApprove.addEventListener(
+        "click",
+        () => {
+
+            if (selectedDeposit) {
+                approveDeposit(
+                    selectedDeposit
+                );
+            }
+        }
+    );
+
+
+    confirmReject.addEventListener(
+        "click",
+        () => {
+
+            if (selectedDeposit) {
+                rejectDeposit(
+                    selectedDeposit
+                );
+            }
+        }
+    );
+
+
+    rejectReason.addEventListener(
+        "input",
+        updateCharCount
+    );
+
+
+    approveModal.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                approveModal
+            ) {
+                closeApproveModal();
+            }
+        }
+    );
+
+
+    rejectModal.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                rejectModal
+            ) {
+                closeRejectModal();
+            }
+        }
+    );
+
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                closeApproveModal();
+                closeRejectModal();
+            }
+        }
+    );
+
+
+    /* =========================================
+       AUTO REFRESH
+    ========================================= */
+
+    setInterval(
+        () => {
+
+            if (
+                document.visibilityState ===
+                "visible"
+            ) {
+                loadDeposits();
+            }
+
+        },
+        60000
+    );
+
+
+    /* =========================================
+       INITIAL LOAD
+    ========================================= */
+
+    loadDeposits();
+
+</script>
 
 </body>
-
 </html>
