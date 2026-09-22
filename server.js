@@ -340,7 +340,25 @@ app.get(
 /* =========================================================
    FINORA ADMIN PAGES
 ========================================================= */
+app.get(
+    "/admin-deposits.html",
+    requireAdmin,
+    (req, res) => {
+        res.sendFile(
+            path.join(__dirname, "admin-deposits.html")
+        );
+    }
+);
 
+app.get(
+    "/admin-withdrawals.html",
+    requireAdmin,
+    (req, res) => {
+        res.sendFile(
+            path.join(__dirname, "admin-withdrawals.html")
+        );
+    }
+);
 app.get(
     "/admin-users.html",
     requireAdmin,
