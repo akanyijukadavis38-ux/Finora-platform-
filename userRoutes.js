@@ -5,6 +5,9 @@ const User = require("./user");
 const Investment = require("./investment");
 const Transaction = require("./Transaction");
 const ReferralCommission = require("./ReferralCommission");
+const {
+    getEffectiveUserStatus
+} = require("./userStatus");
 
 const router = express.Router();
 
@@ -319,10 +322,6 @@ router.post("/register", async (req, res) => {
         } = req.body;
 
 
-        /* =================================================
-           BASIC VALIDATION
-        ================================================= */
-
         if (
             !fullName ||
             !phone ||
@@ -339,10 +338,6 @@ router.post("/register", async (req, res) => {
 
         }
 
-
-        /* =================================================
-           CLEAN VALUES
-        ================================================= */
 
         const cleanName =
             String(fullName).trim();
@@ -362,10 +357,6 @@ router.post("/register", async (req, res) => {
                     .toUpperCase()
                 : null;
 
-
-        /* =================================================
-           VALIDATION
-        ================================================= */
 
         if (
             cleanName.length < 2
@@ -547,7 +538,10 @@ router.post("/register", async (req, res) => {
 
                 referredByCode:
                     cleanReferralCode ||
-                    null
+                    null,
+
+                status:
+                    "inactive"
 
             });
 
@@ -588,7 +582,9 @@ router.post("/register", async (req, res) => {
         /* =================================================
            SUCCESS RESPONSE
 
-           New account has no investments or earnings yet.
+           New account is inactive until the user has:
+           1. Approved qualifying deposit
+           2. Investment
         ================================================= */
 
         return res.status(201).json({
@@ -685,7 +681,7 @@ router.post("/register", async (req, res) => {
                     0,
 
                 status:
-                    user.status,
+                    "inactive",
 
                 createdAt:
                     user.createdAt
@@ -702,10 +698,6 @@ router.post("/register", async (req, res) => {
             error
         );
 
-
-        /* =================================================
-           DUPLICATE DATABASE ENTRY
-        ================================================= */
 
         if (
             error &&
@@ -967,10 +959,21 @@ router.post("/login", async (req, res) => {
            LOAD REAL DASHBOARD STATISTICS
         ================================================= */
 
-        const statistics =
-            await getDashboardStatistics(
-                user._id
-            );
+        const [
+            statistics,
+            effectiveStatus
+        ] =
+            await Promise.all([
+
+                getDashboardStatistics(
+                    user._id
+                ),
+
+                getEffectiveUserStatus(
+                    user
+                )
+
+            ]);
 
 
         /* =================================================
@@ -1081,7 +1084,7 @@ router.post("/login", async (req, res) => {
                     statistics.todayEarnings,
 
                 status:
-                    user.status,
+                    effectiveStatus,
 
                 createdAt:
                     user.createdAt
@@ -1197,13 +1200,24 @@ router.get("/me", async (req, res) => {
 
 
         /* =================================================
-           LOAD REAL DASHBOARD STATISTICS
+           LOAD REAL DASHBOARD STATISTICS + STATUS
         ================================================= */
 
-        const statistics =
-            await getDashboardStatistics(
-                user._id
-            );
+        const [
+            statistics,
+            effectiveStatus
+        ] =
+            await Promise.all([
+
+                getDashboardStatistics(
+                    user._id
+                ),
+
+                getEffectiveUserStatus(
+                    user
+                )
+
+            ]);
 
 
         /* =================================================
@@ -1356,7 +1370,7 @@ router.get("/me", async (req, res) => {
 
 
                 status:
-                    user.status,
+                    effectiveStatus,
 
                 createdAt:
                     user.createdAt
@@ -1553,7 +1567,7 @@ router.get("/team", async (req, res) => {
         ================================================= */
 
         const formatMember =
-            (user, level) => {
+            async (user, level) => {
 
                 const totalDeposit =
                     Number(
@@ -1561,10 +1575,10 @@ router.get("/team", async (req, res) => {
                     ) || 0;
 
 
-                const depositStatus =
-                    totalDeposit > 0
-                        ? "Active"
-                        : "Inactive";
+                const effectiveStatus =
+                    await getEffectiveUserStatus(
+                        user
+                    );
 
 
                 return {
@@ -1602,7 +1616,7 @@ router.get("/team", async (req, res) => {
                         totalDeposit,
 
                     status:
-                        depositStatus,
+                        effectiveStatus,
 
                     level,
 
@@ -1620,28 +1634,34 @@ router.get("/team", async (req, res) => {
 
         const members = [
 
-            ...levelOneUsers.map(
-                user =>
-                    formatMember(
-                        user,
-                        1
-                    )
+            ...await Promise.all(
+                levelOneUsers.map(
+                    user =>
+                        formatMember(
+                            user,
+                            1
+                        )
+                )
             ),
 
-            ...levelTwoUsers.map(
-                user =>
-                    formatMember(
-                        user,
-                        2
-                    )
+            ...await Promise.all(
+                levelTwoUsers.map(
+                    user =>
+                        formatMember(
+                            user,
+                            2
+                        )
+                )
             ),
 
-            ...levelThreeUsers.map(
-                user =>
-                    formatMember(
-                        user,
-                        3
-                    )
+            ...await Promise.all(
+                levelThreeUsers.map(
+                    user =>
+                        formatMember(
+                            user,
+                            3
+                        )
+                )
             )
 
         ];
@@ -1727,10 +1747,6 @@ router.post(
 
         try {
 
-            /* =================================================
-               AUTHENTICATION
-            ================================================= */
-
             if (
                 !req.session ||
                 !req.session.userId
@@ -1748,10 +1764,6 @@ router.post(
 
             }
 
-
-            /* =================================================
-               GET USER
-            ================================================= */
 
             const user =
                 await User.findById(
@@ -1774,10 +1786,6 @@ router.post(
             }
 
 
-            /* =================================================
-               FROZEN ACCOUNT
-            ================================================= */
-
             if (
                 user.status === "frozen"
             ) {
@@ -1799,20 +1807,12 @@ router.post(
             }
 
 
-            /* =================================================
-               GET PASSWORDS
-            ================================================= */
-
             const {
                 currentPassword,
                 newPassword,
                 confirmPassword
             } = req.body;
 
-
-            /* =================================================
-               REQUIRED FIELDS
-            ================================================= */
 
             if (
                 !currentPassword ||
@@ -1833,10 +1833,6 @@ router.post(
             }
 
 
-            /* =================================================
-               PASSWORD LENGTH
-            ================================================= */
-
             if (
                 String(
                     newPassword
@@ -1856,10 +1852,6 @@ router.post(
             }
 
 
-            /* =================================================
-               CONFIRM PASSWORD
-            ================================================= */
-
             if (
                 newPassword !==
                 confirmPassword
@@ -1877,10 +1869,6 @@ router.post(
 
             }
 
-
-            /* =================================================
-               VERIFY CURRENT PASSWORD
-            ================================================= */
 
             const passwordMatches =
                 await bcrypt.compare(
@@ -1903,10 +1891,6 @@ router.post(
 
             }
 
-
-            /* =================================================
-               PREVENT SAME PASSWORD
-            ================================================= */
 
             const samePassword =
                 await bcrypt.compare(
@@ -1932,10 +1916,6 @@ router.post(
             }
 
 
-            /* =================================================
-               HASH NEW PASSWORD
-            ================================================= */
-
             const hashedPassword =
                 await bcrypt.hash(
                     newPassword,
@@ -1943,20 +1923,12 @@ router.post(
                 );
 
 
-            /* =================================================
-               UPDATE PASSWORD
-            ================================================= */
-
             user.password =
                 hashedPassword;
 
 
             await user.save();
 
-
-            /* =================================================
-               SUCCESS
-            ================================================= */
 
             return res.status(200).json({
 
@@ -2010,10 +1982,6 @@ router.post(
             } = req.body;
 
 
-            /* =================================================
-               REQUIRED FIELDS
-            ================================================= */
-
             if (
                 !identifier ||
                 !newPassword ||
@@ -2033,19 +2001,11 @@ router.post(
             }
 
 
-            /* =================================================
-               CLEAN IDENTIFIER
-            ================================================= */
-
             const cleanIdentifier =
                 String(
                     identifier
                 ).trim();
 
-
-            /* =================================================
-               PASSWORD LENGTH
-            ================================================= */
 
             if (
                 String(
@@ -2066,10 +2026,6 @@ router.post(
             }
 
 
-            /* =================================================
-               CONFIRM PASSWORD
-            ================================================= */
-
             if (
                 newPassword !==
                 confirmPassword
@@ -2087,10 +2043,6 @@ router.post(
 
             }
 
-
-            /* =================================================
-               FIND EXISTING ACCOUNT
-            ================================================= */
 
             let user;
 
@@ -2116,10 +2068,6 @@ router.post(
             }
 
 
-            /* =================================================
-               ACCOUNT NOT FOUND
-            ================================================= */
-
             if (!user) {
 
                 return res.status(404).json({
@@ -2134,10 +2082,6 @@ router.post(
 
             }
 
-
-            /* =================================================
-               FROZEN ACCOUNT
-            ================================================= */
 
             if (
                 user.status === "frozen"
@@ -2155,10 +2099,6 @@ router.post(
 
             }
 
-
-            /* =================================================
-               PREVENT SAME PASSWORD
-            ================================================= */
 
             const samePassword =
                 await bcrypt.compare(
@@ -2184,20 +2124,12 @@ router.post(
             }
 
 
-            /* =================================================
-               HASH NEW PASSWORD
-            ================================================= */
-
             const hashedPassword =
                 await bcrypt.hash(
                     newPassword,
                     12
                 );
 
-
-            /* =================================================
-               UPDATE EXISTING ACCOUNT
-            ================================================= */
 
             user.password =
                 hashedPassword;
@@ -2212,10 +2144,6 @@ router.post(
 
             await user.save();
 
-
-            /* =================================================
-               SUCCESS
-            ================================================= */
 
             return res.status(200).json({
 
