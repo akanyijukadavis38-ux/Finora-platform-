@@ -247,11 +247,16 @@ app.use(
     "/api/admin",
     adminRoutes
 );
+
+app.use(
+    "/api/admin/deposits",
+    adminDepositRoutes
+);
+
 app.use(
     "/api/admin/withdrawals",
     adminWithdrawalRoutes
 );
-app.use("/api/admin", adminRoutes);
 app.get(
     "/admin-login.html",
     (req, res) => {
