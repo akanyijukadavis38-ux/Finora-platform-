@@ -350,7 +350,15 @@ app.get(
         );
     }
 );
-
+app.get(
+    "/admin-users.css",
+    requireAdmin,
+    (req, res) => {
+        res.sendFile(
+            path.join(__dirname, "admin-users.css")
+        );
+    }
+);
 app.get(
     "/admin-finance.html",
     requireAdmin,
