@@ -1574,8 +1574,13 @@
 
 
             const investment =
-                user.investment ||
-                null;
+                user.latestInvestment ||
+                (
+                    Array.isArray(user.investments) &&
+                    user.investments.length > 0
+                        ? user.investments[0]
+                        : null
+                );
 
 
             document.getElementById(
@@ -1837,6 +1842,7 @@
 
 
             const dailyEarning =
+                investment.dailyEarnings ??
                 investment.dailyEarning ??
                 investment.dailyProfit ??
                 null;
