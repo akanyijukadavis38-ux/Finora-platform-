@@ -9,6 +9,7 @@ const Investment = require("./investment");
 const Deposit = require("./Deposit");
 const Withdrawal = require("./Withdrawal");
 const Transaction = require("./Transaction");
+const Notification = require("./Notification");
 const requireAdmin = require("./adminAuth");
 const {
     getEffectiveUserStatus
@@ -228,10 +229,6 @@ router.get(
 
             /* =============================================
                FINANCIAL TOTALS
-
-               These are calculated from real records,
-               not User.totalDeposit or other cached
-               summary fields.
             ============================================= */
 
             const [
@@ -405,9 +402,6 @@ router.get(
 
             /* =============================================
                FORMAT RECENT ACTIVITY
-
-               Keep the response compact for the
-               Admin Overview frontend.
             ============================================= */
 
             const recentActivity =
@@ -1081,26 +1075,6 @@ router.get(
 
 /* =========================================================
 ADMIN — GET ALL USERS
-
-Account lifecycle:
-
-REGISTERED
-    ↓
-INACTIVE
-    ↓
-APPROVED DEPOSIT >= UGX 10,000
-    +
-INVESTMENT
-    ↓
-ACTIVE
-
-Frozen users remain frozen regardless of investment status.
-
-Investment information comes from the REAL Investment
-collection.
-
-Deposit qualification comes from the REAL Deposit
-collection.
 ========================================================= */
 
 router.get(
@@ -1678,28 +1652,6 @@ router.patch(
         }
     }
 );
-/* =========================================================
-ADMIN — WITHDRAWALS
-
-Withdrawal accounting:
-
-User requests UGX 4,000
-        ↓
-Wallet immediately deducts UGX 4,000
-        ↓
-15% fee = UGX 600
-        ↓
-Net payout = UGX 3,400
-
-APPROVE:
-    Admin sends UGX 3,400
-    Wallet is NOT deducted again.
-
-REJECT:
-    Full UGX 4,000 is returned to wallet.
-
-Only pending withdrawals may be processed.
-========================================================= */
 
 
 /* =========================================================
@@ -1928,10 +1880,6 @@ router.patch(
                     }
 
 
-                    /* =====================================
-                       ONLY PENDING CAN BE APPROVED
-                    ===================================== */
-
                     if (
                         withdrawal.status !==
                         "pending"
@@ -1965,10 +1913,6 @@ router.patch(
                     }
 
 
-                    /* =====================================
-                       FROZEN USERS CANNOT BE PAID
-                    ===================================== */
-
                     if (
                         user.status ===
                         "frozen"
@@ -1984,10 +1928,6 @@ router.patch(
                         throw error;
                     }
 
-
-                    /* =====================================
-                       WALLET MUST ALREADY HAVE BEEN DEDUCTED
-                    ===================================== */
 
                     if (
                         withdrawal.walletDeducted !==
@@ -2084,32 +2024,29 @@ router.patch(
 
                     }
 
-if (!withdrawalTransaction) {
 
-    const error =
-        new Error(
-            "This withdrawal cannot be approved because its original withdrawal transaction could not be found."
-        );
+                    if (!withdrawalTransaction) {
 
-    error.statusCode = 409;
+                        const error =
+                            new Error(
+                                "This withdrawal cannot be approved because its original withdrawal transaction could not be found."
+                            );
 
-    throw error;
-}
-                    if (
-                        withdrawalTransaction
-                    ) {
+                        error.statusCode = 409;
 
-                        withdrawalTransaction.status =
-                            "completed";
-
-                        withdrawalTransaction.description =
-                            `Withdrawal payout approved. UGX ${netAmount.toLocaleString("en-US")} sent after 15% withdrawal fee.`;
-
-                        await withdrawalTransaction.save({
-                            session
-                        });
-
+                        throw error;
                     }
+
+
+                    withdrawalTransaction.status =
+                        "completed";
+
+                    withdrawalTransaction.description =
+                        `Withdrawal payout approved. UGX ${netAmount.toLocaleString("en-US")} sent after 15% withdrawal fee.`;
+
+                    await withdrawalTransaction.save({
+                        session
+                    });
 
 
                     /* =====================================
@@ -2140,6 +2077,68 @@ if (!withdrawalTransaction) {
                     await withdrawal.save({
                         session
                     });
+
+
+                    /* =====================================
+                       USER NOTIFICATION
+                    ===================================== */
+
+                    await Notification.create(
+                        [
+                            {
+
+                                userId:
+                                    user._id,
+
+                                type:
+                                    "withdrawal_approved",
+
+                                title:
+                                    "Withdrawal Approved",
+
+                                message:
+                                    `Your UGX ${amount.toLocaleString("en-US")} withdrawal has been approved. UGX ${netAmount.toLocaleString("en-US")} is the net payout after the 15% withdrawal fee.`,
+
+                                isRead:
+                                    false
+
+                            }
+                        ],
+                        {
+                            session
+                        }
+                    );
+
+
+                    /* =====================================
+                       ADMIN NOTIFICATION
+                    ===================================== */
+
+                    await Notification.create(
+                        [
+                            {
+
+                                adminId:
+                                    req.admin._id,
+
+                                type:
+                                    "withdrawal_approved",
+
+                                title:
+                                    "Withdrawal Approved",
+
+                                message:
+                                    `UGX ${amount.toLocaleString("en-US")} withdrawal from ${user.fullName} (${user.phone}) was approved. Net payout: UGX ${netAmount.toLocaleString("en-US")}.`,
+
+                                isRead:
+                                    false
+
+                            }
+                        ],
+                        {
+                            session
+                        }
+                    );
 
 
                     approvedWithdrawal =
@@ -2259,10 +2258,6 @@ router.patch(
                     }
 
 
-                    /* =====================================
-                       ONLY PENDING CAN BE REJECTED
-                    ===================================== */
-
                     if (
                         withdrawal.status !==
                         "pending"
@@ -2304,12 +2299,6 @@ router.patch(
 
                     /* =====================================
                        REFUND FULL REQUESTED AMOUNT
-
-                       Example:
-                       Requested = 4,000
-                       Refund = 4,000
-
-                       NOT 3,400.
                     ===================================== */
 
                     if (
@@ -2335,11 +2324,6 @@ router.patch(
                             ) || 0
                         ) + amount;
 
-
-                    /* =====================================
-                       KEEP CACHED WITHDRAWAL TOTAL
-                       CONSISTENT WITH THE REJECTED REQUEST
-                    ===================================== */
 
                     user.totalWithdrawal =
                         Math.max(
@@ -2432,9 +2416,6 @@ router.patch(
 
                     /* =====================================
                        CREATE REFUND TRANSACTION
-
-                       This gives the wallet refund its own
-                       clear financial record.
                     ===================================== */
 
                     await Transaction.create(
@@ -2494,6 +2475,68 @@ router.patch(
                     });
 
 
+                    /* =====================================
+                       USER NOTIFICATION
+                    ===================================== */
+
+                    await Notification.create(
+                        [
+                            {
+
+                                userId:
+                                    user._id,
+
+                                type:
+                                    "withdrawal_rejected",
+
+                                title:
+                                    "Withdrawal Rejected",
+
+                                message:
+                                    `Your UGX ${amount.toLocaleString("en-US")} withdrawal was rejected. The full amount has been returned to your FINORA wallet. Reason: ${withdrawal.rejectionReason}`,
+
+                                isRead:
+                                    false
+
+                            }
+                        ],
+                        {
+                            session
+                        }
+                    );
+
+
+                    /* =====================================
+                       ADMIN NOTIFICATION
+                    ===================================== */
+
+                    await Notification.create(
+                        [
+                            {
+
+                                adminId:
+                                    req.admin._id,
+
+                                type:
+                                    "withdrawal_rejected",
+
+                                title:
+                                    "Withdrawal Rejected",
+
+                                message:
+                                    `UGX ${amount.toLocaleString("en-US")} withdrawal from ${user.fullName} (${user.phone}) was rejected. Full amount refunded to the user's wallet. Reason: ${withdrawal.rejectionReason}`,
+
+                                isRead:
+                                    false
+
+                            }
+                        ],
+                        {
+                            session
+                        }
+                    );
+
+
                     refundedAmount =
                         amount;
 
@@ -2546,6 +2589,8 @@ router.patch(
         }
     }
 );
+
+
 /* =========================================================
 ADMIN — GET TRANSACTIONS
 ========================================================= */
@@ -2662,6 +2707,8 @@ router.get(
 
     }
 );
+
+
 /* =========================================================
 FORGOT PASSWORD — VERIFY RECOVERY KEY
 ========================================================= */
@@ -3038,6 +3085,8 @@ router.post(
         }
     }
 );
+
+
 /* =========================================================
 ADMIN — CHANGE PASSWORD
 ========================================================= */
@@ -3065,10 +3114,6 @@ router.patch(
                 );
 
 
-            /* =============================================
-               REQUIRED FIELDS
-            ============================================= */
-
             if (
                 !currentPassword ||
                 !newPassword ||
@@ -3085,10 +3130,6 @@ router.patch(
             }
 
 
-            /* =============================================
-               MINIMUM PASSWORD LENGTH
-            ============================================= */
-
             if (
                 newPassword.length < 6
             ) {
@@ -3102,10 +3143,6 @@ router.patch(
                 });
             }
 
-
-            /* =============================================
-               CONFIRM NEW PASSWORD
-            ============================================= */
 
             if (
                 newPassword !==
@@ -3121,10 +3158,6 @@ router.patch(
                 });
             }
 
-
-            /* =============================================
-               LOAD ADMIN WITH PASSWORD HASH
-            ============================================= */
 
             const admin =
                 await Admin.findById(
@@ -3146,10 +3179,6 @@ router.patch(
             }
 
 
-            /* =============================================
-               ACCOUNT MUST BE ACTIVE
-            ============================================= */
-
             if (
                 admin.status !==
                 "active"
@@ -3164,10 +3193,6 @@ router.patch(
                 });
             }
 
-
-            /* =============================================
-               VERIFY CURRENT PASSWORD
-            ============================================= */
 
             const currentPasswordMatches =
                 await bcrypt.compare(
@@ -3190,10 +3215,6 @@ router.patch(
             }
 
 
-            /* =============================================
-               PREVENT SAME PASSWORD
-            ============================================= */
-
             const samePassword =
                 await bcrypt.compare(
                     newPassword,
@@ -3215,20 +3236,12 @@ router.patch(
             }
 
 
-            /* =============================================
-               GENERATE NEW PASSWORD HASH
-            ============================================= */
-
             const newPasswordHash =
                 await bcrypt.hash(
                     newPassword,
                     12
                 );
 
-
-            /* =============================================
-               GENERATE NEW RECOVERY KEY
-            ============================================= */
 
             const newRecoveryKey =
                 generateRecoveryKey();
@@ -3255,10 +3268,6 @@ router.patch(
 
             await admin.save();
 
-
-            /* =============================================
-               RETURN NEW RECOVERY KEY ONCE
-            ============================================= */
 
             return res.status(200).json({
 
@@ -3292,6 +3301,7 @@ router.patch(
 
     }
 );
+
 
 /* =========================================================
 LOGOUT
