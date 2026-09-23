@@ -10,7 +10,9 @@ const requireAdmin = require("./adminAuth");
 const {
     processFirstDepositReferralCommission
 } = require("./referralCommissionProcessor");
-
+const {
+    sendPushToUser
+} = require("./pushService");
 
 const router = express.Router();
 
@@ -550,17 +552,91 @@ router.post(
                 session
             });
 
+/* =================================================
+   COMMIT EVERYTHING
+================================================= */
 
-            /* =================================================
-               COMMIT EVERYTHING
-            ================================================= */
-
-            await session.commitTransaction();
+await session.commitTransaction();
 
 
-            /* =================================================
-               SUCCESS RESPONSE
-            ================================================= */
+/* =================================================
+   REFERRAL COMMISSION DEVICE PUSH
+=================================================
+
+   IMPORTANT:
+
+   The database transaction has now successfully
+   committed.
+
+   Only now do we send device push notifications.
+
+   If a push fails, the approved deposit and
+   referral commissions remain successful.
+================================================= */
+
+if (
+    referralResult &&
+    Array.isArray(
+        referralResult.commissions
+    )
+) {
+
+    for (
+        const commission
+        of referralResult.commissions
+    ) {
+
+        if (
+            !commission.notification
+        ) {
+            continue;
+        }
+
+        try {
+
+            await sendPushToUser(
+
+                commission.recipient,
+
+                commission.notification
+
+            );
+
+        } catch (pushError) {
+
+            console.error(
+                "❌ FINORA REFERRAL COMMISSION PUSH FAILED:",
+                pushError
+            );
+
+        }
+
+    }
+
+}
+/* =================================================
+   DEPOSIT APPROVED DEVICE PUSH
+================================================= */
+
+try {
+
+    await sendPushToUser(
+        userNotification.userId,
+        userNotification
+    );
+
+} catch (pushError) {
+
+    console.error(
+        "❌ FINORA DEPOSIT APPROVED PUSH FAILED:",
+        pushError
+    );
+
+}
+
+/* =================================================
+   SUCCESS RESPONSE
+================================================= */
 
             return res.json({
 
@@ -1028,7 +1104,25 @@ router.post(
             ================================================= */
 
             await session.commitTransaction();
+/* =================================================
+   DEPOSIT REJECTED DEVICE PUSH
+================================================= */
 
+try {
+
+    await sendPushToUser(
+        userNotification.userId,
+        userNotification
+    );
+
+} catch (pushError) {
+
+    console.error(
+        "❌ FINORA DEPOSIT REJECTED PUSH FAILED:",
+        pushError
+    );
+
+}
 
             /* =================================================
                SUCCESS
