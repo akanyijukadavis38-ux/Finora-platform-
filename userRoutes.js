@@ -9,6 +9,9 @@ const ReferralCommission = require("./ReferralCommission");
 const {
 getEffectiveUserStatus
 } = require("./userStatus");
+const {
+    sendPushToUser
+} = require("./pushService");
 
 const router = express.Router();
 
@@ -607,6 +610,7 @@ await user.save();
 
 /* =========================================================
    USER NOTIFICATIONS — NEW REFERRAL REGISTERED
+   DASHBOARD + DEVICE PUSH
 ========================================================= */
 
 if (cleanReferralCode) {
@@ -667,7 +671,7 @@ if (cleanReferralCode) {
 
 
         /* ===============================================
-           MOVE TO THE NEXT REFERRAL LEVEL
+           MOVE TO NEXT REFERRAL LEVEL
         =============================================== */
 
         currentReferralCode =
@@ -677,16 +681,52 @@ if (cleanReferralCode) {
 
 
     /* =====================================================
-       SAVE ALL REFERRAL NOTIFICATIONS
+       SAVE DASHBOARD NOTIFICATIONS
     ===================================================== */
 
     if (
         referralNotifications.length > 0
     ) {
 
-        await Notification.insertMany(
-            referralNotifications
-        );
+        const savedNotifications =
+            await Notification.insertMany(
+                referralNotifications
+            );
+
+
+        /* =================================================
+           SEND THE SAME NOTIFICATIONS TO DEVICES
+
+           Dashboard notification is already saved.
+           Now send that exact notification to the
+           recipient's registered device(s).
+        ================================================= */
+
+        for (
+            const notification
+            of savedNotifications
+        ) {
+
+            try {
+
+                await sendPushToUser(
+
+                    notification.userId,
+
+                    notification
+
+                );
+
+            } catch (pushError) {
+
+                console.error(
+                    "❌ FINORA NEW REFERRAL PUSH FAILED:",
+                    pushError
+                );
+
+            }
+
+        }
 
     }
 
