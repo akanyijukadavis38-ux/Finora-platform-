@@ -242,9 +242,13 @@ async function getDashboardStatistics(userId) {
 
 
     /* =====================================================
-       TOTAL REFERRAL BONUS
+       REFERRAL BONUS BY LEVEL
 
        Only actual credited commissions count.
+
+       LEVEL 1 = 15%
+       LEVEL 2 = 5%
+       LEVEL 3 = 2%
     ===================================================== */
 
     const referralSummary =
@@ -265,9 +269,9 @@ async function getDashboardStatistics(userId) {
                 $group: {
 
                     _id:
-                        null,
+                        "$level",
 
-                    referralIncome: {
+                    amount: {
                         $sum:
                             "$amount"
                     }
@@ -276,12 +280,60 @@ async function getDashboardStatistics(userId) {
         ]);
 
 
+    let levelOneReferralIncome = 0;
+
+    let levelTwoReferralIncome = 0;
+
+    let levelThreeReferralIncome = 0;
+
+
+    for (
+        const commission
+        of referralSummary
+    ) {
+
+        const amount =
+            Number(
+                commission.amount
+            ) || 0;
+
+
+        if (
+            commission._id === 1
+        ) {
+
+            levelOneReferralIncome +=
+                amount;
+
+        }
+
+
+        if (
+            commission._id === 2
+        ) {
+
+            levelTwoReferralIncome +=
+                amount;
+
+        }
+
+
+        if (
+            commission._id === 3
+        ) {
+
+            levelThreeReferralIncome +=
+                amount;
+
+        }
+
+    }
+
+
     const referralIncome =
-        referralSummary.length > 0
-            ? Number(
-                referralSummary[0].referralIncome
-            ) || 0
-            : 0;
+        levelOneReferralIncome +
+        levelTwoReferralIncome +
+        levelThreeReferralIncome;
 
 
     return {
@@ -297,6 +349,15 @@ async function getDashboardStatistics(userId) {
 
         referralIncome:
             referralIncome,
+
+        levelOneReferralIncome:
+            levelOneReferralIncome,
+
+        levelTwoReferralIncome:
+            levelTwoReferralIncome,
+
+        levelThreeReferralIncome:
+            levelThreeReferralIncome,
 
         activeInvestments:
             activeInvestments
@@ -545,46 +606,47 @@ router.post("/register", async (req, res) => {
                     "inactive"
 
             });
-await user.save();
+
+        await user.save();
 
 
-/* =================================================
-   ADMIN NOTIFICATION — NEW USER REGISTERED
-========================================================= */
+        /* =================================================
+           ADMIN NOTIFICATION — NEW USER REGISTERED
+        ================================================= */
 
-const admin =
-    await Admin.findOne({
-        status: "active"
-    }).select("_id");
-
-
-if (admin) {
-
-    await Notification.create({
-
-        adminId:
-            admin._id,
-
-        type:
-            "new_user_registered",
-
-        title:
-            "New User Registered",
-
-        message:
-            `A new user, ${user.fullName}, has registered on FINORA.`,
-
-        isRead:
-            false
-
-    });
-
-}
+        const admin =
+            await Admin.findOne({
+                status: "active"
+            }).select("_id");
 
 
-/* =================================================
-   SESSION
-========================================================= */
+        if (admin) {
+
+            await Notification.create({
+
+                adminId:
+                    admin._id,
+
+                type:
+                    "new_user_registered",
+
+                title:
+                    "New User Registered",
+
+                message:
+                    `A new user, ${user.fullName}, has registered on FINORA.`,
+
+                isRead:
+                    false
+
+            });
+
+        }
+
+
+        /* =================================================
+           SESSION
+        ================================================= */
 
 
         req.session.userId =
@@ -1099,6 +1161,24 @@ router.post("/login", async (req, res) => {
                 referral_income:
                     statistics.referralIncome,
 
+                levelOneReferralIncome:
+                    statistics.levelOneReferralIncome,
+
+                level_one_referral_income:
+                    statistics.levelOneReferralIncome,
+
+                levelTwoReferralIncome:
+                    statistics.levelTwoReferralIncome,
+
+                level_two_referral_income:
+                    statistics.levelTwoReferralIncome,
+
+                levelThreeReferralIncome:
+                    statistics.levelThreeReferralIncome,
+
+                level_three_referral_income:
+                    statistics.levelThreeReferralIncome,
+
                 activeInvestments:
                     statistics.activeInvestments,
 
@@ -1373,6 +1453,24 @@ router.get("/me", async (req, res) => {
 
                 referral_income:
                     statistics.referralIncome,
+
+                levelOneReferralIncome:
+                    statistics.levelOneReferralIncome,
+
+                level_one_referral_income:
+                    statistics.levelOneReferralIncome,
+
+                levelTwoReferralIncome:
+                    statistics.levelTwoReferralIncome,
+
+                level_two_referral_income:
+                    statistics.levelTwoReferralIncome,
+
+                levelThreeReferralIncome:
+                    statistics.levelThreeReferralIncome,
+
+                level_three_referral_income:
+                    statistics.levelThreeReferralIncome,
 
 
                 /* =========================================
