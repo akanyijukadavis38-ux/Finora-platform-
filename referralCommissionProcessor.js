@@ -5,7 +5,9 @@ const Deposit = require("./Deposit");
 const ReferralCommission = require("./ReferralCommission");
 const Transaction = require("./Transaction");
 const Notification = require("./Notification");
-
+const {
+    sendPushToUser
+} = require("./pushService");
 
 /* =========================================================
    FINORA REFERRAL COMMISSION PROCESSOR
