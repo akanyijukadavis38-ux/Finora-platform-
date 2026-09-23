@@ -73,6 +73,7 @@ self.addEventListener("push", event => {
             ? event.data.json()
             : {};
     } catch (error) {
+
         data = {
             title: "FINORA",
             body: event.data
@@ -86,31 +87,48 @@ self.addEventListener("push", event => {
 
     const options = {
 
+        // Short description shown below the title
         body:
             data.body ||
             "You have a new FINORA notification.",
 
+        // FINORA application icon
         icon:
             data.icon ||
             "/finora-icon.png",
 
+        // Small notification/status icon
         badge:
             data.badge ||
             "/finora-icon.png",
 
-        data: {
-            url:
-                data.url ||
-                "/dashboard.html"
-        },
-
+        // Notification grouping
         tag:
             data.tag ||
             "finora-notification",
 
         renotify: true,
 
-        requireInteraction: false
+        // Normal Android-style notification behaviour
+        requireInteraction: false,
+
+        // Information used when notification is opened
+        data: {
+            url:
+                data.url ||
+                "/dashboard.html",
+
+            notificationId:
+                data.notificationId || null
+        },
+
+        // Notification action buttons
+        actions: [
+            {
+                action: "mark-read",
+                title: "Mark as read"
+            }
+        ]
     };
 
     event.waitUntil(
@@ -130,13 +148,36 @@ self.addEventListener(
     "notificationclick",
     event => {
 
-        event.notification.close();
+        const notification =
+            event.notification;
+
+        const action =
+            event.action;
 
         const targetUrl =
-            event.notification.data &&
-            event.notification.data.url
-                ? event.notification.data.url
+            notification.data &&
+            notification.data.url
+                ? notification.data.url
                 : "/dashboard.html";
+
+
+        // -----------------------------------------
+        // MARK AS READ
+        // -----------------------------------------
+
+        if (action === "mark-read") {
+
+            notification.close();
+
+            return;
+        }
+
+
+        // -----------------------------------------
+        // NORMAL NOTIFICATION TAP
+        // -----------------------------------------
+
+        notification.close();
 
         event.waitUntil(
 
@@ -147,15 +188,19 @@ self.addEventListener(
 
                 for (const client of clientList) {
 
-                    if ("focus" in client) {
+                    if (
+                        "navigate" in client &&
+                        "focus" in client
+                    ) {
 
-                        client.navigate(targetUrl);
-
-                        return client.focus();
+                        return client
+                            .navigate(targetUrl)
+                            .then(() => client.focus());
                     }
                 }
 
                 if (clients.openWindow) {
+
                     return clients.openWindow(
                         targetUrl
                     );
