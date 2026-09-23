@@ -604,7 +604,92 @@ try {
         });
 
 await user.save();
+/* =========================================================
+   USER NOTIFICATIONS — NEW REFERRAL REGISTERED
+========================================================= */
 
+if (cleanReferralCode) {
+
+    const referralNotifications = [];
+
+    let currentReferralCode =
+        cleanReferralCode;
+
+
+    /* =====================================================
+       FIND UP TO 3 LEVELS OF REFERRERS
+    ===================================================== */
+
+    for (
+        let level = 1;
+        level <= 3;
+        level++
+    ) {
+
+        if (!currentReferralCode) {
+            break;
+        }
+
+
+        const referrer =
+            await User.findOne({
+                referralCode:
+                    currentReferralCode
+            }).select(
+                "_id fullName referredByCode"
+            );
+
+
+        if (!referrer) {
+            break;
+        }
+
+
+        referralNotifications.push({
+
+            userId:
+                referrer._id,
+
+            type:
+                "new_referral",
+
+            title:
+                "New Referral Registered",
+
+            message:
+                `${user.fullName} has registered on FINORA through your Level ${level} referral network.`,
+
+            isRead:
+                false
+
+        });
+
+
+        /* ===============================================
+           MOVE TO THE NEXT REFERRAL LEVEL
+        =============================================== */
+
+        currentReferralCode =
+            referrer.referredByCode || null;
+
+    }
+
+
+    /* =====================================================
+       SAVE ALL REFERRAL NOTIFICATIONS
+    ===================================================== */
+
+    if (
+        referralNotifications.length > 0
+    ) {
+
+        await Notification.insertMany(
+            referralNotifications
+        );
+
+    }
+
+}
 /* =================================================
 ADMIN NOTIFICATION — NEW USER REGISTERED
 ========================================================= */
