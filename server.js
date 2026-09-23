@@ -14,6 +14,8 @@ const transactionRoutes = require("./TransactionRoutes");
 const withdrawalRoutes = require("./WithdrawalRoutes");
 const supportRoutes = require("./supportRoutes");
 const notificationRoutes = require("./notificationRoutes");
+const pushRoutes =
+    require("./pushRoutes");
 const {
     processDueInvestmentEarnings
 } = require("./investmentEarningProcessor");
@@ -249,7 +251,11 @@ app.use(
     maintenanceMiddleware,
     notificationRoutes
 );
-
+app.use(
+    "/api/push",
+    maintenanceMiddleware,
+    pushRoutes
+);
 app.use(
     "/api/admin",
     adminRoutes
