@@ -342,8 +342,39 @@ await notification.save({
 
                 processed = true;
             }
-        );
+                );
 
+
+        /* =================================================
+           DAILY EARNINGS DEVICE PUSH
+        =================================================
+
+           The earning transaction has already committed
+           successfully.
+
+           Push failure must NOT affect the earnings.
+        ================================================= */
+
+        if (
+            processed &&
+            earningNotification
+        ) {
+
+            try {
+
+                await sendPushToUser(
+                    earningNotification.userId,
+                    earningNotification
+                );
+
+            } catch (pushError) {
+
+                console.error(
+                    "❌ FINORA DAILY EARNING PUSH FAILED:",
+                    pushError
+                );
+
+            }
 
         return processed;
 
