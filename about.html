@@ -1,544 +1,582 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8">
 
-    <meta charset="UTF-8">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<title>About FINORA — Online Investment Platform in Uganda</title>
 
-    <title>FINORA — Online Investment Platform</title>
+<meta
+    name="description"
+    content="Learn about FINORA, an online investment platform in Uganda that provides digital account services for managing investments, tracking account activity, viewing transactions, and accessing investment services."
+>
 
-    <meta
-        name="description"
-        content="FINORA is an online investment platform that provides users with a digital account for managing investments, tracking earnings, transactions, and account activity."
-    >
+<meta
+    name="keywords"
+    content="FINORA, FINORA investment platform, FINORA Uganda, online investment platform, online investment platform Uganda, investment platform in Uganda, digital investment platform, investment services Uganda"
+>
 
-    <meta
-        name="keywords"
-        content="FINORA, FINORA investment platform, FINORA Uganda, online investment platform, digital investment platform"
-    >
+<meta
+    name="robots"
+    content="index, follow"
+>
 
-    <meta
-        name="robots"
-        content="index, follow"
-    >
+<meta name="theme-color" content="#050409">
 
-    <meta name="theme-color" content="#050409">
+<link
+    rel="canonical"
+    href="https://finora-platform.pages.dev/about.html"
+>
 
-    <link
-        rel="canonical"
-        href="https://finora-platform.vercel.app/about.html"
-    >
+<!-- Open Graph -->
+<meta
+    property="og:type"
+    content="website"
+>
 
-    <meta
-        property="og:type"
-        content="website"
-    >
+<meta
+    property="og:title"
+    content="About FINORA — Online Investment Platform in Uganda"
+>
 
-    <meta
-        property="og:title"
-        content="FINORA — Online Investment Platform"
-    >
+<meta
+    property="og:description"
+    content="Learn about FINORA, an online investment platform in Uganda and its digital account, investment information, transactions, and user services."
+>
 
-    <meta
-        property="og:description"
-        content="Learn about FINORA, its digital investment platform, account features, investment options, transactions, and user services."
-    >
+<meta
+    property="og:url"
+    content="https://finora-platform.pages.dev/about.html"
+>
 
-    <meta
-        property="og:url"
-        content="https://finora-platform.vercel.app/about.html"
-    >
+<meta
+    property="og:site_name"
+    content="FINORA"
+>
 
-    <meta
-        property="og:site_name"
-        content="FINORA"
-    >
+<!-- Twitter -->
+<meta
+    name="twitter:card"
+    content="summary"
+>
 
-    <link
-        rel="icon"
-        type="image/png"
-        href="/finora-icon.png"
-    >
+<meta
+    name="twitter:title"
+    content="About FINORA — Online Investment Platform in Uganda"
+>
 
-    <style>
+<meta
+    name="twitter:description"
+    content="Learn about FINORA, an online investment platform in Uganda and its digital investment account and platform services."
+>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+<link
+    rel="icon"
+    type="image/png"
+    href="/finora-icon.png"
+>
 
-        html {
-            scroll-behavior: smooth;
-        }
 
-        body {
-            min-height: 100vh;
-            background:
-                radial-gradient(
-                    circle at top,
-                    rgba(158, 24, 189, 0.18),
-                    transparent 38%
-                ),
-                #050409;
-            color: #ffffff;
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-            line-height: 1.6;
-        }
+<!-- FINORA WebSite structured data -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "FINORA",
+    "url": "https://finora-platform.pages.dev/",
+    "description": "FINORA is an online investment platform in Uganda."
+}
+</script>
 
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
+
+<!-- FINORA AboutPage structured data -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "About FINORA",
+    "url": "https://finora-platform.pages.dev/about.html",
+    "description": "Learn about FINORA, an online investment platform in Uganda and its digital account and investment services."
+}
+</script>
+
+
+<style>
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        min-height: 100vh;
+        background:
+            radial-gradient(
+                circle at top,
+                rgba(158, 24, 189, 0.18),
+                transparent 38%
+            ),
+            #050409;
+        color: #ffffff;
+        font-family:
+            Arial,
+            Helvetica,
+            sans-serif;
+        line-height: 1.6;
+    }
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .page {
+        width: min(100%, 1100px);
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 12px 0 30px;
+    }
+
+    .brand {
+        font-family:
+            "Times New Roman",
+            serif;
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
+
+    .brand-fin {
+        color: #ffffff;
+    }
+
+    .brand-ora {
+        color: #ffd76a;
+    }
+
+    .tagline {
+        margin-top: 2px;
+        color: #ea3cff;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 2px;
+    }
+
+    .login-link {
+        padding: 10px 16px;
+        border: 1px solid rgba(234, 60, 255, 0.45);
+        border-radius: 10px;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 700;
+        transition: 0.2s ease;
+    }
+
+    .login-link:hover {
+        background: rgba(234, 60, 255, 0.12);
+        border-color: #ea3cff;
+    }
+
+    .hero {
+        padding: 55px 0 45px;
+        max-width: 850px;
+    }
+
+    .eyebrow {
+        display: inline-block;
+        margin-bottom: 14px;
+        padding: 6px 10px;
+        border: 1px solid rgba(234, 60, 255, 0.3);
+        border-radius: 999px;
+        background: rgba(234, 60, 255, 0.08);
+        color: #ff72ff;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    h1 {
+        font-family:
+            "Times New Roman",
+            serif;
+        font-size: clamp(38px, 7vw, 68px);
+        line-height: 1;
+        margin-bottom: 22px;
+    }
+
+    h1 span {
+        color: #ffd76a;
+    }
+
+    .hero-text {
+        max-width: 720px;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 17px;
+    }
+
+    .section {
+        margin-top: 28px;
+        padding: 28px;
+        border: 1px solid rgba(234, 60, 255, 0.16);
+        border-radius: 20px;
+        background:
+            linear-gradient(
+                145deg,
+                rgba(20, 10, 25, 0.92),
+                rgba(8, 5, 12, 0.92)
+            );
+        box-shadow:
+            0 15px 40px rgba(0, 0, 0, 0.22);
+    }
+
+    .section h2 {
+        margin-bottom: 12px;
+        font-family:
+            "Times New Roman",
+            serif;
+        font-size: 28px;
+        color: #ffffff;
+    }
+
+    .section p {
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 15px;
+    }
+
+    .features {
+        display: grid;
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 20px;
+    }
+
+    .feature {
+        padding: 20px;
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.035);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .feature-icon {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+        border-radius: 10px;
+        background:
+            linear-gradient(
+                135deg,
+                #ea3cff,
+                #9e18bd
+            );
+        color: #ffffff;
+        font-weight: 800;
+    }
+
+    .feature h3 {
+        margin-bottom: 7px;
+        font-size: 15px;
+    }
+
+    .feature p {
+        font-size: 13px;
+    }
+
+    .cta {
+        text-align: center;
+        padding: 38px 20px;
+    }
+
+    .cta h2 {
+        margin-bottom: 10px;
+    }
+
+    .cta p {
+        max-width: 600px;
+        margin: 0 auto 22px;
+    }
+
+    .cta-button {
+        display: inline-block;
+        padding: 13px 22px;
+        border-radius: 10px;
+        background:
+            linear-gradient(
+                135deg,
+                #f5a623,
+                #c97908
+            );
+        color: #08050b;
+        font-size: 13px;
+        font-weight: 800;
+    }
+
+    .footer {
+        padding: 40px 0 25px;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.45);
+        font-size: 11px;
+    }
+
+    @media (max-width: 700px) {
 
         .page {
-            width: min(100%, 1100px);
-            margin: 0 auto;
-            padding: 20px;
+            padding: 15px;
         }
 
         .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            padding: 12px 0 30px;
+            padding-bottom: 20px;
         }
 
         .brand {
-            font-family:
-                "Times New Roman",
-                serif;
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: -1px;
-        }
-
-        .brand-fin {
-            color: #ffffff;
-        }
-
-        .brand-ora {
-            color: #ffd76a;
-        }
-
-        .tagline {
-            margin-top: 2px;
-            color: #ea3cff;
-            font-size: 9px;
-            font-weight: 700;
-            letter-spacing: 2px;
-        }
-
-        .login-link {
-            padding: 10px 16px;
-            border: 1px solid rgba(234, 60, 255, 0.45);
-            border-radius: 10px;
-            color: #ffffff;
-            font-size: 13px;
-            font-weight: 700;
-            transition: 0.2s ease;
-        }
-
-        .login-link:hover {
-            background: rgba(234, 60, 255, 0.12);
-            border-color: #ea3cff;
+            font-size: 24px;
         }
 
         .hero {
-            padding: 55px 0 45px;
-            max-width: 850px;
-        }
-
-        .eyebrow {
-            display: inline-block;
-            margin-bottom: 14px;
-            padding: 6px 10px;
-            border: 1px solid rgba(234, 60, 255, 0.3);
-            border-radius: 999px;
-            background: rgba(234, 60, 255, 0.08);
-            color: #ff72ff;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        h1 {
-            font-family:
-                "Times New Roman",
-                serif;
-            font-size: clamp(38px, 7vw, 68px);
-            line-height: 1;
-            margin-bottom: 22px;
-        }
-
-        h1 span {
-            color: #ffd76a;
+            padding: 40px 0 25px;
         }
 
         .hero-text {
-            max-width: 720px;
-            color: rgba(255, 255, 255, 0.72);
-            font-size: 17px;
+            font-size: 15px;
         }
 
         .section {
-            margin-top: 28px;
-            padding: 28px;
-            border: 1px solid rgba(234, 60, 255, 0.16);
-            border-radius: 20px;
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(20, 10, 25, 0.92),
-                    rgba(8, 5, 12, 0.92)
-                );
-            box-shadow:
-                0 15px 40px rgba(0, 0, 0, 0.22);
-        }
-
-        .section h2 {
-            margin-bottom: 12px;
-            font-family:
-                "Times New Roman",
-                serif;
-            font-size: 28px;
-            color: #ffffff;
-        }
-
-        .section p {
-            color: rgba(255, 255, 255, 0.72);
-            font-size: 15px;
+            padding: 22px;
         }
 
         .features {
-            display: grid;
-            grid-template-columns:
-                repeat(3, minmax(0, 1fr));
-            gap: 14px;
-            margin-top: 20px;
+            grid-template-columns: 1fr;
         }
 
-        .feature {
-            padding: 20px;
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.035);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .feature-icon {
-            width: 38px;
-            height: 38px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 12px;
-            border-radius: 10px;
-            background:
-                linear-gradient(
-                    135deg,
-                    #ea3cff,
-                    #9e18bd
-                );
-            color: #ffffff;
-            font-weight: 800;
-        }
-
-        .feature h3 {
-            margin-bottom: 7px;
-            font-size: 15px;
-        }
-
-        .feature p {
-            font-size: 13px;
-        }
-
-        .cta {
-            text-align: center;
-            padding: 38px 20px;
-        }
-
-        .cta h2 {
-            margin-bottom: 10px;
-        }
-
-        .cta p {
-            max-width: 600px;
-            margin: 0 auto 22px;
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 13px 22px;
-            border-radius: 10px;
-            background:
-                linear-gradient(
-                    135deg,
-                    #f5a623,
-                    #c97908
-                );
-            color: #08050b;
-            font-size: 13px;
-            font-weight: 800;
-        }
-
-        .footer {
-            padding: 40px 0 25px;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.45);
+        .login-link {
+            padding: 8px 12px;
             font-size: 11px;
         }
 
-        @media (max-width: 700px) {
-
-            .page {
-                padding: 15px;
-            }
-
-            .header {
-                padding-bottom: 20px;
-            }
-
-            .brand {
-                font-size: 24px;
-            }
-
-            .hero {
-                padding: 40px 0 25px;
-            }
-
-            .hero-text {
-                font-size: 15px;
-            }
-
-            .section {
-                padding: 22px;
-            }
-
-            .features {
-                grid-template-columns: 1fr;
-            }
-
-            .login-link {
-                padding: 8px 12px;
-                font-size: 11px;
-            }
-
-        }
-
-    </style>
-
-    <!-- FINORA WebSite structured data -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "FINORA",
-        "url": "https://finora-platform.vercel.app/",
-        "description": "FINORA is an online investment platform."
     }
-    </script>
 
-</head>
+</style>
 
-<body>
+</head><body><div class="page"><header class="header">
 
-<div class="page">
+    <a href="/index.html">
 
-    <header class="header">
-
-        <a href="/index.html">
-
-            <div class="brand">
-                <span class="brand-fin">FIN</span><span class="brand-ora">ORA</span>
-            </div>
-
-            <div class="tagline">
-                INVEST • GROW • EARN
-            </div>
-
-        </a>
-
-        <a
-            class="login-link"
-            href="/index.html"
-        >
-            LOGIN
-        </a>
-
-    </header>
-
-
-    <main>
-
-        <section class="hero">
-
-            <div class="eyebrow">
-                FINORA
-            </div>
-
-            <h1>
-                Your digital
-                <span>investment platform.</span>
-            </h1>
-
-            <p class="hero-text">
-                FINORA is an online investment platform designed
-                to give users a digital account for managing
-                investments, tracking account activity, viewing
-                transactions and accessing investment services
-                through one platform.
-            </p>
-
-        </section>
-
-
-        <section class="section">
-
-            <h2>
-                What is FINORA?
-            </h2>
-
-            <p>
-                FINORA brings investment-related account services
-                into a simple digital platform. Users can access
-                their account online, monitor their investment
-                information, review transactions and manage
-                available account services from their dashboard.
-            </p>
-
-        </section>
-
-
-        <section class="section">
-
-            <h2>
-                FINORA Platform Features
-            </h2>
-
-            <div class="features">
-
-                <div class="feature">
-
-                    <div class="feature-icon">
-                        A
-                    </div>
-
-                    <h3>
-                        Digital Account
-                    </h3>
-
-                    <p>
-                        A personal online account for accessing
-                        FINORA services and viewing account
-                        information.
-                    </p>
-
-                </div>
-
-
-                <div class="feature">
-
-                    <div class="feature-icon">
-                        I
-                    </div>
-
-                    <h3>
-                        Investment Information
-                    </h3>
-
-                    <p>
-                        View investment-related information,
-                        account activity and available investment
-                        services in one place.
-                    </p>
-
-                </div>
-
-
-                <div class="feature">
-
-                    <div class="feature-icon">
-                        T
-                    </div>
-
-                    <h3>
-                        Transactions
-                    </h3>
-
-                    <p>
-                        Review deposits, withdrawals and other
-                        recorded account transactions through
-                        the FINORA platform.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <section class="section">
-
-            <h2>
-                How FINORA Works
-            </h2>
-
-            <p>
-                FINORA provides a web-based account environment
-                where registered users can access the platform,
-                view their account information and use the
-                investment services made available through
-                FINORA.
-            </p>
-
-        </section>
-
-
-        <section class="section cta">
-
-            <h2>
-                Explore FINORA
-            </h2>
-
-            <p>
-                Visit the FINORA platform to learn more and
-                access your account.
-            </p>
-
-            <a
-                class="cta-button"
-                href="/index.html"
-            >
-                OPEN FINORA
-            </a>
-
-        </section>
-
-    </main>
-
-
-    <footer class="footer">
-
-        <div>
-            © 2026 FINORA. All rights reserved.
+        <div class="brand">
+            <span class="brand-fin">FIN</span><span class="brand-ora">ORA</span>
         </div>
 
-        <div style="margin-top:6px;">
+        <div class="tagline">
             INVEST • GROW • EARN
         </div>
 
-    </footer>
+    </a>
 
-</div>
+    <a
+        class="login-link"
+        href="/index.html"
+    >
+        LOGIN
+    </a>
 
-</body>
+</header>
+
+
+<main>
+
+    <section class="hero">
+
+        <div class="eyebrow">
+            FINORA INVESTMENT PLATFORM
+        </div>
+
+        <h1>
+            Your digital
+            <span>investment platform.</span>
+        </h1>
+
+        <p class="hero-text">
+            FINORA is an online investment platform in Uganda
+            designed to give users a digital account for
+            managing investments, tracking account activity,
+            viewing transactions and accessing investment
+            services through one platform.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>
+            What is FINORA?
+        </h2>
+
+        <p>
+            FINORA brings investment-related account services
+            into a simple digital platform. Users can access
+            their account online, monitor their investment
+            information, review transactions and manage
+            available account services from their dashboard.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>
+            FINORA Platform Features
+        </h2>
+
+        <div class="features">
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    A
+                </div>
+
+                <h3>
+                    Digital Account
+                </h3>
+
+                <p>
+                    A personal online account for accessing
+                    FINORA services and viewing account
+                    information.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    I
+                </div>
+
+                <h3>
+                    Investment Information
+                </h3>
+
+                <p>
+                    View investment-related information,
+                    account activity and available investment
+                    services in one place.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    T
+                </div>
+
+                <h3>
+                    Transactions
+                </h3>
+
+                <p>
+                    Review deposits, withdrawals and other
+                    recorded account transactions through
+                    the FINORA platform.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>
+            How FINORA Works
+        </h2>
+
+        <p>
+            FINORA provides a web-based account environment
+            where registered users can access the platform,
+            view their account information and use the
+            investment services made available through
+            FINORA.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>
+            Online Investment Platform in Uganda
+        </h2>
+
+        <p>
+            FINORA is built as a digital investment platform
+            serving users who want to access investment-related
+            account services online. The platform brings
+            account information, investment information and
+            transaction records together in one accessible
+            dashboard.
+        </p>
+
+    </section>
+
+
+    <section class="section cta">
+
+        <h2>
+            Explore FINORA
+        </h2>
+
+        <p>
+            Visit the FINORA platform to learn more about the
+            platform and access your account.
+        </p>
+
+        <a
+            class="cta-button"
+            href="/index.html"
+        >
+            OPEN FINORA
+        </a>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <div>
+        © 2026 FINORA. All rights reserved.
+    </div>
+
+    <div style="margin-top:6px;">
+        INVEST • GROW • EARN
+    </div>
+
+</footer>
+
+</div></body>
 </html>
