@@ -604,6 +604,7 @@ try {
         });
 
 await user.save();
+
 /* =========================================================
    USER NOTIFICATIONS — NEW REFERRAL REGISTERED
 ========================================================= */
@@ -657,7 +658,7 @@ if (cleanReferralCode) {
                 "New Referral Registered",
 
             message:
-                `${user.fullName} has registered on FINORA through your Level ${level} referral network.`,
+                `${user.fullName} has joined your Level ${level} referral network on FINORA.`,
 
             isRead:
                 false
@@ -690,6 +691,9 @@ if (cleanReferralCode) {
     }
 
 }
+    
+
+
 /* =================================================
 ADMIN NOTIFICATION — NEW USER REGISTERED
 ========================================================= */
