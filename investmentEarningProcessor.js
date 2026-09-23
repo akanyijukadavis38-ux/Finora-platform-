@@ -32,7 +32,7 @@ async function processInvestment(
     try {
 
         let processed = false;
-let earningNotification = null;
+        let earningNotification = null;
 
 
         await session.withTransaction(
@@ -296,36 +296,40 @@ let earningNotification = null;
                     session
                 });
 
-/* =============================================
-   CREATE DAILY EARNING NOTIFICATION
-============================================= */
 
-const notification =
-    new Notification({
+                /* =============================================
+                   CREATE DAILY EARNING NOTIFICATION
+                ============================================= */
 
-        userId:
-            user._id,
+                const notification =
+                    new Notification({
 
-        type:
-            "earning_credited",
+                        userId:
+                            user._id,
 
-        title:
-            "Daily Earnings Credited",
+                        type:
+                            "earning_credited",
 
-        message:
-            `UGX ${earning.toLocaleString()} daily earnings have been credited to your FINORA wallet.`,
+                        title:
+                            "Daily Earnings Credited",
 
-        isRead:
-            false
-    });
+                        message:
+                            `UGX ${earning.toLocaleString()} daily earnings have been credited to your FINORA wallet.`,
+
+                        isRead:
+                            false
+                    });
 
 
-await notification.save({
-    session
-});
-               earningNotification =
-    notification;
-               
+                await notification.save({
+                    session
+                });
+
+
+                earningNotification =
+                    notification;
+
+
                 /* =============================================
                    SAVE USER + INVESTMENT
                 ============================================= */
@@ -342,7 +346,7 @@ await notification.save({
 
                 processed = true;
             }
-                );
+        );
 
 
         /* =================================================
@@ -375,6 +379,9 @@ await notification.save({
                 );
 
             }
+
+        }
+
 
         return processed;
 
