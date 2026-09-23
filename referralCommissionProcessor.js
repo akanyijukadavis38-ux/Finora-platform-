@@ -630,25 +630,28 @@ async function processFirstDepositReferralCommission(
             /* ---------------------------------------------
                SAVE RESULT
             --------------------------------------------- */
-commissions.push({
 
-    recipient:
-        recipient._id,
+            commissions.push({
 
-    level:
-        level,
+                recipient:
+                    recipient._id,
 
-    rate:
-        rate,
+                level:
+                    level,
 
-    amount:
-        commissionAmount,
+                rate:
+                    rate,
 
-    notification:
-        notification
+                amount:
+                    commissionAmount,
 
-});
-        
+                notification:
+                    notification
+
+            });
+
+        }
+
 
         /* =================================================
            MARK DEPOSIT REFERRAL PROCESSING COMPLETE
@@ -743,5 +746,3 @@ module.exports = {
     processFirstDepositReferralCommission
 
 };
-
- 
