@@ -2,7 +2,9 @@ const User = require("./user");
 const Investment = require("./investment");
 const Transaction = require("./Transaction");
 const Notification = require("./Notification");
-
+const {
+    sendPushToUser
+} = require("./pushService");
 
 /* =========================================================
    FINORA DAILY EARNING PROCESSOR
@@ -30,6 +32,7 @@ async function processInvestment(
     try {
 
         let processed = false;
+let earningNotification = null;
 
 
         await session.withTransaction(
@@ -320,6 +323,9 @@ const notification =
 await notification.save({
     session
 });
+               earningNotification =
+    notification;
+               
                 /* =============================================
                    SAVE USER + INVESTMENT
                 ============================================= */
