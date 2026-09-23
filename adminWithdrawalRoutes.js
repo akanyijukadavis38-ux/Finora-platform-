@@ -6,7 +6,9 @@ const Transaction = require("./Transaction");
 const User = require("./user");
 const Notification = require("./Notification");
 const requireAdmin = require("./adminAuth");
-
+const {
+    sendPushToUser
+} = require("./pushService");
 const router = express.Router();
 
 
@@ -319,16 +321,43 @@ router.post("/:id/approve", requireAdmin, async (req, res) => {
             session
         });
 
+await session.commitTransaction();
 
-        await session.commitTransaction();
+
+/* =================================================
+   WITHDRAWAL APPROVED DEVICE PUSH
+=================================================
+
+   The withdrawal database transaction has already
+   committed successfully.
+
+   Push failure must NOT affect the withdrawal.
+================================================= */
+
+try {
+
+    await sendPushToUser(
+        notification.userId,
+        notification
+    );
+
+} catch (pushError) {
+
+    console.error(
+        "❌ FINORA WITHDRAWAL APPROVED PUSH FAILED:",
+        pushError
+    );
+
+}
 
 
-        return res.json({
+return res.json({
 
-            success: true,
+    success: true,
 
-            message:
-                "Withdrawal approved successfully.",
+    message:
+        "Withdrawal approved successfully.",
+        
 
             withdrawal
         });
@@ -600,16 +629,43 @@ router.post("/:id/reject", requireAdmin, async (req, res) => {
             session
         });
 
+await session.commitTransaction();
 
-        await session.commitTransaction();
+
+/* =================================================
+   WITHDRAWAL REJECTED DEVICE PUSH
+=================================================
+
+   The rejection/refund transaction has already
+   committed successfully.
+
+   Push failure must NOT affect the refund.
+================================================= */
+
+try {
+
+    await sendPushToUser(
+        notification.userId,
+        notification
+    );
+
+} catch (pushError) {
+
+    console.error(
+        "❌ FINORA WITHDRAWAL REJECTED PUSH FAILED:",
+        pushError
+    );
+
+}
 
 
-        return res.json({
+return res.json({
 
-            success: true,
+    success: true,
 
-            message:
-                "Withdrawal rejected and wallet refunded successfully.",
+    message:
+        "Withdrawal rejected and wallet refunded successfully.",
+        
 
             withdrawal
         });
