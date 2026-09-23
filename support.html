@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -8,12 +10,120 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>FINORA — Support</title>
+    <meta
+        name="theme-color"
+        content="#0B0A0F"
+    >
+
+    <meta
+        name="description"
+        content="FINORA Support — Get help with deposits, investments, withdrawals, referrals, accounts, and other questions about the FINORA online investment platform in Uganda."
+    >
+
+    <meta
+        name="keywords"
+        content="FINORA, FINORA Support, FINORA Uganda, FINORA help, FINORA customer support, investment platform support Uganda, online investment platform Uganda, investment platform Uganda, deposits, withdrawals, referrals"
+    >
+
+    <meta
+        name="robots"
+        content="index, follow"
+    >
+
+    <link
+        rel="canonical"
+        href="https://finora-platform.pages.dev/support.html"
+    >
+
+    <meta
+        property="og:type"
+        content="website"
+    >
+
+    <meta
+        property="og:title"
+        content="FINORA Support — Help Center"
+    >
+
+    <meta
+        property="og:description"
+        content="Get help with FINORA deposits, investments, withdrawals, referrals, accounts, and support requests."
+    >
+
+    <meta
+        property="og:url"
+        content="https://finora-platform.pages.dev/support.html"
+    >
+
+    <meta
+        property="og:site_name"
+        content="FINORA"
+    >
+
+    <meta
+        name="twitter:card"
+        content="summary"
+    >
+
+    <meta
+        name="twitter:title"
+        content="FINORA Support — Help Center"
+    >
+
+    <meta
+        name="twitter:description"
+        content="Get help with deposits, investments, withdrawals, referrals, accounts, and other FINORA support questions."
+    >
+
+    <title>
+        FINORA Support — Help Center | Online Investment Platform Uganda
+    </title>
+
+    <link
+        rel="icon"
+        href="/finora-icon.png"
+    >
 
     <link
         rel="stylesheet"
         href="support.css?v=2"
     >
+
+
+    <!-- =====================================================
+         FINORA WEBSITE STRUCTURED DATA
+    ====================================================== -->
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "FINORA",
+        "url": "https://finora-platform.pages.dev/",
+        "description": "FINORA is an online investment platform in Uganda."
+    }
+    </script>
+
+
+    <!-- =====================================================
+         SUPPORT PAGE STRUCTURED DATA
+    ====================================================== -->
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ContactPage",
+        "name": "FINORA Support",
+        "url": "https://finora-platform.pages.dev/support.html",
+        "description": "FINORA Support and Help Center for questions about deposits, investments, withdrawals, referrals, accounts, and other support matters.",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "FINORA",
+            "url": "https://finora-platform.pages.dev/"
+        }
+    }
+    </script>
+
 </head>
 
 <body>
@@ -650,6 +760,7 @@
                         stroke-linecap="round"
                         stroke-linejoin="round"
                     />
+
                 </svg>
 
             </div>
@@ -693,6 +804,7 @@
 
     </main>
 
+
     <!-- =========================
          HELP MODAL
     ========================== -->
@@ -726,7 +838,10 @@
             </button>
 
 
-            <div class="modal-icon" id="modalIcon">
+            <div
+                class="modal-icon"
+                id="modalIcon"
+            >
 
                 <svg
                     id="modalIconSvg"
@@ -831,6 +946,7 @@
                         stroke-width="1.7"
                         stroke-linecap="round"
                     />
+
                 </svg>
 
             </div>
@@ -894,6 +1010,7 @@
                     <option value="other">
                         Other
                     </option>
+
                 </select>
 
 
@@ -932,6 +1049,7 @@
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                     >
+
                         <path
                             d="M12 9V13"
                             stroke="currentColor"
@@ -953,6 +1071,7 @@
                             stroke="currentColor"
                             stroke-width="1.7"
                         />
+
                     </svg>
 
                     <span>
@@ -1287,155 +1406,155 @@
             }
 
 
-/*
- * SUPPORT FORM
- *
- * Sends the authenticated user's support request
- * to the FINORA backend.
- */
+            /*
+             * SUPPORT FORM
+             *
+             * Sends the authenticated user's support request
+             * to the FINORA backend.
+             */
 
-if (supportRequestForm) {
+            if (supportRequestForm) {
 
-    supportRequestForm.addEventListener(
-        "submit",
-        async (event) => {
+                supportRequestForm.addEventListener(
+                    "submit",
+                    async (event) => {
 
-            event.preventDefault();
-
-
-            const submitButton =
-                supportRequestForm.querySelector(
-                    ".submit-request-button"
-                );
+                        event.preventDefault();
 
 
-            const category =
-                document.getElementById(
-                    "supportCategory"
-                ).value.trim();
+                        const submitButton =
+                            supportRequestForm.querySelector(
+                                ".submit-request-button"
+                            );
 
 
-            const subject =
-                document.getElementById(
-                    "supportSubject"
-                ).value.trim();
+                        const category =
+                            document.getElementById(
+                                "supportCategory"
+                            ).value.trim();
 
 
-            const message =
-                document.getElementById(
-                    "supportMessage"
-                ).value.trim();
+                        const subject =
+                            document.getElementById(
+                                "supportSubject"
+                            ).value.trim();
 
 
-            if (!category || !subject || !message) {
-
-                showNotice(
-                    "Please complete all support request fields."
-                );
-
-                return;
-            }
+                        const message =
+                            document.getElementById(
+                                "supportMessage"
+                            ).value.trim();
 
 
-            if (submitButton) {
+                        if (!category || !subject || !message) {
 
-                submitButton.disabled = true;
+                            showNotice(
+                                "Please complete all support request fields."
+                            );
 
-                submitButton.textContent =
-                    "Submitting...";
-            }
-
-
-            try {
-
-                const response =
-                    await fetch(
-                        "https://finora-platform.onrender.com/api/support",
-                        {
-                            method: "POST",
-
-                            credentials: "include",
-
-                            headers: {
-                                "Content-Type":
-                                    "application/json",
-
-                                "Accept":
-                                    "application/json"
-                            },
-
-                            body:
-                                JSON.stringify({
-                                    category:
-                                        category,
-
-                                    subject:
-                                        subject,
-
-                                    message:
-                                        message
-                                })
+                            return;
                         }
-                    );
 
 
-                const data =
-                    await response.json();
+                        if (submitButton) {
+
+                            submitButton.disabled = true;
+
+                            submitButton.textContent =
+                                "Submitting...";
+                        }
 
 
-                if (!response.ok) {
+                        try {
 
-                    throw new Error(
-                        data.message ||
-                        "FINORA could not submit your support request."
-                    );
-                }
+                            const response =
+                                await fetch(
+                                    "https://finora-platform.onrender.com/api/support",
+                                    {
+                                        method: "POST",
+
+                                        credentials: "include",
+
+                                        headers: {
+                                            "Content-Type":
+                                                "application/json",
+
+                                            "Accept":
+                                                "application/json"
+                                        },
+
+                                        body:
+                                            JSON.stringify({
+                                                category:
+                                                    category,
+
+                                                subject:
+                                                    subject,
+
+                                                message:
+                                                    message
+                                            })
+                                    }
+                                );
 
 
-                supportRequestForm.reset();
+                            const data =
+                                await response.json();
 
 
-                closeModal(
-                    requestModal
+                            if (!response.ok) {
+
+                                throw new Error(
+                                    data.message ||
+                                    "FINORA could not submit your support request."
+                                );
+                            }
+
+
+                            supportRequestForm.reset();
+
+
+                            closeModal(
+                                requestModal
+                            );
+
+
+                            showNotice(
+                                data.message ||
+                                "Your FINORA support request has been submitted successfully."
+                            );
+
+
+                        } catch (error) {
+
+                            console.error(
+                                "❌ FINORA SUPPORT REQUEST ERROR:",
+                                error
+                            );
+
+
+                            showNotice(
+                                error.message ||
+                                "FINORA could not submit your support request."
+                            );
+
+
+                        } finally {
+
+                            if (submitButton) {
+
+                                submitButton.disabled = false;
+
+                                submitButton.textContent =
+                                    "Submit Request";
+                            }
+
+                        }
+
+                    }
                 );
-
-
-                showNotice(
-                    data.message ||
-                    "Your FINORA support request has been submitted successfully."
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "❌ FINORA SUPPORT REQUEST ERROR:",
-                    error
-                );
-
-
-                showNotice(
-                    error.message ||
-                    "FINORA could not submit your support request."
-                );
-
-
-            } finally {
-
-                if (submitButton) {
-
-                    submitButton.disabled = false;
-
-                    submitButton.textContent =
-                        "Submit Request";
-                }
 
             }
-
-        }
-    );
-
-}
 
 
             /*
@@ -1606,6 +1725,9 @@ if (supportRequestForm) {
         });
 
     </script>
-<script src="maintenance.js"></script>
+
+    <script src="maintenance.js"></script>
+
 </body>
+
 </html>
