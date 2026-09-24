@@ -40,7 +40,525 @@ function generateRecoveryKey() {
 /* =========================================================
 ADMIN — OVERVIEW
 ========================================================= */
+/* =========================================================
+   REGISTRATION TRACKER
+   ---------------------------------------------------------
+   Uses existing User records.
 
+   - Counts only successfully created users
+   - Uses User.createdAt
+   - Uses Africa/Kampala calendar dates
+   - Separates direct and referral registrations
+   - Returns full names only for daily registration lists
+========================================================= */
+
+router.get(
+    "/registrations",
+    requireAdmin,
+    async (req, res) => {
+
+        try {
+
+            /* =================================================
+               LOAD ALL REGISTERED USERS
+
+               Only fields needed by the registration tracker
+               are selected.
+            ================================================= */
+
+            const users =
+                await User.find({})
+                    .select(
+                        "_id fullName createdAt referredByCode referralCode"
+                    )
+                    .sort({
+                        createdAt: -1
+                    })
+                    .lean();
+
+
+            /* =================================================
+               UGANDA TIMEZONE
+
+               FINORA uses Africa/Kampala.
+
+               Kampala is UTC+3 and does not currently use
+               daylight-saving time.
+
+               We convert each MongoDB UTC timestamp into the
+               correct Kampala calendar date.
+            ================================================= */
+
+            const TIMEZONE =
+                "Africa/Kampala";
+
+
+            /* =================================================
+               FORMAT KAMPALA DATE
+
+               Returns:
+
+               YYYY-MM-DD
+
+               Example:
+
+               2026-09-24
+            ================================================= */
+
+            function getKampalaDate(date) {
+
+                return new Intl.DateTimeFormat(
+                    "en-CA",
+                    {
+                        timeZone:
+                            TIMEZONE,
+
+                        year:
+                            "numeric",
+
+                        month:
+                            "2-digit",
+
+                        day:
+                            "2-digit"
+                    }
+                ).format(
+                    new Date(date)
+                );
+
+            }
+
+
+            /* =================================================
+               CURRENT KAMPALA DATE
+            ================================================= */
+
+            const today =
+                getKampalaDate(
+                    new Date()
+                );
+
+
+            /* =================================================
+               DATE HELPERS
+
+               We use UTC midnight for calendar calculations
+               because the date strings above represent
+               Kampala calendar dates.
+            ================================================= */
+
+            function dateFromKey(
+                dateKey
+            ) {
+
+                return new Date(
+                    `${dateKey}T00:00:00Z`
+                );
+
+            }
+
+
+            function dateKeyFromDate(
+                date
+            ) {
+
+                return date
+                    .toISOString()
+                    .slice(
+                        0,
+                        10
+                    );
+
+            }
+
+
+            /* =================================================
+               REGISTRATION GROUPS
+
+               Example:
+
+               {
+                   "2026-09-24": {
+                       date: "2026-09-24",
+                       count: 6,
+                       registrations: [...]
+                   }
+               }
+            ================================================= */
+
+            const registrationsByDate =
+                {};
+
+
+            /* =================================================
+               OVERALL STATISTICS
+            ================================================= */
+
+            let directRegistrations =
+                0;
+
+            let referralRegistrations =
+                0;
+
+
+            /* =================================================
+               PROCESS EVERY REAL USER
+            ================================================= */
+
+            for (
+                const user
+                of users
+            ) {
+
+                if (
+                    !user.createdAt
+                ) {
+
+                    continue;
+
+                }
+
+
+                const dateKey =
+                    getKampalaDate(
+                        user.createdAt
+                    );
+
+
+                /* =============================================
+                   CREATE DATE GROUP
+                ============================================= */
+
+                if (
+                    !registrationsByDate[
+                        dateKey
+                    ]
+                ) {
+
+                    registrationsByDate[
+                        dateKey
+                    ] = {
+
+                        date:
+                            dateKey,
+
+                        count:
+                            0,
+
+                        registrations:
+                            []
+
+                    };
+
+                }
+
+
+                /* =============================================
+                   DETERMINE DIRECT OR REFERRAL
+                ============================================= */
+
+                const isReferral =
+                    Boolean(
+                        user.referredByCode
+                    );
+
+
+                if (
+                    isReferral
+                ) {
+
+                    referralRegistrations++;
+
+                } else {
+
+                    directRegistrations++;
+
+                }
+
+
+                /* =============================================
+                   ADD TO DATE GROUP
+                ============================================= */
+
+                registrationsByDate[
+                    dateKey
+                ].count++;
+
+
+                registrationsByDate[
+                    dateKey
+                ].registrations.push({
+
+                    id:
+                        user._id,
+
+                    fullName:
+                        user.fullName,
+
+                    createdAt:
+                        user.createdAt,
+
+                    registrationType:
+                        isReferral
+                            ? "referral"
+                            : "direct"
+
+                });
+
+            }
+
+
+            /* =================================================
+               TOTAL REGISTERED
+            ================================================= */
+
+            const totalRegistered =
+                users.length;
+
+
+            /* =================================================
+               TODAY
+
+               Find today's Kampala date group.
+            ================================================= */
+
+            const todayData =
+                registrationsByDate[
+                    today
+                ] || {
+
+                    date:
+                        today,
+
+                    count:
+                        0,
+
+                    registrations:
+                        []
+
+                };
+
+
+            /* =================================================
+               LAST 7 DAYS
+
+               Includes today.
+
+               Example:
+
+               Today = Sep 24
+
+               Range:
+               Sep 18 → Sep 24
+            ================================================= */
+
+            const todayDate =
+                dateFromKey(
+                    today
+                );
+
+
+            const last7DaysStart =
+                new Date(
+                    todayDate
+                );
+
+            last7DaysStart.setUTCDate(
+                last7DaysStart.getUTCDate() -
+                6
+            );
+
+
+            const last7DaysStartKey =
+                dateKeyFromDate(
+                    last7DaysStart
+                );
+
+
+            let last7Days =
+                0;
+
+
+            /* =================================================
+               LAST 30 DAYS
+
+               Includes today.
+            ================================================= */
+
+            const last30DaysStart =
+                new Date(
+                    todayDate
+                );
+
+            last30DaysStart.setUTCDate(
+                last30DaysStart.getUTCDate() -
+                29
+            );
+
+
+            const last30DaysStartKey =
+                dateKeyFromDate(
+                    last30DaysStart
+                );
+
+
+            let last30Days =
+                0;
+
+
+            /* =================================================
+               CALCULATE PERIOD TOTALS
+            ================================================= */
+
+            for (
+                const dateKey
+                of Object.keys(
+                    registrationsByDate
+                )
+            ) {
+
+                const group =
+                    registrationsByDate[
+                        dateKey
+                    ];
+
+
+                if (
+                    dateKey >=
+                    last7DaysStartKey &&
+                    dateKey <=
+                    today
+                ) {
+
+                    last7Days +=
+                        group.count;
+
+                }
+
+
+                if (
+                    dateKey >=
+                    last30DaysStartKey &&
+                    dateKey <=
+                    today
+                ) {
+
+                    last30Days +=
+                        group.count;
+
+                }
+
+            }
+
+
+            /* =================================================
+               AVAILABLE DATES
+
+               Only dates that actually have registrations
+               are returned.
+
+               New dates appear automatically when someone
+               registers.
+            ================================================= */
+
+            const dates =
+                Object.keys(
+                    registrationsByDate
+                )
+                    .sort(
+                        (a, b) =>
+                            b.localeCompare(a)
+                    )
+                    .map(
+                        dateKey => {
+
+                            const group =
+                                registrationsByDate[
+                                    dateKey
+                                ];
+
+                            return {
+
+                                date:
+                                    group.date,
+
+                                count:
+                                    group.count,
+
+                                isToday:
+                                    dateKey ===
+                                    today
+
+                            };
+
+                        }
+                    );
+
+
+            /* =================================================
+               RESPONSE
+            ================================================= */
+
+            return res.status(
+                200
+            ).json({
+
+                success:
+                    true,
+
+                timezone:
+                    TIMEZONE,
+
+                today,
+
+                statistics: {
+
+                    totalRegistered,
+
+                    today:
+                        todayData.count,
+
+                    last7Days,
+
+                    last30Days,
+
+                    directRegistrations,
+
+                    referralRegistrations
+
+                },
+
+                dates,
+
+                registrationsByDate
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "❌ FINORA REGISTRATION TRACKER ERROR:",
+                error
+            );
+
+
+            return res.status(
+                500
+            ).json({
+
+                success:
+                    false,
+
+                message:
+                    "FINORA could not load registration statistics."
+
+            });
+
+        }
+
+    }
+);
 router.get(
     "/overview",
     requireAdmin,
