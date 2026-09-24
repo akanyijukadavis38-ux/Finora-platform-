@@ -40,6 +40,7 @@ function generateRecoveryKey() {
 /* =========================================================
 ADMIN — OVERVIEW
 ========================================================= */
+
 /* =========================================================
    REGISTRATION TRACKER
    ---------------------------------------------------------
@@ -49,7 +50,10 @@ ADMIN — OVERVIEW
    - Uses User.createdAt
    - Uses Africa/Kampala calendar dates
    - Separates direct and referral registrations
-   - Returns full names only for daily registration lists
+   - Returns full names + referral codes
+   - Provides graph data
+   - Provides top referrer analytics
+   - Keeps historical registrations
 ========================================================= */
 
 router.get(
@@ -60,10 +64,9 @@ router.get(
         try {
 
             /* =================================================
-               LOAD ALL REGISTERED USERS
+               LOAD REAL REGISTERED USERS
 
-               Only fields needed by the registration tracker
-               are selected.
+               Only fields required by the tracker are loaded.
             ================================================= */
 
             const users =
@@ -78,15 +81,7 @@ router.get(
 
 
             /* =================================================
-               UGANDA TIMEZONE
-
-               FINORA uses Africa/Kampala.
-
-               Kampala is UTC+3 and does not currently use
-               daylight-saving time.
-
-               We convert each MongoDB UTC timestamp into the
-               correct Kampala calendar date.
+               FINORA TIMEZONE
             ================================================= */
 
             const TIMEZONE =
@@ -94,15 +89,7 @@ router.get(
 
 
             /* =================================================
-               FORMAT KAMPALA DATE
-
-               Returns:
-
-               YYYY-MM-DD
-
-               Example:
-
-               2026-09-24
+               CONVERT TIMESTAMP TO KAMPALA CALENDAR DATE
             ================================================= */
 
             function getKampalaDate(date) {
@@ -130,7 +117,7 @@ router.get(
 
 
             /* =================================================
-               CURRENT KAMPALA DATE
+               TODAY
             ================================================= */
 
             const today =
@@ -141,10 +128,6 @@ router.get(
 
             /* =================================================
                DATE HELPERS
-
-               We use UTC midnight for calendar calculations
-               because the date strings above represent
-               Kampala calendar dates.
             ================================================= */
 
             function dateFromKey(
@@ -173,17 +156,7 @@ router.get(
 
 
             /* =================================================
-               REGISTRATION GROUPS
-
-               Example:
-
-               {
-                   "2026-09-24": {
-                       date: "2026-09-24",
-                       count: 6,
-                       registrations: [...]
-                   }
-               }
+               REGISTRATIONS BY DATE
             ================================================= */
 
             const registrationsByDate =
@@ -191,7 +164,7 @@ router.get(
 
 
             /* =================================================
-               OVERALL STATISTICS
+               OVERALL COUNTS
             ================================================= */
 
             let directRegistrations =
@@ -202,7 +175,56 @@ router.get(
 
 
             /* =================================================
-               PROCESS EVERY REAL USER
+               REFERRAL ANALYTICS
+
+               referralCode → user
+
+               This allows:
+
+               referredByCode
+                     ↓
+               matching referralCode
+                     ↓
+               actual referrer
+            ================================================= */
+
+            const usersByReferralCode =
+                new Map();
+
+
+            for (
+                const user
+                of users
+            ) {
+
+                if (
+                    user.referralCode
+                ) {
+
+                    usersByReferralCode.set(
+                        String(
+                            user.referralCode
+                        )
+                            .trim()
+                            .toUpperCase(),
+                        user
+                    );
+
+                }
+
+            }
+
+
+            /* =================================================
+               TOP REFERRER COUNTS
+            ================================================= */
+
+            const referrerCounts =
+                new Map();
+
+
+            /* =================================================
+               PROCESS EVERY USER
             ================================================= */
 
             for (
@@ -254,12 +276,22 @@ router.get(
 
 
                 /* =============================================
-                   DETERMINE DIRECT OR REFERRAL
+                   DIRECT OR REFERRAL
                 ============================================= */
+
+                const referredByCode =
+                    user.referredByCode
+                        ? String(
+                            user.referredByCode
+                        )
+                            .trim()
+                            .toUpperCase()
+                        : null;
+
 
                 const isReferral =
                     Boolean(
-                        user.referredByCode
+                        referredByCode
                     );
 
 
@@ -269,6 +301,59 @@ router.get(
 
                     referralRegistrations++;
 
+
+                    /* =========================================
+                       FIND THE ACTUAL REFERRING USER
+                    ========================================= */
+
+                    const referrer =
+                        usersByReferralCode.get(
+                            referredByCode
+                        );
+
+
+                    if (
+                        referrer
+                    ) {
+
+                        const referrerId =
+                            referrer._id.toString();
+
+
+                        if (
+                            !referrerCounts.has(
+                                referrerId
+                            )
+                        ) {
+
+                            referrerCounts.set(
+                                referrerId,
+                                {
+
+                                    id:
+                                        referrer._id,
+
+                                    fullName:
+                                        referrer.fullName,
+
+                                    referralCode:
+                                        referrer.referralCode,
+
+                                    count:
+                                        0
+
+                                }
+                            );
+
+                        }
+
+
+                        referrerCounts.get(
+                            referrerId
+                        ).count++;
+
+                    }
+
                 } else {
 
                     directRegistrations++;
@@ -277,7 +362,7 @@ router.get(
 
 
                 /* =============================================
-                   ADD TO DATE GROUP
+                   ADD REGISTRATION TO DAILY GROUP
                 ============================================= */
 
                 registrationsByDate[
@@ -294,6 +379,13 @@ router.get(
 
                     fullName:
                         user.fullName,
+
+                    referralCode:
+                        user.referralCode ||
+                        null,
+
+                    referredByCode:
+                        referredByCode,
 
                     createdAt:
                         user.createdAt,
@@ -317,9 +409,7 @@ router.get(
 
 
             /* =================================================
-               TODAY
-
-               Find today's Kampala date group.
+               TODAY DATA
             ================================================= */
 
             const todayData =
@@ -341,15 +431,6 @@ router.get(
 
             /* =================================================
                LAST 7 DAYS
-
-               Includes today.
-
-               Example:
-
-               Today = Sep 24
-
-               Range:
-               Sep 18 → Sep 24
             ================================================= */
 
             const todayDate =
@@ -362,6 +443,7 @@ router.get(
                 new Date(
                     todayDate
                 );
+
 
             last7DaysStart.setUTCDate(
                 last7DaysStart.getUTCDate() -
@@ -381,14 +463,13 @@ router.get(
 
             /* =================================================
                LAST 30 DAYS
-
-               Includes today.
             ================================================= */
 
             const last30DaysStart =
                 new Date(
                     todayDate
                 );
+
 
             last30DaysStart.setUTCDate(
                 last30DaysStart.getUTCDate() -
@@ -452,13 +533,70 @@ router.get(
 
 
             /* =================================================
-               AVAILABLE DATES
+               BUILD 30-DAY GRAPH DATA
 
-               Only dates that actually have registrations
-               are returned.
+               Important:
 
-               New dates appear automatically when someone
-               registers.
+               We intentionally include zero-registration days.
+
+               This gives the graph a continuous calendar rather
+               than skipping dates where nobody registered.
+            ================================================= */
+
+            const graphData =
+                [];
+
+
+            for (
+                let i = 29;
+                i >= 0;
+                i--
+            ) {
+
+                const graphDate =
+                    new Date(
+                        todayDate
+                    );
+
+
+                graphDate.setUTCDate(
+                    graphDate.getUTCDate() -
+                    i
+                );
+
+
+                const dateKey =
+                    dateKeyFromDate(
+                        graphDate
+                    );
+
+
+                const group =
+                    registrationsByDate[
+                        dateKey
+                    ];
+
+
+                graphData.push({
+
+                    date:
+                        dateKey,
+
+                    count:
+                        group
+                            ? group.count
+                            : 0
+
+                });
+
+            }
+
+
+            /* =================================================
+               AVAILABLE REGISTRATION DATES
+
+               Historical dates with registrations remain
+               available to the existing date timeline.
             ================================================= */
 
             const dates =
@@ -476,6 +614,7 @@ router.get(
                                 registrationsByDate[
                                     dateKey
                                 ];
+
 
                             return {
 
@@ -496,7 +635,42 @@ router.get(
 
 
             /* =================================================
-               RESPONSE
+               TOP REFERRERS
+
+               Highest referral count first.
+
+               We do NOT limit the underlying data; the frontend
+               can decide how many to display.
+            ================================================= */
+
+            const topReferrers =
+                Array.from(
+                    referrerCounts.values()
+                )
+                    .sort(
+                        (a, b) =>
+                            b.count -
+                            a.count
+                    );
+
+
+            /* =================================================
+               DIRECT / REFERRAL BREAKDOWN
+            ================================================= */
+
+            const referralBreakdown = {
+
+                direct:
+                    directRegistrations,
+
+                referral:
+                    referralRegistrations
+
+            };
+
+
+            /* =================================================
+               FINAL RESPONSE
             ================================================= */
 
             return res.status(
@@ -528,7 +702,42 @@ router.get(
 
                 },
 
+                /* =============================================
+                   GRAPH
+                ============================================= */
+
+                graph: {
+
+                    period:
+                        "30days",
+
+                    data:
+                        graphData
+
+                },
+
+                /* =============================================
+                   REFERRAL ANALYTICS
+                ============================================= */
+
+                referrals: {
+
+                    topReferrers,
+
+                    breakdown:
+                        referralBreakdown
+
+                },
+
+                /* =============================================
+                   DATE TIMELINE
+                ============================================= */
+
                 dates,
+
+                /* =============================================
+                   DAILY REGISTRATIONS
+                ============================================= */
 
                 registrationsByDate
 
@@ -559,6 +768,10 @@ router.get(
 
     }
 );
+
+
+
+ 
 router.get(
     "/overview",
     requireAdmin,
