@@ -29,7 +29,7 @@ const API_BASE =
 "https://finora-platform.onrender.com";
 
 const REGISTRATION_ENDPOINT =
-"${API_BASE}/api/admin/registrations";
+`${API_BASE}/api/admin/registrations`;
 
 const REFRESH_INTERVAL =
 30 * 1000;
@@ -1625,26 +1625,26 @@ for (
     index++
 ) {
 
-    const date =
-        new Date(
-            today
-        );
-
-
-    date.setUTCDate(
-        date.getUTCDate() -
-        index
+const date =
+    new Date(
+        today
     );
 
 
-    dates.push(
-        date
-            .toISOString()
-            .slice(
-                0,
-                10
-            )
-    );
+date.setUTCDate(
+    date.getUTCDate() -
+    index
+);
+
+
+dates.push(
+    date
+        .toISOString()
+        .slice(
+            0,
+            10
+        )
+);
 
 }
 
