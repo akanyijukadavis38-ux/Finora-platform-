@@ -126,7 +126,7 @@ async function sendPushToUser(
                 "/finora-icon.png",
 
             badge:
-                "/finora-icon.png"
+                "/finora-badge.png"
 
         });
 
@@ -266,3 +266,8 @@ module.exports = {
     sendPushToUser
 
 };
+
+Only change:
+""/finora-icon.png"" → ""/finora-badge.png"" for "badge".
+
+The normal notification "icon" remains "/finora-icon.png".
