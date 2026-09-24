@@ -3,18 +3,25 @@
    ---------------------------------------------------------
    Live registration activity
 
-   Backend:
+   Backend endpoint:
    GET /api/admin/registrations
 
    Features:
-   - Real existing registrations
-   - Kampala calendar dates
-   - Horizontal date timeline
-   - Today's live registrations
-   - Full names only
-   - Total / Today / 7 Days / 30 Days
+   - Uses real FINORA users from MongoDB
+   - Uses Africa/Kampala calendar dates
+   - Shows actual registration dates
+   - Horizontal/swipeable date timeline
+   - Shows zero-registration days
+   - Shows full names only
+   - Today / 7 Days / 30 Days statistics
    - Direct / Referral statistics
-   - Automatic refresh
+   - Automatically refreshes every 30 seconds
+   - Refreshes when Admin returns to the page
+========================================================= */
+
+
+/* =========================================================
+   CONFIGURATION
 ========================================================= */
 
 const API_BASE =
@@ -28,25 +35,33 @@ const REFRESH_INTERVAL =
 
 
 /* =========================================================
-   DOM HELPERS
-========================================================= */
-
-const $ = (selector) =>
-    document.querySelector(selector);
-
-const $$ = (selector) =>
-    document.querySelectorAll(selector);
-
-
-/* =========================================================
    STATE
 ========================================================= */
 
-let trackerData = null;
+let trackerData =
+    null;
 
-let selectedDate = null;
+let selectedDate =
+    null;
 
-let refreshTimer = null;
+let refreshTimer =
+    null;
+
+let isLoading =
+    false;
+
+
+/* =========================================================
+   DOM HELPER
+========================================================= */
+
+function $(selector) {
+
+    return document.querySelector(
+        selector
+    );
+
+}
 
 
 /* =========================================================
@@ -69,12 +84,6 @@ document.addEventListener(
 
 async function initializeTracker() {
 
-    updateFooterYear();
-
-    setupBackButton();
-
-    setupRefreshButton();
-
     await loadRegistrationTracker();
 
     startAutoRefresh();
@@ -88,11 +97,30 @@ async function initializeTracker() {
 
 async function loadRegistrationTracker() {
 
+    /*
+       Prevent two requests from running
+       at the exact same time.
+    */
+
+    if (
+        isLoading
+    ) {
+
+        return;
+
+    }
+
+
+    isLoading =
+        true;
+
+
     try {
 
         setLiveStatus(
             "loading"
         );
+
 
         const response =
             await fetch(
@@ -128,6 +156,7 @@ async function loadRegistrationTracker() {
                 "/admin-login.html";
 
             return;
+
         }
 
 
@@ -140,7 +169,7 @@ async function loadRegistrationTracker() {
             403
         ) {
 
-            showTrackerError(
+            showError(
                 "Admin access is required to view registration activity."
             );
 
@@ -149,6 +178,7 @@ async function loadRegistrationTracker() {
             );
 
             return;
+
         }
 
 
@@ -157,7 +187,7 @@ async function loadRegistrationTracker() {
         ) {
 
             throw new Error(
-                `Server returned ${response.status}`
+                `Server returned HTTP ${response.status}`
             );
 
         }
@@ -174,22 +204,22 @@ async function loadRegistrationTracker() {
 
             throw new Error(
                 data?.message ||
-                "Registration data could not be loaded."
+                "FINORA could not load registration data."
             );
 
         }
 
 
+        /*
+           Save the latest real backend data.
+        */
+
         trackerData =
             data;
 
 
-        renderStatistics();
-
-        renderDateTimeline();
-
         /*
-           If no date has been selected yet,
+           If this is the first successful load,
            automatically select TODAY.
         */
 
@@ -204,10 +234,12 @@ async function loadRegistrationTracker() {
 
 
         /*
-           If the selected date no longer
-           exists in the response, keep it
-           as a valid zero-registration date.
+           Update all sections.
         */
+
+        renderStatistics();
+
+        renderDateTimeline();
 
         renderSelectedDate();
 
@@ -216,13 +248,10 @@ async function loadRegistrationTracker() {
         );
 
 
-        updateLastUpdated();
-
-
     } catch (error) {
 
         console.error(
-            "FINORA REGISTRATION TRACKER ERROR:",
+            "❌ FINORA REGISTRATION TRACKER ERROR:",
             error
         );
 
@@ -232,9 +261,29 @@ async function loadRegistrationTracker() {
         );
 
 
-        showTrackerError(
-            "Unable to load registration activity. Please try again."
-        );
+        /*
+           Only show the full error screen if
+           we do not already have usable data.
+
+           This prevents a temporary refresh problem
+           from unnecessarily destroying the current
+           registration list.
+        */
+
+        if (
+            !trackerData
+        ) {
+
+            showError(
+                "Unable to load registration activity. Please try again."
+            );
+
+        }
+
+    } finally {
+
+        isLoading =
+            false;
 
     }
 
@@ -253,17 +302,18 @@ function renderStatistics() {
     ) {
 
         return;
+
     }
 
 
-    const stats =
+    const statistics =
         trackerData.statistics;
 
 
     setText(
         "#totalRegistered",
         formatNumber(
-            stats.totalRegistered
+            statistics.totalRegistered
         )
     );
 
@@ -271,7 +321,7 @@ function renderStatistics() {
     setText(
         "#todayRegistered",
         formatNumber(
-            stats.today
+            statistics.today
         )
     );
 
@@ -279,7 +329,7 @@ function renderStatistics() {
     setText(
         "#last7Days",
         formatNumber(
-            stats.last7Days
+            statistics.last7Days
         )
     );
 
@@ -287,7 +337,7 @@ function renderStatistics() {
     setText(
         "#last30Days",
         formatNumber(
-            stats.last30Days
+            statistics.last30Days
         )
     );
 
@@ -295,7 +345,7 @@ function renderStatistics() {
     setText(
         "#directRegistrations",
         formatNumber(
-            stats.directRegistrations
+            statistics.directRegistrations
         )
     );
 
@@ -303,7 +353,7 @@ function renderStatistics() {
     setText(
         "#referralRegistrations",
         formatNumber(
-            stats.referralRegistrations
+            statistics.referralRegistrations
         )
     );
 
@@ -316,28 +366,51 @@ function renderStatistics() {
 
 function renderDateTimeline() {
 
-    const container =
-        $("#registrationDates");
+    const scroller =
+        $("#dateScroller");
+
 
     if (
-        !container
+        !scroller ||
+        !trackerData
     ) {
 
         return;
+
     }
 
 
-    container.innerHTML =
+    /*
+       Remember the currently selected date
+       before rebuilding the timeline.
+    */
+
+    const currentSelectedDate =
+        selectedDate;
+
+
+    scroller.innerHTML =
         "";
 
 
     /*
-       We intentionally create the latest
-       30 calendar dates rather than only
-       dates where registrations occurred.
+       Generate the latest 30 CALENDAR dates.
 
-       This means days with ZERO registrations
-       are also visible.
+       This is important:
+
+       We do NOT only show dates where someone
+       registered.
+
+       Therefore:
+
+       24 SEPTEMBER — 6
+       23 SEPTEMBER — 2
+       22 SEPTEMBER — 0
+       21 SEPTEMBER — 4
+
+       etc.
+
+       Zero-registration days remain visible.
     */
 
     const dates =
@@ -355,6 +428,13 @@ function renderDateTimeline() {
                 );
 
 
+            const count =
+                Number(
+                    dateInfo.count ||
+                    0
+                );
+
+
             const button =
                 document.createElement(
                     "button"
@@ -366,8 +446,16 @@ function renderDateTimeline() {
 
 
             button.className =
-                "registration-date";
+                "date-item";
 
+
+            button.dataset.date =
+                dateKey;
+
+
+            /*
+               TODAY
+            */
 
             if (
                 dateKey ===
@@ -375,66 +463,110 @@ function renderDateTimeline() {
             ) {
 
                 button.classList.add(
-                    "is-today"
+                    "today"
                 );
 
             }
 
+
+            /*
+               SELECTED DATE
+            */
 
             if (
                 dateKey ===
-                selectedDate
+                currentSelectedDate
             ) {
 
                 button.classList.add(
-                    "is-selected"
+                    "selected"
                 );
 
             }
 
 
-            button.dataset.date =
-                dateKey;
+            /*
+               Date display.
+            */
 
-
-            const label =
-                formatDateShort(
+            const date =
+                parseDateKey(
                     dateKey
                 );
 
 
-            const dayNumber =
-                formatDayNumber(
-                    dateKey
-                );
+            const month =
+                new Intl.DateTimeFormat(
+                    "en-GB",
+                    {
+                        month:
+                            "short",
+                        timeZone:
+                            "Africa/Kampala"
+                    }
+                )
+                    .format(date)
+                    .toUpperCase();
 
 
-            const count =
-                Number(
-                    dateInfo.count ||
-                    0
-                );
+            const day =
+                new Intl.DateTimeFormat(
+                    "en-GB",
+                    {
+                        day:
+                            "2-digit",
+                        timeZone:
+                            "Africa/Kampala"
+                    }
+                )
+                    .format(date);
+
+
+            const weekday =
+                new Intl.DateTimeFormat(
+                    "en-GB",
+                    {
+                        weekday:
+                            "short",
+                        timeZone:
+                            "Africa/Kampala"
+                    }
+                )
+                    .format(date)
+                    .toUpperCase();
 
 
             button.innerHTML = `
 
+                <span class="date-weekday">
+                    ${escapeHTML(weekday)}
+                </span>
+
+                <span class="date-day">
+                    ${escapeHTML(day)}
+                </span>
+
                 <span class="date-month">
-                    ${escapeHTML(label)}
+                    ${escapeHTML(month)}
                 </span>
 
-                <span class="date-number">
-                    ${escapeHTML(dayNumber)}
-                </span>
-
-                <span class="date-count">
+                <span class="date-registration-count">
                     ${formatNumber(count)}
+                </span>
+
+                <span class="date-registration-label">
+                    ${
+                        count === 1
+                            ? "REGISTERED"
+                            : "REGISTERED"
+                    }
                 </span>
 
                 ${
                     dateKey ===
                     trackerData.today
                         ? `
-                            <span class="today-label">
+                            <span class="today-badge">
                                 TODAY
                             </span>
                           `
@@ -456,7 +588,7 @@ function renderDateTimeline() {
             );
 
 
-            container.appendChild(
+            scroller.appendChild(
                 button
             );
 
@@ -465,8 +597,7 @@ function renderDateTimeline() {
 
 
     /*
-       Scroll today's date into view
-       when the timeline is first loaded.
+       Put the selected date into view.
     */
 
     if (
@@ -489,14 +620,26 @@ function renderDateTimeline() {
 
 
 /* =========================================================
-   BUILD CALENDAR DATES
+   BUILD LATEST CALENDAR DATES
 ========================================================= */
 
 function buildLatestCalendarDates(
     numberOfDays
 ) {
 
-    const dates = [];
+    const dates =
+        [];
+
+
+    if (
+        !trackerData ||
+        !trackerData.today
+    ) {
+
+        return dates;
+
+    }
+
 
     const today =
         parseDateKey(
@@ -505,9 +648,9 @@ function buildLatestCalendarDates(
 
 
     for (
-        let i = 0;
-        i < numberOfDays;
-        i++
+        let index = 0;
+        index < numberOfDays;
+        index++
     ) {
 
         const date =
@@ -517,7 +660,8 @@ function buildLatestCalendarDates(
 
 
         date.setUTCDate(
-            date.getUTCDate() - i
+            date.getUTCDate() -
+            index
         );
 
 
@@ -539,7 +683,7 @@ function buildLatestCalendarDates(
 
 
 /* =========================================================
-   DATE INFORMATION
+   GET DATE INFORMATION
 ========================================================= */
 
 function getDateInfo(
@@ -561,6 +705,11 @@ function getDateInfo(
 
     }
 
+
+    /*
+       A date that has no registrations
+       still needs a valid object.
+    */
 
     return {
 
@@ -591,26 +740,39 @@ function selectDate(
 
 
     /*
-       Update active date without
-       rebuilding the whole page.
+       Update the selected visual state.
     */
 
-    $$(".registration-date")
-        .forEach(
-            (button) => {
-
-                button.classList.toggle(
-                    "is-selected",
-                    button.dataset.date ===
-                    dateKey
-                );
-
-            }
+    const dateButtons =
+        document.querySelectorAll(
+            ".date-item"
         );
 
 
+    dateButtons.forEach(
+        (button) => {
+
+            button.classList.toggle(
+                "selected",
+                button.dataset.date ===
+                dateKey
+            );
+
+        }
+    );
+
+
+    /*
+       Update the selected-date section.
+    */
+
     renderSelectedDate();
 
+
+    /*
+       Keep the selected date visible
+       horizontally.
+    */
 
     scrollDateIntoView(
         dateKey
@@ -620,7 +782,7 @@ function selectDate(
 
 
 /* =========================================================
-   SELECTED DATE
+   SELECTED DATE REGISTRATIONS
 ========================================================= */
 
 function renderSelectedDate() {
@@ -631,6 +793,7 @@ function renderSelectedDate() {
     ) {
 
         return;
+
     }
 
 
@@ -648,24 +811,51 @@ function renderSelectedDate() {
             : [];
 
 
+    /*
+       Selected date heading.
+    */
+
     setText(
-        "#selectedDateTitle",
+        "#selectedDate",
         formatDateLong(
             selectedDate
         )
     );
 
 
+    /*
+       Selected date count.
+    */
+
     setText(
-        "#selectedDateCount",
-        `${formatNumber(
+        "#selectedCount",
+        formatNumber(
             registrations.length
-        )} REGISTERED`
+        )
     );
 
 
+    /*
+       Update kicker.
+
+       TODAY gets a special label.
+    */
+
+    setText(
+        "#selectedKicker",
+        selectedDate ===
+        trackerData.today
+            ? "TODAY"
+            : "SELECTED DATE"
+    );
+
+
+    /*
+       Registration names container.
+    */
+
     const list =
-        $("#registrationNames");
+        $("#registrationList");
 
 
     if (
@@ -673,6 +863,7 @@ function renderSelectedDate() {
     ) {
 
         return;
+
     }
 
 
@@ -680,36 +871,69 @@ function renderSelectedDate() {
         "";
 
 
+    /*
+       No registrations on this date.
+    */
+
     if (
         registrations.length ===
         0
     ) {
 
-        list.innerHTML = `
+        const empty =
+            document.createElement(
+                "div"
+            );
 
-            <div class="empty-registrations">
 
-                <div class="empty-icon">
-                    ✦
-                </div>
+        empty.className =
+            "empty-state";
 
-                <strong>
-                    No registrations yet
-                </strong>
 
-                <span>
-                    No FINORA users registered
-                    on this date.
-                </span>
+        empty.innerHTML = `
 
+            <div class="empty-symbol">
+                ✦
             </div>
+
+            <strong>
+                No registrations yet
+            </strong>
+
+            <span>
+                No FINORA users registered
+                on this date.
+            </span>
 
         `;
 
 
+        list.appendChild(
+            empty
+        );
+
+
         return;
+
     }
 
+
+    /*
+       Show FULL NAMES ONLY.
+
+       We deliberately do NOT show:
+
+       - phone
+       - email
+       - referral code
+       - user ID
+       - balance
+       - deposit
+       - status
+
+       Those details already belong
+       in the Users section.
+    */
 
     registrations.forEach(
         (registration) => {
@@ -721,24 +945,26 @@ function renderSelectedDate() {
 
 
             row.className =
-                "registration-person";
+                "registration-row";
 
 
-            /*
-               IMPORTANT:
-               We deliberately show ONLY
-               the user's full name here.
-            */
+            const name =
+                registration.fullName ||
+                "FINORA User";
+
 
             row.innerHTML = `
 
-                <span class="person-dot"></span>
-
-                <span class="person-name">
-                    ${escapeHTML(
-                        registration.fullName ||
-                        "FINORA User"
+                <span class="registration-number">
+                    ${formatNumber(
+                        registrations.indexOf(
+                            registration
+                        ) + 1
                     )}
+                </span>
+
+                <span class="registration-name">
+                    ${escapeHTML(name)}
                 </span>
 
             `;
@@ -752,6 +978,96 @@ function renderSelectedDate() {
     );
 
 }
+
+
+/* =========================================================
+   SCROLL SELECTED DATE INTO VIEW
+========================================================= */
+
+function scrollDateIntoView(
+    dateKey
+) {
+
+    const button =
+        document.querySelector(
+            `.date-item[data-date="${dateKey}"]`
+        );
+
+
+    if (
+        !button
+    ) {
+
+        return;
+
+    }
+
+
+    button.scrollIntoView(
+        {
+            behavior:
+                "smooth",
+
+            block:
+                "nearest",
+
+            inline:
+                "center"
+        }
+    );
+
+}
+
+
+/* =========================================================
+   AUTO REFRESH
+========================================================= */
+
+function startAutoRefresh() {
+
+    if (
+        refreshTimer
+    ) {
+
+        clearInterval(
+            refreshTimer
+        );
+
+    }
+
+
+    refreshTimer =
+        setInterval(
+            () => {
+
+                loadRegistrationTracker();
+
+            },
+            REFRESH_INTERVAL
+        );
+
+}
+
+
+/* =========================================================
+   REFRESH WHEN PAGE BECOMES VISIBLE
+========================================================= */
+
+document.addEventListener(
+    "visibilitychange",
+    () => {
+
+        if (
+            document.visibilityState ===
+            "visible"
+        ) {
+
+            loadRegistrationTracker();
+
+        }
+
+    }
+);
 
 
 /* =========================================================
@@ -782,9 +1098,6 @@ function formatDateLong(
     return new Intl.DateTimeFormat(
         "en-GB",
         {
-            timeZone:
-                "Africa/Kampala",
-
             day:
                 "2-digit",
 
@@ -792,238 +1105,14 @@ function formatDateLong(
                 "long",
 
             year:
-                "numeric"
+                "numeric",
+
+            timeZone:
+                "Africa/Kampala"
         }
     )
         .format(date)
         .toUpperCase();
-
-}
-
-
-function formatDateShort(
-    dateKey
-) {
-
-    const date =
-        parseDateKey(
-            dateKey
-        );
-
-
-    return new Intl.DateTimeFormat(
-        "en-GB",
-        {
-            timeZone:
-                "Africa/Kampala",
-
-            month:
-                "short"
-        }
-    )
-        .format(date)
-        .toUpperCase();
-
-}
-
-
-function formatDayNumber(
-    dateKey
-) {
-
-    const date =
-        parseDateKey(
-            dateKey
-        );
-
-
-    return new Intl.DateTimeFormat(
-        "en-GB",
-        {
-            timeZone:
-                "Africa/Kampala",
-
-            day:
-                "2-digit"
-        }
-    )
-        .format(date);
-
-}
-
-
-/* =========================================================
-   SCROLL SELECTED DATE INTO VIEW
-========================================================= */
-
-function scrollDateIntoView(
-    dateKey
-) {
-
-    const button =
-        document.querySelector(
-            `.registration-date[data-date="${dateKey}"]`
-        );
-
-
-    if (
-        !button
-    ) {
-
-        return;
-    }
-
-
-    button.scrollIntoView({
-        behavior:
-            "smooth",
-
-        block:
-            "nearest",
-
-        inline:
-            "center"
-    });
-
-}
-
-
-/* =========================================================
-   AUTO REFRESH
-========================================================= */
-
-function startAutoRefresh() {
-
-    if (
-        refreshTimer
-    ) {
-
-        clearInterval(
-            refreshTimer
-        );
-
-    }
-
-
-    refreshTimer =
-        setInterval(
-            () => {
-
-                /*
-                   Keep the selected date.
-
-                   If it is TODAY, its list/count
-                   will update immediately.
-
-                   If it is an older date, its data
-                   remains selected while the overall
-                   statistics refresh.
-                */
-
-                loadRegistrationTracker();
-
-            },
-            REFRESH_INTERVAL
-        );
-
-}
-
-
-/* =========================================================
-   REFRESH WHEN ADMIN RETURNS TO TAB
-========================================================= */
-
-document.addEventListener(
-    "visibilitychange",
-    () => {
-
-        if (
-            document.visibilityState ===
-            "visible"
-        ) {
-
-            loadRegistrationTracker();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   MANUAL REFRESH
-========================================================= */
-
-function setupRefreshButton() {
-
-    const button =
-        $("#refreshTracker");
-
-
-    if (
-        !button
-    ) {
-
-        return;
-    }
-
-
-    button.addEventListener(
-        "click",
-        async () => {
-
-            button.classList.add(
-                "is-refreshing"
-            );
-
-
-            await loadRegistrationTracker();
-
-
-            setTimeout(
-                () => {
-
-                    button.classList.remove(
-                        "is-refreshing"
-                    );
-
-                },
-                400
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   BACK BUTTON
-========================================================= */
-
-function setupBackButton() {
-
-    const button =
-        $("#backToAdmin");
-
-
-    if (
-        !button
-    ) {
-
-        return;
-    }
-
-
-    button.addEventListener(
-        "click",
-        () => {
-
-            window.location.href =
-                "/admin.html";
-
-        }
-    );
 
 }
 
@@ -1036,24 +1125,35 @@ function setLiveStatus(
     status
 ) {
 
-    const indicator =
-        $("#liveIndicator");
+    const liveStatus =
+        document.querySelector(
+            ".live-status"
+        );
 
 
-    const label =
-        $("#liveLabel");
+    const liveDot =
+        document.querySelector(
+            ".live-dot"
+        );
 
 
     if (
-        !indicator
+        !liveStatus ||
+        !liveDot
     ) {
 
         return;
+
     }
 
 
-    indicator.classList.remove(
-        "live",
+    liveStatus.classList.remove(
+        "loading",
+        "offline"
+    );
+
+
+    liveDot.classList.remove(
         "loading",
         "offline"
     );
@@ -1064,125 +1164,114 @@ function setLiveStatus(
         "live"
     ) {
 
-        indicator.classList.add(
-            "live"
+        /*
+           Restore normal LIVE display.
+        */
+
+        liveStatus.textContent =
+            "";
+
+
+        const dot =
+            document.createElement(
+                "span"
+            );
+
+
+        dot.className =
+            "live-dot";
+
+
+        liveStatus.appendChild(
+            dot
         );
 
 
-        if (
-            label
-        ) {
+        liveStatus.appendChild(
+            document.createTextNode(
+                " LIVE"
+            )
+        );
 
-            label.textContent =
-                "LIVE";
 
-        }
+        return;
 
-    } else if (
+    }
+
+
+    if (
         status ===
         "loading"
     ) {
 
-        indicator.classList.add(
+        liveStatus.classList.add(
             "loading"
         );
 
 
-        if (
-            label
-        ) {
-
-            label.textContent =
-                "UPDATING";
-
-        }
-
-    } else {
-
-        indicator.classList.add(
-            "offline"
+        liveDot.classList.add(
+            "loading"
         );
 
 
-        if (
-            label
-        ) {
+        /*
+           Keep the label simple.
+        */
 
-            label.textContent =
-                "OFFLINE";
-
-        }
-
-    }
-
-}
-
-
-/* =========================================================
-   LAST UPDATED
-========================================================= */
-
-function updateLastUpdated() {
-
-    const element =
-        $("#lastUpdated");
-
-
-    if (
-        !element
-    ) {
+        liveStatus.lastChild.textContent =
+            " UPDATING";
 
         return;
+
     }
 
 
-    const now =
-        new Date();
+    /*
+       Offline/error state.
+    */
+
+    liveStatus.classList.add(
+        "offline"
+    );
 
 
-    element.textContent =
-        `Updated ${now.toLocaleTimeString(
-            "en-GB",
-            {
-                timeZone:
-                    "Africa/Kampala",
+    liveDot.classList.add(
+        "offline"
+    );
 
-                hour:
-                    "2-digit",
 
-                minute:
-                    "2-digit"
-            }
-        )}`;
+    liveStatus.lastChild.textContent =
+        " OFFLINE";
 
 }
 
 
 /* =========================================================
-   ERROR DISPLAY
+   ERROR STATE
 ========================================================= */
 
-function showTrackerError(
+function showError(
     message
 ) {
 
-    const container =
-        $("#registrationNames");
+    const list =
+        $("#registrationList");
 
 
     if (
-        !container
+        !list
     ) {
 
         return;
+
     }
 
 
-    container.innerHTML = `
+    list.innerHTML = `
 
-        <div class="tracker-error">
+        <div class="error-state">
 
-            <div class="error-icon">
+            <div class="error-symbol">
                 !
             </div>
 
@@ -1196,7 +1285,7 @@ function showTrackerError(
 
             <button
                 type="button"
-                id="retryTracker"
+                id="retryRegistrationTracker"
             >
                 TRY AGAIN
             </button>
@@ -1207,7 +1296,7 @@ function showTrackerError(
 
 
     const retry =
-        $("#retryTracker");
+        $("#retryRegistrationTracker");
 
 
     if (
@@ -1222,29 +1311,6 @@ function showTrackerError(
 
             }
         );
-
-    }
-
-}
-
-
-/* =========================================================
-   FOOTER YEAR
-========================================================= */
-
-function updateFooterYear() {
-
-    const year =
-        $("#footerYear");
-
-
-    if (
-        year
-    ) {
-
-        year.textContent =
-            new Date()
-                .getFullYear();
 
     }
 
@@ -1296,7 +1362,7 @@ function formatNumber(
 
 
 /* =========================================================
-   HTML SECURITY
+   HTML ESCAPING
 ========================================================= */
 
 function escapeHTML(
