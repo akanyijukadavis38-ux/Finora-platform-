@@ -1,267 +1,588 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 
-<head>
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <meta charset="UTF-8">
+<meta
+    name="theme-color"
+    content="#050409"
+>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<title>FINORA — Registration Tracker</title>
 
-    <meta
-        name="theme-color"
-        content="#050409"
-    >
+<link
+    rel="stylesheet"
+    href="/admin-registration-tracker.css"
+>
 
-    <title>FINORA — Registration Tracker</title>
+</head><body><div class="tracker-page">
 
-    <link
-        rel="stylesheet"
-        href="/admin-registration-tracker.css"
-    >
+    <!-- =================================================
+         HEADER
+    ================================================== -->
 
-</head>
+    <header class="tracker-header">
 
-<body>
+        <div class="header-left">
 
-    <div class="tracker-page">
+            <a
+                href="/admin.html"
+                class="back-button"
+                aria-label="Back to Admin Dashboard"
+            >
+                <span>‹</span>
+            </a>
 
-        <!-- HEADER -->
-        <header class="tracker-header">
+            <div>
 
-            <div class="header-left">
-
-                <a
-                    href="/admin.html"
-                    class="back-button"
-                    aria-label="Back to Admin Dashboard"
-                >
-                    <span>‹</span>
-                </a>
-
-                <div>
-                    <div class="eyebrow">
-                        FINORA ADMIN
-                    </div>
-
-                    <h1>
-                        Registration Tracker
-                    </h1>
-
-                    <p>
-                        Live registration activity
-                    </p>
+                <div class="eyebrow">
+                    FINORA ADMIN
                 </div>
 
+                <h1>
+                    Registration Tracker
+                </h1>
+
+                <p>
+                    Live registration activity
+                </p>
+
             </div>
 
-            <div class="live-status">
-                <span class="live-dot"></span>
+        </div>
+
+        <div class="live-status">
+
+            <span class="live-dot"></span>
+
+            <span class="live-label">
                 LIVE
-            </div>
+            </span>
 
-        </header>
+        </div>
 
-
-        <!-- STATISTICS -->
-        <section class="stats-strip">
-
-            <div class="stat-card total-card">
-                <span class="stat-label">
-                    TOTAL
-                </span>
-
-                <strong id="totalRegistered">
-                    —
-                </strong>
-
-                <span class="stat-description">
-                    Registered users
-                </span>
-            </div>
+    </header>
 
 
-            <div class="stat-card today-card">
-                <span class="stat-label">
-                    TODAY
-                </span>
+    <!-- =================================================
+         STATISTICS
+    ================================================== -->
 
-                <strong id="todayRegistered">
-                    —
-                </strong>
+    <section class="stats-strip">
 
-                <span class="stat-description">
-                    New today
-                </span>
-            </div>
+        <div class="stat-card total-card">
 
+            <span class="stat-label">
+                TOTAL
+            </span>
 
-            <div class="stat-card">
-                <span class="stat-label">
-                    7 DAYS
-                </span>
+            <strong id="totalRegistered">
+                —
+            </strong>
 
-                <strong id="last7Days">
-                    —
-                </strong>
+            <span class="stat-description">
+                Registered users
+            </span>
 
-                <span class="stat-description">
-                    Recent growth
-                </span>
-            </div>
+        </div>
 
 
-            <div class="stat-card">
-                <span class="stat-label">
-                    30 DAYS
-                </span>
+        <div class="stat-card today-card">
 
-                <strong id="last30Days">
-                    —
-                </strong>
+            <span class="stat-label">
+                TODAY
+            </span>
 
-                <span class="stat-description">
-                    Recent growth
-                </span>
-            </div>
+            <strong id="todayRegistered">
+                —
+            </strong>
 
+            <span class="stat-description">
+                New today
+            </span>
 
-            <div class="stat-card">
-                <span class="stat-label">
-                    DIRECT
-                </span>
-
-                <strong id="directRegistrations">
-                    —
-                </strong>
-
-                <span class="stat-description">
-                    Direct signups
-                </span>
-            </div>
+        </div>
 
 
-            <div class="stat-card">
-                <span class="stat-label">
-                    REFERRAL
-                </span>
+        <div class="stat-card">
 
-                <strong id="referralRegistrations">
-                    —
-                </strong>
+            <span class="stat-label">
+                7 DAYS
+            </span>
 
-                <span class="stat-description">
-                    Referred users
-                </span>
-            </div>
+            <strong id="last7Days">
+                —
+            </strong>
 
-        </section>
+            <span class="stat-description">
+                Recent growth
+            </span>
+
+        </div>
 
 
-        <!-- DATE TRACKER -->
-        <section class="date-section">
+        <div class="stat-card">
 
-            <div class="section-heading">
+            <span class="stat-label">
+                30 DAYS
+            </span>
+
+            <strong id="last30Days">
+                —
+            </strong>
+
+            <span class="stat-description">
+                Recent growth
+            </span>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span class="stat-label">
+                DIRECT
+            </span>
+
+            <strong id="directRegistrations">
+                —
+            </strong>
+
+            <span class="stat-description">
+                Direct signups
+            </span>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span class="stat-label">
+                REFERRAL
+            </span>
+
+            <strong id="referralRegistrations">
+                —
+            </strong>
+
+            <span class="stat-description">
+                Referred users
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         ANALYTICS
+    ================================================== -->
+
+    <section class="analytics-grid">
+
+
+        <!-- REGISTRATION GROWTH -->
+
+        <article class="analytics-card growth-card">
+
+            <div class="analytics-card-header">
 
                 <div>
+
                     <span class="section-kicker">
-                        REGISTRATION ACTIVITY
+                        30-DAY ANALYTICS
                     </span>
 
                     <h2>
-                        Daily Timeline
+                        Registration Growth
                     </h2>
+
+                    <p>
+                        New registrations by calendar date
+                    </p>
+
                 </div>
 
-                <span class="swipe-hint">
-                    Swipe dates →
-                </span>
+                <div class="growth-total">
+
+                    <strong id="graphPeriodTotal">
+                        0
+                    </strong>
+
+                    <span>
+                        LAST 30 DAYS
+                    </span>
+
+                </div>
 
             </div>
 
 
             <div
-                class="date-scroller"
-                id="dateScroller"
+                class="registration-chart"
+                id="registrationChart"
+                aria-label="Registration growth chart"
             >
-                <!-- Dates generated by JS -->
+
+                <div class="chart-loading">
+                    Loading analytics...
+                </div>
+
             </div>
 
-        </section>
+        </article>
 
 
-        <!-- SELECTED DATE -->
-        <main class="selected-date-section">
+        <!-- REFERRAL ANALYTICS -->
 
-            <div class="selected-date-header">
+        <article class="analytics-card referral-card">
+
+            <div class="analytics-card-header">
 
                 <div>
 
-                    <span
-                        class="selected-kicker"
-                        id="selectedKicker"
-                    >
-                        SELECTED DATE
+                    <span class="section-kicker">
+                        REFERRAL ACTIVITY
                     </span>
 
-                    <h2 id="selectedDate">
-                        —
+                    <h2>
+                        Top Referrers
                     </h2>
+
+                    <p>
+                        Users bringing registrations
+                    </p>
 
                 </div>
 
-                <div class="selected-count">
+            </div>
 
-                    <strong id="selectedCount">
-                        0
+
+            <div
+                class="top-referrers"
+                id="topReferrers"
+            >
+
+                <div class="chart-loading">
+                    Loading referral activity...
+                </div>
+
+            </div>
+
+
+            <div class="breakdown-box">
+
+                <div class="breakdown-heading">
+
+                    <span>
+                        REGISTRATION SOURCE
+                    </span>
+
+                    <strong>
+                        Direct vs Referral
                     </strong>
+
+                </div>
+
+
+                <div
+                    class="source-bar"
+                    id="sourceBar"
+                >
+
+                    <span class="source-direct"></span>
+                    <span class="source-referral"></span>
+
+                </div>
+
+
+                <div class="source-legend">
+
+                    <div>
+
+                        <span class="legend-dot direct-dot"></span>
+
+                        <div>
+                            <strong id="directBreakdown">
+                                0
+                            </strong>
+
+                            <small>
+                                Direct
+                            </small>
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <span class="legend-dot referral-dot"></span>
+
+                        <div>
+                            <strong id="referralBreakdown">
+                                0
+                            </strong>
+
+                            <small>
+                                Referral
+                            </small>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </article>
+
+    </section>
+
+
+    <!-- =================================================
+         DATE TRACKER
+    ================================================== -->
+
+    <section class="date-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-kicker">
+                    REGISTRATION ACTIVITY
+                </span>
+
+                <h2>
+                    Daily Timeline
+                </h2>
+
+            </div>
+
+            <span class="swipe-hint">
+                Swipe dates →
+            </span>
+
+        </div>
+
+
+        <div
+            class="date-scroller"
+            id="dateScroller"
+        >
+            <!-- Dates generated by JavaScript -->
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         SELECTED DATE
+    ================================================== -->
+
+    <main class="selected-date-section">
+
+        <div class="selected-date-header">
+
+            <div>
+
+                <span
+                    class="selected-kicker"
+                    id="selectedKicker"
+                >
+                    SELECTED DATE
+                </span>
+
+                <h2 id="selectedDate">
+                    —
+                </h2>
+
+            </div>
+
+            <div class="selected-count">
+
+                <strong id="selectedCount">
+                    0
+                </strong>
+
+                <span>
+                    REGISTERED
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="registration-list"
+            id="registrationList"
+        >
+
+            <div class="loading-state">
+                Loading registrations...
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =================================================
+         REGISTRATION DETAIL MODAL
+    ================================================== -->
+
+    <div
+        class="registration-modal"
+        id="registrationModal"
+        aria-hidden="true"
+    >
+
+        <div
+            class="modal-backdrop"
+            id="modalBackdrop"
+        ></div>
+
+
+        <section
+            class="registration-modal-card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modalUserName"
+        >
+
+            <button
+                type="button"
+                class="modal-close"
+                id="modalClose"
+                aria-label="Close registration details"
+            >
+                ×
+            </button>
+
+
+            <div class="modal-symbol">
+                F
+            </div>
+
+
+            <span class="modal-kicker">
+                REGISTRATION DETAILS
+            </span>
+
+
+            <h2 id="modalUserName">
+                —
+            </h2>
+
+
+            <div class="modal-referral-code">
+                <span>
+                    REFERRAL CODE
+                </span>
+
+                <strong id="modalReferralCode">
+                    —
+                </strong>
+            </div>
+
+
+            <div class="modal-detail-grid">
+
+                <div class="modal-detail">
 
                     <span>
                         REGISTERED
                     </span>
 
+                    <strong id="modalRegisteredDate">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="modal-detail">
+
+                    <span>
+                        TIME
+                    </span>
+
+                    <strong id="modalRegisteredTime">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="modal-detail">
+
+                    <span>
+                        SOURCE
+                    </span>
+
+                    <strong id="modalRegistrationType">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div
+                    class="modal-detail"
+                    id="modalReferrerDetail"
+                >
+
+                    <span>
+                        REFERRED BY
+                    </span>
+
+                    <strong id="modalReferrerName">
+                        —
+                    </strong>
+
                 </div>
 
             </div>
 
 
-            <div
-                class="registration-list"
-                id="registrationList"
+            <a
+                href="/admin-users.html"
+                class="modal-users-link"
             >
+                OPEN USERS →
+            </a>
 
-                <div class="loading-state">
-                    Loading registrations...
-                </div>
-
-            </div>
-
-        </main>
-
-
-        <!-- FOOTER -->
-        <footer class="tracker-footer">
-
-            <span>
-                FINORA Registration Tracker
-            </span>
-
-            <span>
-                Africa/Kampala
-            </span>
-
-        </footer>
+        </section>
 
     </div>
 
 
-    <script
-        src="/admin-registration-tracker.js"
-        defer
-    ></script>
+    <!-- =================================================
+         FOOTER
+    ================================================== -->
 
-</body>
+    <footer class="tracker-footer">
 
-</html>
+        <span>
+            FINORA Registration Tracker
+        </span>
+
+        <span>
+            Africa/Kampala
+        </span>
+
+    </footer>
+
+</div>
+
+
+<script
+    src="/admin-registration-tracker.js"
+    defer
+></script>
+
+</body></html>
