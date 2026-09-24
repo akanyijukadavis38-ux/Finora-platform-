@@ -441,6 +441,44 @@ app.get(
     }
 );
 app.get(
+    "/admin-registration-tracker.html",
+    requireAdmin,
+    (req, res) => {
+        res.sendFile(
+            path.join(
+                __dirname,
+                "admin-registration-tracker.html"
+            )
+        );
+    }
+);
+
+app.get(
+    "/admin-registration-tracker.css",
+    requireAdmin,
+    (req, res) => {
+        res.sendFile(
+            path.join(
+                __dirname,
+                "admin-registration-tracker.css"
+            )
+        );
+    }
+);
+
+app.get(
+    "/admin-registration-tracker.js",
+    requireAdmin,
+    (req, res) => {
+        res.sendFile(
+            path.join(
+                __dirname,
+                "admin-registration-tracker.js"
+            )
+        );
+    }
+);
+app.get(
     "/admin-finance.html",
     requireAdmin,
     (req, res) => {
