@@ -14,7 +14,7 @@ const API_BASE = "https://finora-platform.onrender.com";
 
 const OVERVIEW_ENDPOINT = `${API_BASE}/api/admin/overview`;
 
-const NOTIFICATIONS_ENDPOINT = `${API_BASE}/api/notifications`;
+const NOTIFICATIONS_ENDPOINT = `${API_BASE}/api/notifications/admin`;
 
 const LOGOUT_ENDPOINT = `${API_BASE}/api/admin/logout`;
 
