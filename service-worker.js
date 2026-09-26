@@ -26,12 +26,15 @@ self.addEventListener("activate", event => {
 });
 
 self.addEventListener("fetch", event => {
+
     if (event.request.method !== "GET") {
         return;
     }
 
     event.respondWith(
+
         fetch(event.request)
+
             .then(response => {
 
                 if (
@@ -39,24 +42,32 @@ self.addEventListener("fetch", event => {
                     response.status === 200 &&
                     response.type === "basic"
                 ) {
+
                     const responseClone =
                         response.clone();
 
                     caches.open(CACHE_NAME)
                         .then(cache => {
+
                             cache.put(
                                 event.request,
                                 responseClone
                             );
+
                         });
+
                 }
 
                 return response;
+
             })
+
             .catch(() =>
                 caches.match(event.request)
             )
+
     );
+
 });
 
 
@@ -69,21 +80,58 @@ self.addEventListener("push", event => {
     let data = {};
 
     try {
+
         data = event.data
             ? event.data.json()
             : {};
+
     } catch (error) {
 
         data = {
-            title: "FINORA",
-            body: event.data
-                ? event.data.text()
-                : "You have a new FINORA notification."
+
+            title:
+                "FINORA",
+
+            body:
+                event.data
+                    ? event.data.text()
+                    : "You have a new FINORA notification."
+
         };
+
     }
 
+
     const title =
-        data.title || "FINORA";
+        data.title ||
+        "FINORA";
+
+
+    /*
+     * IMPORTANT:
+     *
+     * Every notification gets its own unique tag.
+     *
+     * The server sends notificationId from the
+     * MongoDB notification record.
+     *
+     * This prevents:
+     *
+     * Deposit submitted
+     * Deposit approved
+     * Referral earned
+     *
+     * from replacing one another.
+     */
+
+    const notificationTag =
+        data.notificationId
+            ? `finora-${data.notificationId}`
+            : (
+                data.tag ||
+                `finora-${Date.now()}`
+            );
+
 
     const options = {
 
@@ -92,51 +140,82 @@ self.addEventListener("push", event => {
             data.body ||
             "You have a new FINORA notification.",
 
+
         // FINORA application icon
         icon:
             data.icon ||
             "/finora-icon.png",
 
-        // Small notification/status icon
+
+        // FINORA small Android notification badge
         badge:
             data.badge ||
-            "/finora-icon.png",
+            "/finora-badge.png",
 
-        // Notification grouping
+
+        /*
+         * UNIQUE NOTIFICATION TAG
+         *
+         * Each notification gets its own identity.
+         */
         tag:
-            data.tag ||
-            "finora-notification",
+            notificationTag,
 
-        renotify: true,
+
+        /*
+         * Alert again when a new notification
+         * is displayed.
+         */
+        renotify:
+            true,
+
 
         // Normal Android-style notification behaviour
-        requireInteraction: false,
+        requireInteraction:
+            false,
+
 
         // Information used when notification is opened
         data: {
+
             url:
                 data.url ||
                 "/dashboard.html",
 
             notificationId:
-                data.notificationId || null
+                data.notificationId ||
+                null
+
         },
+
 
         // Notification action buttons
         actions: [
+
             {
-                action: "mark-read",
-                title: "Mark as read"
+
+                action:
+                    "mark-read",
+
+                title:
+                    "Mark as read"
+
             }
+
         ]
+
     };
 
+
     event.waitUntil(
+
         self.registration.showNotification(
             title,
             options
         )
+
     );
+
 });
 
 
@@ -165,7 +244,10 @@ self.addEventListener(
         // MARK AS READ
         // -----------------------------------------
 
-        if (action === "mark-read") {
+        if (
+            action ===
+            "mark-read"
+        ) {
 
             notification.close();
 
@@ -182,11 +264,21 @@ self.addEventListener(
         event.waitUntil(
 
             clients.matchAll({
-                type: "window",
-                includeUncontrolled: true
-            }).then(clientList => {
 
-                for (const client of clientList) {
+                type:
+                    "window",
+
+                includeUncontrolled:
+                    true
+
+            })
+
+            .then(clientList => {
+
+                for (
+                    const client
+                    of clientList
+                ) {
 
                     if (
                         "navigate" in client &&
@@ -195,19 +287,28 @@ self.addEventListener(
 
                         return client
                             .navigate(targetUrl)
-                            .then(() => client.focus());
+                            .then(() =>
+                                client.focus()
+                            );
+
                     }
+
                 }
 
-                if (clients.openWindow) {
+
+                if (
+                    clients.openWindow
+                ) {
 
                     return clients.openWindow(
                         targetUrl
                     );
+
                 }
 
             })
 
         );
+
     }
 );
