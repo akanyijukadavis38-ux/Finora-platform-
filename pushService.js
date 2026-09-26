@@ -96,6 +96,18 @@ async function sendPushToUser(
 
 
     /* =====================================================
+       CREATE UNIQUE NOTIFICATION ID
+    ===================================================== */
+
+    const notificationId =
+        notification._id
+            ? notification._id.toString()
+            : `${Date.now()}-${Math.random()
+                .toString(36)
+                .slice(2)}`;
+
+
+    /* =====================================================
        PUSH PAYLOAD
     ===================================================== */
 
@@ -111,13 +123,18 @@ async function sendPushToUser(
                 "You have a new FINORA notification.",
 
             notificationId:
-                notification._id
-                    ? notification._id.toString()
-                    : null,
+                notificationId,
 
+            /*
+             * IMPORTANT:
+             * Every FINORA notification gets its own
+             * unique Android/browser notification tag.
+             *
+             * This prevents a new notification from
+             * replacing an older one.
+             */
             tag:
-                notification.type ||
-                "finora-notification",
+                `finora-${notificationId}`,
 
             url:
                 "/dashboard.html",
@@ -181,6 +198,8 @@ async function sendPushToUser(
             console.log(
                 "✅ FINORA PUSH SENT:",
                 notification.type,
+                "ID:",
+                notificationId,
                 "→",
                 userId.toString()
             );
@@ -266,5 +285,3 @@ module.exports = {
     sendPushToUser
 
 };
-
-
