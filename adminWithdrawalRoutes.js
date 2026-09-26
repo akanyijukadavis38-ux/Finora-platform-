@@ -333,7 +333,13 @@ await session.commitTransaction();
 
    Push failure must NOT affect the withdrawal.
 ================================================= */
-
+console.log(
+  "🔔 FINORA WITHDRAWAL PUSH REACHED:",
+  notification._id?.toString(),
+  notification.userId?.toString(),
+  notification.type,
+  notification.title
+);
 try {
 
     await sendPushToUser(
