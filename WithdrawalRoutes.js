@@ -24,7 +24,8 @@ const WITHDRAWAL_RATE = 0.15;
    It is intentionally NOT exposed on the user-facing page.
 */
 
-const MAX_WITHDRAWALS = 2;
+const MAX_WITHDRAWALS_PER_DAY = 2;
+const WITHDRAWAL_TIME_ZONE = "Africa/Kampala";
 
 
 /* =========================================================
@@ -323,36 +324,77 @@ router.post(
             }
 
 
-            /* -----------------------------------------
-               CHECK HIDDEN WITHDRAWAL LIMIT
-            ----------------------------------------- */
+          /* -----------------------------------------
+   CHECK DAILY WITHDRAWAL LIMIT
+----------------------------------------- */
 
-            const withdrawalCount =
-                await Withdrawal.countDocuments({
-                    user: user._id,
-                    status: {
-                        $in: [
-                            "pending",
-                            "approved",
-                            "completed"
-                        ]
-                    }
-                });
+const now = new Date();
 
+/*
+   FINORA uses Uganda local calendar days.
+   Africa/Kampala is UTC+3 and has no daylight
+   saving time.
+*/
+const dateParts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: WITHDRAWAL_TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+}).formatToParts(now);
 
-            if (
-                withdrawalCount >=
-                MAX_WITHDRAWALS
-            ) {
+const dateValues = {};
 
-                return res.status(403).json({
+for (const part of dateParts) {
+    if (part.type !== "literal") {
+        dateValues[part.type] = part.value;
+    }
+}
 
-                    success: false,
+/*
+   Convert midnight in Kampala to UTC.
+   Uganda local midnight = previous day at 21:00 UTC.
+*/
+const kampalaDayStart = new Date(
+    Date.UTC(
+        Number(dateValues.year),
+        Number(dateValues.month) - 1,
+        Number(dateValues.day)
+    ) - (3 * 60 * 60 * 1000)
+);
 
-                    message:
-                        "Your withdrawal limit has been reached."
-                });
-            }
+const kampalaNextDayStart = new Date(
+    kampalaDayStart.getTime() + (24 * 60 * 60 * 1000)
+);
+
+/*
+   Count qualifying withdrawals created today only.
+   Older withdrawal records must not block today's
+   withdrawal allowance.
+*/
+const withdrawalCount = await Withdrawal.countDocuments({
+    user: user._id,
+
+    status: {
+        $in: [
+            "pending",
+            "approved",
+            "completed"
+        ]
+    },
+
+    createdAt: {
+        $gte: kampalaDayStart,
+        $lt: kampalaNextDayStart
+    }
+});
+
+if (withdrawalCount >= MAX_WITHDRAWALS_PER_DAY) {
+    return res.status(403).json({
+        success: false,
+        message:
+            "You have reached your daily withdrawal limit of 2. Please try again tomorrow."
+    });
+}
 
 
             /* -----------------------------------------
