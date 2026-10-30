@@ -1,3 +1,4 @@
+
 "use strict";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -5,24 +6,25 @@ document.addEventListener("DOMContentLoaded", () => {
     /* =====================================================
        CONFIGURATION
     ====================================================== */
-const API_URL =
-    "https://finora-platform.onrender.com/api/deposits";
-    
+
+    const API_URL =
+        "https://finora-platform.onrender.com/api/deposits";
 
     const MIN_DEPOSIT = 10000;
-
 
     const PAYMENT_DETAILS = {
 
         MTN: {
             network: "MTN MOBILE MONEY",
             merchantCode: "26127911",
+            recipientName: "TAYEBWA ANTHONY",
             ussd: "*165*3#"
         },
 
         Airtel: {
             network: "AIRTEL MONEY",
-            merchantCode: "7157334",
+            merchantCode: "7278129",
+            recipientName: "GLADECE FINFLUX INVESTMENTS",
             ussd: "*185*9#"
         }
 
@@ -57,6 +59,18 @@ const API_URL =
     const airtelDetails =
         document.getElementById("airtelDetails");
 
+    const mtnMerchantCode =
+        document.getElementById("mtnMerchantCode");
+
+    const airtelMerchantCode =
+        document.getElementById("airtelMerchantCode");
+
+    const mtnRecipientName =
+        document.getElementById("mtnRecipientName");
+
+    const airtelRecipientName =
+        document.getElementById("airtelRecipientName");
+
     const submitButton =
         document.getElementById("submitDeposit");
 
@@ -83,12 +97,10 @@ const API_URL =
         loader.classList.add("hidden");
 
         setTimeout(() => {
-
             loader.style.display = "none";
-
         }, 450);
-    }
 
+    }
 
     setTimeout(hideLoader, 1200);
 
@@ -106,11 +118,14 @@ const API_URL =
         merchantNetwork,
         mtnDetails,
         airtelDetails,
+        mtnMerchantCode,
+        airtelMerchantCode,
+        mtnRecipientName,
+        airtelRecipientName,
         submitButton,
         message
 
     ];
-
 
     if (requiredElements.some(element => !element)) {
 
@@ -121,6 +136,33 @@ const API_URL =
         hideLoader();
 
         return;
+    }
+
+
+    /* =====================================================
+       SYNCHRONIZE PAYMENT DETAILS
+    ====================================================== */
+
+    mtnMerchantCode.textContent =
+        PAYMENT_DETAILS.MTN.merchantCode;
+
+    airtelMerchantCode.textContent =
+        PAYMENT_DETAILS.Airtel.merchantCode;
+
+    mtnRecipientName.textContent =
+        PAYMENT_DETAILS.MTN.recipientName;
+
+    airtelRecipientName.textContent =
+        PAYMENT_DETAILS.Airtel.recipientName;
+
+    if (copyMtnCode) {
+        copyMtnCode.dataset.copy =
+            PAYMENT_DETAILS.MTN.merchantCode;
+    }
+
+    if (copyAirtelCode) {
+        copyAirtelCode.dataset.copy =
+            PAYMENT_DETAILS.Airtel.merchantCode;
     }
 
 
@@ -180,6 +222,7 @@ const API_URL =
 
             submitButton.querySelector(".submit-arrow").textContent =
                 "→";
+
         }
 
     }
@@ -200,6 +243,7 @@ const API_URL =
         }
 
         return null;
+
     }
 
 
@@ -214,20 +258,17 @@ const API_URL =
         const details =
             PAYMENT_DETAILS[method];
 
-
         merchantNetwork.textContent =
             details.network;
-
 
         mtnDetails.hidden =
             method !== "MTN";
 
-
         airtelDetails.hidden =
             method !== "Airtel";
 
-
         clearMessage();
+
     }
 
 
@@ -236,12 +277,10 @@ const API_URL =
         updatePaymentMethod
     );
 
-
     airtelRadio.addEventListener(
         "change",
         updatePaymentMethod
     );
-
 
     updatePaymentMethod();
 
@@ -263,10 +302,8 @@ const API_URL =
             return;
         }
 
-
         const originalHTML =
             button.innerHTML;
-
 
         try {
 
@@ -287,22 +324,24 @@ const API_URL =
                 temporaryInput.style.position = "fixed";
                 temporaryInput.style.opacity = "0";
 
-                document.body.appendChild(
-                    temporaryInput
-                );
+                document.body.appendChild(temporaryInput);
 
                 temporaryInput.focus();
                 temporaryInput.select();
 
-                document.execCommand("copy");
+                const copied =
+                    document.execCommand("copy");
 
                 temporaryInput.remove();
-            }
 
+                if (!copied) {
+                    throw new Error("Copy command failed.");
+                }
+
+            }
 
             button.innerHTML =
                 '<span class="copy-icon">✓</span><span>Copied</span>';
-
 
             setTimeout(() => {
 
@@ -310,7 +349,6 @@ const API_URL =
                     originalHTML;
 
             }, 1600);
-
 
         } catch (error) {
 
@@ -323,6 +361,7 @@ const API_URL =
                 "Unable to copy the merchant code. Please copy it manually.",
                 "error"
             );
+
         }
 
     }
@@ -369,6 +408,7 @@ const API_URL =
         }
 
         return amount;
+
     }
 
 
@@ -393,7 +433,6 @@ const API_URL =
 
         clearMessage();
 
-
         const amount =
             getAmount();
 
@@ -404,7 +443,7 @@ const API_URL =
             getReference();
 
 
-        /* Amount */
+        /* AMOUNT VALIDATION */
 
         if (amount === null) {
 
@@ -442,7 +481,7 @@ const API_URL =
         }
 
 
-        /* Payment method */
+        /* PAYMENT METHOD VALIDATION */
 
         if (!paymentMethod) {
 
@@ -454,7 +493,7 @@ const API_URL =
         }
 
 
-        /* Transaction reference */
+        /* TRANSACTION REFERENCE VALIDATION */
 
         if (!paymentReference) {
 
@@ -483,11 +522,24 @@ const API_URL =
         }
 
 
-        /* Confirmation */
+        /* PAYMENT CONFIRMATION */
+
+        const selectedPayment =
+            PAYMENT_DETAILS[paymentMethod];
 
         const confirmed =
             window.confirm(
-                `Confirm your UGX ${amount.toLocaleString()} deposit using ${paymentMethod} Mobile Money.`
+
+                `Confirm your UGX ${amount.toLocaleString()} deposit.\n\n` +
+
+                `Payment Method: ${selectedPayment.network}\n` +
+
+                `Merchant Code: ${selectedPayment.merchantCode}\n` +
+
+                `Recipient Name: ${selectedPayment.recipientName}\n\n` +
+
+                `Have you verified the recipient details and completed the payment?`
+
             );
 
 
@@ -524,7 +576,6 @@ const API_URL =
 
 
             let data = null;
-
 
             try {
 
@@ -575,7 +626,7 @@ const API_URL =
 
 
             /* =================================================
-               DUPLICATE
+               DUPLICATE TRANSACTION
             ================================================== */
 
             if (response.status === 409) {
@@ -627,7 +678,6 @@ const API_URL =
                     "success"
                 );
 
-
                 amountInput.value = "";
 
                 referenceInput.value = "";
@@ -638,7 +688,6 @@ const API_URL =
                  * The backend keeps the deposit pending until
                  * the authorized FINORA deposit workflow completes.
                  */
-
 
                 return;
             }
@@ -659,7 +708,6 @@ const API_URL =
                 "FINORA DEPOSIT REQUEST ERROR:",
                 error
             );
-
 
             showMessage(
                 "Unable to connect to FINORA right now. Please check your connection and try again."
@@ -721,26 +769,17 @@ const API_URL =
 
 
     /* =====================================================
-       AMOUNT FORMATTING SUPPORT
+       INPUT CHANGE HANDLING
     ====================================================== */
 
     amountInput.addEventListener(
         "input",
-        () => {
-
-            clearMessage();
-
-        }
+        clearMessage
     );
-
 
     referenceInput.addEventListener(
         "input",
-        () => {
-
-            clearMessage();
-
-        }
+        clearMessage
     );
 
 
