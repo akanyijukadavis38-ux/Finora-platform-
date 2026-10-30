@@ -1218,7 +1218,6 @@
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 width="15"
@@ -1409,6 +1408,23 @@
 
 
     /* =========================================
+       CURRENT MERCHANT DETAILS
+    ========================================= */
+
+    const MERCHANT_DETAILS = {
+        MTN: {
+            code: "26127911",
+            recipient: "TAYEBWA ANTHONY"
+        },
+
+        AIRTEL: {
+            code: "7278129",
+            recipient: "GLADECE FINFLUX INVESTMENTS"
+        }
+    };
+
+
+    /* =========================================
        STATE
     ========================================= */
 
@@ -1590,11 +1606,49 @@
     }
 
 
+    /* =========================================
+       MERCHANT DETAILS HELPERS
+    ========================================= */
+
+    function getMerchantDetails(deposit) {
+
+        const method = String(
+            getPaymentMethod(deposit)
+        ).trim().toUpperCase();
+
+        if (method.includes("MTN")) {
+            return MERCHANT_DETAILS.MTN;
+        }
+
+        if (method.includes("AIRTEL")) {
+            return MERCHANT_DETAILS.AIRTEL;
+        }
+
+        return null;
+    }
+
+
     function getMerchantCode(deposit) {
 
+        const details =
+            getMerchantDetails(deposit);
+
         return (
+            details?.code ||
             deposit.merchantCode ||
             "—"
+        );
+    }
+
+
+    function getMerchantRecipient(deposit) {
+
+        const details =
+            getMerchantDetails(deposit);
+
+        return (
+            details?.recipient ||
+            "Not identified"
         );
     }
 
@@ -1836,6 +1890,9 @@
         const merchant =
             getMerchantCode(deposit);
 
+        const recipient =
+            getMerchantRecipient(deposit);
+
         const reference =
             getReference(deposit);
 
@@ -2006,6 +2063,19 @@
 
                         <div class="payment-item-value">
                             ${escapeHtml(submitted)}
+                        </div>
+
+                    </div>
+
+
+                    <div class="payment-item full">
+
+                        <div class="payment-item-label">
+                            Merchant Recipient Name
+                        </div>
+
+                        <div class="payment-item-value">
+                            ${escapeHtml(recipient)}
                         </div>
 
                     </div>
