@@ -1315,7 +1315,7 @@ const API_URL =
                         controller.abort();
 
                     },
-                    20000
+                    10000
                 );
 
 
