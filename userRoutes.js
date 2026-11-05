@@ -609,192 +609,175 @@ try {
 await user.save();
 
 /* =========================================================
-   USER NOTIFICATIONS — NEW REFERRAL REGISTERED
-   DASHBOARD + DEVICE PUSH
+   BACKGROUND REGISTRATION NOTIFICATIONS
+
+   Notifications must not delay the registration response.
 ========================================================= */
 
-if (cleanReferralCode) {
+setImmediate(() => {
 
-    const referralNotifications = [];
+    (async () => {
 
-    let currentReferralCode =
-        cleanReferralCode;
+        try {
 
+            /* =========================================
+               REFERRAL NOTIFICATIONS
+            ========================================= */
 
-    /* =====================================================
-       FIND UP TO 3 LEVELS OF REFERRERS
-    ===================================================== */
+            if (cleanReferralCode) {
 
-    for (
-        let level = 1;
-        level <= 3;
-        level++
-    ) {
+                const referralNotifications = [];
 
-        if (!currentReferralCode) {
-            break;
-        }
+                let currentReferralCode = cleanReferralCode;
 
+                for (let level = 1; level <= 3; level++) {
 
-        const referrer =
-            await User.findOne({
-                referralCode:
-                    currentReferralCode
-            }).select(
-                "_id fullName referredByCode"
-            );
+                    if (!currentReferralCode) {
+                        break;
+                    }
 
+                    const referrer = await User.findOne({
+                        referralCode: currentReferralCode
+                    }).select("_id fullName referredByCode");
 
-        if (!referrer) {
-            break;
-        }
+                    if (!referrer) {
+                        break;
+                    }
 
+                    referralNotifications.push({
 
-        referralNotifications.push({
+                        userId: referrer._id,
 
-            userId:
-                referrer._id,
+                        type: "new_referral",
 
-            type:
-                "new_referral",
+                        title: "New Referral Registered",
 
-            title:
-                "New Referral Registered",
+                        message:
+                            `${user.fullName} has joined your Level ${level} referral network on FINORA.`,
 
-            message:
-                `${user.fullName} has joined your Level ${level} referral network on FINORA.`,
+                        isRead: false
 
-            isRead:
-                false
+                    });
 
-        });
+                    currentReferralCode =
+                        referrer.referredByCode || null;
+                }
 
+                if (referralNotifications.length > 0) {
 
-        /* ===============================================
-           MOVE TO NEXT REFERRAL LEVEL
-        =============================================== */
+                    const savedNotifications =
+                        await Notification.insertMany(
+                            referralNotifications
+                        );
 
-        currentReferralCode =
-            referrer.referredByCode || null;
+                    for (const notification of savedNotifications) {
 
-    }
+                        try {
 
+                            await sendPushToUser(
+                                notification.userId,
+                                notification
+                            );
 
-    /* =====================================================
-       SAVE DASHBOARD NOTIFICATIONS
-    ===================================================== */
+                        } catch (pushError) {
 
-    if (
-        referralNotifications.length > 0
-    ) {
+                            console.error(
+                                "FINORA REFERRAL PUSH ERROR:",
+                                pushError
+                            );
 
-        const savedNotifications =
-            await Notification.insertMany(
-                referralNotifications
-            );
-
-
-        /* =================================================
-           SEND THE SAME NOTIFICATIONS TO DEVICES
-
-           Dashboard notification is already saved.
-           Now send that exact notification to the
-           recipient's registered device(s).
-        ================================================= */
-
-        for (
-            const notification
-            of savedNotifications
-        ) {
-
-            try {
-
-                await sendPushToUser(
-
-                    notification.userId,
-
-                    notification
-
-                );
-
-            } catch (pushError) {
-
-                console.error(
-                    "❌ FINORA NEW REFERRAL PUSH FAILED:",
-                    pushError
-                );
-
+                        }
+                    }
+                }
             }
 
+            /* =========================================
+               ADMIN NOTIFICATION
+            ========================================= */
+
+            const admin = await Admin.findOne({
+                status: "active"
+            }).select("_id");
+
+            if (admin) {
+
+                await Notification.create({
+
+                    adminId: admin._id,
+
+                    type: "new_user_registered",
+
+                    title: "New User Registered",
+
+                    message:
+                        `A new user, ${user.fullName}, has registered on FINORA.`,
+
+                    isRead: false
+
+                });
+            }
+
+        } catch (notificationError) {
+
+            console.error(
+                "FINORA BACKGROUND NOTIFICATION ERROR:",
+                notificationError
+            );
+
         }
 
-    }
-
-}
-    
-
-
-/* =================================================
-ADMIN NOTIFICATION — NEW USER REGISTERED
-========================================================= */
-
-const admin =
-await Admin.findOne({
-status: "active"
-}).select("_id");
-
-if (admin) {
-
-await Notification.create({  
-
-    adminId:  
-        admin._id,  
-
-    type:  
-        "new_user_registered",  
-
-    title:  
-        "New User Registered",  
-
-    message:  
-        `A new user, ${user.fullName}, has registered on FINORA.`,  
-
-    isRead:  
-        false  
+    })();
 
 });
+/* =================================================
+   SESSION
+   Maximum wait: 4 seconds
+================================================= */
+
+req.session.userId = user._id.toString();
+
+req.session.authenticated = true;
+
+try {
+
+    await Promise.race([
+
+        new Promise((resolve, reject) => {
+
+            req.session.save(error => {
+
+                if (error) {
+                    return reject(error);
+                }
+
+                resolve();
+
+            });
+
+        }),
+
+        new Promise((_, reject) => {
+
+            setTimeout(() => {
+
+                reject(
+                    new Error("FINORA session save timed out.")
+                );
+
+            }, 4000);
+
+        })
+
+    ]);
+
+} catch (sessionError) {
+
+    console.error(
+        "FINORA REGISTRATION SESSION WARNING:",
+        sessionError
+    );
 
 }
-
-/* =================================================
-SESSION
-========================================================= */
-
-req.session.userId =  
-        user._id.toString();  
-
-    req.session.authenticated =  
-        true;  
-
-
-    await new Promise(  
-        (resolve, reject) => {  
-
-            req.session.save(  
-                error => {  
-
-                    if (error) {  
-                        return reject(error);  
-                    }  
-
-                    resolve();  
-
-                }  
-            );  
-
-        }  
-    );  
-
 
     /* =================================================  
        SUCCESS RESPONSE  
