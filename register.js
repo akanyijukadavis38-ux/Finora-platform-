@@ -49,7 +49,35 @@
 
         const referralCode =
             document.getElementById("referralCode");
+/* =====================================================
+   AUTOMATIC REFERRAL CODE FROM URL
+===================================================== */
 
+if (referralCode) {
+
+    const urlParams =
+        new URLSearchParams(window.location.search);
+
+    const incomingReferralCode =
+        urlParams.get("ref");
+
+    if (incomingReferralCode) {
+
+        referralCode.value =
+            incomingReferralCode.trim().toUpperCase();
+
+        referralCode.dispatchEvent(
+            new Event("input", { bubbles: true })
+        );
+
+        console.log(
+            "FINORA REFERRAL CODE DETECTED:",
+            referralCode.value
+        );
+
+    }
+
+}
         const terms =
             document.getElementById("terms");
 
